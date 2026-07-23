@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trade Analysis Engine v6.0 - High Performance</title>
+<!-- Lightweight Charts v4.2.0 -->
+<script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #020617;
+    color: #f8fafc;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    padding: 15px;
+}
+
+.container {
+    max-width: 1500px;
+    margin: auto;
+}
+
+.card {
+    background: #111827;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,.35);
+    border: 1px solid #1e293b;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #60a5fa;
+}
+
+.subtitle {
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+.controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-bottom: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+input, select {
+    background: #020617;
+    color: white;
+    border: 1px solid #334155;
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    outline: none;
+}
+
+input:focus, select:focus {
+    border-color: #3b82f6;
+}
+
+button {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: opacity .2s ease;
+}
+
+button:hover {
+    opacity: .85;
+}
+
+.btn-primary { background: #2563eb; }
+.btn-purple  { background: #7c3aed; }
+.btn-buy     { background: #16a34a; width: 100%; margin-top: 12px; padding: 12px; font-size: 14px; }
+.btn-sell    { background: #dc2626; width: 100%; margin-top: 12px; padding: 12px; font-size: 14px; }
+.btn-neutral { background: #475569; width: 100%; margin-top: 12px; padding: 12px; font-size: 14px; }
+.btn-sm      { padding: 4px 8px; font-size: 11px; background: #3b82f6; }
+
+.dashboard {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 15px;
+}
+
+#chart {
+    height: 620px;
+    background: #020617;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.panel-title {
+    color: #94a3b8;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.metric {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #1e293b;
+    font-size: 13px;
+}
+
+.metric span:last-child {
+    font-family: monospace;
+    font-weight: bold;
+}
+
+.green  { color: #4ade80; }
+.red    { color: #f87171; }
+.yellow { color: #facc15; }
+.blue   { color: #60a5fa; }
+.purple { color: #c084fc; }
+
+.score-box {
+    margin: 12px 0;
+    padding: 12px;
+    border-radius: 8px;
+    background: #020617;
+    border-left: 4px solid #2563eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.score {
+    font-size: 30px;
+    font-weight: 900;
+}
+
+.reasoning-box {
+    background: #020617;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 10px;
+    border-left: 3px solid #3b82f6;
+}
+
+.reasoning-list {
+    list-style: none;
+    font-size: 12px;
+    color: #cbd5e1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.screener-results {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.screener-results th {
+    color: #94a3b8;
+    font-size: 11px;
+    text-transform: uppercase;
+    border-bottom: 1px solid #334155;
+    padding: 8px;
+    text-align: left;
+}
+
+.screener-results td {
+    padding: 8px;
+    font-size: 12px;
+    border-bottom: 1px solid #1e293b;
+}
+
+@media(max-width:900px){
+    .dashboard { grid-template-columns: 1fr; }
+    #chart { height: 450px; }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+    <!-- Header -->
+    <div class="card header">
+        <div>
+            <div class="title">📈 Trade Analysis Engine v6.0</div>
+            <div class="subtitle">Unified AI-Style Technical Analysis • Risk Engine • Order Staging</div>
+        </div>
+    </div>
+
+    <!-- Main Controls Card -->
+    <div class="card">
+        <div class="controls">
+            <div class="field">
+                <label>TICKER</label>
+                <input id="ticker" value="NVDA" style="text-transform:uppercase;">
+            </div>
+            <div class="field">
+                <label>PORTFOLIO ($)</label>
+                <input id="account" type="number" value="25000">
+            </div>
+            <div class="field">
+                <label>RISK (%)</label>
+                <input id="risk" type="number" value="1.0" step="0.1">
+            </div>
+            <div class="field">
+                <label>MAX POSITION (%)</label>
+                <input id="maxPosition" type="number" value="20">
+            </div>
+            <div class="field">
+                <label>TIMEFRAME</label>
+                <select id="timeframe">
+                    <option value="5m">5-Min Intraday</option>
+                    <option value="15m">15-Min Intraday</option>
+                    <option value="1h">Hourly</option>
+                    <option value="1d" selected>Daily</option>
+                    <option value="1wk">Weekly</option>
+                    <option value="1mo">30-Day (Monthly)</option>
+                </select>
+            </div>
+            <button class="btn-primary" onclick="runEngine()">ANALYZE TICKER</button>
+        </div>
+
+        <div style="margin-top: 15px; border-top: 1px solid #1e293b; padding-top: 15px;" class="controls">
+            <div class="field" style="grid-column: span 3;">
+                <label>SCREENER WATCHLIST (COMMA SEPARATED)</label>
+                <input id="watchlist" value="NVDA, AMD, TSLA, PLTR, SOFI, MU, AAPL, DELL" style="text-transform:uppercase;">
+            </div>
+            <button class="btn-purple" onclick="runScanner()" style="align-self: flex-end;">SCAN WATCHLIST</button>
+        </div>
+    </div>
+
+    <!-- Optional Screener Panel -->
+    <div id="screenerCard" class="card" style="display:none;">
+        <div class="panel-title purple">🔍 SCREENER SCAN RESULTS</div>
+        <div id="screenerOutput" style="overflow-x: auto;"></div>
+    </div>
+
+    <!-- Main Dashboard Grid -->
+    <div class="dashboard">
+        <div class="card">
+            <div id="chart"></div>
+        </div>
+        <div class="card">
+            <div class="panel-title">Trade Decision Engine</div>
+            <div id="tradeOutput">
+                <div style="text-align:center; padding-top:40px; color:#64748b;">
+                    Click "ANALYZE TICKER" to run engine...
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// =====================================
+// GLOBAL VARIABLES & CHART INITIALIZER
+// =====================================
+let chart;
+let candleSeries;
+let ema21Series;
+let sma50Series;
+let sma200Series;
+
+let entryPriceLine;
+let stopPriceLine;
+let targetPriceLine;
+
+function initChart() {
+    const box = document.getElementById("chart");
+    box.innerHTML = "";
+
+    chart = LightweightCharts.createChart(box, {
+        layout: {
+            background: { color: "#020617" },
+            textColor: "#cbd5e1"
+        },
+        grid: {
+            vertLines: { color: "#1e293b" },
+            horzLines: { color: "#1e293b" }
+        },
+        crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+        rightPriceScale: { borderColor: "#1e293b" },
+        timeScale: { 
+            borderColor: "#1e293b",
+            timeVisible: true,
+            secondsVisible: false
+        }
+    });
+
+    candleSeries = chart.addCandlestickSeries({
+        upColor: "#22c55e",
+        downColor: "#ef4444",
+        borderVisible: false,
+        wickUpColor: "#22c55e",
+        wickDownColor: "#ef4444"
+    });
+
+    ema21Series = chart.addLineSeries({ color: "#60a5fa", lineWidth: 2 });
+    sma50Series = chart.addLineSeries({ color: "#facc15", lineWidth: 1 });
+    sma200Series = chart.addLineSeries({ color: "#f87171", lineWidth: 2 });
+}
+
+window.onload = initChart;
+
+// =====================================
+// FAST PARALLEL DATA FETCHING ENGINE
+// =====================================
+const PROXIES = [
+    (url) => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+    (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+    (url) => `https://thingproxy.freeboard.io/fetch/${url}`
+];
+
+// Helper to fetch a single proxy with a strict timeout
+async function fetchWithTimeout(url, timeoutMs = 3500) {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+        const res = await fetch(url, { signal: controller.signal });
+        clearTimeout(id);
+        if (!res.ok) throw new Error("HTTP error " + res.status);
+        const data = await res.json();
+        if (data && data.chart && data.chart.result && data.chart.result[0]) {
+            return data;
+        }
+        throw new Error("Invalid chart structure");
+    } catch (e) {
+        clearTimeout(id);
+        throw e;
+    }
+}
+
+// Races all proxy choices simultaneously to use the fastest response
+async function fetchMarketData(url) {
+    const proxyRequests = PROXIES.map(proxyFn => fetchWithTimeout(proxyFn(url)));
+    try {
+        return await Promise.any(proxyRequests);
+    } catch (e) {
+        throw new Error("Network request timed out or proxy blocked. Please check connection.");
+    }
+}
+
+function sma(values, period) {
+    if (values.length < period) return null;
+    let sum = 0;
+    for (let i = values.length - period; i < values.length; i++) {
+        sum += values[i];
+    }
+    return sum / period;
+}
+
+function ema(values, period) {
+    if (values.length < period) return null;
+    let k = 2 / (period + 1);
+    let emaVal = sma(values.slice(0, period), period);
+    for (let i = period; i < values.length; i++) {
+        emaVal = (values[i] - emaVal) * k + emaVal;
+    }
+    return emaVal;
+}
+
+function RSI(values, period = 14) {
+    if (values.length <= period) return 50;
+    let gains = 0, losses = 0;
+
+    for (let i = 1; i <= period; i++) {
+        let diff = values[i] - values[i-1];
+        if (diff >= 0) gains += diff;
+        else losses -= diff;
+    }
+
+    let avgGain = gains / period;
+    let avgLoss = losses / period;
+
+    for (let i = period + 1; i < values.length; i++) {
+        let diff = values[i] - values[i-1];
+        let gain = diff > 0 ? diff : 0;
+        let loss = diff < 0 ? -diff : 0;
+        avgGain = ((avgGain * (period - 1)) + gain) / period;
+        avgLoss = ((avgLoss * (period - 1)) + loss) / period;
+    }
+
+    if (avgLoss === 0) return 100;
+    let rs = avgGain / avgLoss;
+    return 100 - (100 / (1 + rs));
+}
+
+function ATR(high, low, close, period = 14) {
+    let tr = [];
+    for (let i = 1; i < close.length; i++) {
+        tr.push(Math.max(
+            high[i] - low[i],
+            Math.abs(high[i] - close[i-1]),
+            Math.abs(low[i] - close[i-1])
+        ));
+    }
+    return sma(tr.slice(-period), period) || (close[close.length-1] * 0.02);
+}
+
+function calculateVWAP(high, low, close, volume) {
+    let cumulativePV = 0;
+    let cumulativeVolume = 0;
+    for (let i = 0; i < close.length; i++) {
+        let typical = (high[i] + low[i] + close[i]) / 3;
+        cumulativePV += typical * volume[i];
+        cumulativeVolume += volume[i];
+    }
+    return cumulativeVolume === 0 ? close[close.length - 1] : cumulativePV / cumulativeVolume;
+}
+
+function MACD(values) {
+    let fast = ema(values, 12);
+    let slow = ema(values, 26);
+    if (!fast || !slow) return { macd: 0, signal: 0 };
+    let macdVal = fast - slow;
+    return {
+        macd: macdVal,
+        signal: ema(values.slice(-9), 9) || 0
+    };
+}
+
+async function loadTickerData(ticker, timeframe = "1d") {
+    ticker = ticker.toUpperCase();
+    
+    let range = "1y";
+    let interval = timeframe;
+
+    switch(timeframe) {
+        case "5m":
+            range = "5d";
+            break;
+        case "15m":
+            range = "60d";
+            break;
+        case "1h":
+            range = "1mo";
+            break;
+        case "1d":
+            range = "1y";
+            break;
+        case "1wk":
+            range = "5y";
+            break;
+        case "1mo":
+            range = "10y";
+            break;
+        default:
+            range = "1y";
+            interval = "1d";
+    }
+
+    let url = `https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?interval=${interval}&range=${range}`;
+    let raw = await fetchMarketData(url);
+    
+    let result = raw.chart.result[0];
+    let q = result.indicators.quote[0];
+
+    let candles = [];
+    let close = [], high = [], low = [], volume = [];
+
+    for (let i = 0; i < result.timestamp.length; i++) {
+        if (q.close[i] != null && q.open[i] != null && q.high[i] != null && q.low[i] != null) {
+            candles.push({
+                time: result.timestamp[i],
+                open: q.open[i],
+                high: q.high[i],
+                low: q.low[i],
+                close: q.close[i]
+            });
+            close.push(q.close[i]);
+            high.push(q.high[i]);
+            low.push(q.low[i]);
+            volume.push(q.volume[i] || 0);
+        }
+    }
+
+    if (candles.length === 0) throw new Error("No price data found for " + ticker);
+
+    const price = close[close.length - 1];
+    const support = Math.min(...low.slice(-20));
+    const resistance = Math.max(...high.slice(-20));
+
+    return {
+        ticker,
+        candles,
+        close,
+        high,
+        low,
+        volume,
+        price,
+        support,
+        resistance,
+        sma20: sma(close, 20),
+        sma50: sma(close, 50),
+        sma200: sma(close, 200),
+        ema21: ema(close, 21),
+        rsi: RSI(close),
+        atr: ATR(high, low, close),
+        vwap: calculateVWAP(high, low, close, volume),
+        macd: MACD(close)
+    };
+}
+
+// =====================================
+// UNIFIED SETUP EVALUATION & SCORING
+// =====================================
+function analyzeSetup(data) {
+    let longScore = 0;
+    let shortScore = 0;
+    let reasons = [];
+
+    if (data.ema21 && data.price > data.ema21) {
+        longScore += 2;
+        reasons.push(`Price ($${data.price.toFixed(2)}) > EMA21 ($${data.ema21.toFixed(2)}) [Bullish Trend]`);
+    } else if (data.ema21) {
+        shortScore += 2;
+        reasons.push(`Price ($${data.price.toFixed(2)}) < EMA21 ($${data.ema21.toFixed(2)}) [Bearish Trend]`);
+    }
+
+    if (data.sma200 && data.price > data.sma200) {
+        longScore += 2;
+        reasons.push(`Price above 200 SMA ($${data.sma200.toFixed(2)}) [Macro Bullish]`);
+    } else if (data.sma200) {
+        shortScore += 2;
+        reasons.push(`Price below 200 SMA ($${data.sma200.toFixed(2)}) [Macro Bearish]`);
+    }
+
+    if (data.rsi >= 45 && data.rsi <= 65) {
+        longScore += 1;
+        reasons.push(`RSI (${data.rsi.toFixed(1)}) in strong momentum zone`);
+    } else if (data.rsi > 70) {
+        shortScore += 1;
+        reasons.push(`RSI (${data.rsi.toFixed(1)}) Overbought risk`);
+    } else if (data.rsi < 30) {
+        longScore += 1;
+        reasons.push(`RSI (${data.rsi.toFixed(1)}) Oversold bounce potential`);
+    }
+
+    if (data.macd.macd > data.macd.signal) {
+        longScore += 2;
+        reasons.push("MACD Bullish crossover");
+    } else {
+        shortScore += 2;
+        reasons.push("MACD Bearish crossover");
+    }
+
+    if (data.price > data.vwap) {
+        longScore += 1;
+        reasons.push("Trading above VWAP institutional support");
+    } else {
+        shortScore += 1;
+        reasons.push("Trading below VWAP institutional resistance");
+    }
+
+    let direction = "HOLD";
+    let score = 0;
+
+    if (longScore > shortScore && longScore >= 4) {
+        direction = "LONG";
+        score = longScore;
+    } else if (shortScore > longScore && shortScore >= 4) {
+        direction = "SHORT";
+        score = shortScore;
+    }
+
+    let confidence = Math.min(95, Math.round((score / 8) * 100));
+
+    return { direction, score, confidence, longScore, shortScore, reasons };
+}
+
+function calculateTradeLevels(data, setup) {
+    let atr = data.atr;
+    let entry = data.price;
+    let stop = 0, target = 0;
+
+    if (setup.direction === "LONG") {
+        stop = Math.min(entry - (atr * 1.5), data.support * 0.99);
+        target = entry + (atr * 3.0);
+    } else if (setup.direction === "SHORT") {
+        stop = Math.max(entry + (atr * 1.5), data.resistance * 1.01);
+        target = entry - (atr * 3.0);
+    } else {
+        stop = entry - (atr * 1.5);
+        target = entry + (atr * 1.5);
+    }
+
+    let riskPerShare = Math.abs(entry - stop) || 1;
+    let rewardRisk = Math.abs(target - entry) / riskPerShare;
+
+    return { entry, stop, target, riskPerShare, rewardRisk };
+}
+
+function calculatePositionSize(account, riskPercent, trade, price, maxPosPercent) {
+    let riskAmount = account * (riskPercent / 100);
+    let sharesByRisk = Math.floor(riskAmount / trade.riskPerShare);
+    let maxShares = Math.floor((account * (maxPosPercent / 100)) / price);
+    return Math.max(0, Math.min(sharesByRisk, maxShares));
+}
+
+function gradeSetup(confidence) {
+    if (confidence >= 85) return "A+";
+    if (confidence >= 70) return "A";
+    if (confidence >= 55) return "B";
+    return "C";
+}
+
+// =====================================
+// CHART RENDER & LEVEL LINES
+// =====================================
+function formatLineData(candles, period) {
+    let values = [];
+    for (let i = 0; i < candles.length; i++) {
+        if (i >= period - 1) {
+            let slice = candles.slice(i - period + 1, i + 1).map(x => x.close);
+            let value = slice.reduce((a, b) => a + b, 0) / period;
+            values.push({ time: candles[i].time, value });
+        }
+    }
+    return values;
+}
+
+function calculateEMASeries(candles, period) {
+    if (candles.length < period) return [];
+    let k = 2 / (period + 1);
+    let result = [];
+    
+    let sum = 0;
+    for (let i = 0; i < period; i++) sum += candles[i].close;
+    let prevEMA = sum / period;
+    result.push({ time: candles[period - 1].time, value: prevEMA });
+
+    for (let i = period; i < candles.length; i++) {
+        prevEMA = (candles[i].close - prevEMA) * k + prevEMA;
+        result.push({ time: candles[i].time, value: prevEMA });
+    }
+    return result;
+}
+
+function drawTradeLevels(trade) {
+    if (entryPriceLine) candleSeries.removePriceLine(entryPriceLine);
+    if (stopPriceLine) candleSeries.removePriceLine(stopPriceLine);
+    if (targetPriceLine) candleSeries.removePriceLine(targetPriceLine);
+
+    if (!trade || !trade.entry || trade.stop === 0) return;
+
+    entryPriceLine = candleSeries.createPriceLine({
+        price: trade.entry,
+        color: '#22c55e',
+        lineWidth: 2,
+        lineStyle: LightweightCharts.LineStyle.Solid,
+        axisLabelVisible: true,
+        title: 'ENTRY',
+    });
+
+    stopPriceLine = candleSeries.createPriceLine({
+        price: trade.stop,
+        color: '#ef4444',
+        lineWidth: 2,
+        lineStyle: LightweightCharts.LineStyle.Solid,
+        axisLabelVisible: true,
+        title: 'STOP',
+    });
+
+    targetPriceLine = candleSeries.createPriceLine({
+        price: trade.target,
+        color: '#3b82f6',
+        lineWidth: 2,
+        lineStyle: LightweightCharts.LineStyle.Solid,
+        axisLabelVisible: true,
+        title: 'TARGET',
+    });
+}
+
+function updateChart(data, setup, trade) {
+    candleSeries.setData(data.candles);
+
+    ema21Series.setData(calculateEMASeries(data.candles, 21));
+    sma50Series.setData(formatLineData(data.candles, 50));
+    sma200Series.setData(formatLineData(data.candles, 200));
+
+    let marker = [];
+    let lastTime = data.candles[data.candles.length - 1].time;
+
+    if (setup.direction === "LONG") {
+        marker.push({
+            time: lastTime,
+            position: "belowBar",
+            color: "#16a34a",
+            shape: "arrowUp",
+            text: "LONG SIGNAL"
+        });
+    } else if (setup.direction === "SHORT") {
+        marker.push({
+            time: lastTime,
+            position: "aboveBar",
+            color: "#dc2626",
+            shape: "arrowDown",
+            text: "SHORT SIGNAL"
+        });
+    }
+
+    candleSeries.setMarkers(marker);
+    drawTradeLevels(trade);
+    chart.timeScale().fitContent();
+}
+
+// =====================================
+// MAIN ANALYSIS & EXECUTION ENGINE
+// =====================================
+async function runEngine(targetSymbol = null) {
+    let ticker = (targetSymbol || document.getElementById("ticker").value).trim().toUpperCase();
+    document.getElementById("ticker").value = ticker;
+    let timeframe = document.getElementById("timeframe").value;
+
+    document.getElementById("tradeOutput").innerHTML = `<div style="text-align:center; padding:30px; color:#94a3b8;">Analyzing ${ticker}...</div>`;
+
+    try {
+        let data = await loadTickerData(ticker, timeframe);
+        let setup = analyzeSetup(data);
+        let trade = calculateTradeLevels(data, setup);
+
+        let capital = Number(document.getElementById("account").value);
+        let riskPct = Number(document.getElementById("risk").value);
+        let maxPosPct = Number(document.getElementById("maxPosition").value);
+
+        let shares = calculatePositionSize(capital, riskPct, trade, data.price, maxPosPct);
+        let positionVal = (shares * data.price).toFixed(2);
+
+        updateChart(data, setup, trade);
+
+        let actionBtn = "";
+        if (setup.direction === "LONG") {
+            actionBtn = `<button class="btn-buy" onclick="executeTrade('BUY (LONG)', '${ticker}', ${shares}, ${data.price.toFixed(2)})">STAGE LONG BUY ORDER (${shares} SHARES)</button>`;
+        } else if (setup.direction === "SHORT") {
+            actionBtn = `<button class="btn-sell" onclick="executeTrade('SELL (SHORT)', '${ticker}', ${shares}, ${data.price.toFixed(2)})">STAGE SHORT SELL ORDER (${shares} SHARES)</button>`;
+        } else {
+            actionBtn = `<button class="btn-neutral" onclick="executeTrade('MANUAL BUY', '${ticker}', ${shares}, ${data.price.toFixed(2)})">STAGE MANUAL ORDER (${shares} SHARES)</button>`;
+        }
+
+        document.getElementById("tradeOutput").innerHTML = `
+            <div class="metric">
+                <span>Ticker / Price</span>
+                <span class="blue">${ticker} ($${data.price.toFixed(2)})</span>
+            </div>
+            <div class="metric">
+                <span>Signal</span>
+                <span class="${setup.direction === "LONG" ? "green" : setup.direction === "SHORT" ? "red" : "yellow"}">
+                    ${setup.direction}
+                </span>
+            </div>
+            <div class="score-box">
+                <div>
+                    <div style="font-size:11px; color:#94a3b8;">CONFIDENCE SCORE</div>
+                    <div class="score">${setup.confidence}%</div>
+                </div>
+                <div style="text-align:right;">
+                    <div style="font-size:11px; color:#94a3b8;">GRADE</div>
+                    <div class="score blue">${gradeSetup(setup.confidence)}</div>
+                </div>
+            </div>
+            <div class="metric">
+                <span>Entry Price</span>
+                <span>$${trade.entry.toFixed(2)}</span>
+            </div>
+            <div class="metric">
+                <span>Stop Loss</span>
+                <span class="red">$${trade.stop.toFixed(2)}</span>
+            </div>
+            <div class="metric">
+                <span>Profit Target</span>
+                <span class="green">$${trade.target.toFixed(2)}</span>
+            </div>
+            <div class="metric">
+                <span>Risk / Reward Ratio</span>
+                <span>1 : ${trade.rewardRisk.toFixed(2)}</span>
+            </div>
+            <div class="metric">
+                <span>Position Size</span>
+                <span>${shares} Shares (~$${positionVal})</span>
+            </div>
+
+            <div class="reasoning-box">
+                <div style="font-size:11px; color:#94a3b8; font-weight:bold; margin-bottom:5px;">SIGNAL RATIONALE:</div>
+                <ul class="reasoning-list">
+                    ${setup.reasons.map(r => `<li>• ${r}</li>`).join("")}
+                </ul>
+            </div>
+
+            ${actionBtn}
+        `;
+    } catch(e) {
+        document.getElementById("tradeOutput").innerHTML = `<div class="red" style="padding:20px; text-align:center;">❌ ${e.message}</div>`;
+    }
+}
+
+// =====================================
+// FAST PARALLEL WATCHLIST SCANNER
+// =====================================
+async function runScanner() {
+    let rawInput = document.getElementById("watchlist").value;
+    let symbols = rawInput.split(",").map(x => x.trim().toUpperCase()).filter(Boolean);
+    let timeframe = document.getElementById("timeframe").value;
+
+    let card = document.getElementById("screenerCard");
+    let output = document.getElementById("screenerOutput");
+
+    card.style.display = "block";
+    output.innerHTML = `<div style="text-align:center; padding:15px; color:#94a3b8;">Scanning ${symbols.length} watchlist tickers simultaneously...</div>`;
+
+    // Process all tickers in parallel
+    const promises = symbols.map(async (ticker) => {
+        try {
+            let data = await loadTickerData(ticker, timeframe);
+            let setup = analyzeSetup(data);
+            let trade = calculateTradeLevels(data, setup);
+            return { ticker, data, setup, trade, error: null };
+        } catch (e) {
+            return { ticker, error: e.message };
+        }
+    });
+
+    const results = await Promise.all(promises);
+
+    let html = `
+        <table class="screener-results">
+            <thead>
+                <tr>
+                    <th>Ticker</th>
+                    <th>Price</th>
+                    <th>Signal</th>
+                    <th>Confidence</th>
+                    <th>Grade</th>
+                    <th>R : R</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    for (const res of results) {
+        if (res.error) {
+            html += `<tr><td class="blue">${res.ticker}</td><td colspan="6" class="red">Error loading data</td></tr>`;
+        } else {
+            let sigClass = res.setup.direction === "LONG" ? "green" : res.setup.direction === "SHORT" ? "red" : "yellow";
+            html += `
+                <tr>
+                    <td class="blue" style="font-weight:bold;">${res.ticker}</td>
+                    <td>$${res.data.price.toFixed(2)}</td>
+                    <td class="${sigClass}" style="font-weight:bold;">${res.setup.direction}</td>
+                    <td>${res.setup.confidence}%</td>
+                    <td style="font-weight:bold;">${gradeSetup(res.setup.confidence)}</td>
+                    <td>1:${res.trade.rewardRisk.toFixed(2)}</td>
+                    <td><button class="btn-sm" onclick="runEngine('${res.ticker}')">Chart</button></td>
+                </tr>
+            `;
+        }
+    }
+
+    html += `</tbody></table>`;
+    output.innerHTML = html;
+}
+
+function executeTrade(action, ticker, shares, price) {
+    alert(`🚀 ORDER STAGED SUCCESSFULLY!\n\nAction: ${action}\nTicker: ${ticker}\nQuantity: ${shares} Shares\nPrice: $${price}\nTotal Value: $${(shares * price).toFixed(2)}`);
+}
+</script>
+</body>
+</html>
