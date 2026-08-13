@@ -14,7 +14,7 @@
 <meta name="application-name" content="Halifax Trade Engine">
 <meta name="format-detection" content="telephone=no">
 
-<title>Halifax Trade Engine v17.1 Lite - Robust Predictive Swing Engine</title>
+<title>Halifax Trade Engine v17.2 Lite - Robust Predictive Swing Engine</title>
 
 <style>
 :root{
@@ -53,7 +53,17 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .metric span:last-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:800;text-align:right}
 .decision-card{border:1px solid #2563eb;box-shadow:0 0 0 1px rgba(37,99,235,.12),0 8px 24px rgba(0,0,0,.28)}
 .score-box{margin:4px 0 12px;padding:13px;border-radius:10px;background:var(--bg);border-left:4px solid #2563eb;display:flex;justify-content:space-between;align-items:center;gap:12px}
-.score{font-size:31px;font-weight:950}
+.score-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:6px;min-width:132px}
+.score{font-size:31px;font-weight:950;line-height:1}
+.mini-score-scale{width:116px}
+.mini-score-labels{display:flex;justify-content:space-between;align-items:center;font-size:8.5px;color:#64748b;font-weight:800;line-height:1;margin-bottom:4px}
+.mini-score-track{position:relative;height:7px;border-radius:999px;background:linear-gradient(90deg,rgba(248,113,113,.22) 0%,rgba(248,113,113,.14) 45%,rgba(100,116,139,.18) 50%,rgba(74,222,128,.14) 55%,rgba(74,222,128,.22) 100%);border:1px solid rgba(51,65,85,.85);overflow:hidden}
+.mini-score-zero{position:absolute;left:50%;top:-2px;bottom:-2px;width:1px;background:rgba(148,163,184,.75)}
+.mini-score-fill{position:absolute;top:0;bottom:0;border-radius:999px;opacity:.95}
+.mini-score-fill.neg{background:linear-gradient(90deg,rgba(248,113,113,.35),rgba(248,113,113,.9))}
+.mini-score-fill.pos{background:linear-gradient(90deg,rgba(74,222,128,.9),rgba(74,222,128,.35))}
+.mini-score-marker{position:absolute;top:50%;width:9px;height:9px;border-radius:50%;transform:translate(-50%,-50%);background:#e2e8f0;border:2px solid #0f172a;box-shadow:0 0 0 1px rgba(148,163,184,.6)}
+.mini-score-caption{font-size:8.5px;color:#94a3b8;font-weight:800;text-align:right;line-height:1;margin-top:4px}
 .reasoning-box,.risk-box{background:var(--bg);border-radius:9px;padding:11px;margin-top:11px;border-left:3px solid #3b82f6}
 .risk-box{border-left-color:#f59e0b}
 .reasoning-list{list-style:none;font-size:11.5px;color:#cbd5e1;display:flex;flex-direction:column;gap:6px;line-height:1.35}
@@ -176,7 +186,7 @@ td{padding:8px;font-size:11.5px;border-bottom:1px solid var(--line);white-space:
 <div class="container">
     <div class="card header">
         <div>
-            <div class="title">📊 Halifax Trade Engine v17.1 Lite</div>
+            <div class="title">📊 Halifax Trade Engine v17.2 Lite</div>
             <div class="subtitle">Robust swing decisions • Faster core data path • 5-year point-in-time validation • Smart-money context</div>
         </div>
         <div class="header-actions"><button id="installAppBtn" class="install-button" onclick="installHalifaxApp()">INSTALL APP</button><div class="badge"><span class="status-dot"></span><span id="engineStatus">Engine ready</span></div></div>
@@ -1340,7 +1350,7 @@ function renderTradeOutput(analysis,trade){
     const setup=dir==="LONG"?`${arrow} LONG SETUP`:dir==="SHORT"?`${arrow} SHORT SETUP`:`${arrow} NO-TRADE / WAIT`;
     const plain=buildPlainEnglishExplanation(analysis,trade);
     document.getElementById("tradeOutput").innerHTML=`
-        <div class="score-box"><div><div class="panel-title" style="margin-bottom:3px">HALIFAX COMPOSITE SCORE</div><div class="${cls}" style="font-weight:900">${setup}</div><div style="font-size:10px;color:#64748b;margin-top:3px">Prediction strength ${analysis.predictionStrength??analysis.confidence}/100 • Technical ${analysis.technicalScore>0?"+":""}${analysis.technicalScore} • Macro contribution ${analysis.macroContribution>0?"+":""}${analysis.macroContribution??0}</div></div><div class="score ${cls}">${analysis.score>0?"+":""}${analysis.score}</div></div>
+        <div class="score-box"><div><div class="panel-title" style="margin-bottom:3px">HALIFAX COMPOSITE SCORE</div><div class="${cls}" style="font-weight:900">${setup}</div><div style="font-size:10px;color:#64748b;margin-top:3px">Prediction strength ${analysis.predictionStrength??analysis.confidence}/100 • Technical ${analysis.technicalScore>0?"+":""}${analysis.technicalScore} • Macro contribution ${analysis.macroContribution>0?"+":""}${analysis.macroContribution??0}</div></div><div class="score-wrap"><div class="score ${cls}">${analysis.score>0?"+":""}${analysis.score}</div>${renderCompositeScale(analysis.score)}</div></div>
         ${analysis.dataFallback?.used?`<div class="risk-box" style="margin:0 0 12px;border-left-color:#f59e0b"><div class="panel-title yellow">Limited-data fallback active</div><div style="font-size:11.5px;color:#cbd5e1;line-height:1.5">Halifax completed the analysis instead of failing. ${escapeHTML(analysis.dataFallback.warnings.join(" "))} Prediction strength is automatically reduced, and Halifax will force WAIT when the higher-timeframe anchor needed for the selected trading style is missing.</div></div>`:""}
         <div class="grade-strip">
             <div class="grade-tile"><div class="g-label">Trend Grade</div><div class="g-grade ${plain.grades.trend.score>=72?"green":plain.grades.trend.score>=55?"yellow":"red"}">${plain.grades.trend.grade}</div><div class="g-score">${plain.grades.trend.score}/100 • Daily/Weekly</div></div>
@@ -1681,7 +1691,7 @@ async function runEngine(){
         renderChart(analysis.primary,trade);renderRegime(analysis,benchmarkResult);renderMTF(analysis);renderTradeOutput(analysis,trade);renderPositionGuardrails(ticker,analysis.primary,analysis);renderNews(displayNews,ticker);
         document.getElementById("smartMoneyOutput").innerHTML='<div class="loading">Core prediction is complete. Loading insider, institutional and public-filing context in the background…</div>';
         document.getElementById("decisionCard")?.scrollIntoView({behavior:"smooth",block:"start"});
-        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v17.1 Lite`;
+        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v17.2 Lite`;
         smartMoneyPromise.then(sm=>{
             if(runId!==halifaxRunId)return;
             if(!sm){document.getElementById("smartMoneyOutput").innerHTML='<div class="loading">Smart-money feeds are unavailable right now. Core Halifax prediction remains valid.</div>';return;}
@@ -1689,7 +1699,7 @@ async function runEngine(){
             renderTradeOutput(analysis,trade);renderPositionGuardrails(ticker,analysis.primary,analysis);renderSmartMoney(special?.underlying||ticker,sm);
             setStatus(`${ticker} prediction + smart money complete`);
         }).catch(()=>{});
-    }catch(error){console.error(error);document.getElementById("tradeOutput").innerHTML=`<div class="red" style="font-weight:900">Analysis failed</div><div style="font-size:12px;color:#cbd5e1;margin-top:8px;line-height:1.5">${escapeHTML(error.message)}</div><div class="notice">Halifax v17.1 Lite rebuilds a slower confirmation timeframe from any usable loaded candles when a separate interval feed fails. A red failure should now appear only when no valid two-timeframe set can be constructed at all.</div>`;document.getElementById("positionCard").style.display="none";setStatus("Analysis failed","var(--red)");}
+    }catch(error){console.error(error);document.getElementById("tradeOutput").innerHTML=`<div class="red" style="font-weight:900">Analysis failed</div><div style="font-size:12px;color:#cbd5e1;margin-top:8px;line-height:1.5">${escapeHTML(error.message)}</div><div class="notice">Halifax v17.2 Lite rebuilds a slower confirmation timeframe from any usable loaded candles when a separate interval feed fails. A red failure should now appear only when no valid two-timeframe set can be constructed at all.</div>`;document.getElementById("positionCard").style.display="none";setStatus("Analysis failed","var(--red)");}
     finally{button.disabled=false;}
 }
 
@@ -1703,6 +1713,7 @@ function signedArrow(v,d=1){const n=Number(v||0);return `${n>0?"▲":n<0?"▼":"
 function signed(v,d=1){return `${v>=0?"+":""}${Number(v||0).toFixed(d)}`;}
 function formatDateTime(unix){return Number.isFinite(unix)?new Date(unix*1000).toLocaleString(undefined,{timeZone:"America/Chicago",timeZoneName:"short"}):"—";}
 function escapeHTML(value){return String(value??"").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));}
+function renderCompositeScale(score){const value=clamp(Number(score)||0,-100,100),pos=((value+100)/200)*100;const fill=value>=0?`<div class="mini-score-fill pos" style="left:50%;width:${Math.max(0,pos-50).toFixed(2)}%"></div>`:`<div class="mini-score-fill neg" style="left:${pos.toFixed(2)}%;width:${Math.max(0,50-pos).toFixed(2)}%"></div>`;return `<div class="mini-score-scale" aria-hidden="true"><div class="mini-score-labels"><span>-100</span><span>0</span><span>+100</span></div><div class="mini-score-track"><div class="mini-score-zero"></div>${fill}<div class="mini-score-marker" style="left:${pos.toFixed(2)}%"></div></div><div class="mini-score-caption">Score scale</div></div>`;}
 function safeUrl(url){try{const u=new URL(url);return ["http:","https:"].includes(u.protocol)?u.href:"#";}catch(e){return"#";}}
 
 
