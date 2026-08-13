@@ -4,7 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#020617">
-<title>TradeDesk Pro v11.0 - Economic Probability & Prime Scanner</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Halifax Trade">
+<meta name="application-name" content="Halifax Trade Engine">
+<meta name="format-detection" content="telephone=no">
+
+<title>Halifax Trade Engine v14.0 - PWA</title>
 <script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 <style>
 :root{
@@ -34,13 +44,14 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .btn-primary{background:#2563eb}.btn-purple{background:#7c3aed}.btn-dark{background:#334155}.btn-sm{padding:5px 9px;font-size:11px;background:#2563eb}
 .btn-buy{background:#15803d;width:100%;margin-top:12px}.btn-sell{background:#b91c1c;width:100%;margin-top:12px}.btn-neutral{background:#475569;width:100%;margin-top:12px}
 .section-divider{border-top:1px solid var(--line);margin:14px 0}
-.dashboard{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:14px}
+.dashboard{display:grid;grid-template-columns:1fr;gap:14px}
 #chart{height:560px;background:var(--bg);border-radius:10px;overflow:hidden}
 .panel-title{color:var(--muted);font-size:11px;text-transform:uppercase;font-weight:900;letter-spacing:.7px;margin-bottom:10px}
 .green{color:var(--green)}.red{color:var(--red)}.yellow{color:var(--yellow)}.blue{color:var(--blue)}.purple{color:var(--purple)}.cyan{color:var(--cyan)}
 .dir-up,.arrow-up{color:var(--green);font-weight:900}.dir-down,.arrow-down{color:var(--red);font-weight:900}.dir-flat,.arrow-flat{color:var(--yellow);font-weight:900}.tiny{font-size:10px;color:var(--muted)}
 .metric{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:12.5px}
 .metric span:last-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:800;text-align:right}
+.decision-card{border:1px solid #2563eb;box-shadow:0 0 0 1px rgba(37,99,235,.12),0 8px 24px rgba(0,0,0,.28)}
 .score-box{margin:4px 0 12px;padding:13px;border-radius:10px;background:var(--bg);border-left:4px solid #2563eb;display:flex;justify-content:space-between;align-items:center;gap:12px}
 .score{font-size:31px;font-weight:950}
 .reasoning-box,.risk-box{background:var(--bg);border-radius:9px;padding:11px;margin-top:11px;border-left:3px solid #3b82f6}
@@ -61,15 +72,7 @@ td{padding:8px;font-size:11.5px;border-bottom:1px solid var(--line);white-space:
 .loading{padding:28px;text-align:center;color:var(--muted);font-size:12px}
 .plan-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
 .progress{height:7px;background:var(--line);border-radius:999px;overflow:hidden;margin-top:8px}.progress>div{height:100%;background:#3b82f6;width:0%;transition:width .25s ease}
-.prime-toolbar{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:10px;align-items:end}
-.prime-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:9px;margin:11px 0}
-.prime-summary .regime-tile{min-height:70px}
-.prime-columns{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
-.prime-section{background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:11px;min-width:0}
-.prime-section h3{font-size:12px;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
 .grade-chip{display:inline-flex;align-items:center;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:900;letter-spacing:.3px}
-.grade-prime-long{background:rgba(34,197,94,.16);color:var(--green);border:1px solid rgba(34,197,94,.35)}
-.grade-prime-short{background:rgba(239,68,68,.16);color:var(--red);border:1px solid rgba(239,68,68,.35)}
 .grade-watch{background:rgba(250,204,21,.13);color:var(--yellow);border:1px solid rgba(250,204,21,.3)}
 .fail-text{max-width:310px;white-space:normal;line-height:1.3;color:#cbd5e1}
 .stage-text{font-size:11px;color:var(--muted);margin-top:7px}
@@ -89,19 +92,58 @@ td{padding:8px;font-size:11.5px;border-bottom:1px solid var(--line);white-space:
 .position-tile{background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:10px;min-height:65px}
 .position-tile .label{font-size:9.5px;color:var(--muted);font-weight:900;text-transform:uppercase;letter-spacing:.5px}
 .position-tile .value{font-size:15px;font-weight:900;margin-top:5px}
-@media(max-width:900px){.prime-columns{grid-template-columns:1fr}}
 @media(max-width:1050px){.dashboard{grid-template-columns:1fr}.side-panel{order:-1}#chart{height:470px}}
 @media(max-width:620px){body{padding:7px}.card{padding:11px;border-radius:11px}.title{font-size:19px}.controls{grid-template-columns:1fr 1fr}.full-mobile{grid-column:1/-1}#chart{height:390px}.plan-grid{grid-template-columns:1fr}.dashboard{gap:8px}}
+
+
+/* Halifax v12 explainability layer */
+.explain-card{margin-top:13px;padding:14px;border:1px solid var(--line2);border-radius:12px;background:linear-gradient(180deg,rgba(15,23,42,.95),rgba(2,6,23,.95))}
+.explain-hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:start}
+.explain-headline{font-size:17px;font-weight:950;line-height:1.25;margin-top:3px}
+.explain-summary{font-size:12px;color:#cbd5e1;line-height:1.55;margin-top:7px;max-width:920px}
+.quality-chip{min-width:108px;text-align:center;border:1px solid var(--line2);background:var(--bg);border-radius:10px;padding:9px 10px}
+.quality-chip .q-label{font-size:9px;color:var(--muted);font-weight:900;text-transform:uppercase;letter-spacing:.45px}
+.quality-chip .q-grade{font-size:24px;font-weight:950;margin-top:2px}
+.quality-chip .q-score{font-size:10px;color:#94a3b8;margin-top:2px}
+.explain-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.explain-block{background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:11px;min-height:96px}
+.explain-block .e-title{font-size:10px;color:#94a3b8;font-weight:900;text-transform:uppercase;letter-spacing:.45px;margin-bottom:7px}
+.explain-block p{font-size:11.5px;line-height:1.5;color:#dbeafe;margin:0}
+.explain-bullets{list-style:none;display:flex;flex-direction:column;gap:6px;font-size:11.5px;line-height:1.45;color:#cbd5e1}
+.action-banner{margin-top:12px;padding:11px 12px;border-radius:10px;border:1px solid var(--line2);background:var(--bg);display:flex;justify-content:space-between;align-items:center;gap:10px}
+.action-banner .a-label{font-size:9px;color:#94a3b8;font-weight:900;text-transform:uppercase;letter-spacing:.45px}
+.action-banner .a-value{font-size:14px;font-weight:950;margin-top:2px}
+.action-banner .a-note{font-size:10.5px;color:#94a3b8;text-align:right;max-width:58%}
+.signal-journal-note{margin-top:9px;font-size:10px;color:#64748b;line-height:1.4}
+@media(max-width:700px){.explain-hero{grid-template-columns:1fr}.quality-chip{width:100%}.explain-grid{grid-template-columns:1fr}.action-banner{align-items:flex-start;flex-direction:column}.action-banner .a-note{text-align:left;max-width:none}}
+
+
+
+.screener-link-card{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;padding:12px;border:1px solid #334155;border-radius:10px;background:#020617;margin-top:10px}
+.screener-link-copy{font-size:11.5px;line-height:1.45;color:#cbd5e1;max-width:850px}
+.link-button{display:inline-flex;align-items:center;justify-content:center;background:#7c3aed;color:white;text-decoration:none;border-radius:9px;padding:11px 14px;font-weight:850;white-space:nowrap}
+.link-button:hover{opacity:.9}
+
+.header-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.install-button{background:#0f766e;border:1px solid #14b8a6;padding:8px 11px;font-size:11px}
+.install-button[hidden]{display:none!important}
+.pwa-pill{font-size:9.5px;color:#94a3b8;margin-top:5px}
+@media(max-width:620px){
+  body{padding-left:max(7px,env(safe-area-inset-left));padding-right:max(7px,env(safe-area-inset-right));padding-bottom:max(7px,env(safe-area-inset-bottom));}
+  .header-actions{width:100%}.install-button{flex:1;min-height:42px}.badge{min-height:42px}
+  input,select,button,.link-button{min-height:44px}.screener-link-card .link-button{width:100%}
+}
+
 </style>
 </head>
 <body>
 <div class="container">
     <div class="card header">
         <div>
-            <div class="title">📊 TradeDesk Pro v11.0</div>
-            <div class="subtitle">Prime long/short discovery • CPI/PCE/NFP/rate probability engine • Leveraged ETF guardrails • Sector-aware macro analysis</div>
+            <div class="title">📊 Halifax Trade Engine v14.0</div>
+            <div class="subtitle">Fast cross-platform trade analysis • Android, iPhone/iPad & desktop PWA • Separate 5R screener • Macro & risk guardrails</div>
         </div>
-        <div class="badge"><span class="status-dot"></span><span id="engineStatus">Engine ready</span></div>
+        <div class="header-actions"><button id="installAppBtn" class="install-button" onclick="installHalifaxApp()">INSTALL APP</button><div class="badge"><span class="status-dot"></span><span id="engineStatus">Engine ready</span></div></div>
     </div>
 
     <div class="card">
@@ -193,8 +235,8 @@ td{padding:8px;font-size:11.5px;border-bottom:1px solid var(--line);white-space:
                 <input id="maxStopPct" type="number" value="8" min="1" max="25" step="0.5">
             </div>
             <div class="field">
-                <label>Target R Multiple</label>
-                <input id="rewardMultiple" type="number" value="2.5" min="1" max="10" step="0.25">
+                <label>Target R Multiple (1:5 default)</label>
+                <input id="rewardMultiple" type="number" value="5" min="1" max="10" step="0.25">
             </div>
             <div class="field">
                 <label>Slippage Allowance (%)</label>
@@ -212,20 +254,22 @@ td{padding:8px;font-size:11.5px;border-bottom:1px solid var(--line);white-space:
                 <label>Economic Data Probability</label>
                 <div class="checkbox-row"><input id="econGuard" type="checkbox" checked> CPI, PCE, NFP/jobs &amp; rate pressure</div>
             </div>
-            <button id="analyzeBtn" class="btn-primary full-mobile" onclick="runEngine()">RUN PRO ANALYSIS</button>
+            <button id="analyzeBtn" class="btn-primary full-mobile" onclick="runEngine()">RUN HALIFAX ANALYSIS</button>
         </div>
 
         <div class="section-divider"></div>
         <div class="controls">
-            <div class="field" style="grid-column:span 3">
-                <label>Pro Screener Watchlist — up to 12 symbols</label>
-                <input id="watchlist" value="IREZ, IREN, NVDA, AMD, TSLA, PLTR, SOFI, MU, AAPL, DELL" style="text-transform:uppercase">
-            </div>
-            <button id="scanBtn" class="btn-purple" onclick="runScanner()">SCAN WATCHLIST</button>
             <button class="btn-dark" onclick="copyTradePlan()">COPY LAST PLAN</button>
         </div>
 
-        <div class="section-divider"></div>
+    </div>
+
+    <div id="decisionCard" class="card decision-card">
+        <div class="panel-title">Halifax Trade Decision</div>
+        <div id="tradeOutput"><div class="loading">Enter a ticker and run the Halifax analysis.</div></div>
+    </div>
+
+    <div class="card">
         <div class="panel-title yellow">Position &amp; Leveraged ETF Guardrails</div>
         <div class="position-toolbar">
             <div class="field"><label>Position Ticker</label><input id="positionTicker" value="IREZ" style="text-transform:uppercase" oninput="savePositionSettings()"></div>
@@ -262,64 +306,11 @@ td{padding:8px;font-size:11.5px;border-bottom:1px solid var(--line);white-space:
         <div class="notice">Probabilities are transparent model scores, not CME/FedWatch market-implied probabilities and not forecasts of the next data release. Without a consensus value, the engine scores the current economic regime and trend; with consensus, it also scores the release surprise.</div>
 
         <div class="section-divider"></div>
-        <div class="panel-title cyan">Prime Long / Short Discovery</div>
-        <div class="prime-toolbar">
-            <div class="field">
-                <label>Scan Universe</label>
-                <select id="primeUniverse" onchange="togglePrimeCustom()">
-                    <option value="fast" selected>Prime 40 — Fast</option>
-                    <option value="all">All Sectors — 72</option>
-                    <option value="mega">Mega-Cap Leaders</option>
-                    <option value="industries">Industry Leaders</option>
-                    <option value="watchlist">Current Watchlist</option>
-                    <option value="custom">Custom Symbols</option>
-                </select>
-            </div>
-            <div class="field">
-                <label>Direction</label>
-                <select id="primeDirection">
-                    <option value="both" selected>Long &amp; Short</option>
-                    <option value="long">Long Only</option>
-                    <option value="short">Short Only</option>
-                </select>
-            </div>
-            <div class="field"><label>Minimum Score</label><input id="primeMinScore" type="number" value="60" min="35" max="95" step="5"></div>
-            <div class="field"><label>Minimum Confidence</label><input id="primeMinConfidence" type="number" value="65" min="40" max="95" step="5"></div>
-            <div class="field"><label>MTF Alignment (%)</label><input id="primeMinAlignment" type="number" value="75" min="50" max="100" step="5"></div>
-            <div class="field"><label>Minimum Volume Ratio</label><input id="primeMinVolume" type="number" value="1.10" min="0.5" max="3" step="0.1"></div>
-            <div class="field"><label>Minimum ADX</label><input id="primeMinAdx" type="number" value="22" min="10" max="50" step="1"></div>
-            <div class="field"><label>Minimum Dollar Volume ($M)</label><input id="primeMinDollarVolume" type="number" value="20" min="1" max="500" step="5"></div>
-            <div class="field"><label>Minimum Reward / Risk</label><input id="primeMinRR" type="number" value="2" min="1" max="5" step="0.25"></div>
-            <div class="field"><label>Results Per Side</label><input id="primeMaxResults" type="number" value="8" min="3" max="15" step="1"></div>
-            <button id="primeScanBtn" class="btn-primary full-mobile" onclick="runPrimeScanner()">FIND PRIME SETUPS</button>
+        <div class="panel-title cyan">Halifax 5R Opportunity Screener</div>
+        <div class="screener-link-card">
+            <div class="screener-link-copy"><strong>Full-market 1:5 discovery now runs on its own page.</strong> Keeping the screener separate makes the main Halifax page smaller and prevents full-market discovery work from sharing the analyzer page.</div>
+            <a class="link-button" href="screener.html">OPEN 5R SCREENER →</a>
         </div>
-        <div id="primeCustomWrap" class="field" style="display:none;margin-top:10px">
-            <label>Custom Universe — comma-separated, maximum 100 symbols</label>
-            <input id="primeCustom" value="NVDA, AMD, AAPL, MSFT, META, AMZN, TSLA, JPM, XOM, LLY, CAT, UAL" style="text-transform:uppercase">
-        </div>
-        <div class="notice">Prime scanning uses the current Trading Style, but applies stricter quality gates than the normal watchlist scanner. “All Sectors” is a curated liquid universe, not every U.S.-listed stock.</div>
-    </div>
-
-    <div id="primeCard" class="card" style="display:none">
-        <div class="panel-title cyan">Prime Opportunity Board</div>
-        <div id="primeProgress" class="progress"><div></div></div>
-        <div id="primeStage" class="stage-text">Ready.</div>
-        <div id="primeSummary" class="prime-summary"></div>
-        <div class="prime-columns">
-            <div class="prime-section">
-                <h3 class="green">▲ Prime Long Candidates</h3>
-                <div id="primeLongOutput" class="table-wrap"><div class="loading">No scan run yet.</div></div>
-            </div>
-            <div class="prime-section">
-                <h3 class="red">▼ Prime Short Candidates</h3>
-                <div id="primeShortOutput" class="table-wrap"><div class="loading">No scan run yet.</div></div>
-            </div>
-        </div>
-        <div class="prime-section" style="margin-top:12px">
-            <h3 class="yellow">▶ Near-Prime Watch Candidates</h3>
-            <div id="primeWatchOutput" class="table-wrap"><div class="loading">Candidates missing one or two quality gates will appear here.</div></div>
-        </div>
-        <div class="notice">A Prime label means the setup passed the selected rules at the time of the scan; it is not a prediction or guarantee. Confirm earnings dates, real-time volume, news, borrow availability, spreads, and order prices with your brokerage.</div>
     </div>
 
     <div id="regimeCard" class="card" style="display:none">
@@ -332,10 +323,16 @@ td{padding:8px;font-size:11.5px;border-bottom:1px solid var(--line);white-space:
         <div id="positionOutput"></div>
     </div>
 
-    <div id="screenerCard" class="card" style="display:none">
-        <div class="panel-title purple">Multi-Timeframe Watchlist Ranking</div>
-        <div id="scanProgress" class="progress"><div></div></div>
-        <div id="screenerOutput" class="table-wrap" style="margin-top:9px"></div>
+
+    <div class="card">
+        <div class="panel-title cyan">Halifax Signal Journal</div>
+        <div class="controls" style="margin-top:8px">
+            <button class="btn-dark" onclick="renderSignalJournal()">SHOW RECENT SIGNALS</button>
+            <button class="btn-dark" onclick="exportSignalJournal()">EXPORT JOURNAL CSV</button>
+            <button class="btn-dark" onclick="clearSignalJournal()">CLEAR JOURNAL</button>
+        </div>
+        <div id="journalSummary" class="notice">Each completed analysis is saved locally in this browser for later validation. This log does not calculate a win rate by itself.</div>
+        <div id="journalOutput" class="table-wrap" style="margin-top:9px"></div>
     </div>
 
     <div class="dashboard">
@@ -353,10 +350,6 @@ td{padding:8px;font-size:11.5px;border-bottom:1px solid var(--line);white-space:
             </div>
         </div>
 
-        <div class="card side-panel">
-            <div class="panel-title">Institutional Trade Decision</div>
-            <div id="tradeOutput"><div class="loading">Enter a ticker and run the professional analysis.</div></div>
-        </div>
     </div>
 </div>
 
@@ -383,7 +376,9 @@ const ECON_GROWTH_SENSITIVITY = {broad:.55,technology:.45,semiconductors:.65,com
 const STYLE_PACKS = {
     scalp: ["1m", "5m", "15m", "60m"],
     day: ["5m", "15m", "60m", "1d"],
-    swing: ["15m", "60m", "1d", "1wk"],
+    // Swing mode intentionally drops the 15-minute request. 60m + daily + weekly
+    // is enough for a swing decision and cuts one network call from every analysis.
+    swing: ["60m", "1d", "1wk"],
     position: ["60m", "1d", "1wk", "1mo"]
 };
 
@@ -391,7 +386,7 @@ const STYLE_DEFAULT_CHART = { scalp:"5m", day:"15m", swing:"1d", position:"1wk" 
 const TF_LABELS = {"1m":"1 Min","2m":"2 Min","5m":"5 Min","15m":"15 Min","30m":"30 Min","60m":"1 Hour","90m":"90 Min","1d":"Daily","5d":"5 Day","1wk":"Weekly","1mo":"Monthly","3mo":"Quarterly"};
 const TF_ORDER = ["1m","2m","5m","15m","30m","60m","90m","1d","5d","1wk","1mo","3mo"];
 const SPECIAL_INSTRUMENTS = {
-    IREZ:{label:"Tradr 2X Short IREN Daily ETF",underlying:"IREN",dailyMultiple:-2,dailyReset:true,primeEligible:false,allowedStyles:["scalp","day"]}
+    IREZ:{label:"Tradr 2X Short IREN Daily ETF",underlying:"IREN",dailyMultiple:-2,dailyReset:true,allowedStyles:["scalp","day"]}
 };
 const SECTOR_PROFILES = {
     broad:{label:"Broad Market",etf:"SPY",cyclical:false,defensive:false,drivers:[],newsQuery:"stock market economy earnings"},
@@ -457,14 +452,6 @@ const PROFILE_NEWS_TERMS={
     utilities:{negative:["wildfire liability","storm damage","rate case rejected"],positive:["rate case approved","power demand rises"]}
 };
 
-const PRIME_UNIVERSES = {
-    fast: "NVDA,AMD,AAPL,MSFT,META,GOOGL,AMZN,TSLA,AVGO,MU,PLTR,ORCL,JPM,BAC,GS,V,MA,XOM,CVX,COP,LLY,UNH,ABBV,ISRG,CAT,GE,RTX,UPS,FCX,NEM,LIN,PLD,EQIX,NEE,SO,UAL,DAL,DHI,VRTX,WMT".split(","),
-    mega: "AAPL,MSFT,NVDA,AMZN,GOOGL,META,AVGO,TSLA,BRK-B,LLY,JPM,V,MA,XOM,WMT,COST,ORCL,NFLX,HD,PG,JNJ,ABBV,BAC,CVX,KO,CRM,AMD,MRK,UNH,GE".split(","),
-    industries: "NVDA,AMD,AVGO,MU,TSM,UAL,DAL,AAL,LUV,JPM,BAC,PNC,TFC,VRTX,REGN,MRNA,DHI,LEN,PHM,WMT,TGT,COST,ULTA,FDX,UNP,ODFL,NEM,GOLD,AEM,XOM,CVX,OXY,SLB".split(","),
-    all: "AAPL,MSFT,ORCL,CRM,PLTR,NVDA,AMD,AVGO,MU,TSM,GOOGL,META,NFLX,TMUS,DIS,AMZN,TSLA,HD,BKNG,MCD,WMT,COST,PG,KO,PEP,XOM,CVX,COP,OXY,SLB,JPM,BAC,GS,V,MA,PNC,TFC,LLY,UNH,JNJ,ABBV,ISRG,VRTX,REGN,MRNA,CAT,GE,RTX,UPS,BA,FDX,UNP,LIN,FCX,NEM,NUE,SHW,PLD,EQIX,O,SPG,AMT,NEE,SO,DUK,AEP,SRE,UAL,DAL,AAL,LUV,DHI,LEN,PHM".split(",")
-};
-let primeScanRunId = 0;
-
 function applyStyleDefaults(){
     const style = document.getElementById("style").value;
     if (STYLE_DEFAULT_CHART[style]) document.getElementById("timeframe").value = STYLE_DEFAULT_CHART[style];
@@ -507,32 +494,49 @@ function initChart(){
     if (!box.dataset.resizeBound){window.addEventListener("resize",resize);box.dataset.resizeBound="1";}
 }
 
+function sleep(ms){return new Promise(resolve=>setTimeout(resolve,ms));}
+async function fetchWithTimeout(url,options={},timeoutMs=8000){
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),timeoutMs);
+    try{return await fetch(url,{...options,signal:controller.signal,cache:"no-store"});}
+    finally{clearTimeout(timer);}
+}
+function yahooAlternateUrl(url){
+    return String(url).includes("query1.finance.yahoo.com")?String(url).replace("query1.finance.yahoo.com","query2.finance.yahoo.com"):null;
+}
+function jsonLooksUsable(data){return !!(data&&(data.chart||data.news||data.quotes));}
+async function parseJsonResponse(r){
+    if(!r.ok)throw new Error(`HTTP ${r.status}`);
+    const text=await r.text();
+    if(!text||text.length<2)throw new Error("empty response");
+    try{return JSON.parse(text);}catch(e){throw new Error("invalid JSON");}
+}
 async function fetchJson(url){
-    if (responseCache.has(url)) return responseCache.get(url);
-    const attempts = [
-        async()=>{const r=await fetch(url);if(!r.ok)throw new Error("direct");return r.json();},
-        async()=>{const r=await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`);if(!r.ok)throw new Error("allorigins");const j=await r.json();return typeof j.contents==="string"?JSON.parse(j.contents):j.contents;},
-        async()=>{const r=await fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`);if(!r.ok)throw new Error("codetabs");return r.json();},
-        async()=>{const r=await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`);if(!r.ok)throw new Error("corsproxy");return r.json();}
+    if(responseCache.has(url))return responseCache.get(url);
+    const alternate=yahooAlternateUrl(url);
+    const read=async(u,t)=>{const data=await parseJsonResponse(await fetchWithTimeout(u,{},t));if(!jsonLooksUsable(data))throw new Error("unusable response");return data;};
+    // Fast path: try both Yahoo hosts at the same time instead of waiting for serial timeouts.
+    const direct=[read(url,4600)];if(alternate)direct.push(read(alternate,4600));
+    try{const data=await Promise.any(direct);responseCache.set(url,data);return data;}catch(e){}
+    // Backup path: race independent browser proxies. This sharply reduces worst-case wait time.
+    const proxyUrls=[
+        `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+        `https://corsproxy.io/?${encodeURIComponent(url)}`,
+        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`
     ];
-    for (const attempt of attempts){
-        try{
-            const data = await attempt();
-            if (data && (data.chart || data.news || data.quotes)){responseCache.set(url,data);return data;}
-        }catch(e){}
-    }
-    throw new Error("Market-data services did not respond. Try again or use a different network.");
+    try{const data=await Promise.any(proxyUrls.map(u=>read(u,7000)));responseCache.set(url,data);return data;}
+    catch(e){console.warn("Halifax market-data failure",url,e);throw new Error("Market data could not be loaded. Yahoo/direct access and the backup browser proxies all failed or timed out. This is a data-source/CORS connection problem, not a trade-score calculation error.");}
 }
 
 async function fetchTextWithFallback(url){
     const attempts=[
-        async()=>{const r=await fetch(url);if(!r.ok)throw new Error("direct");return r.text();},
-        async()=>{const r=await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`);if(!r.ok)throw new Error("allorigins");return r.text();},
-        async()=>{const r=await fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`);if(!r.ok)throw new Error("codetabs");return r.text();},
-        async()=>{const r=await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`);if(!r.ok)throw new Error("corsproxy");return r.text();}
+        {name:"Direct",run:async()=>{const r=await fetchWithTimeout(url,{},7000);if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.text();}},
+        {name:"AllOrigins",run:async()=>{const r=await fetchWithTimeout(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,{},9000);if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.text();}},
+        {name:"CorsProxy",run:async()=>{const r=await fetchWithTimeout(`https://corsproxy.io/?${encodeURIComponent(url)}`,{},9000);if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.text();}},
+        {name:"CodeTabs",run:async()=>{const r=await fetchWithTimeout(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,{},9000);if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.text();}}
     ];
-    for(const attempt of attempts){try{const t=await attempt();if(t&&t.length>30)return t;}catch(e){}}
-    throw new Error("Economic data service did not respond.");
+    for(const attempt of attempts){try{const t=await attempt.run();if(t&&t.length>30)return t;}catch(e){}}
+    throw new Error("Economic data service did not respond before the timeout.");
 }
 function parseFredCSV(text){
     const lines=String(text||"").trim().split(/\r?\n/);if(lines.length<2)return {};
@@ -599,7 +603,7 @@ async function loadOfficialEconomicData(showStatus=false){
 }
 
 function timeframeRange(tf){
-    const map={"1m":"7d","2m":"60d","5m":"60d","15m":"60d","30m":"60d","60m":"2y","90m":"60d","1d":"2y","5d":"10y","1wk":"10y","1mo":"max","3mo":"max"};
+    const map={"1m":"7d","2m":"60d","5m":"60d","15m":"60d","30m":"60d","60m":"1y","90m":"60d","1d":"2y","5d":"10y","1wk":"10y","1mo":"max","3mo":"max"};
     return map[tf] || "2y";
 }
 
@@ -641,8 +645,141 @@ function standardDeviation(values){const m=mean(values);return m==null?null:Math
 function roc(values,period=20){if(values.length<=period)return 0;const base=values[values.length-1-period];return base?((values[values.length-1]/base)-1)*100:0;}
 function slopePct(values,period=10){if(values.length<=period)return 0;const a=values[values.length-1-period],b=values[values.length-1];return a?((b/a)-1)*100/period:0;}
 
-async function loadTickerData(ticker,timeframe){
-    const range=timeframeRange(timeframe),prepost=document.getElementById("prepost").checked?"true":"false";
+
+function buildTickerDataFromRows(ticker,timeframe,rows,meta={},derivedFrom=null){
+    const unique=[...new Map((rows||[]).map(r=>[r.time,r])).values()].filter(r=>[r.time,r.open,r.high,r.low,r.close].every(Number.isFinite)).sort((a,b)=>a.time-b.time);
+    if(unique.length<20)throw new Error(`Not enough clean ${TF_LABELS[timeframe]||timeframe} data for ${ticker}`);
+    const close=unique.map(r=>r.close),high=unique.map(r=>r.high),low=unique.map(r=>r.low),volume=unique.map(r=>Number.isFinite(r.volume)?r.volume:0);
+    const price=close.at(-1),ema9=emaAt(close,9),ema21=emaAt(close,21),sma50=smaAt(close,50),sma200=smaAt(close,200);
+    const rsi=rsiSeries(close,14).at(-1)??50,atr=atrSeries(high,low,close,14).at(-1)??price*.02,macd=macdData(close),adx=adxValue(high,low,close,14);
+    const lookback=Math.min(20,close.length),support=Math.min(...low.slice(-lookback)),resistance=Math.max(...high.slice(-lookback));
+    const avgVolume=mean(volume.slice(-20))||0,volumeRatio=avgVolume?volume.at(-1)/avgVolume:0;
+    const dailyVolumeFactor={"1m":390,"2m":195,"5m":78,"15m":26,"30m":13,"60m":6.5,"90m":4.3,"1d":1,"5d":0.2,"1wk":0.2,"1mo":1/21,"3mo":1/63}[timeframe]||1;
+    const avgDollarVolume=avgVolume*price*dailyVolumeFactor;
+    const bbSlice=close.slice(-20),bbMid=mean(bbSlice)||price,bbSd=standardDeviation(bbSlice)||0,bbUpper=bbMid+2*bbSd,bbLower=bbMid-2*bbSd;
+    const prevClose=close.length>1?close.at(-2):price,gapPct=prevClose?((unique.at(-1).open/prevClose)-1)*100:0;
+    return {
+        ticker,timeframe,
+        candles:unique.map(({time,open,high,low,close,volume})=>({time,open,high,low,close,volume:Number.isFinite(volume)?volume:0})),
+        close,high,low,volume,price,ema9,ema21,sma50,sma200,rsi,atr,macd,adx,support,resistance,avgVolume,volumeRatio,avgDollarVolume,bbUpper,bbLower,bbMid,
+        roc20:roc(close,20),ema21Slope:slopePct(emaSeries(close,21).filter(Number.isFinite),10),gapPct,
+        currency:meta.currency||"USD",exchange:meta.exchangeName||meta.exchange||"",dataTime:unique.at(-1).time,
+        derived:Boolean(derivedFrom),derivedFrom:derivedFrom||null
+    };
+}
+
+function resampleCandles(sourceData,targetTimeframe){
+    const candles=(sourceData?.candles||[]).map((c,i)=>({...c,volume:Number.isFinite(c.volume)?c.volume:(sourceData.volume?.[i]||0)}));
+    if(!candles.length)throw new Error("No source candles available for fallback resampling.");
+    const bucketKey=(t)=>{
+        const d=new Date(t*1000);
+        if(targetTimeframe==="5m")return Math.floor(t/300)*300;
+        if(targetTimeframe==="15m")return Math.floor(t/900)*900;
+        if(targetTimeframe==="60m")return Math.floor(t/3600)*3600;
+        if(targetTimeframe==="1d")return Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate())/1000;
+        if(targetTimeframe==="1wk"){
+            const day=(d.getUTCDay()+6)%7;
+            return Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate()-day)/1000;
+        }
+        if(targetTimeframe==="1mo")return Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),1)/1000;
+        if(targetTimeframe==="3mo")return Date.UTC(d.getUTCFullYear(),Math.floor(d.getUTCMonth()/3)*3,1)/1000;
+        return t;
+    };
+    const groups=new Map();
+    for(const c of candles){
+        const k=bucketKey(c.time);
+        if(!groups.has(k))groups.set(k,{time:k,open:c.open,high:c.high,low:c.low,close:c.close,volume:c.volume||0});
+        else{
+            const g=groups.get(k);
+            g.high=Math.max(g.high,c.high);g.low=Math.min(g.low,c.low);g.close=c.close;g.volume+=(c.volume||0);
+        }
+    }
+    return [...groups.values()].sort((a,b)=>a.time-b.time);
+}
+
+function deriveTimeframeData(sourceData,targetTimeframe){
+    const rows=resampleCandles(sourceData,targetTimeframe);
+    return buildTickerDataFromRows(
+        sourceData.ticker,targetTimeframe,rows,
+        {currency:sourceData.currency,exchangeName:sourceData.exchange},
+        sourceData.timeframe
+    );
+}
+
+function fallbackTargetFor(timeframe){
+    return {"1m":"5m","2m":"5m","5m":"15m","15m":"60m","30m":"60m","60m":"1d","90m":"1d","1d":"1wk","5d":"1mo","1wk":"1mo","1mo":"3mo"}[timeframe]||null;
+}
+
+function recoverFrameSet(ticker,requestedTimeframes,frameResults){
+    const good=frameResults.filter(x=>x&&!x.error);
+    const failures=frameResults.filter(x=>x?.error);
+    const byTf=new Map(good.map(x=>[x.timeframe,x]));
+    const warnings=[];
+    let used=false;
+
+    for(const source of [...good].sort((a,b)=>TF_ORDER.indexOf(b.timeframe)-TF_ORDER.indexOf(a.timeframe))){
+        if(byTf.size>=2)break;
+        const target=fallbackTargetFor(source.timeframe);
+        if(!target||byTf.has(target))continue;
+        try{
+            const derived=deriveTimeframeData(source,target);
+            byTf.set(target,derived);used=true;
+            warnings.push(`${TF_LABELS[target]||target} was rebuilt from loaded ${TF_LABELS[source.timeframe]||source.timeframe} candles because the separate ${TF_LABELS[target]||target} feed was unavailable.`);
+        }catch(e){}
+    }
+
+    if(byTf.size<2&&good.length){
+        const source=good[0],chain=["1d","1wk","1mo","3mo"];
+        let idx=chain.indexOf(source.timeframe);
+        while(byTf.size<2&&idx>=0&&idx<chain.length-1){
+            const target=chain[++idx];
+            if(byTf.has(target))continue;
+            try{
+                const derived=deriveTimeframeData(source,target);
+                byTf.set(target,derived);used=true;
+                warnings.push(`${TF_LABELS[target]||target} confirmation was derived from ${TF_LABELS[source.timeframe]||source.timeframe} candles.`);
+            }catch(e){}
+        }
+    }
+
+    const frames=[...byTf.values()].sort((a,b)=>TF_ORDER.indexOf(a.timeframe)-TF_ORDER.indexOf(b.timeframe));
+    const primaryRequested=document.getElementById("timeframe")?.value||"1d";
+    const primaryAvailable=frames.some(f=>f.timeframe===primaryRequested);
+    return {
+        frames,used,warnings,primaryRequested,primaryAvailable,
+        failed:failures.map(x=>`${TF_LABELS[x.timeframe]||x.timeframe}: ${x.error}`)
+    };
+}
+
+function applyDataFallbackCaution(analysis,recovery,style){
+    if(!recovery?.used)return analysis;
+    analysis.dataFallback={
+        used:true,
+        warnings:[...recovery.warnings],
+        failed:[...recovery.failed],
+        primaryAvailable:recovery.primaryAvailable,
+        primaryRequested:recovery.primaryRequested
+    };
+    analysis.confidence=Math.max(1,analysis.confidence-(recovery.primaryAvailable?8:14));
+    const tfNames=analysis.analyses.map(x=>`${TF_LABELS[x.data.timeframe]||x.data.timeframe}${x.data.derived?" (derived)":""}`).join(" + ");
+    analysis.reasons.unshift(`DATA FALLBACK MODE: analysis completed with ${tfNames}. Confidence was reduced because one or more requested feeds did not load.`);
+    if(!recovery.primaryAvailable)analysis.reasons.unshift(`The selected primary ${TF_LABELS[recovery.primaryRequested]||recovery.primaryRequested} feed was unavailable, so the closest usable timeframe became primary.`);
+
+    const hasSwingAnchor=analysis.analyses.some(x=>["1d","1wk","1mo"].includes(x.data.timeframe));
+    const hasPositionAnchor=analysis.analyses.some(x=>["1wk","1mo","3mo"].includes(x.data.timeframe));
+    if(style==="swing"&&!hasSwingAnchor){
+        analysis.direction="WAIT";analysis.score=clamp(analysis.score,-19,19);analysis.confidence=Math.min(analysis.confidence,49);analysis.guardrailBlocked=true;
+        analysis.reasons.unshift("Swing safety rule: no Daily/Weekly-or-higher anchor loaded, so Halifax will show WAIT instead of authorizing a swing trade.");
+    }
+    if(style==="position"&&!hasPositionAnchor){
+        analysis.direction="WAIT";analysis.score=clamp(analysis.score,-19,19);analysis.confidence=Math.min(analysis.confidence,49);analysis.guardrailBlocked=true;
+        analysis.reasons.unshift("Position safety rule: no Weekly/Monthly-or-higher anchor loaded, so Halifax will show WAIT instead of authorizing a position trade.");
+    }
+    return analysis;
+}
+
+async function loadTickerData(ticker,timeframe,rangeOverride=null){
+    const range=rangeOverride||timeframeRange(timeframe),prepost=document.getElementById("prepost").checked?"true":"false";
     const url=`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?interval=${timeframe}&range=${range}&includePrePost=${prepost}&events=div%2Csplits`;
     const raw=await fetchJson(url);
     const result=raw?.chart?.result?.[0];if(!result)throw new Error(raw?.chart?.error?.description||`No chart data for ${ticker}`);
@@ -652,17 +789,7 @@ async function loadTickerData(ticker,timeframe){
         const time=result.timestamp[i],open=quote.open?.[i],high=quote.high?.[i],low=quote.low?.[i],close=quote.close?.[i],volume=quote.volume?.[i]||0;
         if([time,open,high,low,close].every(Number.isFinite))rows.push({time,open,high,low,close,volume:Number.isFinite(volume)?volume:0});
     }
-    const unique=[...new Map(rows.map(r=>[r.time,r])).values()].sort((a,b)=>a.time-b.time);if(unique.length<20)throw new Error(`Not enough clean ${TF_LABELS[timeframe]} data for ${ticker}`);
-    const close=unique.map(r=>r.close),high=unique.map(r=>r.high),low=unique.map(r=>r.low),volume=unique.map(r=>r.volume);
-    const price=close.at(-1),ema9=emaAt(close,9),ema21=emaAt(close,21),sma50=smaAt(close,50),sma200=smaAt(close,200);
-    const rsi=rsiSeries(close,14).at(-1)??50,atr=atrSeries(high,low,close,14).at(-1)??price*.02,macd=macdData(close),adx=adxValue(high,low,close,14);
-    const lookback=Math.min(20,close.length),support=Math.min(...low.slice(-lookback)),resistance=Math.max(...high.slice(-lookback));
-    const avgVolume=mean(volume.slice(-20))||0,volumeRatio=avgVolume?volume.at(-1)/avgVolume:0;
-    const dailyVolumeFactor={"1m":390,"2m":195,"5m":78,"15m":26,"30m":13,"60m":6.5,"90m":4.3,"1d":1,"5d":0.2,"1wk":0.2,"1mo":1/21,"3mo":1/63}[timeframe]||1;
-    const avgDollarVolume=avgVolume*price*dailyVolumeFactor;
-    const bbSlice=close.slice(-20),bbMid=mean(bbSlice)||price,bbSd=standardDeviation(bbSlice)||0,bbUpper=bbMid+2*bbSd,bbLower=bbMid-2*bbSd;
-    const prevClose=close.length>1?close.at(-2):price,gapPct=prevClose?((unique.at(-1).open/prevClose)-1)*100:0;
-    return {ticker,timeframe,candles:unique.map(({time,open,high,low,close})=>({time,open,high,low,close})),close,high,low,volume,price,ema9,ema21,sma50,sma200,rsi,atr,macd,adx,support,resistance,avgVolume,volumeRatio,avgDollarVolume,bbUpper,bbLower,bbMid,roc20:roc(close,20),ema21Slope:slopePct(emaSeries(close,21).filter(Number.isFinite),10),gapPct,currency:result.meta?.currency||"USD",exchange:result.meta?.exchangeName||"",dataTime:unique.at(-1).time};
+    return buildTickerDataFromRows(ticker,timeframe,rows,result.meta||{},null);
 }
 
 function classifyTimeframe(data){
@@ -958,18 +1085,19 @@ function tile(label,value,cls){return `<div class="regime-tile"><div class="regi
 
 function renderMTF(analysis){
     document.getElementById("mtfCard").style.display="block";
-    document.getElementById("mtfOutput").innerHTML=`<table><thead><tr><th>Timeframe</th><th>Trend</th><th>Score</th><th>Price</th><th>RSI</th><th>ADX</th><th>Vol Ratio</th><th>ROC 20</th></tr></thead><tbody>${analysis.analyses.map(x=>{const d=x.data,a=x.analysis,cls=a.direction==="BULLISH"?"green":a.direction==="BEARISH"?"red":"yellow";return `<tr><td>${TF_LABELS[d.timeframe]}</td><td class="${cls}">${directionArrow(a.direction)} ${a.direction}</td><td>${a.score.toFixed(2)}</td><td>${money(d.price)}</td><td>${d.rsi.toFixed(1)}</td><td>${d.adx==null?"—":d.adx.toFixed(1)}</td><td>${d.volumeRatio.toFixed(2)}×</td><td class="${d.roc20>=0?"green":"red"}">${signedArrow(d.roc20,2)}%</td></tr>`}).join("")}</tbody></table>`;
+    document.getElementById("mtfOutput").innerHTML=`<table><thead><tr><th>Timeframe</th><th>Trend</th><th>Score</th><th>Price</th><th>RSI</th><th>ADX</th><th>Vol Ratio</th><th>ROC 20</th></tr></thead><tbody>${analysis.analyses.map(x=>{const d=x.data,a=x.analysis,cls=a.direction==="BULLISH"?"green":a.direction==="BEARISH"?"red":"yellow";return `<tr><td>${TF_LABELS[d.timeframe]}${d.derived?' <span class="tiny yellow">(derived)</span>':''}</td><td class="${cls}">${directionArrow(a.direction)} ${a.direction}</td><td>${a.score.toFixed(2)}</td><td>${money(d.price)}</td><td>${d.rsi.toFixed(1)}</td><td>${d.adx==null?"—":d.adx.toFixed(1)}</td><td>${d.volumeRatio.toFixed(2)}×</td><td class="${d.roc20>=0?"green":"red"}">${signedArrow(d.roc20,2)}%</td></tr>`}).join("")}</tbody></table>`;
 }
 
 function readPositionSettings(){
     return {ticker:String(document.getElementById("positionTicker")?.value||"").trim().toUpperCase(),shares:Math.max(0,Number(document.getElementById("positionShares")?.value)||0),cost:Math.max(0,Number(document.getElementById("positionCost")?.value)||0),maxLossPct:clamp(Number(document.getElementById("positionMaxLoss")?.value)||8,1,40)};
 }
 function savePositionSettings(){
-    try{localStorage.setItem("tradedeskPosition",JSON.stringify({...readPositionSettings(),leverageGuard:document.getElementById("leverageGuard")?.checked!==false}));}catch(e){}
+    try{localStorage.setItem("halifaxTradePosition",JSON.stringify({...readPositionSettings(),leverageGuard:document.getElementById("leverageGuard")?.checked!==false}));}catch(e){}
 }
 function loadPositionSettings(){
     try{
-        const saved=JSON.parse(localStorage.getItem("tradedeskPosition")||"null");if(!saved)return;
+        const raw=localStorage.getItem("halifaxTradePosition")||localStorage.getItem("tradedeskPosition")||"null";
+        const saved=JSON.parse(raw);if(!saved)return;
         if(saved.ticker)document.getElementById("positionTicker").value=saved.ticker;
         if(Number.isFinite(saved.shares))document.getElementById("positionShares").value=saved.shares;
         if(Number.isFinite(saved.cost))document.getElementById("positionCost").value=saved.cost;
@@ -1015,13 +1143,172 @@ function renderPositionGuardrails(ticker,data,analysis){
         <div class="notice">The loss alert is a dashboard warning only; it does not place or transmit an order. Daily-reset products can diverge materially from their stated multiple over periods longer than one trading day.</div>`;
 }
 
+
+function setupQuality(analysis,trade){
+    const d=analysis.primary,m=analysis.macroContext||{};
+    let q=38;
+    q+=Math.round((analysis.alignment||0)*22);
+    q+=Math.min(16,Math.round(Math.abs(analysis.score||0)*.16));
+    if(d.adx!=null){if(d.adx>=30)q+=10;else if(d.adx>=25)q+=7;else if(d.adx>=20)q+=3;else if(d.adx<18)q-=7;}
+    if(d.volumeRatio>=1.5)q+=9;else if(d.volumeRatio>=1.1)q+=5;else if(d.volumeRatio<.7)q-=7;
+    if(m.riskLevel==="HIGH")q-=14;else if(m.riskLevel==="ELEVATED")q-=7;
+    if(analysis.direction==="LONG"&&m.bias==="TAILWIND")q+=5;
+    if(analysis.direction==="SHORT"&&m.bias==="HEADWIND")q+=5;
+    if(analysis.guardrailBlocked)q-=10;
+    if(trade.stopPct>=trade.maxStopPct-.01)q-=5;
+    if(analysis.direction==="WAIT")q-=7;
+    q=Math.round(clamp(q,0,100));
+    const grade=q>=90?"A+":q>=84?"A":q>=78?"A−":q>=72?"B+":q>=66?"B":q>=60?"B−":q>=54?"C+":q>=48?"C":q>=40?"D":"F";
+    const label=q>=84?"Excellent":q>=72?"Strong":q>=60?"Usable":q>=48?"Mixed":"Weak";
+    return {score:q,grade,label};
+}
+
+function plainTrendWord(direction){
+    return direction==="BULLISH"?"rising":direction==="BEARISH"?"falling":"mixed";
+}
+function volumePlain(v){
+    if(v>=1.5)return `Volume is strong at ${v.toFixed(2)}× normal, so more traders are participating than usual.`;
+    if(v>=1.1)return `Volume is healthy at ${v.toFixed(2)}× normal, which helps confirm the move.`;
+    if(v<.7)return `Volume is light at only ${v.toFixed(2)}× normal, so the move has weaker confirmation.`;
+    return `Volume is near normal at ${v.toFixed(2)}× its 20-bar average.`;
+}
+function adxPlain(adx){
+    if(adx==null)return "Trend-strength data is unavailable on this timeframe.";
+    if(adx>=30)return `ADX is ${adx.toFixed(1)}, which means the current trend is strong.`;
+    if(adx>=25)return `ADX is ${adx.toFixed(1)}, which means the trend has useful strength.`;
+    if(adx>=18)return `ADX is ${adx.toFixed(1)}, so the trend exists but is not especially strong.`;
+    return `ADX is only ${adx.toFixed(1)}, which usually means a choppy or range-bound market.`;
+}
+function rsiPlain(rsi){
+    if(rsi>=70)return `RSI is ${rsi.toFixed(1)}, so price is stretched on the upside and chasing is riskier.`;
+    if(rsi<=30)return `RSI is ${rsi.toFixed(1)}, so price is stretched on the downside and chasing a short is riskier.`;
+    if(rsi>=58)return `RSI is ${rsi.toFixed(1)}, showing positive momentum without being extremely overbought.`;
+    if(rsi<=42)return `RSI is ${rsi.toFixed(1)}, showing negative momentum without being extremely oversold.`;
+    return `RSI is ${rsi.toFixed(1)}, which is neutral momentum.`;
+}
+function entryTimingRead(analysis,trade){
+    const d=analysis.primary,dir=analysis.direction,atr=Math.max(Number(d.atr)||0,Math.max(.01,d.price*.005));
+    const emaGap=d.ema9?Math.abs(d.price-d.ema9)/atr:0;
+    const longExtended=d.price>d.bbUpper||emaGap>1.55||d.rsi>=72;
+    const shortExtended=d.price<d.bbLower||emaGap>1.55||d.rsi<=28;
+    const nearResistance=Number.isFinite(d.resistance)&&d.resistance>=d.price&&d.resistance-d.price<=atr*.45;
+    const nearSupport=Number.isFinite(d.support)&&d.support<=d.price&&d.price-d.support<=atr*.45;
+    if(dir==="LONG"){
+        if(longExtended)return {action:"WAIT FOR PULLBACK",cls:"yellow",note:`The trend is bullish, but price is stretched. A controlled pullback toward ${money(trade.entryLow)}–${money(trade.entryHigh)} is safer than chasing.`};
+        if(nearResistance)return {action:"WAIT FOR BREAKOUT HOLD",cls:"yellow",note:`Price is close to resistance near ${money(d.resistance)}. Prefer a clean break and hold with healthy volume.`};
+        return {action:"LONG CANDIDATE",cls:"green",note:`The engine authorizes a long setup. Use the planned entry zone and do not move the stop farther away after entry.`};
+    }
+    if(dir==="SHORT"){
+        if(shortExtended)return {action:"WAIT FOR BOUNCE",cls:"yellow",note:`The trend is bearish, but price is stretched lower. A failed bounce is safer than chasing weakness.`};
+        if(nearSupport)return {action:"WAIT FOR BREAKDOWN HOLD",cls:"yellow",note:`Price is close to support near ${money(d.support)}. Prefer a clean break below support and failure to reclaim it.`};
+        return {action:"SHORT CANDIDATE",cls:"red",note:`The engine authorizes a short setup. Use the planned entry zone and keep the stop above the invalidation level.`};
+    }
+    if(analysis.score>=8)return {action:"WAIT — BULLISH LEAN",cls:"yellow",note:`The evidence leans bullish, but the engine does not have enough confirmation yet. A break and hold above ${money(d.resistance)} would improve the setup.`};
+    if(analysis.score<=-8)return {action:"WAIT — BEARISH LEAN",cls:"yellow",note:`The evidence leans bearish, but the engine does not have enough confirmation yet. A break below ${money(d.support)} that stays below would improve the setup.`};
+    return {action:"WAIT",cls:"yellow",note:"The timeframes disagree. Let price choose a direction before risking money."};
+}
+function buildPlainEnglishExplanation(analysis,trade){
+    const d=analysis.primary,m=analysis.macroContext||{},n=analysis.analyses.length;
+    const bullish=analysis.analyses.filter(x=>x.analysis.direction==="BULLISH").length;
+    const bearish=analysis.analyses.filter(x=>x.analysis.direction==="BEARISH").length;
+    const neutral=n-bullish-bearish;
+    const quality=setupQuality(analysis,trade),timing=entryTimingRead(analysis,trade);
+    const tfText=`${bullish} of ${n} timeframes are rising, ${bearish} are falling${neutral?`, and ${neutral} are mixed`:""}.`;
+    let headline,summary,confirm,fail;
+    if(analysis.direction==="LONG"){
+        headline=`Bullish setup — but buy the setup, not the excitement.`;
+        summary=`${d.ticker} qualifies as a LONG because the combined trend, momentum and multi-timeframe score are bullish enough under the selected rules. ${tfText}`;
+        confirm=`Best confirmation: a controlled entry inside ${money(trade.entryLow)}–${money(trade.entryHigh)} or a clean break above resistance near ${money(d.resistance)} with volume at or above normal.`;
+        fail=`The long idea is damaged if price loses support near ${money(d.support)}. The engine's hard invalidation/stop is ${money(trade.stop)}; that is where the planned trade thesis is considered wrong.`;
+    }else if(analysis.direction==="SHORT"){
+        headline=`Bearish setup — wait for weakness you can define.`;
+        summary=`${d.ticker} qualifies as a SHORT because the combined trend, momentum and multi-timeframe score are bearish enough under the selected rules. ${tfText}`;
+        confirm=`Best confirmation: a failed bounce into the entry area or a clean break below support near ${money(d.support)} that cannot reclaim the level, preferably with healthy volume.`;
+        fail=`The short idea is damaged if price reclaims resistance near ${money(d.resistance)}. The engine's hard invalidation/stop is ${money(trade.stop)}.`;
+    }else{
+        headline=analysis.score>=8?`Bullish lean, but not enough proof yet.`:analysis.score<=-8?`Bearish lean, but not enough proof yet.`:`No clear edge yet — waiting is the trade.`;
+        summary=`${d.ticker} does not currently pass the engine's confirmation rules. ${tfText} The system is deliberately choosing WAIT rather than forcing a trade.`;
+        confirm=analysis.score>=8?`A break and hold above resistance near ${money(d.resistance)}, stronger volume, and better timeframe alignment would move this closer to a LONG.`:analysis.score<=-8?`A break below support near ${money(d.support)}, stronger downside volume, and better timeframe alignment would move this closer to a SHORT.`:`Watch ${money(d.resistance)} on the upside and ${money(d.support)} on the downside. The better trade is the side that breaks and then holds with stronger confirmation.`;
+        fail=`Because no trade is authorized, there is no active stop order from this signal. Avoid creating a position just because price is moving quickly.`;
+    }
+    const macroSentence=!m.applies?"Macro guardrails are turned off.":m.riskLevel==="HIGH"?`Macro/sector risk is HIGH and is working against aggressive entries.`:m.riskLevel==="ELEVATED"?`Macro/sector risk is elevated, so the engine requires stronger confirmation.`:m.bias==="TAILWIND"?`The sector/macro backdrop is supportive of the current setup.`:m.bias==="HEADWIND"?`The sector/macro backdrop is a headwind and lowers conviction.`:`The sector/macro backdrop is mixed rather than strongly supportive or hostile.`;
+    const rel=analysis.benchmarkRegime?`Relative strength versus the benchmark is ${analysis.relativeStrength>=0?"positive":"negative"} at ${signed(analysis.relativeStrength,2)}% over 20 bars.`:"Benchmark confirmation was unavailable.";
+    return {
+        quality,timing,headline,summary,confirm,fail,
+        bullets:[tfText,adxPlain(d.adx),volumePlain(d.volumeRatio),rsiPlain(d.rsi),macroSentence,rel]
+    };
+}
+
+function saveSignalJournal(analysis,trade){
+    try{
+        const key="halifaxSignalJournal";
+        const list=JSON.parse(localStorage.getItem(key)||"[]");
+        const d=analysis.primary;
+        list.unshift({ts:new Date().toISOString(),ticker:d.ticker,style:document.getElementById("style")?.value||"",timeframe:d.timeframe,direction:analysis.direction,score:analysis.score,confidence:analysis.confidence,quality:setupQuality(analysis,trade).score,price:d.price,entry:trade.entry,stop:trade.stop,t1:trade.t1,t2:trade.t2,alignment:Math.round((analysis.alignment||0)*100),volumeRatio:d.volumeRatio,adx:d.adx,macroAdjustment:analysis.macroContext?.adjustment??0});
+        localStorage.setItem(key,JSON.stringify(list.slice(0,250)));
+        renderSignalJournal();
+    }catch(e){}
+}
+function getSignalJournal(){
+    try{return JSON.parse(localStorage.getItem("halifaxSignalJournal")||"[]");}catch(e){return [];}
+}
+function renderSignalJournal(){
+    const list=getSignalJournal(),summary=document.getElementById("journalSummary"),out=document.getElementById("journalOutput");
+    if(!summary||!out)return;
+    summary.textContent=list.length?`${list.length} analyses saved locally. Showing the most recent ${Math.min(12,list.length)}. Use the CSV export for later outcome validation.`:"No Halifax signals have been saved in this browser yet.";
+    if(!list.length){out.innerHTML="";return;}
+    out.innerHTML=`<table><thead><tr><th>Time</th><th>Ticker</th><th>Signal</th><th>Score</th><th>Quality</th><th>Confidence</th><th>Price</th><th>Entry</th><th>Stop</th><th>T2</th><th>MTF</th><th>Volume</th><th>ADX</th><th>Macro</th></tr></thead><tbody>${list.slice(0,12).map(r=>`<tr><td>${escapeHTML(new Date(r.ts).toLocaleString(undefined,{timeZone:"America/Chicago",timeZoneName:"short"}))}</td><td>${escapeHTML(r.ticker)}</td><td class="${r.direction==="LONG"?"green":r.direction==="SHORT"?"red":"yellow"}">${directionArrow(r.direction)} ${escapeHTML(r.direction)}</td><td>${r.score>0?"+":""}${r.score}</td><td>${Number(r.quality||0).toFixed(0)}/100</td><td>${Number(r.confidence||0).toFixed(0)}%</td><td>${money(Number(r.price))}</td><td>${money(Number(r.entry))}</td><td>${money(Number(r.stop))}</td><td>${money(Number(r.t2))}</td><td>${Number(r.alignment||0).toFixed(0)}%</td><td>${Number(r.volumeRatio||0).toFixed(2)}×</td><td>${r.adx==null?"—":Number(r.adx).toFixed(1)}</td><td>${Number(r.macroAdjustment||0)>0?"+":""}${Number(r.macroAdjustment||0).toFixed(0)}</td></tr>`).join("")}</tbody></table>`;
+}
+function exportSignalJournal(){
+    const list=getSignalJournal();if(!list.length){alert("No saved Halifax signals to export yet.");return;}
+    const cols=["ts","ticker","style","timeframe","direction","score","confidence","quality","price","entry","stop","t1","t2","alignment","volumeRatio","adx","macroAdjustment"];
+    const esc=v=>`"${String(v??"").replace(/"/g,'""')}"`;
+    const csv=[cols.join(","),...list.map(r=>cols.map(c=>esc(r[c])).join(","))].join("\n");
+    const blob=new Blob([csv],{type:"text/csv;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");
+    a.href=url;a.download=`Halifax_Signal_Journal_${new Date().toISOString().slice(0,10)}.csv`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+function clearSignalJournal(){
+    if(!confirm("Clear the Halifax signal journal saved in this browser?"))return;
+    try{localStorage.removeItem("halifaxSignalJournal");}catch(e){}
+    renderSignalJournal();
+}
+
 function renderTradeOutput(analysis,trade){
     const d=analysis.primary,dir=analysis.direction,cls=dir==="LONG"?"green":dir==="SHORT"?"red":"yellow",btn=dir==="LONG"?"btn-buy":dir==="SHORT"?"btn-sell":"btn-neutral";
     const arrow=directionArrow(dir),targetArrow=trade.isShort?"▼":"▲",stopArrow=trade.isShort?"▲":"▼";
     const setup=dir==="LONG"?`${arrow} LONG SETUP`:dir==="SHORT"?`${arrow} SHORT SETUP`:`${arrow} NO-TRADE / WAIT`;
+    const plain=buildPlainEnglishExplanation(analysis,trade);
     document.getElementById("tradeOutput").innerHTML=`
-        <div class="score-box"><div><div class="panel-title" style="margin-bottom:3px">PRO COMPOSITE SCORE</div><div class="${cls}" style="font-weight:900">${setup}</div><div style="font-size:10px;color:#64748b;margin-top:3px">Confidence ${analysis.confidence}% • Technical ${analysis.technicalScore>0?"+":""}${analysis.technicalScore} • Macro ${analysis.macroContext?.adjustment>0?"+":""}${analysis.macroContext?.adjustment??0}</div></div><div class="score ${cls}">${analysis.score>0?"+":""}${analysis.score}</div></div>
-        <div class="plan-grid">
+        <div class="score-box"><div><div class="panel-title" style="margin-bottom:3px">HALIFAX COMPOSITE SCORE</div><div class="${cls}" style="font-weight:900">${setup}</div><div style="font-size:10px;color:#64748b;margin-top:3px">Confidence ${analysis.confidence}% • Technical ${analysis.technicalScore>0?"+":""}${analysis.technicalScore} • Macro ${analysis.macroContext?.adjustment>0?"+":""}${analysis.macroContext?.adjustment??0}</div></div><div class="score ${cls}">${analysis.score>0?"+":""}${analysis.score}</div></div>
+        ${analysis.dataFallback?.used?`<div class="risk-box" style="margin:0 0 12px;border-left-color:#f59e0b"><div class="panel-title yellow">Limited-data fallback active</div><div style="font-size:11.5px;color:#cbd5e1;line-height:1.5">Halifax completed the analysis instead of failing. ${escapeHTML(analysis.dataFallback.warnings.join(" "))} Confidence is automatically reduced, and Halifax will force WAIT when the higher-timeframe anchor needed for the selected trading style is missing.</div></div>`:""}
+
+        <div class="explain-card">
+            <div class="explain-hero">
+                <div>
+                    <div class="panel-title cyan">Plain-English Trade Explanation</div>
+                    <div class="explain-headline ${plain.timing.cls}">${escapeHTML(plain.headline)}</div>
+                    <div class="explain-summary">${escapeHTML(plain.summary)}</div>
+                </div>
+                <div class="quality-chip">
+                    <div class="q-label">Setup Quality</div>
+                    <div class="q-grade ${plain.quality.score>=72?"green":plain.quality.score>=55?"yellow":"red"}">${plain.quality.grade}</div>
+                    <div class="q-score">${plain.quality.score}/100 • ${escapeHTML(plain.quality.label)}</div>
+                </div>
+            </div>
+            <div class="action-banner">
+                <div><div class="a-label">What I would do with this signal</div><div class="a-value ${plain.timing.cls}">${escapeHTML(plain.timing.action)}</div></div>
+                <div class="a-note">${escapeHTML(plain.timing.note)}</div>
+            </div>
+            <div class="explain-grid">
+                <div class="explain-block"><div class="e-title">Why the engine says this</div><ul class="explain-bullets">${plain.bullets.map(x=>`<li>• ${escapeHTML(x)}</li>`).join("")}</ul></div>
+                <div class="explain-block"><div class="e-title">What would confirm it</div><p>${escapeHTML(plain.confirm)}</p></div>
+                <div class="explain-block"><div class="e-title">What would prove it wrong</div><p>${escapeHTML(plain.fail)}</p></div>
+                <div class="explain-block"><div class="e-title">Risk in normal language</div><p>${dir==="WAIT"?"No position is authorized, so the safest risk amount is $0 until confirmation improves.":`At the engine entry of ${money(trade.entry)}, the stop is ${money(trade.stop)}. That is ${money(trade.stopDistance)} risk per share. With your current account/risk settings, the engine caps size at ${trade.shares.toLocaleString()} shares and planned risk at about ${money(trade.estimatedRisk)}.`}</p></div>
+            </div>
+            <div class="signal-journal-note">Halifax v13.1 automatically saves the last 250 analyses in this browser's local signal journal so future validation/backtesting work can compare what the engine said with what happened afterward.</div>
+        </div>
+
+        <div class="plan-grid" style="margin-top:13px">
             <div class="metric"><span>Entry Zone ${targetArrow}</span><span class="blue">${money(trade.entryLow)} – ${money(trade.entryHigh)}</span></div>
             <div class="metric"><span>Execution Entry ${targetArrow}</span><span class="blue">${money(trade.entry)}</span></div>
             <div class="metric"><span>Protective Stop ${stopArrow}</span><span class="red">${money(trade.stop)} <span class="tiny">(${percent(trade.stopPct)} ${trade.isShort?"above":"below"} entry)</span></span></div>
@@ -1045,11 +1332,20 @@ function renderTradeOutput(analysis,trade){
         <button class="${btn}" type="button">${setup}</button>
         <div class="reasoning-box"><div class="panel-title">Decision Evidence</div><ul class="reasoning-list">${analysis.reasons.map(r=>`<li>• ${escapeHTML(r)}</li>`).join("")}</ul></div>
         <div class="risk-box"><div class="panel-title">Risk Desk Checks</div><ul class="reasoning-list">${(trade.warnings.length?trade.warnings:["Risk, liquidity, and trend-strength checks passed under the selected settings."]).map(r=>`<li>• ${escapeHTML(r)}</li>`).join("")}</ul></div>
-        <div class="notice">This is a rules-based technical and macro research tool, not a broker recommendation, guarantee, or prediction. Economic probabilities are heuristic model scores derived from official-series levels/trends and optional consensus surprises; they are not market-implied probabilities. Sector guardrails use ETF trends, market proxies, commodity/rate relationships, and headline keyword checks; they can be incomplete or wrong. Verify prices, fundamentals, corporate events, borrow availability, and order details with your brokerage before trading.</div>`;
+        <div class="notice">This is a rules-based technical and macro research tool, not a broker recommendation, guarantee, or prediction. Setup Quality is a transparent Halifax heuristic based on alignment, score strength, ADX, volume, macro risk and stop quality; it is not a historical win probability. Verify prices, fundamentals, corporate events, borrow availability, and order details with your brokerage before trading.</div>`;
     lastPlanText=buildPlanText(analysis,trade);
+    saveSignalJournal(analysis,trade);
 }
 
-function buildPlanText(analysis,trade){const d=analysis.primary,m=analysis.macroContext;return `${d.ticker} ${analysis.direction} TRADE PLAN
+function buildPlanText(analysis,trade){
+    const d=analysis.primary,m=analysis.macroContext,plain=buildPlainEnglishExplanation(analysis,trade);
+    return `HALIFAX TRADE ENGINE v13.2 — ${d.ticker} ${analysis.direction} TRADE PLAN
+Plain-English read: ${plain.headline}
+Action: ${plain.timing.action}
+Why: ${plain.summary}
+Confirmation: ${plain.confirm}
+Invalidation: ${plain.fail}
+Setup quality: ${plain.quality.grade} (${plain.quality.score}/100, ${plain.quality.label})
 Composite score: ${analysis.score} | Technical score: ${analysis.technicalScore} | Confidence: ${analysis.confidence}%
 Sector: ${m?.profileLabel||"Broad Market"} | Macro adjustment: ${m?.adjustment??0} | Risk/Bias: ${m?.riskLevel||"N/A"}/${m?.bias||"N/A"}
 Economic probabilities: Inflation ${m?.economicProbability?.inflationProb??"N/A"}% | Hawkish rates ${m?.economicProbability?.hawkishProb??"N/A"}% | Weak growth ${m?.economicProbability?.weakGrowthProb??"N/A"}% | Equity tailwind ${m?.economicProbability?.equityTailwindProb??"N/A"}%
@@ -1060,7 +1356,8 @@ Stop: ${money(trade.stop)} (${percent(trade.stopPct)})
 T1: ${money(trade.t1)} (${trade.rr1.toFixed(2)}R) | T2: ${money(trade.t2)} (${trade.rr2.toFixed(2)}R) | T3: ${money(trade.t3)} (${trade.rr3.toFixed(2)}R)
 Shares: ${trade.shares.toLocaleString()} | Position: ${money(trade.positionValue)} | Risk: ${money(trade.estimatedRisk)}
 RSI: ${d.rsi.toFixed(1)} | ADX: ${d.adx==null?"N/A":d.adx.toFixed(1)} | Volume: ${d.volumeRatio.toFixed(2)}x avg
-Warnings: ${(trade.warnings.length?trade.warnings:["None"]).join(" ")}`;}
+Warnings: ${(trade.warnings.length?trade.warnings:["None"]).join(" ")}`;
+}
 async function copyTradePlan(){if(!lastPlanText){alert("Run an analysis first.");return;}try{await navigator.clipboard.writeText(lastPlanText);setStatus("Trade plan copied");}catch(e){prompt("Copy this trade plan:",lastPlanText);}}
 
 async function fetchTickerSnapshot(query){
@@ -1087,220 +1384,6 @@ function renderNews(news,ticker){
 
 async function mapLimit(items,limit,worker){const results=new Array(items.length);let next=0;async function runner(){while(true){const i=next++;if(i>=items.length)return;results[i]=await worker(items[i],i);}}await Promise.all(Array.from({length:Math.min(limit,items.length)},runner));return results;}
 
-function togglePrimeCustom(){
-    const show=document.getElementById("primeUniverse").value==="custom";
-    document.getElementById("primeCustomWrap").style.display=show?"flex":"none";
-}
-
-function parseTickerList(value,max=100){
-    return [...new Set(String(value||"").split(/[\s,;]+/).map(x=>x.trim().toUpperCase().replace(/[^A-Z0-9.\-^=]/g,"")).filter(Boolean))].slice(0,max);
-}
-
-function getPrimeUniverse(){
-    const selected=document.getElementById("primeUniverse").value;
-    if(selected==="watchlist")return parseTickerList(document.getElementById("watchlist").value,100);
-    if(selected==="custom")return parseTickerList(document.getElementById("primeCustom").value,100);
-    return [...(PRIME_UNIVERSES[selected]||PRIME_UNIVERSES.fast)];
-}
-
-function getPrimeThresholds(){
-    return {
-        minScore:clamp(Number(document.getElementById("primeMinScore").value)||60,35,95),
-        minConfidence:clamp(Number(document.getElementById("primeMinConfidence").value)||65,40,95),
-        minAlignment:clamp(Number(document.getElementById("primeMinAlignment").value)||75,50,100),
-        minVolume:clamp(Number(document.getElementById("primeMinVolume").value)||1.1,.5,3),
-        minAdx:clamp(Number(document.getElementById("primeMinAdx").value)||22,10,50),
-        minDollarVolume:clamp(Number(document.getElementById("primeMinDollarVolume").value)||20,1,500)*1_000_000,
-        minRR:clamp(Number(document.getElementById("primeMinRR").value)||2,1,5),
-        maxResults:Math.round(clamp(Number(document.getElementById("primeMaxResults").value)||8,3,15))
-    };
-}
-
-function getPrimeScanPack(){
-    const style=document.getElementById("style").value;
-    const frames=STYLE_PACKS[style]?[...STYLE_PACKS[style]]:getTimeframes();
-    const primary=STYLE_DEFAULT_CHART[style]||document.getElementById("timeframe").value;
-    if(!frames.includes(primary))frames.push(primary);
-    return {frames:[...new Set(frames)].sort((a,b)=>TF_ORDER.indexOf(a)-TF_ORDER.indexOf(b)),primary};
-}
-
-function candidateDirectionAllowed(direction){
-    const mode=document.getElementById("primeDirection").value;
-    return mode==="both"||(mode==="long"&&direction==="LONG")||(mode==="short"&&direction==="SHORT");
-}
-
-function dataAgeHours(data){return data?.dataTime?Math.max(0,(Date.now()/1000-data.dataTime)/3600):Infinity;}
-function timeframeMaxAgeHours(tf){return ["1m","2m","5m","15m","30m","60m","90m"].includes(tf)?120:tf==="1d"?168:tf==="5d"||tf==="1wk"?504:2200;}
-
-function evaluatePrimeCandidate(analysis,trade,profile,thresholds){
-    const d=analysis.primary,m=analysis.macroContext||{},dir=analysis.direction,failures=[],warnings=[];
-    const alignmentPct=analysis.alignment*100;
-    const stockVsSector=m.sectorRoc==null?null:d.roc20-m.sectorRoc;
-    const supportValid=Number.isFinite(d.support)&&d.support>0&&d.support<=d.price&&d.price/d.support<3;
-    const resistanceValid=Number.isFinite(d.resistance)&&d.resistance>=d.price&&d.resistance/d.price<3;
-    const stopOrientation=dir==="LONG"?trade.stop<trade.entry:dir==="SHORT"?trade.stop>trade.entry:false;
-    if(getSpecialInstrument(d.ticker)?.primeEligible===false)failures.push("Daily-reset leveraged/inverse ETF excluded from Prime scanner; analyze its underlying instead");
-    if(!["LONG","SHORT"].includes(dir))failures.push("No actionable LONG/SHORT signal");
-    if(Math.abs(analysis.score)<thresholds.minScore)failures.push(`Score below ${thresholds.minScore}`);
-    if(analysis.confidence<thresholds.minConfidence)failures.push(`Confidence below ${thresholds.minConfidence}%`);
-    if(alignmentPct<thresholds.minAlignment)failures.push(`Alignment below ${thresholds.minAlignment}%`);
-    if(d.volumeRatio<thresholds.minVolume)failures.push(`Volume below ${thresholds.minVolume.toFixed(2)}×`);
-    if((d.adx??0)<thresholds.minAdx)failures.push(`ADX below ${thresholds.minAdx}`);
-    if(d.avgDollarVolume<thresholds.minDollarVolume)failures.push(`Dollar volume below ${compactMoney(thresholds.minDollarVolume)}`);
-    if(trade.rr2<thresholds.minRR)failures.push(`Reward/risk below ${thresholds.minRR.toFixed(2)}:1`);
-    if(trade.stopWasCapped)failures.push("Structural stop required capping");
-    if(!stopOrientation)failures.push("Stop is on the wrong side of entry");
-    if(!supportValid||!resistanceValid)failures.push("Support/resistance data failed sanity check");
-    if(dataAgeHours(d)>timeframeMaxAgeHours(d.timeframe))failures.push("Price data may be stale");
-    if(!Number.isFinite(d.price)||d.price<3)failures.push("Price below $3 or invalid");
-    if(trade.shares<1)failures.push("Position sizing produced zero shares");
-    if(profile.source==="broad-market fallback")failures.push("Sector classification could not be verified");
-    if(document.getElementById("macroGuard")?.checked!==false&&m.sectorTrend==="UNAVAILABLE")failures.push("Sector ETF data unavailable");
-    if(document.getElementById("macroGuard")?.checked!==false&&m.vixPrice==null)warnings.push("VIX data unavailable");
-    if(dir==="LONG"){
-        if(d.rsi>76)failures.push("Long is overbought above RSI 76");
-        if(d.price>d.bbUpper*1.025)failures.push("Long is extended above its volatility band");
-        if(analysis.relativeStrength<0)failures.push("Stock is underperforming benchmark");
-        if(stockVsSector!=null&&stockVsSector<0)failures.push("Stock is underperforming its sector ETF");
-        if(m.riskLevel==="HIGH"||m.blockLong||m.adjustment<=-8)failures.push("Macro/sector backdrop conflicts with LONG");
-        if(m.sectorTrend==="BEARISH")failures.push("Sector ETF trend is bearish");
-    }
-    if(dir==="SHORT"){
-        if(d.rsi<24)failures.push("Short is oversold below RSI 24");
-        if(d.price<d.bbLower*.975)failures.push("Short is extended below its volatility band");
-        if(analysis.relativeStrength>0)failures.push("Stock is outperforming benchmark");
-        if(stockVsSector!=null&&stockVsSector>0)failures.push("Stock is outperforming its sector ETF");
-        if(m.blockShort||m.adjustment>=8)failures.push("Macro/sector backdrop conflicts with SHORT");
-        if(m.sectorTrend==="BULLISH"&&analysis.score>-75)failures.push("Sector ETF trend is bullish");
-    }
-    const uniqueFailures=[...new Set(failures)],uniqueWarnings=[...new Set(warnings)];
-    const volumeComponent=Math.min(10,(d.volumeRatio/Math.max(thresholds.minVolume,.1))*7);
-    const adxComponent=Math.min(10,((d.adx||0)/Math.max(thresholds.minAdx,1))*7);
-    const relativeComponent=Math.min(8,Math.abs(analysis.relativeStrength)*1.5);
-    const quality=Math.round(clamp(Math.abs(analysis.score)*.36+analysis.confidence*.24+alignmentPct*.18+volumeComponent+adxComponent+relativeComponent,0,100));
-    const passed=uniqueFailures.length===0;
-    const nearPrime=!passed&&uniqueFailures.length<=2&&Math.abs(analysis.score)>=thresholds.minScore-12&&analysis.confidence>=thresholds.minConfidence-10&&["LONG","SHORT"].includes(dir);
-    return {passed,nearPrime,quality,failures:uniqueFailures,warnings:uniqueWarnings,alignmentPct,stockVsSector};
-}
-
-function primeCandidateRow(row,index){
-    const r=row,e=r.evaluation,grade=r.analysis.direction==="LONG"?"PRIME LONG":"PRIME SHORT",chip=r.analysis.direction==="LONG"?"grade-prime-long":"grade-prime-short";
-    return `<tr><td>${index+1}</td><td><button class="btn-sm" onclick="openPrimeTicker('${r.ticker}')">${r.ticker}</button></td><td><span class="grade-chip ${chip}">${directionArrow(r.analysis.direction)} ${grade}</span></td><td>${e.quality}</td><td>${r.analysis.score>0?"+":""}${r.analysis.score}</td><td>${r.analysis.confidence}%</td><td>${Math.round(e.alignmentPct)}%</td><td>${r.analysis.primary.volumeRatio.toFixed(2)}×</td><td>${r.analysis.primary.adx==null?"—":r.analysis.primary.adx.toFixed(1)}</td><td>${r.trade.rr2.toFixed(2)}:1</td><td>${money(r.trade.entry)}</td><td>${money(r.trade.stop)}</td><td>${escapeHTML(r.profile.label)}</td><td class="${r.macro.adjustment>0?"green":r.macro.adjustment<0?"red":"yellow"}">${r.macro.adjustment>0?"+":""}${r.macro.adjustment}</td></tr>`;
-}
-
-function renderPrimePassed(rows,targetId){
-    const out=document.getElementById(targetId);
-    if(!rows.length){out.innerHTML='<div class="loading">No candidates passed every selected quality gate.</div>';return;}
-    out.innerHTML=`<table><thead><tr><th>#</th><th>Ticker</th><th>Grade</th><th>Quality</th><th>Score</th><th>Conf.</th><th>Align</th><th>Volume</th><th>ADX</th><th>R:R</th><th>Entry</th><th>Stop</th><th>Sector</th><th>Macro</th></tr></thead><tbody>${rows.map(primeCandidateRow).join("")}</tbody></table>`;
-}
-
-function renderPrimeWatch(rows){
-    const out=document.getElementById("primeWatchOutput");
-    if(!rows.length){out.innerHTML='<div class="loading">No near-prime candidates were found.</div>';return;}
-    out.innerHTML=`<table><thead><tr><th>#</th><th>Ticker</th><th>Direction</th><th>Quality</th><th>Score</th><th>Confidence</th><th>Volume</th><th>ADX</th><th>Sector</th><th>Missing Gates</th></tr></thead><tbody>${rows.map((r,i)=>`<tr><td>${i+1}</td><td><button class="btn-sm" onclick="openPrimeTicker('${r.ticker}')">${r.ticker}</button></td><td class="${r.analysis.direction==="LONG"?"green":"red"}">${directionArrow(r.analysis.direction)} ${r.analysis.direction}</td><td>${r.evaluation.quality}</td><td>${r.analysis.score>0?"+":""}${r.analysis.score}</td><td>${r.analysis.confidence}%</td><td>${r.analysis.primary.volumeRatio.toFixed(2)}×</td><td>${r.analysis.primary.adx==null?"—":r.analysis.primary.adx.toFixed(1)}</td><td>${escapeHTML(r.profile.label)}</td><td class="fail-text">${escapeHTML(r.evaluation.failures.join("; "))}</td></tr>`).join("")}</tbody></table>`;
-}
-
-function openPrimeTicker(ticker){
-    document.getElementById("ticker").value=ticker;
-    document.getElementById("sectorOverride").value="auto";
-    window.scrollTo({top:0,behavior:"smooth"});
-    runEngine();
-}
-
-function updatePrimeProgress(percent,text){
-    document.querySelector("#primeProgress>div").style.width=`${clamp(percent,0,100)}%`;
-    document.getElementById("primeStage").textContent=text;
-}
-
-async function runPrimeScanner(){
-    if(document.getElementById("econGuard")?.checked!==false&&!economicState)await loadOfficialEconomicData(false);
-    const runId=++primeScanRunId,universe=getPrimeUniverse(),thresholds=getPrimeThresholds(),button=document.getElementById("primeScanBtn");
-    const card=document.getElementById("primeCard");card.style.display="block";
-    if(!universe.length){document.getElementById("primeStage").textContent="Enter at least one symbol.";return;}
-    button.disabled=true;
-    try{
-    setStatus(`Prime scan: ${universe.length} symbols…`,"var(--yellow)");
-    document.getElementById("primeLongOutput").innerHTML='<div class="loading">Scanning…</div>';
-    document.getElementById("primeShortOutput").innerHTML='<div class="loading">Scanning…</div>';
-    document.getElementById("primeWatchOutput").innerHTML='<div class="loading">Waiting for deep analysis…</div>';
-    document.getElementById("primeSummary").innerHTML="";
-    updatePrimeProgress(0,`Stage 1 of 2: fast technical pass across ${universe.length} symbols.`);
-    const {frames,primary}=getPrimeScanPack(),quick=[],errors=[];let completed=0;
-    await mapLimit(universe,3,async ticker=>{
-        if(runId!==primeScanRunId)return;
-        try{
-            if(getSpecialInstrument(ticker)?.primeEligible===false&&document.getElementById("leverageGuard")?.checked!==false){errors.push({ticker,error:"Excluded daily-reset leveraged/inverse ETF; scan underlying instead"});completed++;updatePrimeProgress(completed/universe.length*38,`Stage 1 of 2: ${completed}/${universe.length} symbols screened.`);return;}
-            const data=await loadTickerData(ticker,primary),signal=classifyTimeframe(data),direction=signal.direction==="BULLISH"?"LONG":signal.direction==="BEARISH"?"SHORT":"WAIT";
-            const liquid=data.avgDollarVolume>=thresholds.minDollarVolume*.5,strongEnough=Math.abs(signal.score)>=1.75&&(data.adx??0)>=Math.max(14,thresholds.minAdx-8);
-            if(direction!=="WAIT"&&candidateDirectionAllowed(direction)&&liquid&&strongEnough){
-                const rank=Math.abs(signal.score)*12+(data.adx||0)+Math.min(data.volumeRatio,2)*8+Math.abs(data.roc20);
-                quick.push({ticker,direction,rank,data});
-            }
-        }catch(e){errors.push({ticker,error:e.message});}
-        completed++;updatePrimeProgress(completed/universe.length*38,`Stage 1 of 2: ${completed}/${universe.length} symbols screened.`);
-    });
-    if(runId!==primeScanRunId)return;
-    const maxDeepPerSide=Math.min(18,Math.max(8,thresholds.maxResults*2));
-    const longPool=quick.filter(x=>x.direction==="LONG").sort((a,b)=>b.rank-a.rank).slice(0,maxDeepPerSide);
-    const shortPool=quick.filter(x=>x.direction==="SHORT").sort((a,b)=>b.rank-a.rank).slice(0,maxDeepPerSide);
-    let deepPool=document.getElementById("primeDirection").value==="long"?longPool:document.getElementById("primeDirection").value==="short"?shortPool:[...longPool,...shortPool];
-    deepPool=[...new Map(deepPool.map(x=>[x.ticker,x])).values()];
-    if(!deepPool.length){
-        updatePrimeProgress(100,"No symbols passed the fast technical/liquidity prefilter.");
-        document.getElementById("primeSummary").innerHTML=[tile("Universe",String(universe.length),"blue"),tile("Deep Candidates","0","yellow"),tile("Data Errors",String(errors.length),errors.length?"red":"green")].join("");
-        renderPrimePassed([],"primeLongOutput");renderPrimePassed([],"primeShortOutput");renderPrimeWatch([]);button.disabled=false;setStatus("Prime scan complete");return;
-    }
-    updatePrimeProgress(40,`Stage 2 of 2: loading full multi-timeframe, sector, macro, and headline data for ${deepPool.length} finalists.`);
-    const profileSeed=Object.fromEntries(deepPool.map(x=>[x.ticker,resolveSectorProfile(x.ticker,null,{ignoreOverride:true})]));
-    const neededSymbols=[...new Set(deepPool.flatMap(x=>[profileSeed[x.ticker].etf,...profileSeed[x.ticker].drivers.map(d=>d.symbol)]).concat(["^VIX","SPY"]))];
-    const macroPairs=document.getElementById("macroGuard").checked?await mapLimit(neededSymbols,3,async symbol=>[symbol,await loadTickerData(symbol,"1d").catch(()=>null)]):[];
-    const macroMap=Object.fromEntries(macroPairs),vix=macroMap["^VIX"]||null,spy=macroMap.SPY||null;
-    const benchmarkSymbol=document.getElementById("benchmark").value;
-    const benchmarkResult=await loadTickerData(benchmarkSymbol,primary).catch(()=>null);
-    const results=[];completed=0;
-    await mapLimit(deepPool,2,async seed=>{
-        if(runId!==primeScanRunId)return;
-        try{
-            const [frameResults,snapshot]=await Promise.all([
-                mapLimit(frames,2,async tf=>{try{return await loadTickerData(seed.ticker,tf)}catch(e){return {error:e.message,timeframe:tf}}}),
-                fetchTickerSnapshot(seed.ticker)
-            ]);
-            const cleanFrames=frameResults.filter(x=>!x.error);
-            if(cleanFrames.length<Math.min(3,frames.length))throw new Error("Insufficient multi-timeframe data");
-            const profile=resolveSectorProfile(seed.ticker,snapshot.quote,{ignoreOverride:true}),drivers={};
-            for(const d of profile.drivers)drivers[d.symbol]=macroMap[d.symbol]||null;
-            const macro=buildMacroContext(seed.ticker,profile,{sector:macroMap[profile.etf]||null,vix,spy,drivers,news:snapshot.news});
-            const analysis=aggregateAnalysis(cleanFrames,benchmarkResult,macro,primary),trade=calculateTrade(analysis.primary,analysis),evaluation=evaluatePrimeCandidate(analysis,trade,profile,thresholds);
-            results.push({ticker:seed.ticker,profile,macro,analysis,trade,evaluation});
-        }catch(e){errors.push({ticker:seed.ticker,error:e.message});}
-        completed++;updatePrimeProgress(40+completed/deepPool.length*58,`Stage 2 of 2: ${completed}/${deepPool.length} finalists fully analyzed.`);
-    });
-    if(runId!==primeScanRunId)return;
-    const longs=results.filter(r=>r.evaluation.passed&&r.analysis.direction==="LONG").sort((a,b)=>b.evaluation.quality-a.evaluation.quality).slice(0,thresholds.maxResults);
-    const shorts=results.filter(r=>r.evaluation.passed&&r.analysis.direction==="SHORT").sort((a,b)=>b.evaluation.quality-a.evaluation.quality).slice(0,thresholds.maxResults);
-    const watch=results.filter(r=>r.evaluation.nearPrime).sort((a,b)=>b.evaluation.quality-a.evaluation.quality).slice(0,Math.max(10,thresholds.maxResults*2));
-    renderPrimePassed(longs,"primeLongOutput");renderPrimePassed(shorts,"primeShortOutput");renderPrimeWatch(watch);
-    document.getElementById("primeSummary").innerHTML=[
-        tile("Universe Scanned",String(universe.length),"blue"),
-        tile("Deep Finalists",String(deepPool.length),"purple"),
-        tile("Prime Longs",String(longs.length),longs.length?"green":"yellow"),
-        tile("Prime Shorts",String(shorts.length),shorts.length?"red":"yellow"),
-        tile("Near Prime",String(watch.length),watch.length?"yellow":"blue"),
-        tile("Data Errors",String(errors.length),errors.length?"red":"green"),
-        tile("Scanner Timeframes",frames.map(tf=>TF_LABELS[tf]).join(" / "),"cyan")
-    ].join("");
-    updatePrimeProgress(100,`Complete: ${longs.length} prime longs, ${shorts.length} prime shorts, and ${watch.length} near-prime candidates.`);
-    setStatus("Prime scan complete");
-    }catch(error){
-        console.error(error);
-        updatePrimeProgress(100,`Prime scan failed: ${error.message}`);
-        document.getElementById("primeSummary").innerHTML=[tile("Status","Scan failed","red"),tile("Reason",String(error.message||"Unknown error"),"yellow")].join("");
-        setStatus("Prime scan failed","var(--red)");
-    }finally{
-        button.disabled=false;
-    }
-}
-
 async function runEngine(){
     const ticker=document.getElementById("ticker").value.trim().toUpperCase().replace(/[^A-Z0-9.\-^=]/g,"");if(!ticker){document.getElementById("tradeOutput").innerHTML='<div class="red">Enter a valid ticker.</div>';return;}
     const button=document.getElementById("analyzeBtn");button.disabled=true;setStatus(`Analyzing ${ticker}…`,"var(--yellow)");document.getElementById("tradeOutput").innerHTML=`<div class="loading">Loading multi-timeframe, sector, and instrument-guardrail data for ${escapeHTML(ticker)}…</div>`;document.getElementById("newsOutput").innerHTML='<div class="loading">Loading news catalysts…</div>';
@@ -1312,7 +1395,11 @@ async function runEngine(){
             loadTickerData(benchmark,chartTF).catch(()=>null),
             fetchTickerSnapshot(ticker)
         ]);
-        const frames=frameResults.filter(x=>!x.error);if(frames.length<2)throw new Error(`Only ${frames.length} timeframe loaded. Multi-timeframe confirmation requires at least two.`);
+        const recovery=recoverFrameSet(ticker,timeframes,frameResults),frames=recovery.frames;
+        if(frames.length<2){
+            const failed=recovery.failed.join(" | ");
+            throw new Error(`No usable multi-timeframe set could be built. ${failed||"Market-data feeds did not return enough candles."}`);
+        }
         let analysis,displayNews=snapshot.news,underlyingAnalysis=null;
         if(special&&document.getElementById("leverageGuard")?.checked!==false){
             const underTFs=instrumentGuardTimeframes(),underPrimary=underTFs.includes(chartTF)?chartTF:"1d";
@@ -1321,53 +1408,27 @@ async function runEngine(){
                 fetchTickerSnapshot(special.underlying),
                 loadTickerData(benchmark,underPrimary).catch(()=>null)
             ]);
-            const underFrames=underResults.filter(x=>!x.error);if(underFrames.length<2)throw new Error(`Underlying guardrail could not load enough ${special.underlying} timeframes.`);
+            const underRecovery=recoverFrameSet(special.underlying,underTFs,underResults),underFrames=underRecovery.frames;
+            if(underFrames.length<2)throw new Error(`Underlying guardrail could not build enough ${special.underlying} timeframes.`);
             const profile=resolveSectorProfile(special.underlying,underSnapshot.quote),macroAssets=guardOn?await loadMacroAssets(profile):{sector:null,vix:null,spy:null,drivers:{}},macroNews=guardOn?await fetchTickerNews(`${profile.label} ${profile.newsQuery}`):[];
             const underlyingMacro=buildMacroContext(special.underlying,profile,{...macroAssets,news:[...underSnapshot.news,...macroNews]});
-            underlyingAnalysis=aggregateAnalysis(underFrames,underBenchmark,underlyingMacro,underPrimary);
-            const baseAnalysis=aggregateAnalysis(frames,benchmarkResult,null);
+            underlyingAnalysis=applyDataFallbackCaution(aggregateAnalysis(underFrames,underBenchmark,underlyingMacro,underPrimary),underRecovery,document.getElementById("style").value);
+            const baseAnalysis=applyDataFallbackCaution(aggregateAnalysis(frames,benchmarkResult,null),recovery,document.getElementById("style").value);
             analysis=applySpecialInstrumentGuardrails(ticker,baseAnalysis,special,underlyingAnalysis);
             analysis.macroContext={...underlyingMacro,profileLabel:`${special.label} via ${special.underlying}`,profileSource:"underlying-aware instrument guardrail"};
             displayNews=[...underSnapshot.news,...snapshot.news].slice(0,8);
         }else{
             const profile=resolveSectorProfile(ticker,snapshot.quote),macroAssets=guardOn?await loadMacroAssets(profile):{sector:null,vix:null,spy:null,drivers:{}},macroNews=guardOn?await fetchTickerNews(`${profile.label} ${profile.newsQuery}`):[];
             const macroContext=buildMacroContext(ticker,profile,{...macroAssets,news:[...snapshot.news,...macroNews]});
-            analysis=aggregateAnalysis(frames,benchmarkResult,macroContext);
+            analysis=applyDataFallbackCaution(aggregateAnalysis(frames,benchmarkResult,macroContext),recovery,document.getElementById("style").value);
         }
+        if(special&&recovery.used&&!analysis.dataFallback)analysis=applyDataFallbackCaution(analysis,recovery,document.getElementById("style").value);
         const trade=calculateTrade(analysis.primary,analysis);
         renderChart(analysis.primary,trade);renderRegime(analysis,benchmarkResult);renderMTF(analysis);renderTradeOutput(analysis,trade);renderPositionGuardrails(ticker,analysis.primary,analysis);renderNews(displayNews,ticker);
-        setStatus(`${ticker} analysis complete`);document.title=`${ticker} | TradeDesk Pro v11.0`;
-    }catch(error){console.error(error);document.getElementById("tradeOutput").innerHTML=`<div class="red" style="font-weight:900">Analysis failed</div><div style="font-size:12px;color:#cbd5e1;margin-top:8px;line-height:1.5">${escapeHTML(error.message)}</div><div class="notice">Check internet access and try again. Public proxy services can temporarily rate-limit requests.</div>`;document.getElementById("positionCard").style.display="none";setStatus("Analysis failed","var(--red)");}
+        document.getElementById("decisionCard")?.scrollIntoView({behavior:"smooth",block:"start"});
+        setStatus(`${ticker} analysis complete`);document.title=`${ticker} | Halifax Trade Engine v14.0`;
+    }catch(error){console.error(error);document.getElementById("tradeOutput").innerHTML=`<div class="red" style="font-weight:900">Analysis failed</div><div style="font-size:12px;color:#cbd5e1;margin-top:8px;line-height:1.5">${escapeHTML(error.message)}</div><div class="notice">Halifax v13.2 rebuilds a slower confirmation timeframe from any usable loaded candles when a separate interval feed fails. A red failure should now appear only when no valid two-timeframe set can be constructed at all.</div>`;document.getElementById("positionCard").style.display="none";setStatus("Analysis failed","var(--red)");}
     finally{button.disabled=false;}
-}
-
-async function runScanner(){
-    const tickers=[...new Set(document.getElementById("watchlist").value.split(",").map(x=>x.trim().toUpperCase().replace(/[^A-Z0-9.\-^=]/g,"")).filter(Boolean))].slice(0,12);
-    const card=document.getElementById("screenerCard"),out=document.getElementById("screenerOutput"),bar=document.querySelector("#scanProgress>div"),btn=document.getElementById("scanBtn");card.style.display="block";
-    if(!tickers.length){out.innerHTML='<div class="red">Enter at least one ticker.</div>';return;}
-    btn.disabled=true;out.innerHTML=`<div class="loading">Ranking ${tickers.length} symbols with sector guardrails…</div>`;bar.style.width="0%";setStatus("Watchlist scan running…","var(--yellow)");
-    const pack=getTimeframes(),fastTF=document.getElementById("timeframe").value,anchorTF=pack.at(-1),rows=[];let completed=0;
-    const profiles=Object.fromEntries(tickers.map(t=>[t,resolveSectorProfile(t,null,{ignoreOverride:true})]));
-    const guardOn=document.getElementById("macroGuard").checked;
-    const neededSymbols=guardOn?[...new Set(tickers.flatMap(t=>[profiles[t].etf,...profiles[t].drivers.map(d=>d.symbol)]).concat(["^VIX","SPY"]))]:[];
-    const macroPairs=guardOn?await mapLimit(neededSymbols,3,async symbol=>[symbol,await loadTickerData(symbol,"1d").catch(()=>null)]):[];
-    const macroMap=Object.fromEntries(macroPairs),vix=macroMap["^VIX"]||null,spy=macroMap.SPY||null;
-    await mapLimit(tickers,2,async ticker=>{
-        try{
-            const special=getSpecialInstrument(ticker);
-            if(special&&document.getElementById("leverageGuard")?.checked!==false){
-                const fast=await loadTickerData(ticker,fastTF);rows.push({ticker,sector:`Daily inverse of ${special.underlying}`,price:fast.price,signal:"UNDERLYING",score:0,macro:0,confidence:0,rsi:fast.rsi,adx:fast.adx,volume:fast.volumeRatio,roc:fast.roc20});completed++;bar.style.width=`${completed/tickers.length*100}%`;return;
-            }
-            const [fast,anchor]=await Promise.all([loadTickerData(ticker,fastTF),fastTF===anchorTF?Promise.resolve(null):loadTickerData(ticker,anchorTF)]),frames=anchor?[fast,anchor]:[fast],profile=profiles[ticker],drivers={};
-            for(const d of profile.drivers)drivers[d.symbol]=macroMap[d.symbol]||null;
-            const macro=buildMacroContext(ticker,profile,{sector:macroMap[profile.etf]||null,vix,spy,drivers,news:[]}),pseudo=aggregateAnalysis(frames,null,macro);
-            rows.push({ticker,sector:profile.label,price:fast.price,signal:pseudo.direction,score:pseudo.score,macro:macro.adjustment,confidence:pseudo.confidence,rsi:fast.rsi,adx:fast.adx,volume:fast.volumeRatio,roc:fast.roc20});
-        }catch(e){rows.push({ticker,error:e.message});}
-        completed++;bar.style.width=`${completed/tickers.length*100}%`;
-    });
-    rows.sort((a,b)=>Math.abs(b.score||0)-Math.abs(a.score||0));
-    out.innerHTML=`<table><thead><tr><th>Rank</th><th>Ticker</th><th>Sector</th><th>Signal</th><th>Score</th><th>Macro</th><th>Confidence</th><th>Price</th><th>RSI</th><th>ADX</th><th>Volume</th><th>ROC 20</th></tr></thead><tbody>${rows.map((r,i)=>r.error?`<tr><td>${i+1}</td><td>${r.ticker}</td><td colspan="10" class="red">Data unavailable</td></tr>`:`<tr><td>${i+1}</td><td><button class="btn-sm" onclick="document.getElementById('ticker').value='${r.ticker}';runEngine()">${r.ticker}</button></td><td>${escapeHTML(r.sector)}</td><td class="${r.signal==="LONG"?"green":r.signal==="SHORT"?"red":"yellow"}">${r.signal==="UNDERLYING"?"▶ ANALYZE IREN FIRST":`${directionArrow(r.signal)} ${r.signal}`}</td><td>${r.score>0?"+":""}${r.score}</td><td class="${r.macro>0?"green":r.macro<0?"red":"yellow"}">${r.macro>0?"+":""}${r.macro}</td><td>${r.confidence}%</td><td>${money(r.price)}</td><td>${r.rsi.toFixed(1)}</td><td>${r.adx==null?"—":r.adx.toFixed(1)}</td><td>${r.volume.toFixed(2)}×</td><td class="${r.roc>=0?"green":"red"}">${signedArrow(r.roc,2)}%</td></tr>`).join("")}</tbody></table>`;
-    btn.disabled=false;setStatus("Watchlist scan complete");
 }
 
 function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
@@ -1382,7 +1443,36 @@ function formatDateTime(unix){return Number.isFinite(unix)?new Date(unix*1000).t
 function escapeHTML(value){return String(value??"").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));}
 function safeUrl(url){try{const u=new URL(url);return ["http:","https:"].includes(u.protocol)?u.href:"#";}catch(e){return"#";}}
 
-window.addEventListener("load",()=>{loadPositionSettings();togglePrimeCustom();economicState={...ECON_FALLBACK};recalculateEconomicProbability();try{initChart();setStatus("Engine ready");setTimeout(()=>loadOfficialEconomicData(false),600);}catch(e){document.getElementById("chart").innerHTML=`<div class="red" style="padding:20px">${escapeHTML(e.message)}</div>`;setStatus("Chart unavailable","var(--red)");}});
+
+let halifaxInstallPrompt=null;
+function halifaxStandalone(){return window.matchMedia?.('(display-mode: standalone)').matches||window.navigator.standalone===true;}
+function syncInstallButton(){const b=document.getElementById('installAppBtn');if(!b)return;b.hidden=halifaxStandalone();}
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();halifaxInstallPrompt=e;syncInstallButton();});
+window.addEventListener('appinstalled',()=>{halifaxInstallPrompt=null;syncInstallButton();try{setStatus('Halifax installed');}catch(e){}});
+async function installHalifaxApp(){
+  if(halifaxStandalone()){try{setStatus('Halifax is already installed');}catch(e){}return;}
+  if(halifaxInstallPrompt){
+    const p=halifaxInstallPrompt;halifaxInstallPrompt=null;await p.prompt();try{await p.userChoice;}catch(e){}syncInstallButton();return;
+  }
+  const ua=navigator.userAgent||'';const ios=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  if(ios) alert('Install Halifax on iPhone/iPad: open the browser Share menu, choose Add to Home Screen, then tap Add.');
+  else alert('Install Halifax: open your browser menu and choose Install app or Add to Home screen.');
+}
+async function registerHalifaxPWA(){
+  syncInstallButton();
+  if(!('serviceWorker' in navigator)||!/^https?:$/.test(location.protocol))return;
+  try{
+    const hadController=!!navigator.serviceWorker.controller;
+    const reg=await navigator.serviceWorker.register('./service-worker.js',{scope:'./',updateViaCache:'none'});
+    reg.update().catch(()=>{});
+    if(reg.waiting)reg.waiting.postMessage({type:'SKIP_WAITING'});
+    reg.addEventListener('updatefound',()=>{const w=reg.installing;if(!w)return;w.addEventListener('statechange',()=>{if(w.state==='installed'&&navigator.serviceWorker.controller)w.postMessage({type:'SKIP_WAITING'});});});
+    navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!hadController)return;if(sessionStorage.getItem('halifaxPwaReloaded'))return;sessionStorage.setItem('halifaxPwaReloaded','1');location.reload();});
+  }catch(e){console.warn('Halifax PWA registration failed',e);}
+}
+
+window.addEventListener("load",()=>{const q=new URLSearchParams(location.search).get("ticker");if(q&&document.getElementById("ticker"))document.getElementById("ticker").value=String(q).toUpperCase().replace(/[^A-Z0-9.\-^=]/g,"");loadPositionSettings();renderSignalJournal();economicState={...ECON_FALLBACK};recalculateEconomicProbability();try{initChart();setStatus("Engine ready");setTimeout(()=>loadOfficialEconomicData(false),600);}catch(e){document.getElementById("chart").innerHTML=`<div class="red" style="padding:20px">${escapeHTML(e.message)}</div>`;setStatus("Chart unavailable","var(--red)");}});
+window.addEventListener("load",registerHalifaxPWA);
 </script>
 </body>
 </html>

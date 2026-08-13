@@ -1,274 +1,128 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#020617"><title>Halifax 5R Screener v13.2</title><style>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#020617">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Halifax Trade">
+<meta name="application-name" content="Halifax Trade Engine">
+<meta name="format-detection" content="telephone=no">
+
+<title>Halifax 5R Screener v14.0</title>
+<style>
 :root{--bg:#020617;--card:#0f172a;--card2:#111827;--line:#1e293b;--line2:#334155;--text:#f8fafc;--muted:#94a3b8;--blue:#60a5fa;--green:#4ade80;--red:#f87171;--yellow:#facc15;--purple:#c084fc;--cyan:#22d3ee}
-*{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;padding:12px}.container{max-width:1600px;margin:auto}.card{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:14px;padding:15px;margin-bottom:14px;box-shadow:0 8px 24px rgba(0,0,0,.28)}.header{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.title{font-size:23px;font-weight:900;color:var(--cyan)}.subtitle{font-size:12px;color:var(--muted);margin-top:3px}.badge{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line2);background:var(--bg);border-radius:999px;padding:6px 10px;font-size:11px;color:#cbd5e1}.status-dot{width:8px;height:8px;border-radius:50%;background:var(--green)}.back-link,.ticker-link{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;color:#fff;background:#334155;border-radius:9px;padding:10px 12px;font-weight:850}.ticker-link{background:#2563eb;padding:6px 9px;font-size:11px}.panel-title{color:var(--cyan);font-size:11px;text-transform:uppercase;font-weight:900;letter-spacing:.7px;margin-bottom:10px}.discovery-toolbar{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px;align-items:end}.field{display:flex;flex-direction:column}.field label{font-size:10px;color:var(--muted);margin-bottom:5px;font-weight:800;text-transform:uppercase;letter-spacing:.6px}input{width:100%;background:var(--bg);color:#fff;border:1px solid var(--line2);padding:10px 11px;border-radius:9px;font-weight:700;outline:none}button{border:0;border-radius:9px;padding:11px 14px;color:#fff;font-weight:850;cursor:pointer;background:#2563eb}.notice{font-size:10.5px;color:#94a3b8;line-height:1.5;margin-top:10px}.progress{height:7px;background:var(--line);border-radius:999px;overflow:hidden;margin-top:8px}.progress>div{height:100%;background:#3b82f6;width:0%;transition:width .2s ease}.stage-text{font-size:11px;color:#cbd5e1;margin-top:8px}.discovery-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:9px;margin:12px 0}.regime-tile{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:11px;min-height:72px}.regime-label{font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:900}.regime-value{font-size:15px;font-weight:900;margin-top:5px}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse}th{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--line2);padding:8px;text-align:left;white-space:nowrap}td{padding:8px;font-size:11.5px;border-bottom:1px solid var(--line);white-space:nowrap}.discovery-score{font-weight:950;font-size:15px}.discovery-why{white-space:normal;min-width:240px;max-width:380px;line-height:1.35;color:#cbd5e1}.green,.hit-good{color:var(--green);font-weight:900}.red,.hit-low{color:var(--red);font-weight:900}.yellow,.hit-mid{color:var(--yellow);font-weight:900}.blue{color:var(--blue)}.purple{color:var(--purple)}.cyan{color:var(--cyan)}.loading{padding:24px;text-align:center;color:var(--muted);font-size:12px}@media(max-width:700px){body{padding:7px}.discovery-toolbar{grid-template-columns:1fr 1fr}.full-mobile{grid-column:1/-1}.discovery-why{min-width:190px}}
-</style></head><body>
+*{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;padding:12px}.container{max-width:1600px;margin:auto}.card{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:14px;padding:15px;margin-bottom:14px;box-shadow:0 8px 24px rgba(0,0,0,.28)}.header{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.title{font-size:23px;font-weight:900;color:var(--cyan)}.subtitle{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.45}.badge{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line2);background:var(--bg);border-radius:999px;padding:6px 10px;font-size:11px;color:#cbd5e1}.status-dot{width:8px;height:8px;border-radius:50%;background:var(--green)}.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.button,.ticker-link{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;color:#fff;background:#334155;border:0;border-radius:9px;padding:10px 12px;font-weight:850;cursor:pointer}.button.primary,.ticker-link{background:#2563eb}.ticker-link{padding:6px 9px;font-size:11px}.panel-title{color:var(--cyan);font-size:11px;text-transform:uppercase;font-weight:900;letter-spacing:.7px;margin-bottom:10px}.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px;margin:12px 0}.tile{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:11px;min-height:72px}.tile-label{font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:900}.tile-value{font-size:15px;font-weight:900;margin-top:5px}.green{color:var(--green)}.red{color:var(--red)}.yellow{color:var(--yellow)}.blue{color:var(--blue)}.purple{color:var(--purple)}.cyan{color:var(--cyan)}.notice{font-size:10.5px;color:#94a3b8;line-height:1.5;margin-top:10px}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse}th{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.45px;border-bottom:1px solid var(--line2);padding:8px;text-align:left;white-space:nowrap}td{padding:8px;font-size:11.5px;border-bottom:1px solid var(--line);white-space:nowrap}.why{white-space:normal;min-width:260px;max-width:420px;line-height:1.4;color:#cbd5e1}.score{font-weight:950;font-size:15px}.hit-good{color:var(--green);font-weight:900}.hit-mid{color:var(--yellow);font-weight:900}.hit-low{color:var(--red);font-weight:900}.loading{padding:28px;text-align:center;color:var(--muted);font-size:12px}.error{padding:15px;border:1px solid rgba(248,113,113,.35);background:rgba(127,29,29,.15);border-radius:10px;color:#fecaca;line-height:1.5}.stale{padding:10px 12px;border:1px solid rgba(250,204,21,.35);background:rgba(113,63,18,.15);border-radius:9px;color:#fde68a;font-size:11px;line-height:1.45;margin-top:10px}.small{font-size:10px;color:var(--muted)}
+@media(max-width:700px){body{padding:7px}.title{font-size:20px}.why{min-width:200px}.toolbar{width:100%}.toolbar .button{flex:1}}
+
+.install-button{background:#0f766e!important;border:1px solid #14b8a6!important}.install-button[hidden]{display:none!important}
+@media(max-width:700px){body{padding-left:max(7px,env(safe-area-inset-left));padding-right:max(7px,env(safe-area-inset-right));padding-bottom:max(7px,env(safe-area-inset-bottom));}.toolbar .button,.toolbar button{min-height:44px}}
+</style>
+</head>
+<body>
 <div class="container">
-<div class="card header"><div><div class="title">🔎 Halifax 5R Opportunity Screener v13.2</div><div class="subtitle">Separate full-market discovery page • Nasdaq / NYSE / AMEX only • OTC excluded • Maximum price $100 • 1:5 reward/risk research</div></div><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><a class="back-link" href="index.html">← MAIN TRADE ENGINE</a><div class="badge"><span class="status-dot"></span><span id="engineStatus">Screener ready</span></div></div></div>
-<div class="card"><div class="panel-title">5R Discovery Controls</div><div class="discovery-toolbar">
-<div class="field"><label>Minimum Price</label><input id="discoveryMinPrice" type="number" value="2" min="0.1" max="100" step="0.5"></div>
-<div class="field"><label>Minimum Daily Volume</label><input id="discoveryMinVolume" type="number" value="100000" min="0" step="50000"></div>
-<div class="field"><label>Minimum Dollar Volume ($M)</label><input id="discoveryMinDollarVolume" type="number" value="5" min="0" max="1000" step="5"></div>
-<div class="field"><label>Detailed History Pool</label><input id="discoveryStage2" type="number" value="700" min="100" max="1500" step="100"></div>
-<div class="field"><label>Deep 5R Tests</label><input id="discoveryDeep" type="number" value="40" min="10" max="80" step="5"></div>
-<div class="field"><label>Results</label><input id="discoveryResults" type="number" value="15" min="5" max="30" step="1"></div>
-<div class="field"><label>5R Test Horizon (days)</label><input id="discoveryHorizon" type="number" value="20" min="5" max="60" step="5"></div>
-<button id="discoveryBtn" class="full-mobile" onclick="runFullDiscovery()">DISCOVER 1:5 UPSIDE SETUPS</button></div>
-<div class="notice">This page is intentionally separate from the main Halifax analyzer. It searches exchange-listed candidates under $100 and ranks them using trend quality plus historical 5R outcomes. A historical hit rate is not a guarantee or a calibrated future probability.</div></div>
-<div id="discoveryCard" class="card"><div class="panel-title">5R Opportunity Board — Reward/Risk 1:5</div><div id="discoveryProgress" class="progress"><div></div></div><div id="discoveryStage" class="stage-text">Ready.</div><div id="discoverySummary" class="discovery-summary"></div><div id="discoveryOutput" class="table-wrap"><div class="loading">Press DISCOVER to search the exchange-listed universe.</div></div><div class="notice">A true 1:5 reward/risk setup has a mathematical break-even hit rate of about 16.7% before slippage, gaps, fees, and execution differences. Click a ticker to return to the main Halifax analyzer with that symbol loaded.</div></div>
-</div><script>"use strict";
-const TF_LABELS={"1d":"Daily"};
-let discoveryRunId=0;
-let discoveryUniverseCache=null;
-function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
-function money(v){return Number.isFinite(v)?v.toLocaleString(undefined,{style:"currency",currency:"USD",minimumFractionDigits:2,maximumFractionDigits:2}):"—";}
-function signed(v,d=1){return `${v>=0?"+":""}${Number(v||0).toFixed(d)}`;}
+  <div class="card header">
+    <div>
+      <div class="title">🔎 Halifax 5R Opportunity Screener v14.0</div>
+      <div class="subtitle">Fast separate screener • Nasdaq / NYSE / AMEX only • OTC excluded • Maximum price $100 • Historical 1:5 reward/risk research</div>
+    </div>
+    <div class="toolbar">
+      <a class="button" href="index.html">← MAIN TRADE ENGINE</a>
+      <button id="installAppBtn" class="button install-button" onclick="installHalifaxApp()">INSTALL APP</button>
+      <button class="button primary" id="refreshBtn" onclick="loadData(true)">REFRESH RESULTS</button>
+      <div class="badge"><span class="status-dot"></span><span id="status">Loading…</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="panel-title">How this version works</div>
+    <div class="notice" style="margin-top:0">The heavy market scan no longer runs inside your phone/browser. A GitHub Action builds <b>screener-data.json</b> in the background using exchange data and historical daily bars. This page only loads the finished results from the same GitHub Pages site, so there are no browser CORS/proxy chains to wait on.</div>
+    <div id="staleBox"></div>
+  </div>
+
+  <div class="card">
+    <div class="panel-title">5R Scan Summary</div>
+    <div id="summary" class="summary"><div class="loading">Loading scan summary…</div></div>
+  </div>
+
+  <div class="card">
+    <div class="panel-title">5R Opportunity Board — Reward/Risk 1:5</div>
+    <div id="results" class="table-wrap"><div class="loading">Loading current results…</div></div>
+    <div class="notice">A true 1:5 reward/risk setup has a mathematical break-even hit rate of about 16.7% before slippage, gaps, fees and execution differences. Historical hit rate is evidence from prior similar setups, not a guarantee or a calibrated future probability.</div>
+  </div>
+</div>
+<script>
+"use strict";
 function escapeHTML(value){return String(value??"").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));}
-function tile(label,value,cls=""){return `<div class="regime-tile"><div class="regime-label">${escapeHTML(label)}</div><div class="regime-value ${cls}">${escapeHTML(value)}</div></div>`;}
-function setStatus(text,color="var(--green)"){document.getElementById("engineStatus").textContent=text;document.querySelector(".status-dot").style.background=color;}
-async function mapLimit(items,limit,worker){const results=new Array(items.length);let next=0;async function runner(){while(true){const i=next++;if(i>=items.length)return;results[i]=await worker(items[i],i);}}await Promise.all(Array.from({length:Math.min(limit,items.length)},runner));return results;}
-async function fetchWithTimeout(url,options={},timeoutMs=8000){const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),timeoutMs);try{return await fetch(url,{...options,signal:controller.signal,cache:"no-store"});}finally{clearTimeout(timer);}}
-async function fetchTextWithFallback(url){
-    const read=async u=>{const r=await fetchWithTimeout(u,{},9000);if(!r.ok)throw new Error(`HTTP ${r.status}`);const t=await r.text();if(!t)throw new Error("empty response");return t;};
-    try{return await read(url);}catch(e){}
-    try{return await Promise.any([read(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`),read(`https://corsproxy.io/?${encodeURIComponent(url)}`),read(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`)]);}catch(e){throw new Error("Text data routes failed");}
+function money(v){return Number.isFinite(Number(v))?Number(v).toLocaleString(undefined,{style:"currency",currency:"USD",minimumFractionDigits:2,maximumFractionDigits:2}):"—";}
+function signed(v,d=1){const n=Number(v);return Number.isFinite(n)?`${n>=0?"+":""}${n.toFixed(d)}`:"—";}
+function setStatus(text,color="var(--green)"){document.getElementById("status").textContent=text;document.querySelector(".status-dot").style.background=color;}
+function tile(label,value,cls=""){return `<div class="tile"><div class="tile-label">${escapeHTML(label)}</div><div class="tile-value ${cls}">${escapeHTML(value)}</div></div>`;}
+function ageText(iso){const t=Date.parse(iso||"");if(!Number.isFinite(t))return {text:"Unknown",hours:Infinity};const h=Math.max(0,(Date.now()-t)/3600000);if(h<1)return {text:`${Math.round(h*60)} min ago`,hours:h};if(h<48)return {text:`${h.toFixed(1)} hours ago`,hours:h};return {text:`${(h/24).toFixed(1)} days ago`,hours:h};}
+function render(data){
+  const meta=data?.meta||{},rows=Array.isArray(data?.results)?data.results:[],age=ageText(meta.generated_at_utc);
+  const stale=document.getElementById("staleBox");
+  stale.innerHTML=age.hours>8?`<div class="stale">Results are ${escapeHTML(age.text)}. The background scan may not have run recently. Open the repository's <b>Actions</b> tab and run <b>Update Halifax 5R Screener</b> if you want a fresh build.</div>`:"";
+  document.getElementById("summary").innerHTML=[
+    tile("Last Updated",age.text,age.hours<=8?"green":"yellow"),
+    tile("Exchange Symbols Checked",Number(meta.universe_checked||0).toLocaleString(),"blue"),
+    tile("≤ $100 + Liquid",Number(meta.eligible_count||0).toLocaleString(),"purple"),
+    tile("Historical Pool",Number(meta.history_pool_count||0).toLocaleString(),"cyan"),
+    tile("Qualified Results",rows.length.toLocaleString(),rows.length?"green":"yellow"),
+    tile("5R Horizon",`${meta.horizon_days||20} trading days`,"blue"),
+    tile("Break-even Hit Rate","16.7%","blue")
+  ].join("");
+  if(!rows.length){
+    const note=meta.status==="not_generated"?"No background scan has been generated yet. After uploading the package to GitHub, run the “Update Halifax 5R Screener” workflow once from the Actions tab.":"The latest background scan found no candidates that passed the current 5R rules.";
+    document.getElementById("results").innerHTML=`<div class="error">${escapeHTML(note)}</div>`;return;
+  }
+  document.getElementById("results").innerHTML=`<table><thead><tr><th>#</th><th>Ticker</th><th>Market</th><th>Score</th><th>5R Historical Hit</th><th>Edge vs 16.7%</th><th>Samples</th><th>Price</th><th>Stop</th><th>5R Target</th><th>20D</th><th>RSI</th><th>ADX</th><th>Volume</th><th>Why</th></tr></thead><tbody>${rows.map((r,i)=>{const hit=Number(r.hit_rate),samples=Number(r.samples||0),hc=samples<8?"yellow":hit>=25?"hit-good":hit>=16.7?"hit-mid":"hit-low";return `<tr><td>${i+1}</td><td><a class="ticker-link" href="index.html?ticker=${encodeURIComponent(r.ticker)}">${escapeHTML(r.ticker)}</a></td><td>${escapeHTML(r.market||"")}</td><td class="green score">${Number(r.score||0).toFixed(0)}/100</td><td class="${hc}">${samples>=8?`${hit.toFixed(1)}%`:"N/A"}</td><td class="${hc}">${samples>=8?`${signed(hit-16.6667,1)} pts`:"N/A"}</td><td>${samples}</td><td>${money(r.price)}</td><td class="red">${money(r.stop)}</td><td class="green">${money(r.target)}</td><td class="${Number(r.roc20)>=0?"green":"red"}">${signed(r.roc20,1)}%</td><td>${Number.isFinite(Number(r.rsi))?Number(r.rsi).toFixed(1):"—"}</td><td>${Number.isFinite(Number(r.adx))?Number(r.adx).toFixed(1):"—"}</td><td>${Number.isFinite(Number(r.volume_ratio))?Number(r.volume_ratio).toFixed(2)+"×":"—"}</td><td class="why">${escapeHTML(r.why||"")}</td></tr>`;}).join("")}</tbody></table>`;
 }
-function mean(values){return values.length?values.reduce((a,b)=>a+b,0)/values.length:null;}
-function smaAt(values,period){if(values.length<period)return null;return mean(values.slice(-period));}
-function emaSeries(values,period){if(values.length<period)return [];const out=new Array(values.length).fill(null);let seed=mean(values.slice(0,period));out[period-1]=seed;const k=2/(period+1);for(let i=period;i<values.length;i++){seed=(values[i]-seed)*k+seed;out[i]=seed;}return out;}
-function emaAt(values,period){const s=emaSeries(values,period);return s.length?s[s.length-1]:null;}
-function rsiSeries(values,period=14){const out=new Array(values.length).fill(null);if(values.length<=period)return out;let gain=0,loss=0;for(let i=1;i<=period;i++){const d=values[i]-values[i-1];gain+=Math.max(d,0);loss+=Math.max(-d,0);}let avgGain=gain/period,avgLoss=loss/period;out[period]=avgLoss===0?100:100-(100/(1+avgGain/avgLoss));for(let i=period+1;i<values.length;i++){const d=values[i]-values[i-1];avgGain=((avgGain*(period-1))+Math.max(d,0))/period;avgLoss=((avgLoss*(period-1))+Math.max(-d,0))/period;out[i]=avgLoss===0?100:100-(100/(1+avgGain/avgLoss));}return out;}
-function atrSeries(high,low,close,period=14){const tr=new Array(close.length).fill(null);for(let i=1;i<close.length;i++)tr[i]=Math.max(high[i]-low[i],Math.abs(high[i]-close[i-1]),Math.abs(low[i]-close[i-1]));const out=new Array(close.length).fill(null);if(close.length<=period)return out;let value=mean(tr.slice(1,period+1));out[period]=value;for(let i=period+1;i<close.length;i++){value=((value*(period-1))+tr[i])/period;out[i]=value;}return out;}
-function macdData(values){const fast=emaSeries(values,12),slow=emaSeries(values,26),line=new Array(values.length).fill(null);for(let i=0;i<values.length;i++)if(fast[i]!=null&&slow[i]!=null)line[i]=fast[i]-slow[i];const compact=line.filter(v=>v!=null),signalCompact=emaSeries(compact,9),signal=new Array(values.length).fill(null);let j=0;for(let i=0;i<line.length;i++)if(line[i]!=null){signal[i]=signalCompact[j]??null;j++;}const i=values.length-1;return {line:line[i]??0,signal:signal[i]??0,hist:(line[i]??0)-(signal[i]??0),prevHist:i>0&&line[i-1]!=null&&signal[i-1]!=null?line[i-1]-signal[i-1]:0};}
-function adxValue(high,low,close,period=14){if(close.length<period*2+1)return null;const tr=[],plusDM=[],minusDM=[];for(let i=1;i<close.length;i++){tr.push(Math.max(high[i]-low[i],Math.abs(high[i]-close[i-1]),Math.abs(low[i]-close[i-1])));const up=high[i]-high[i-1],down=low[i-1]-low[i];plusDM.push(up>down&&up>0?up:0);minusDM.push(down>up&&down>0?down:0);}let trN=tr.slice(0,period).reduce((a,b)=>a+b,0),plusN=plusDM.slice(0,period).reduce((a,b)=>a+b,0),minusN=minusDM.slice(0,period).reduce((a,b)=>a+b,0);const dx=[];for(let i=period;i<tr.length;i++){if(i>period){trN=trN-trN/period+tr[i];plusN=plusN-plusN/period+plusDM[i];minusN=minusN-minusN/period+minusDM[i];}const p=trN?100*plusN/trN:0,m=trN?100*minusN/trN:0;dx.push((p+m)?100*Math.abs(p-m)/(p+m):0);}if(dx.length<period)return mean(dx);let adx=mean(dx.slice(0,period));for(let i=period;i<dx.length;i++)adx=((adx*(period-1))+dx[i])/period;return adx;}
-function standardDeviation(values){const m=mean(values);return m==null?null:Math.sqrt(mean(values.map(v=>(v-m)**2)));}
-function roc(values,period=20){if(values.length<=period)return 0;const base=values[values.length-1-period];return base?((values[values.length-1]/base)-1)*100:0;}
-function slopePct(values,period=10){if(values.length<=period)return 0;const a=values[values.length-1-period],b=values[values.length-1];return a?((b/a)-1)*100/period:0;}
-function buildTickerDataFromRows(ticker,timeframe,rows,meta={}){
-    const unique=[...new Map((rows||[]).map(r=>[r.time,r])).values()].filter(r=>[r.time,r.open,r.high,r.low,r.close].every(Number.isFinite)).sort((a,b)=>a.time-b.time);
-    if(unique.length<20)throw new Error(`Not enough clean ${TF_LABELS[timeframe]||timeframe} data for ${ticker}`);
-    const close=unique.map(r=>r.close),high=unique.map(r=>r.high),low=unique.map(r=>r.low),volume=unique.map(r=>Number.isFinite(r.volume)?r.volume:0);
-    const price=close.at(-1),ema9=emaAt(close,9),ema21=emaAt(close,21),sma50=smaAt(close,50),sma200=smaAt(close,200),rsi=rsiSeries(close,14).at(-1)??50,atr=atrSeries(high,low,close,14).at(-1)??price*.02,macd=macdData(close),adx=adxValue(high,low,close,14);
-    const avgVolume=mean(volume.slice(-20))||0,volumeRatio=avgVolume?volume.at(-1)/avgVolume:0;
-    return {ticker,timeframe,candles:unique,close,high,low,volume,price,ema9,ema21,sma50,sma200,rsi,atr,macd,adx,avgVolume,volumeRatio,roc20:roc(close,20),ema21Slope:slopePct(emaSeries(close,21).filter(Number.isFinite),10)};
-}
-async function loadTickerData(ticker,timeframe="1d",rangeOverride="5y"){
-    const url=`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?interval=${timeframe}&range=${rangeOverride||"5y"}&includePrePost=false&events=div%2Csplits`;
-    const raw=await fetchLooseJson(url,12000),result=raw?.chart?.result?.[0];if(!result)throw new Error(raw?.chart?.error?.description||`No chart data for ${ticker}`);const q=result.indicators?.quote?.[0];if(!q||!result.timestamp)throw new Error(`Incomplete chart data for ${ticker}`);const rows=[];for(let i=0;i<result.timestamp.length;i++){const time=result.timestamp[i],open=q.open?.[i],high=q.high?.[i],low=q.low?.[i],close=q.close?.[i],volume=q.volume?.[i]||0;if([time,open,high,low,close].every(Number.isFinite))rows.push({time,open,high,low,close,volume:Number.isFinite(volume)?volume:0});}return buildTickerDataFromRows(ticker,timeframe,rows,result.meta||{});
-}
-
-function discoveryNumber(value){
-    const n=Number(String(value??"").replace(/[$,%+\s,]/g,""));
-    return Number.isFinite(n)?n:null;
-}
-function discoverySymbol(value){return String(value||"").toUpperCase().trim().replace(/[^A-Z0-9.\-]/g,"");}
-function discoverySecurityAllowed(name,type=""){
-    const t=String(type||"").toLowerCase(),n=String(name||"").toLowerCase();
-    if(t&&!["common stock","adrs","adr","etfs","etf","foreign ordinary shares","new york registry shs","ordinary shares"].some(x=>t.includes(x)))return false;
-    if(/\b(warrant|warrants|right|rights|unit|units|preferred|preference|notes? due|senior notes?|debenture|bond|depositary shares.*preferred)\b/i.test(n))return false;
-    return true;
-}
-function discoverySourceRow(row,source,market){
-    const symbol=discoverySymbol(row.symbol||row.Symbol||row.ticker);
-    if(!symbol||symbol.length>12)return null;
-    const name=String(row.name||row.securityName||row.SecurityName||symbol).trim();
-    const type=String(row.securityType||row.type||"");
-    if(!discoverySecurityAllowed(name,type))return null;
-    const price=discoveryNumber(row.lastsale??row.price??row.lastSale);
-    const volume=discoveryNumber(row.volume);
-    const pct1d=discoveryNumber(row.pctchange??row.pct1Day??row.changePercent);
-    const pct5d=discoveryNumber(row.pct5Day);
-    const pct4w=discoveryNumber(row.pct4Weeks);
-    const marketCap=discoveryNumber(row.marketCap);
-    return {symbol,name,source,market:String(row.market||market||source),securityType:type,price,volume,pct1d,pct5d,pct4w,marketCap,sector:String(row.sector||""),industry:String(row.industry||"")};
-}
-async function fetchLooseJson(url,timeoutMs=12000){
-    const read=async(u,t)=>{const r=await fetchWithTimeout(u,{},t);if(!r.ok)throw new Error(`HTTP ${r.status}`);const text=await r.text();if(!text)throw new Error("empty response");return JSON.parse(text);};
-    try{return await read(url,Math.min(timeoutMs,6500));}catch(e){}
-    try{return await Promise.any([
-        read(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,timeoutMs),
-        read(`https://corsproxy.io/?${encodeURIComponent(url)}`,timeoutMs),
-        read(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,timeoutMs)
-    ]);}catch(e){throw new Error("All direct/proxy routes failed");}
-}
-async function loadNasdaqExchangeUniverse(exchange){
-    const url=`https://api.nasdaq.com/api/screener/stocks?exchange=${encodeURIComponent(exchange)}&download=true`;
-    const raw=await fetchLooseJson(url,12000);
-    const rows=raw?.data?.rows||raw?.data?.table?.rows||[];
-    if(!Array.isArray(rows)||!rows.length)throw new Error(`${exchange} universe empty`);
-    return rows.map(r=>discoverySourceRow(r,"NASDAQ API",exchange.toUpperCase())).filter(Boolean);
-}
-async function loadNasdaqTraderFallback(){
-    const urls=[
-        ["https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt","NASDAQ"],
-        ["https://www.nasdaqtrader.com/dynamic/SymDir/otherlisted.txt","OTHER"]
-    ];
-    const all=[];
-    for(const [url,market] of urls){
-        try{
-            const text=await fetchTextWithFallback(url),lines=text.split(/\r?\n/).filter(Boolean),head=lines.shift().split("|");
-            for(const line of lines){if(line.startsWith("File Creation Time"))continue;const vals=line.split("|"),r=Object.fromEntries(head.map((h,i)=>[h,vals[i]||""]));const symbol=r.Symbol||r["ACT Symbol"];const name=r["Security Name"]||symbol;const etf=r.ETF; if(String(r["Test Issue"]||"").toUpperCase()==="Y")continue;if(etf!=="Y"&&!discoverySecurityAllowed(name,"common stock"))continue;const row=discoverySourceRow({symbol,name,securityType:etf==="Y"?"ETF":"Common Stock"},"Nasdaq Trader",market);if(row)all.push(row);}
-        }catch(e){console.warn("Nasdaq Trader fallback failed",market,e);}
-    }
-    return all;
-}
-function compactUniverseRows(rows){return rows.map(r=>({symbol:r.symbol,name:r.name,source:r.source,market:r.market,securityType:r.securityType,price:r.price,volume:r.volume,pct1d:r.pct1d,pct5d:r.pct5d,pct4w:r.pct4w,marketCap:r.marketCap,sector:r.sector,industry:r.industry}));}
-function getCachedDiscoveryUniverse(){
-    if(discoveryUniverseCache?.rows?.length)return discoveryUniverseCache;
-    try{const x=JSON.parse(localStorage.getItem("halifaxDiscoveryUniverseV13_2_EXCHANGE_ONLY")||"null");if(x&&Date.now()-x.savedAt<1*3600000&&Array.isArray(x.rows)&&x.rows.length){discoveryUniverseCache=x;return x;}}catch(e){}
-    return null;
-}
-function saveDiscoveryUniverse(rows,notes){
-    const x={savedAt:Date.now(),rows:compactUniverseRows(rows),notes};discoveryUniverseCache=x;
-    try{localStorage.setItem("halifaxDiscoveryUniverseV13_2_EXCHANGE_ONLY",JSON.stringify(x));}catch(e){}
-    return x;
-}
-async function loadFullDiscoveryUniverse(){
-    const cached=getCachedDiscoveryUniverse();
-    if(cached)return {...cached,cached:true};
-    const tasks=["nasdaq","nyse","amex"].map(ex=>loadNasdaqExchangeUniverse(ex));
-    const settled=await Promise.allSettled(tasks),rows=[],notes=[];
-    settled.forEach((r,i)=>{if(r.status==="fulfilled")rows.push(...r.value);else notes.push(`Source ${i+1} failed: ${r.reason?.message||"unavailable"}`);});
-    if(rows.length<3000){const fallback=await loadNasdaqTraderFallback();rows.push(...fallback);if(fallback.length)notes.push("Nasdaq Trader symbol-directory fallback was used.");}
-    const map=new Map();
-    for(const r of rows){const old=map.get(r.symbol);if(!old||((old.price==null||old.volume==null)&&(r.price!=null&&r.volume!=null)))map.set(r.symbol,r);}
-    const dedup=[...map.values()];
-    if(!dedup.length)throw new Error("No market universe could be loaded.");
-    return {...saveDiscoveryUniverse(dedup,notes),cached:false};
-}
-function updateDiscoveryProgress(percent,text){
-    const bar=document.querySelector("#discoveryProgress>div");if(bar)bar.style.width=`${clamp(percent,0,100)}%`;
-    const stage=document.getElementById("discoveryStage");if(stage)stage.textContent=text;
-}
-function discoveryFastScore(r){
-    const dv=(r.price||0)*(r.volume||0),liq=Math.log10(Math.max(1,dv))*8,cap=Math.log10(Math.max(1,r.marketCap||1))*1.4;
-    const d1=clamp(r.pct1d||0,-8,12)*1.4,d5=clamp(r.pct5d||0,-20,30)*.55,d20=clamp(r.pct4w||0,-35,50)*.30;
-    return liq+cap+d1+d5+d20;
-}
-function selectDiscoveryStage2(rows,maxCount){
-    const byLiq=[...rows].sort((a,b)=>((b.price||0)*(b.volume||0))-((a.price||0)*(a.volume||0))).slice(0,Math.ceil(maxCount*.45));
-    const byMove=[...rows].sort((a,b)=>(b.pct1d||-999)-(a.pct1d||-999)).slice(0,Math.ceil(maxCount*.30));
-    const byTrend=[...rows].sort((a,b)=>((b.pct5d||0)*.6+(b.pct4w||0)*.4)-((a.pct5d||0)*.6+(a.pct4w||0)*.4)).slice(0,Math.ceil(maxCount*.35));
-    const combined=[...byLiq,...byMove,...byTrend].sort((a,b)=>discoveryFastScore(b)-discoveryFastScore(a));
-    return [...new Map(combined.map(r=>[r.symbol,r])).values()].slice(0,maxCount);
-}
-async function fetchYahooSparkBatch(symbols,range="1y",interval="1d"){
-    const joined=symbols.map(discoverySymbol).filter(Boolean).join(",");if(!joined)return [];
-    const url=`https://query1.finance.yahoo.com/v7/finance/spark?symbols=${encodeURIComponent(joined)}&range=${range}&interval=${interval}&indicators=close&includeTimestamps=true&includePrePost=false`;
-    const raw=await fetchLooseJson(url,9000),results=raw?.spark?.result||[];
-    return results.map(item=>{
-        const res=item?.response?.[0],close=res?.indicators?.quote?.[0]?.close||res?.indicators?.adjclose?.[0]?.adjclose||[],times=res?.timestamp||[];
-        const clean=[];for(let i=0;i<Math.min(close.length,times.length);i++)if(Number.isFinite(close[i])&&Number.isFinite(times[i]))clean.push({time:times[i],close:close[i]});
-        return {symbol:discoverySymbol(item.symbol||res?.meta?.symbol),series:clean,meta:res?.meta||{}};
-    }).filter(x=>x.symbol&&x.series.length>=30);
-}
-function sparkMomentumScore(item,sourceRow){
-    const close=item.series.map(x=>x.close),n=close.length,price=close.at(-1);if(n<60||!Number.isFinite(price))return null;
-    const e9=emaAt(close,9),e21=emaAt(close,21),s50=smaAt(close,50),rsi=rsiSeries(close,14).at(-1)??50;
-    const r5=n>5?(price/close[n-6]-1)*100:0,r20=n>20?(price/close[n-21]-1)*100:0,r60=n>60?(price/close[n-61]-1)*100:0;
-    let score=50;
-    score+=price>e9?7:-7;score+=e9>e21?10:-10;score+=e21>(s50||e21)?9:-9;
-    score+=clamp(r5,-10,12)*.7+clamp(r20,-25,35)*.55+clamp(r60,-45,70)*.22;
-    if(rsi>=52&&rsi<=68)score+=8;else if(rsi>76)score-=14;else if(rsi<45)score-=8;
-    score+=clamp(sourceRow?.pct1d||0,-8,10)*.7;
-    return {symbol:item.symbol,price,e9,e21,s50,rsi,r5,r20,r60,score:clamp(score,0,100),series:item.series,sourceRow};
-}
-function simpleAtrAt(high,low,close,index,period=14){
-    if(index<period)return null;let total=0,count=0;
-    for(let i=index-period+1;i<=index;i++){if(i<=0)continue;const tr=Math.max(high[i]-low[i],Math.abs(high[i]-close[i-1]),Math.abs(low[i]-close[i-1]));if(Number.isFinite(tr)){total+=tr;count++;}}
-    return count?total/count:null;
-}
-function backtestFiveR(data,horizon=20,rewardR=5){
-    const c=data.close,h=data.high,l=data.low,v=data.volume,n=c.length,ema9=emaSeries(c,9),ema21=emaSeries(c,21),rsiArr=rsiSeries(c,14);
-    let samples=0,hits=0,stops=0,unresolved=0;
-    for(let i=70;i<n-horizon-1;i++){
-        const price=c[i],e9=ema9[i],e21=ema21[i],s50=mean(c.slice(i-49,i+1)),rsi=rsiArr[i],atr=simpleAtrAt(h,l,c,i,14);
-        if(![price,e9,e21,s50,rsi,atr].every(Number.isFinite))continue;
-        const roc20=c[i-20]?((price/c[i-20])-1)*100:0,avgVol=mean(v.slice(Math.max(0,i-19),i+1))||0,vr=avgVol?v[i]/avgVol:1;
-        if(!(price>e9&&e9>e21&&e21>s50&&rsi>=50&&rsi<=73&&roc20>=1&&vr>=.65))continue;
-        const stopDist=Math.min(price*.08,Math.max(atr*1.7,price*.02));if(!(stopDist>0))continue;
-        const stop=price-stopDist,target=price+rewardR*stopDist;samples++;
-        let outcome="open";
-        for(let j=i+1;j<=Math.min(n-1,i+horizon);j++){
-            const stopHit=l[j]<=stop,targetHit=h[j]>=target;
-            if(stopHit&&targetHit){outcome="stop";break;} // conservative same-day assumption
-            if(stopHit){outcome="stop";break;}if(targetHit){outcome="hit";break;}
-        }
-        if(outcome==="hit")hits++;else if(outcome==="stop")stops++;else unresolved++;
-    }
-    return {samples,hits,stops,unresolved,hitRate:samples?hits/samples*100:null,resolvedRate:(hits+stops)?hits/(hits+stops)*100:null};
-}
-function currentFiveRPlan(data,rewardR=5){
-    const price=data.price,atr=Math.max(data.atr||0,price*.01),stopDist=Math.min(price*.08,Math.max(atr*1.7,price*.02));
-    return {entry:price,stop:Math.max(.01,price-stopDist),target:price+rewardR*stopDist,stopDist,stopPct:stopDist/price*100};
-}
-function discoveryWhy(row){
-    const d=row.data,b=row.backtest,parts=[];
-    if(d.price>d.ema9&&d.ema9>d.ema21)parts.push("price is above rising short-term averages");
-    if(d.roc20>5)parts.push(`20-day momentum is +${d.roc20.toFixed(1)}%`);else if(d.roc20>0)parts.push("20-day momentum is positive");
-    if(d.rsi>=52&&d.rsi<=68)parts.push(`RSI ${d.rsi.toFixed(0)} is constructive, not extremely stretched`);
-    if(d.volumeRatio>=1.1)parts.push(`volume is ${d.volumeRatio.toFixed(1)}× normal`);
-    if(b.samples>=8)parts.push(`${b.hitRate.toFixed(1)}% of ${b.samples} similar historical setups reached 5R within the test horizon`);else parts.push(`only ${b.samples} comparable historical setups were found, so the 5R history is not statistically strong`);
-    return parts.slice(0,4).join("; ")+".";
-}
-function discoveryOpportunityScore(momentum,data,backtest){
-    let s=momentum.score*.58;
-    s+=clamp((data.adx??18),10,40)/40*10;
-    s+=clamp(data.volumeRatio||0,0,2)/2*8;
-    const hist=backtest.samples>=8?clamp(backtest.hitRate||0,0,50)*.48:10;
-    s+=hist;
-    if(data.rsi>74)s-=10;if(data.roc20<0)s-=10;
-    return clamp(Math.round(s),0,100);
-}
-function renderDiscoveryResults(rows){
-    const out=document.getElementById("discoveryOutput");
-    if(!rows.length){out.innerHTML='<div class="loading">No candidates passed the current 1:5 discovery rules. Try lowering the liquidity gates or rerun later.</div>';return;}
-    out.innerHTML=`<table><thead><tr><th>#</th><th>Ticker</th><th>Market</th><th>Score</th><th>5R Historical Hit Rate</th><th>Edge vs 16.7%</th><th>Samples</th><th>Price</th><th>Stop</th><th>5R Target</th><th>20D</th><th>RSI</th><th>ADX</th><th>Volume</th><th>Why</th></tr></thead><tbody>${rows.map((r,i)=>{const hit=r.backtest.samples>=8?`${r.backtest.hitRate.toFixed(1)}%`:`N/A`,edge=r.backtest.samples>=8?`${signed(r.backtest.hitRate-16.6667,1)} pts`:`N/A`;const hitClass=r.backtest.samples<8?"yellow":r.backtest.hitRate>=25?"hit-good":r.backtest.hitRate>=16.7?"hit-mid":"hit-low";return `<tr><td>${i+1}</td><td><a class="ticker-link" href="index.html?ticker=${encodeURIComponent(r.ticker)}">${r.ticker}</a></td><td>${escapeHTML(r.source.market||r.source.source)}</td><td class="green discovery-score">${r.opportunity}/100</td><td class="${hitClass}">${hit}</td><td class="${hitClass}">${edge}</td><td>${r.backtest.samples}</td><td>${money(r.plan.entry)}</td><td class="red">${money(r.plan.stop)}</td><td class="green">${money(r.plan.target)}</td><td class="${r.data.roc20>=0?"green":"red"}">${signed(r.data.roc20,1)}%</td><td>${r.data.rsi.toFixed(1)}</td><td>${r.data.adx==null?"—":r.data.adx.toFixed(1)}</td><td>${r.data.volumeRatio.toFixed(2)}×</td><td class="discovery-why">${escapeHTML(discoveryWhy(r))}</td></tr>`;}).join("")}</tbody></table>`;
-}
-async function runFullDiscovery(){
-    const runId=++discoveryRunId,btn=document.getElementById("discoveryBtn"),card=document.getElementById("discoveryCard");card.style.display="block";btn.disabled=true;
-    const minPrice=Math.max(.01,Number(document.getElementById("discoveryMinPrice").value)||2),minVolume=Math.max(0,Number(document.getElementById("discoveryMinVolume").value)||0),minDV=Math.max(0,Number(document.getElementById("discoveryMinDollarVolume").value)||0)*1e6;
-    const stage2Max=Math.round(clamp(Number(document.getElementById("discoveryStage2").value)||700,100,1500)),deepMax=Math.round(clamp(Number(document.getElementById("discoveryDeep").value)||40,10,80)),maxResults=Math.round(clamp(Number(document.getElementById("discoveryResults").value)||15,5,30)),horizon=Math.round(clamp(Number(document.getElementById("discoveryHorizon").value)||20,5,60));
-    const maxDiscoveryPrice=100;
-    const summary=document.getElementById("discoverySummary"),out=document.getElementById("discoveryOutput");summary.innerHTML="";out.innerHTML='<div class="loading">Loading the full tradable universe…</div>';
-    try{
-        setStatus("Exchange discovery running…","var(--yellow)");updateDiscoveryProgress(2,"Stage 1 of 3: loading Nasdaq, NYSE, and AMEX universes. OTC is excluded.");
-        const universeInfo=await loadFullDiscoveryUniverse();if(runId!==discoveryRunId)return;
-        const universe=universeInfo.rows,sourceCount=universe.length;
-        const eligible=universe.filter(r=>Number.isFinite(r.price)&&Number.isFinite(r.volume)&&r.price>=minPrice&&r.price<=maxDiscoveryPrice&&r.volume>=minVolume&&r.price*r.volume>=minDV);
-        const stage2=selectDiscoveryStage2(eligible,stage2Max);
-        updateDiscoveryProgress(18,`Stage 1 complete: checked ${sourceCount.toLocaleString()} exchange-listed symbols; ${eligible.length.toLocaleString()} passed the $${minPrice.toFixed(2)}–$${maxDiscoveryPrice.toFixed(0)} price and liquidity filters; ${stage2.length} advanced to daily-history ranking.`);
-        if(!stage2.length)throw new Error("No symbols passed the current price/liquidity filters.");
-        const sourceMap=new Map(stage2.map(r=>[r.symbol,r])),sparkRows=[];let finished=0;
-        const chunks=[];for(let i=0;i<stage2.length;i+=25)chunks.push(stage2.slice(i,i+25).map(r=>r.symbol));
-        updateDiscoveryProgress(20,`Stage 2 of 3: loading 1-year daily close history in ${chunks.length} batched requests.`);
-        await mapLimit(chunks,5,async chunk=>{try{const got=await fetchYahooSparkBatch(chunk,"1y","1d");for(const item of got){const m=sparkMomentumScore(item,sourceMap.get(item.symbol));if(m)sparkRows.push(m);}}catch(e){console.warn("Discovery batch failed",e);}finished++;updateDiscoveryProgress(20+finished/chunks.length*38,`Stage 2 of 3: ${finished}/${chunks.length} historical batches loaded; ${sparkRows.length} symbols have usable history.`);});
-        if(runId!==discoveryRunId)return;
-        const momentumPool=sparkRows.filter(x=>x.score>=55&&x.r20>0).sort((a,b)=>b.score-a.score).slice(0,deepMax);
-        if(!momentumPool.length)throw new Error("No bullish daily-history candidates survived the momentum filter.");
-        updateDiscoveryProgress(60,`Stage 3 of 3: deep 5R testing ${momentumPool.length} finalists with up to 5 years of daily OHLCV history.`);
-        const finalRows=[];finished=0;
-        await mapLimit(momentumPool,4,async m=>{try{const data=await loadTickerData(m.symbol,"1d","5y"),bt=backtestFiveR(data,horizon,5),plan=currentFiveRPlan(data,5),opportunity=discoveryOpportunityScore(m,data,bt);if(data.price>data.ema9&&data.ema9>data.ema21&&data.roc20>0&&data.rsi<76)finalRows.push({ticker:m.symbol,source:sourceMap.get(m.symbol)||m.sourceRow,momentum:m,data,backtest:bt,plan,opportunity});}catch(e){console.warn("Deep discovery failed",m.symbol,e);}finished++;updateDiscoveryProgress(60+finished/momentumPool.length*38,`Stage 3 of 3: ${finished}/${momentumPool.length} finalists tested.`);});
-        if(runId!==discoveryRunId)return;
-        finalRows.sort((a,b)=>{const ah=a.backtest.samples>=8?a.backtest.hitRate:-1,bh=b.backtest.samples>=8?b.backtest.hitRate:-1;return (bh-ah)||b.opportunity-a.opportunity;});
-        const qualified=finalRows.filter(r=>(r.backtest.samples>=8&&r.backtest.hitRate>=16.7)||r.opportunity>=78).slice(0,maxResults);
-        renderDiscoveryResults(qualified);
-        const withSamples=finalRows.filter(r=>r.backtest.samples>=8),best=qualified[0];
-        summary.innerHTML=[
-            tile("Exchange Symbols Checked",sourceCount.toLocaleString(),sourceCount>=5000?"green":"yellow"),
-            tile("≤ $100 + Liquid",eligible.length.toLocaleString(),"blue"),
-            tile("Daily-History Pool",stage2.length.toLocaleString(),"purple"),
-            tile("Deep 5R Tests",finalRows.length.toLocaleString(),"cyan"),
-            tile("Qualified Results",qualified.length.toLocaleString(),qualified.length?"green":"yellow"),
-            tile("Best 5R History",best&&best.backtest.samples>=8?`${best.backtest.hitRate.toFixed(1)}% (${best.backtest.samples})`:"N/A",best?"green":"yellow"),
-            tile("Breakeven Hit Rate","16.7%","blue")
-        ].join("");
-        const countNote=`Exchange-only universe: ${sourceCount.toLocaleString()} Nasdaq/NYSE/AMEX security records were checked at the fast gate. OTC securities and stocks above $100 were excluded from candidate discovery.`;
-        const sourceNote=universeInfo.notes?.length?` ${universeInfo.notes.join(" ")}`:"";
-        updateDiscoveryProgress(100,`Complete. ${countNote}${sourceNote}`);setStatus("5R discovery complete");
-    }catch(error){console.error(error);updateDiscoveryProgress(100,`Discovery failed: ${error.message}`);summary.innerHTML=[tile("Status","Discovery failed","red"),tile("Reason",String(error.message||"Unknown"),"yellow")].join("");out.innerHTML='<div class="red">Exchange discovery could not complete. The single-ticker Halifax analyzer can still be used.</div>';setStatus("Discovery failed","var(--red)");}
-    finally{btn.disabled=false;}
+async function loadData(force=false){
+  const btn=document.getElementById("refreshBtn");btn.disabled=true;setStatus("Loading results…","var(--yellow)");
+  try{
+    if(location.protocol==="file:")throw new Error("This screener must be opened from GitHub Pages (or another web server) so it can load screener-data.json beside it.");
+    const url=`screener-data.json${force?`?t=${Date.now()}`:""}`;
+    const r=await fetch(url,{cache:force?"no-store":"default"});if(!r.ok)throw new Error(`screener-data.json returned HTTP ${r.status}`);
+    const data=await r.json();render(data);setStatus("Results ready");
+  }catch(e){
+    console.error(e);document.getElementById("summary").innerHTML=tile("Status","Data not available","red");document.getElementById("results").innerHTML=`<div class="error"><b>Screener data could not load.</b><br>${escapeHTML(e.message)}<br><br>Upload <b>screener.html</b>, <b>screener-data.json</b>, <b>scripts/update_screener.py</b>, and <b>.github/workflows/update-screener.yml</b> to the same GitHub repository. Then run the workflow once from GitHub Actions.</div>`;setStatus("Data unavailable","var(--red)");
+  }finally{btn.disabled=false;}
 }
 
+let halifaxInstallPrompt=null;
+function halifaxStandalone(){return window.matchMedia?.('(display-mode: standalone)').matches||window.navigator.standalone===true;}
+function syncInstallButton(){const b=document.getElementById('installAppBtn');if(!b)return;b.hidden=halifaxStandalone();}
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();halifaxInstallPrompt=e;syncInstallButton();});
+window.addEventListener('appinstalled',()=>{halifaxInstallPrompt=null;syncInstallButton();try{setStatus('Halifax installed');}catch(e){}});
+async function installHalifaxApp(){
+  if(halifaxStandalone()){try{setStatus('Halifax is already installed');}catch(e){}return;}
+  if(halifaxInstallPrompt){
+    const p=halifaxInstallPrompt;halifaxInstallPrompt=null;await p.prompt();try{await p.userChoice;}catch(e){}syncInstallButton();return;
+  }
+  const ua=navigator.userAgent||'';const ios=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  if(ios) alert('Install Halifax on iPhone/iPad: open the browser Share menu, choose Add to Home Screen, then tap Add.');
+  else alert('Install Halifax: open your browser menu and choose Install app or Add to Home screen.');
+}
+async function registerHalifaxPWA(){
+  syncInstallButton();
+  if(!('serviceWorker' in navigator)||!/^https?:$/.test(location.protocol))return;
+  try{
+    const hadController=!!navigator.serviceWorker.controller;
+    const reg=await navigator.serviceWorker.register('./service-worker.js',{scope:'./',updateViaCache:'none'});
+    reg.update().catch(()=>{});
+    if(reg.waiting)reg.waiting.postMessage({type:'SKIP_WAITING'});
+    reg.addEventListener('updatefound',()=>{const w=reg.installing;if(!w)return;w.addEventListener('statechange',()=>{if(w.state==='installed'&&navigator.serviceWorker.controller)w.postMessage({type:'SKIP_WAITING'});});});
+    navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!hadController)return;if(sessionStorage.getItem('halifaxPwaReloaded'))return;sessionStorage.setItem('halifaxPwaReloaded','1');location.reload();});
+  }catch(e){console.warn('Halifax PWA registration failed',e);}
+}
 
-setStatus("Screener ready");</script></body></html>
+window.addEventListener("load",()=>{loadData(false);registerHalifaxPWA();});
+</script>
+</body>
+</html>
