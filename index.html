@@ -14,7 +14,7 @@
 <meta name="application-name" content="Halifax Trade Engine">
 <meta name="format-detection" content="telephone=no">
 
-<title>Halifax Trade Engine v14.0 - PWA</title>
+<title>Halifax Trade Engine v14.1 - PWA</title>
 <script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 <style>
 :root{
@@ -140,7 +140,7 @@ td{padding:8px;font-size:11.5px;border-bottom:1px solid var(--line);white-space:
 <div class="container">
     <div class="card header">
         <div>
-            <div class="title">📊 Halifax Trade Engine v14.0</div>
+            <div class="title">📊 Halifax Trade Engine v14.1</div>
             <div class="subtitle">Fast cross-platform trade analysis • Android, iPhone/iPad & desktop PWA • Separate 5R screener • Macro & risk guardrails</div>
         </div>
         <div class="header-actions"><button id="installAppBtn" class="install-button" onclick="installHalifaxApp()">INSTALL APP</button><div class="badge"><span class="status-dot"></span><span id="engineStatus">Engine ready</span></div></div>
@@ -308,7 +308,7 @@ td{padding:8px;font-size:11.5px;border-bottom:1px solid var(--line);white-space:
         <div class="section-divider"></div>
         <div class="panel-title cyan">Halifax 5R Opportunity Screener</div>
         <div class="screener-link-card">
-            <div class="screener-link-copy"><strong>Full-market 1:5 discovery now runs on its own page.</strong> Keeping the screener separate makes the main Halifax page smaller and prevents full-market discovery work from sharing the analyzer page.</div>
+            <div class="screener-link-copy"><strong>Full-market 1:5 discovery has its own page.</strong> <b>OPEN</b> only opens the results page. To build fresh results, use <b>START NEW SCAN</b> on the screener page; the scan runs in GitHub Actions while your phone stays fast.</div>
             <a class="link-button" href="screener.html">OPEN 5R SCREENER →</a>
         </div>
     </div>
@@ -1426,7 +1426,7 @@ async function runEngine(){
         const trade=calculateTrade(analysis.primary,analysis);
         renderChart(analysis.primary,trade);renderRegime(analysis,benchmarkResult);renderMTF(analysis);renderTradeOutput(analysis,trade);renderPositionGuardrails(ticker,analysis.primary,analysis);renderNews(displayNews,ticker);
         document.getElementById("decisionCard")?.scrollIntoView({behavior:"smooth",block:"start"});
-        setStatus(`${ticker} analysis complete`);document.title=`${ticker} | Halifax Trade Engine v14.0`;
+        setStatus(`${ticker} analysis complete`);document.title=`${ticker} | Halifax Trade Engine v14.1`;
     }catch(error){console.error(error);document.getElementById("tradeOutput").innerHTML=`<div class="red" style="font-weight:900">Analysis failed</div><div style="font-size:12px;color:#cbd5e1;margin-top:8px;line-height:1.5">${escapeHTML(error.message)}</div><div class="notice">Halifax v13.2 rebuilds a slower confirmation timeframe from any usable loaded candles when a separate interval feed fails. A red failure should now appear only when no valid two-timeframe set can be constructed at all.</div>`;document.getElementById("positionCard").style.display="none";setStatus("Analysis failed","var(--red)");}
     finally{button.disabled=false;}
 }
