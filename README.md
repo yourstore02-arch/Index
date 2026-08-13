@@ -1,4 +1,4 @@
-# Halifax Trade Engine v14.1 PWA
+# Halifax Trade Engine v14.2 PWA
 
 This package fixes the confusing **OPEN vs RUN** behavior of the 5R screener.
 
@@ -23,3 +23,9 @@ The updater checks the NASDAQ, NYSE, and AMEX exchange snapshots, excludes block
 
 ## ChatGPT Sites
 See `CHATGPT_SITES_DEPLOY.md`. ChatGPT Sites can host a site, but OpenAI currently states that Sites cannot connect directly to live data sources. For a continuously updating stock screener, keep the live scan on GitHub Actions (or another backend).
+## v14.2 button visibility fix
+- The main Halifax page now has its own green **START NEW SCAN** button.
+- The screener page also has a large green **START NEW SCAN** button near the top.
+- The PWA cache version was bumped so phones are less likely to keep the older screener page.
+- The screener displays **Halifax screener build v14.2** so you can verify the new file is live.
+

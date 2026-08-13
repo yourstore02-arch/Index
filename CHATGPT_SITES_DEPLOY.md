@@ -1,6 +1,6 @@
 # ChatGPT Sites deployment note
 
-Halifax v14.1 can be used as a static website interface, but the live 5R scan should remain on GitHub Actions or another backend.
+Halifax v14.2 can be used as a static website interface, but the live 5R scan should remain on GitHub Actions or another backend.
 
 OpenAI currently documents that ChatGPT Sites can create and host interactive websites/lightweight apps, but **Sites cannot connect directly to live data sources today**. Therefore, a Sites-only deployment cannot directly run the NASDAQ/Yahoo-backed market scan in this package.
 

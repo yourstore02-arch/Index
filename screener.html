@@ -14,7 +14,7 @@
 <meta name="application-name" content="Halifax Trade Engine">
 <meta name="format-detection" content="telephone=no">
 
-<title>Halifax 5R Screener v14.1</title>
+<title>Halifax 5R Screener v14.2</title>
 <style>
 :root{--bg:#020617;--card:#0f172a;--card2:#111827;--line:#1e293b;--line2:#334155;--text:#f8fafc;--muted:#94a3b8;--blue:#60a5fa;--green:#4ade80;--red:#f87171;--yellow:#facc15;--purple:#c084fc;--cyan:#22d3ee}
 *{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;padding:12px}.container{max-width:1600px;margin:auto}.card{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:14px;padding:15px;margin-bottom:14px;box-shadow:0 8px 24px rgba(0,0,0,.28)}.header{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.title{font-size:23px;font-weight:900;color:var(--cyan)}.subtitle{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.45}.badge{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line2);background:var(--bg);border-radius:999px;padding:6px 10px;font-size:11px;color:#cbd5e1}.status-dot{width:8px;height:8px;border-radius:50%;background:var(--green)}.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.button,.ticker-link{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;color:#fff;background:#334155;border:0;border-radius:9px;padding:10px 12px;font-weight:850;cursor:pointer}.button.primary,.ticker-link{background:#2563eb}.ticker-link{padding:6px 9px;font-size:11px}.panel-title{color:var(--cyan);font-size:11px;text-transform:uppercase;font-weight:900;letter-spacing:.7px;margin-bottom:10px}.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px;margin:12px 0}.tile{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:11px;min-height:72px}.tile-label{font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:900}.tile-value{font-size:15px;font-weight:900;margin-top:5px}.green{color:var(--green)}.red{color:var(--red)}.yellow{color:var(--yellow)}.blue{color:var(--blue)}.purple{color:var(--purple)}.cyan{color:var(--cyan)}.notice{font-size:10.5px;color:#94a3b8;line-height:1.5;margin-top:10px}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse}th{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.45px;border-bottom:1px solid var(--line2);padding:8px;text-align:left;white-space:nowrap}td{padding:8px;font-size:11.5px;border-bottom:1px solid var(--line);white-space:nowrap}.why{white-space:normal;min-width:260px;max-width:420px;line-height:1.4;color:#cbd5e1}.score{font-weight:950;font-size:15px}.hit-good{color:var(--green);font-weight:900}.hit-mid{color:var(--yellow);font-weight:900}.hit-low{color:var(--red);font-weight:900}.loading{padding:28px;text-align:center;color:var(--muted);font-size:12px}.error{padding:15px;border:1px solid rgba(248,113,113,.35);background:rgba(127,29,29,.15);border-radius:10px;color:#fecaca;line-height:1.5}.stale{padding:10px 12px;border:1px solid rgba(250,204,21,.35);background:rgba(113,63,18,.15);border-radius:9px;color:#fde68a;font-size:11px;line-height:1.45;margin-top:10px}.small{font-size:10px;color:var(--muted)}
@@ -25,13 +25,14 @@
 
 .run-button{background:#16a34a!important}.run-button:disabled{opacity:.55;cursor:not-allowed}.workflow-box{display:grid;grid-template-columns:1fr;gap:10px}.workflow-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.step{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;font-size:11px;line-height:1.45}.step b{color:var(--cyan)}.scan-state{font-size:13px;font-weight:900}.notes-box{margin-top:10px;padding:10px 12px;border:1px solid var(--line2);border-radius:9px;background:#020617;color:#cbd5e1;font-size:10.5px;line-height:1.5}.notes-box.error-note{border-color:rgba(248,113,113,.45);color:#fecaca}.notes-box ul{margin:6px 0 0 18px}.waitbar{height:7px;background:#111827;border-radius:999px;overflow:hidden;margin-top:8px}.waitbar>span{display:block;height:100%;width:35%;background:#22d3ee;border-radius:999px;animation:scanmove 1.3s linear infinite}@keyframes scanmove{0%{transform:translateX(-110%)}100%{transform:translateX(300%)}}
 @media(max-width:700px){.workflow-steps{grid-template-columns:1fr}.toolbar .button{font-size:11px;padding:10px 9px}}
+.scan-hero{width:100%;font-size:17px;padding:15px 16px;margin-top:2px;box-shadow:0 8px 20px rgba(22,163,74,.18)}.build-tag{font-size:10px;color:var(--muted);margin-top:8px;text-align:right}
 </style>
 </head>
 <body>
 <div class="container">
   <div class="card header">
     <div>
-      <div class="title">🔎 Halifax 5R Opportunity Screener v14.1</div>
+      <div class="title">🔎 Halifax 5R Opportunity Screener v14.2</div>
       <div class="subtitle">Fast separate screener • Nasdaq / NYSE / AMEX only • OTC excluded • Maximum price $100 • Historical 1:5 reward/risk research</div>
     </div>
     <div class="toolbar">
@@ -47,7 +48,8 @@
     <div class="panel-title">Start a fresh 5R scan</div>
     <div class="workflow-box">
       <div class="scan-state" id="scanState">Checking the latest scan…</div>
-      <div class="notice" style="margin-top:0">The heavy scan runs in <b>GitHub Actions</b>, not inside your phone. That keeps Android, iPhone/iPad and Chrome responsive and avoids browser data-source restrictions. The green button opens the exact workflow page; GitHub requires you to tap its green <b>Run workflow</b> button to authorize the run.</div>
+      <button class="button run-button scan-hero" onclick="runNewScan()">▶ START NEW SCAN</button>
+      <div class="notice" style="margin-top:0">The heavy scan runs in <b>GitHub Actions</b>, not inside your phone. The green button opens the exact workflow page; GitHub requires you to tap its <b>Run workflow</b> control to authorize the run.</div>
       <div class="workflow-steps">
         <div class="step"><b>1. Tap START NEW SCAN</b><br>GitHub Actions opens.</div>
         <div class="step"><b>2. Tap Run workflow</b><br>Choose the branch and confirm.</div>
@@ -56,6 +58,7 @@
       <div id="waitingBox"></div>
       <div id="staleBox"></div>
       <div id="notesBox"></div>
+      <div class="build-tag">Halifax screener build v14.2</div>
     </div>
   </div>
 
