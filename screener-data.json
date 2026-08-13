@@ -1,0 +1,12 @@
+{
+  "meta": {
+    "status": "not_generated",
+    "generated_at_utc": null,
+    "universe_checked": 0,
+    "eligible_count": 0,
+    "history_pool_count": 0,
+    "horizon_days": 20,
+    "notes": ["Run the Update Halifax 5R Screener workflow once after upload."]
+  },
+  "results": []
+}

@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#020617">
+<title>Halifax Trade Engine v13.2 - Fast Main Engine</title>
+<script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
+<style>
+:root{
+    --bg:#020617;--card:#0f172a;--card2:#111827;--line:#1e293b;--line2:#334155;
+    --text:#f8fafc;--muted:#94a3b8;--blue:#60a5fa;--green:#4ade80;--red:#f87171;
+    --yellow:#facc15;--purple:#c084fc;--cyan:#22d3ee;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;padding:12px}
+.container{max-width:1600px;margin:auto}
+.card{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:14px;padding:15px;margin-bottom:14px;box-shadow:0 8px 24px rgba(0,0,0,.28)}
+.header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.title{font-size:23px;font-weight:900;color:var(--blue);letter-spacing:-.4px}
+.subtitle{font-size:12px;color:var(--muted);margin-top:3px}
+.badge{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line2);background:var(--bg);border-radius:999px;padding:6px 10px;font-size:11px;color:#cbd5e1}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--green)}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:11px;align-items:end}
+.field{display:flex;flex-direction:column;min-width:0}
+label{font-size:10px;color:var(--muted);margin-bottom:5px;font-weight:800;letter-spacing:.6px;text-transform:uppercase}
+input,select{width:100%;background:var(--bg);color:white;border:1px solid var(--line2);padding:10px 11px;border-radius:9px;font-weight:700;outline:none}
+input:focus,select:focus{border-color:#3b82f6;box-shadow:0 0 0 2px rgba(59,130,246,.12)}
+.checkbox-row{display:flex;align-items:center;gap:8px;height:40px;background:var(--bg);border:1px solid var(--line2);border-radius:9px;padding:0 11px;color:#cbd5e1;font-size:12px;font-weight:700}
+.checkbox-row input{width:auto}
+button{border:0;border-radius:9px;padding:11px 14px;color:white;font-weight:850;cursor:pointer;transition:transform .12s ease,opacity .2s ease;white-space:nowrap}
+button:hover{opacity:.9;transform:translateY(-1px)}
+button:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-primary{background:#2563eb}.btn-purple{background:#7c3aed}.btn-dark{background:#334155}.btn-sm{padding:5px 9px;font-size:11px;background:#2563eb}
+.btn-buy{background:#15803d;width:100%;margin-top:12px}.btn-sell{background:#b91c1c;width:100%;margin-top:12px}.btn-neutral{background:#475569;width:100%;margin-top:12px}
+.section-divider{border-top:1px solid var(--line);margin:14px 0}
+.dashboard{display:grid;grid-template-columns:1fr;gap:14px}
+#chart{height:560px;background:var(--bg);border-radius:10px;overflow:hidden}
+.panel-title{color:var(--muted);font-size:11px;text-transform:uppercase;font-weight:900;letter-spacing:.7px;margin-bottom:10px}
+.green{color:var(--green)}.red{color:var(--red)}.yellow{color:var(--yellow)}.blue{color:var(--blue)}.purple{color:var(--purple)}.cyan{color:var(--cyan)}
+.dir-up,.arrow-up{color:var(--green);font-weight:900}.dir-down,.arrow-down{color:var(--red);font-weight:900}.dir-flat,.arrow-flat{color:var(--yellow);font-weight:900}.tiny{font-size:10px;color:var(--muted)}
+.metric{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:12.5px}
+.metric span:last-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:800;text-align:right}
+.decision-card{border:1px solid #2563eb;box-shadow:0 0 0 1px rgba(37,99,235,.12),0 8px 24px rgba(0,0,0,.28)}
+.score-box{margin:4px 0 12px;padding:13px;border-radius:10px;background:var(--bg);border-left:4px solid #2563eb;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.score{font-size:31px;font-weight:950}
+.reasoning-box,.risk-box{background:var(--bg);border-radius:9px;padding:11px;margin-top:11px;border-left:3px solid #3b82f6}
+.risk-box{border-left-color:#f59e0b}
+.reasoning-list{list-style:none;font-size:11.5px;color:#cbd5e1;display:flex;flex-direction:column;gap:6px;line-height:1.35}
+.regime-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px}
+.regime-tile{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:11px}
+.regime-label{font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:900}
+.regime-value{font-size:15px;font-weight:900;margin-top:5px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--line2);padding:8px;text-align:left;white-space:nowrap}
+td{padding:8px;font-size:11.5px;border-bottom:1px solid var(--line);white-space:nowrap}
+.news-item{padding:10px;margin-bottom:8px;background:var(--bg);border-radius:8px;border:1px solid var(--line)}
+.news-header{display:flex;justify-content:space-between;gap:8px;font-size:10.5px;margin-bottom:5px}
+.news-publisher{color:var(--blue);font-weight:800}.news-time{color:#64748b}.news-title{color:var(--text);font-size:12.5px;font-weight:650;text-decoration:none;line-height:1.35;display:block}
+.notice{font-size:10.5px;color:#64748b;line-height:1.45;margin-top:10px}
+.loading{padding:28px;text-align:center;color:var(--muted);font-size:12px}
+.plan-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.progress{height:7px;background:var(--line);border-radius:999px;overflow:hidden;margin-top:8px}.progress>div{height:100%;background:#3b82f6;width:0%;transition:width .25s ease}
+.grade-chip{display:inline-flex;align-items:center;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:900;letter-spacing:.3px}
+.grade-watch{background:rgba(250,204,21,.13);color:var(--yellow);border:1px solid rgba(250,204,21,.3)}
+.fail-text{max-width:310px;white-space:normal;line-height:1.3;color:#cbd5e1}
+.stage-text{font-size:11px;color:var(--muted);margin-top:7px}
+.position-toolbar{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px;align-items:end}
+.guardrail-banner{border:1px solid var(--line2);border-left:4px solid var(--yellow);background:var(--bg);border-radius:10px;padding:12px;margin:10px 0;line-height:1.45}
+.guardrail-banner.green-border{border-left-color:var(--green)}.guardrail-banner.red-border{border-left-color:var(--red)}
+.guardrail-action{font-size:16px;font-weight:950;margin-bottom:5px}.guardrail-sub{font-size:11px;color:#cbd5e1}
+.econ-toolbar{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:10px;align-items:end}
+.econ-results{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:10px;margin-top:12px}
+.prob-tile{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:11px;min-height:96px}
+.prob-label{font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:900;letter-spacing:.45px}
+.prob-value{font-size:22px;font-weight:950;margin:5px 0}
+.prob-track{height:7px;background:var(--line);border-radius:999px;overflow:hidden;margin-top:7px}.prob-fill{height:100%;background:#3b82f6;width:50%}
+.econ-meta{font-size:10px;color:#64748b;line-height:1.4;margin-top:5px}
+.econ-source{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:9px;font-size:10.5px;color:var(--muted)}
+.position-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:9px;margin-top:10px}
+.position-tile{background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:10px;min-height:65px}
+.position-tile .label{font-size:9.5px;color:var(--muted);font-weight:900;text-transform:uppercase;letter-spacing:.5px}
+.position-tile .value{font-size:15px;font-weight:900;margin-top:5px}
+@media(max-width:1050px){.dashboard{grid-template-columns:1fr}.side-panel{order:-1}#chart{height:470px}}
+@media(max-width:620px){body{padding:7px}.card{padding:11px;border-radius:11px}.title{font-size:19px}.controls{grid-template-columns:1fr 1fr}.full-mobile{grid-column:1/-1}#chart{height:390px}.plan-grid{grid-template-columns:1fr}.dashboard{gap:8px}}
+
+
+/* Halifax v12 explainability layer */
+.explain-card{margin-top:13px;padding:14px;border:1px solid var(--line2);border-radius:12px;background:linear-gradient(180deg,rgba(15,23,42,.95),rgba(2,6,23,.95))}
+.explain-hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:start}
+.explain-headline{font-size:17px;font-weight:950;line-height:1.25;margin-top:3px}
+.explain-summary{font-size:12px;color:#cbd5e1;line-height:1.55;margin-top:7px;max-width:920px}
+.quality-chip{min-width:108px;text-align:center;border:1px solid var(--line2);background:var(--bg);border-radius:10px;padding:9px 10px}
+.quality-chip .q-label{font-size:9px;color:var(--muted);font-weight:900;text-transform:uppercase;letter-spacing:.45px}
+.quality-chip .q-grade{font-size:24px;font-weight:950;margin-top:2px}
+.quality-chip .q-score{font-size:10px;color:#94a3b8;margin-top:2px}
+.explain-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.explain-block{background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:11px;min-height:96px}
+.explain-block .e-title{font-size:10px;color:#94a3b8;font-weight:900;text-transform:uppercase;letter-spacing:.45px;margin-bottom:7px}
+.explain-block p{font-size:11.5px;line-height:1.5;color:#dbeafe;margin:0}
+.explain-bullets{list-style:none;display:flex;flex-direction:column;gap:6px;font-size:11.5px;line-height:1.45;color:#cbd5e1}
+.action-banner{margin-top:12px;padding:11px 12px;border-radius:10px;border:1px solid var(--line2);background:var(--bg);display:flex;justify-content:space-between;align-items:center;gap:10px}
+.action-banner .a-label{font-size:9px;color:#94a3b8;font-weight:900;text-transform:uppercase;letter-spacing:.45px}
+.action-banner .a-value{font-size:14px;font-weight:950;margin-top:2px}
+.action-banner .a-note{font-size:10.5px;color:#94a3b8;text-align:right;max-width:58%}
+.signal-journal-note{margin-top:9px;font-size:10px;color:#64748b;line-height:1.4}
+@media(max-width:700px){.explain-hero{grid-template-columns:1fr}.quality-chip{width:100%}.explain-grid{grid-template-columns:1fr}.action-banner{align-items:flex-start;flex-direction:column}.action-banner .a-note{text-align:left;max-width:none}}
+
+
+
+.screener-link-card{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;padding:12px;border:1px solid #334155;border-radius:10px;background:#020617;margin-top:10px}
+.screener-link-copy{font-size:11.5px;line-height:1.45;color:#cbd5e1;max-width:850px}
+.link-button{display:inline-flex;align-items:center;justify-content:center;background:#7c3aed;color:white;text-decoration:none;border-radius:9px;padding:11px 14px;font-weight:850;white-space:nowrap}
+.link-button:hover{opacity:.9}
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="card header">
+        <div>
+            <div class="title">📊 Halifax Trade Engine v13.2</div>
+            <div class="subtitle">Fast single-ticker swing analysis • Plain-English explanations • Macro & risk guardrails • 5R screener moved to a separate page</div>
+        </div>
+        <div class="badge"><span class="status-dot"></span><span id="engineStatus">Engine ready</span></div>
+    </div>
+
+    <div class="card">
+        <div class="controls">
+            <div class="field">
+                <label>Ticker</label>
+                <input id="ticker" value="IREZ" autocomplete="off" style="text-transform:uppercase">
+            </div>
+            <div class="field">
+                <label>Trading Style</label>
+                <select id="style" onchange="applyStyleDefaults()">
+                    <option value="scalp">Scalp</option>
+                    <option value="day">Day Trade</option>
+                    <option value="swing" selected>Swing Trade</option>
+                    <option value="position">Position Trade</option>
+                    <option value="custom">Custom MTF</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Chart Timeframe</label>
+                <select id="timeframe">
+                    <option value="1m">1 Minute</option>
+                    <option value="2m">2 Minutes</option>
+                    <option value="5m">5 Minutes</option>
+                    <option value="15m">15 Minutes</option>
+                    <option value="30m">30 Minutes</option>
+                    <option value="60m">1 Hour</option>
+                    <option value="90m">90 Minutes</option>
+                    <option value="1d" selected>Daily</option>
+                    <option value="5d">5 Day</option>
+                    <option value="1wk">Weekly</option>
+                    <option value="1mo">Monthly</option>
+                    <option value="3mo">Quarterly</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Benchmark</label>
+                <select id="benchmark">
+                    <option value="SPY" selected>SPY - S&amp;P 500</option>
+                    <option value="QQQ">QQQ - Nasdaq 100</option>
+                    <option value="IWM">IWM - Russell 2000</option>
+                    <option value="DIA">DIA - Dow</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Sector / Industry</label>
+                <select id="sectorOverride">
+                    <option value="auto" selected>Auto Detect</option>
+                    <option value="broad">Broad Market</option>
+                    <option value="technology">Technology</option>
+                    <option value="communication">Communication Services</option>
+                    <option value="discretionary">Consumer Discretionary</option>
+                    <option value="staples">Consumer Staples</option>
+                    <option value="energy">Energy</option>
+                    <option value="financials">Financials</option>
+                    <option value="healthcare">Health Care</option>
+                    <option value="industrials">Industrials</option>
+                    <option value="materials">Materials</option>
+                    <option value="realestate">Real Estate</option>
+                    <option value="utilities">Utilities</option>
+                    <option value="airlines">Airlines</option>
+                    <option value="semiconductors">Semiconductors</option>
+                    <option value="banks">Banks</option>
+                    <option value="biotech">Biotechnology</option>
+                    <option value="retail">Retail</option>
+                    <option value="homebuilders">Homebuilders</option>
+                    <option value="transportation">Transportation</option>
+                    <option value="goldminers">Gold Miners</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Account ($)</label>
+                <input id="account" type="number" value="25000" min="0" step="100">
+            </div>
+            <div class="field">
+                <label>Risk Per Trade (%)</label>
+                <input id="risk" type="number" value="1" min="0.1" max="5" step="0.1">
+            </div>
+            <div class="field">
+                <label>Max Position (%)</label>
+                <input id="maxPosition" type="number" value="20" min="1" max="100" step="1">
+            </div>
+            <div class="field">
+                <label>ATR Stop Multiple</label>
+                <input id="atrMultiple" type="number" value="1.7" min="0.5" max="5" step="0.1">
+            </div>
+            <div class="field">
+                <label>Maximum Stop Distance (%)</label>
+                <input id="maxStopPct" type="number" value="8" min="1" max="25" step="0.5">
+            </div>
+            <div class="field">
+                <label>Target R Multiple (1:5 default)</label>
+                <input id="rewardMultiple" type="number" value="5" min="1" max="10" step="0.25">
+            </div>
+            <div class="field">
+                <label>Slippage Allowance (%)</label>
+                <input id="slippage" type="number" value="0.10" min="0" max="3" step="0.05">
+            </div>
+            <div class="field">
+                <label>Session Data</label>
+                <div class="checkbox-row"><input id="prepost" type="checkbox"> Include pre/post market</div>
+            </div>
+            <div class="field">
+                <label>Macro Guardrails</label>
+                <div class="checkbox-row"><input id="macroGuard" type="checkbox" checked> Sector ETF, rates, commodities, VIX &amp; news</div>
+            </div>
+            <div class="field">
+                <label>Economic Data Probability</label>
+                <div class="checkbox-row"><input id="econGuard" type="checkbox" checked> CPI, PCE, NFP/jobs &amp; rate pressure</div>
+            </div>
+            <button id="analyzeBtn" class="btn-primary full-mobile" onclick="runEngine()">RUN HALIFAX ANALYSIS</button>
+        </div>
+
+        <div class="section-divider"></div>
+        <div class="controls">
+            <button class="btn-dark" onclick="copyTradePlan()">COPY LAST PLAN</button>
+        </div>
+
+    </div>
+
+    <div id="decisionCard" class="card decision-card">
+        <div class="panel-title">Halifax Trade Decision</div>
+        <div id="tradeOutput"><div class="loading">Enter a ticker and run the Halifax analysis.</div></div>
+    </div>
+
+    <div class="card">
+        <div class="panel-title yellow">Position &amp; Leveraged ETF Guardrails</div>
+        <div class="position-toolbar">
+            <div class="field"><label>Position Ticker</label><input id="positionTicker" value="IREZ" style="text-transform:uppercase" oninput="savePositionSettings()"></div>
+            <div class="field"><label>Shares Held</label><input id="positionShares" type="number" value="1000" min="0" step="1" oninput="savePositionSettings()"></div>
+            <div class="field"><label>Average Cost</label><input id="positionCost" type="number" value="13.11" min="0" step="0.01" oninput="savePositionSettings()"></div>
+            <div class="field"><label>Maximum Loss From Cost (%)</label><input id="positionMaxLoss" type="number" value="8" min="1" max="40" step="0.5" oninput="savePositionSettings()"></div>
+            <div class="field"><label>Daily Review Time</label><input id="positionReviewTime" value="2:45 PM CT" readonly></div>
+            <div class="field"><label>Leveraged ETF Guardrail</label><div class="checkbox-row"><input id="leverageGuard" type="checkbox" checked onchange="savePositionSettings()"> Analyze the underlying first</div></div>
+        </div>
+        <div class="notice">IREZ defaults are loaded from your position: 1,000 shares at $13.11, a $13,110 cost basis. The loss percentage is your configurable alert level—not an automatic order.</div>
+
+        <div class="section-divider"></div>
+        <div class="panel-title cyan">Economic Data Probability Engine</div>
+        <div class="econ-toolbar">
+            <div class="field"><label>CPI YoY Actual (%)</label><input id="econCpi" type="number" value="3.5" step="0.1" oninput="recalculateEconomicProbability('manual')"></div>
+            <div class="field"><label>CPI Consensus (%)</label><input id="econCpiCons" type="number" placeholder="optional" step="0.1" oninput="recalculateEconomicProbability('manual')"></div>
+            <div class="field"><label>Core CPI YoY (%)</label><input id="econCoreCpi" type="number" value="2.6" step="0.1" oninput="recalculateEconomicProbability('manual')"></div>
+            <div class="field"><label>Core CPI Consensus (%)</label><input id="econCoreCpiCons" type="number" placeholder="optional" step="0.1" oninput="recalculateEconomicProbability('manual')"></div>
+            <div class="field"><label>PCE YoY Actual (%)</label><input id="econPce" type="number" value="3.7" step="0.1" oninput="recalculateEconomicProbability('manual')"></div>
+            <div class="field"><label>PCE Consensus (%)</label><input id="econPceCons" type="number" placeholder="optional" step="0.1" oninput="recalculateEconomicProbability('manual')"></div>
+            <div class="field"><label>Core PCE YoY (%)</label><input id="econCorePce" type="number" value="3.3" step="0.1" oninput="recalculateEconomicProbability('manual')"></div>
+            <div class="field"><label>Core PCE Consensus (%)</label><input id="econCorePceCons" type="number" placeholder="optional" step="0.1" oninput="recalculateEconomicProbability('manual')"></div>
+            <div class="field"><label>NFP Change (000s)</label><input id="econNfp" type="number" value="-23" step="1" oninput="recalculateEconomicProbability('manual')"></div>
+            <div class="field"><label>NFP Consensus (000s)</label><input id="econNfpCons" type="number" placeholder="optional" step="1" oninput="recalculateEconomicProbability('manual')"></div>
+            <div class="field"><label>Unemployment (%)</label><input id="econUnemp" type="number" value="4.1" step="0.1" oninput="recalculateEconomicProbability('manual')"></div>
+            <div class="field"><label>Unemployment Consensus (%)</label><input id="econUnempCons" type="number" placeholder="optional" step="0.1" oninput="recalculateEconomicProbability('manual')"></div>
+            <div class="field"><label>Fed Funds Effective (%)</label><input id="econFed" type="number" value="3.63" step="0.01" oninput="recalculateEconomicProbability('manual')"></div>
+            <div class="field"><label>2Y Treasury (%)</label><input id="econ2y" type="number" value="4.25" step="0.01" oninput="recalculateEconomicProbability('manual')"></div>
+            <div class="field"><label>10Y Treasury (%)</label><input id="econ10y" type="number" value="4.69" step="0.01" oninput="recalculateEconomicProbability('manual')"></div>
+            <button id="econLoadBtn" class="btn-dark" onclick="loadOfficialEconomicData(true)">REFRESH FRED DATA</button>
+        </div>
+        <div id="econProbabilityOutput" class="econ-results"></div>
+        <div id="econSource" class="econ-source">Built-in official-data snapshot through Aug. 7, 2026. Refresh attempts to load newer FRED series. Consensus fields are optional and are never invented.</div>
+        <div class="notice">Probabilities are transparent model scores, not CME/FedWatch market-implied probabilities and not forecasts of the next data release. Without a consensus value, the engine scores the current economic regime and trend; with consensus, it also scores the release surprise.</div>
+
+        <div class="section-divider"></div>
+        <div class="panel-title cyan">Halifax 5R Opportunity Screener</div>
+        <div class="screener-link-card">
+            <div class="screener-link-copy"><strong>Full-market 1:5 discovery now runs on its own page.</strong> Keeping the screener separate makes the main Halifax page smaller and prevents full-market discovery work from sharing the analyzer page.</div>
+            <a class="link-button" href="screener.html">OPEN 5R SCREENER →</a>
+        </div>
+    </div>
+
+    <div id="regimeCard" class="card" style="display:none">
+        <div class="panel-title cyan">Market &amp; Execution Context</div>
+        <div id="regimeOutput" class="regime-grid"></div>
+    </div>
+
+    <div id="positionCard" class="card" style="display:none">
+        <div class="panel-title yellow">Position &amp; Daily-Reset Guardrails</div>
+        <div id="positionOutput"></div>
+    </div>
+
+
+    <div class="card">
+        <div class="panel-title cyan">Halifax Signal Journal</div>
+        <div class="controls" style="margin-top:8px">
+            <button class="btn-dark" onclick="renderSignalJournal()">SHOW RECENT SIGNALS</button>
+            <button class="btn-dark" onclick="exportSignalJournal()">EXPORT JOURNAL CSV</button>
+            <button class="btn-dark" onclick="clearSignalJournal()">CLEAR JOURNAL</button>
+        </div>
+        <div id="journalSummary" class="notice">Each completed analysis is saved locally in this browser for later validation. This log does not calculate a win rate by itself.</div>
+        <div id="journalOutput" class="table-wrap" style="margin-top:9px"></div>
+    </div>
+
+    <div class="dashboard">
+        <div>
+            <div class="card"><div id="chart"></div></div>
+
+            <div id="mtfCard" class="card" style="display:none">
+                <div class="panel-title blue">Multi-Timeframe Confirmation Matrix</div>
+                <div id="mtfOutput" class="table-wrap"></div>
+            </div>
+
+            <div class="card">
+                <div class="panel-title purple">News &amp; Event Catalysts</div>
+                <div id="newsOutput"><div class="loading">Run an analysis to load ticker news.</div></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+"use strict";
+
+let chart, candleSeries, ema9Series, ema21Series, sma50Series, sma200Series;
+let entryPriceLine, stopPriceLine, target1PriceLine, target2PriceLine;
+let lastPlanText = "";
+const responseCache = new Map();
+let economicState = null;
+
+const ECON_FALLBACK = {
+    source:"Official-data snapshot", snapshotDate:"2026-08-07",
+    cpiYoY:3.5, cpiMoM:-0.4, coreCpiYoY:2.6, coreCpiMoM:0.0,
+    pceYoY:3.7, pceMoM:-0.1, corePceYoY:3.3, corePceMoM:0.1,
+    nfpChange:-23, prevNfpChange:57, unemployment:4.1, prevUnemployment:4.2,
+    fedFunds:3.63, treasury2y:4.25, treasury10y:4.69,
+    dates:{cpi:"2026-06",pce:"2026-06",jobs:"2026-07",rates:"2026-08-06"}
+};
+const ECON_RATE_SENSITIVITY = {broad:.65,technology:1.15,semiconductors:1.10,communication:.75,discretionary:.85,retail:.75,staples:.35,energy:.25,financials:.25,banks:.15,healthcare:.45,biotech:.80,industrials:.55,transportation:.55,airlines:.45,materials:.45,realestate:1.35,utilities:1.10,homebuilders:1.40,goldminers:.55};
+const ECON_GROWTH_SENSITIVITY = {broad:.55,technology:.45,semiconductors:.65,communication:.45,discretionary:.90,retail:.85,staples:.15,energy:.65,financials:.70,banks:.80,healthcare:.15,biotech:.10,industrials:.90,transportation:.90,airlines:1.00,materials:.85,realestate:.35,utilities:.10,homebuilders:.80,goldminers:.15};
+
+const STYLE_PACKS = {
+    scalp: ["1m", "5m", "15m", "60m"],
+    day: ["5m", "15m", "60m", "1d"],
+    // Swing mode intentionally drops the 15-minute request. 60m + daily + weekly
+    // is enough for a swing decision and cuts one network call from every analysis.
+    swing: ["60m", "1d", "1wk"],
+    position: ["60m", "1d", "1wk", "1mo"]
+};
+
+const STYLE_DEFAULT_CHART = { scalp:"5m", day:"15m", swing:"1d", position:"1wk" };
+const TF_LABELS = {"1m":"1 Min","2m":"2 Min","5m":"5 Min","15m":"15 Min","30m":"30 Min","60m":"1 Hour","90m":"90 Min","1d":"Daily","5d":"5 Day","1wk":"Weekly","1mo":"Monthly","3mo":"Quarterly"};
+const TF_ORDER = ["1m","2m","5m","15m","30m","60m","90m","1d","5d","1wk","1mo","3mo"];
+const SPECIAL_INSTRUMENTS = {
+    IREZ:{label:"Tradr 2X Short IREN Daily ETF",underlying:"IREN",dailyMultiple:-2,dailyReset:true,allowedStyles:["scalp","day"]}
+};
+const SECTOR_PROFILES = {
+    broad:{label:"Broad Market",etf:"SPY",cyclical:false,defensive:false,drivers:[],newsQuery:"stock market economy earnings"},
+    technology:{label:"Technology",etf:"XLK",cyclical:true,drivers:[{symbol:"^TNX",label:"10Y Yield",weight:-0.55}],newsQuery:"technology demand rates regulation"},
+    communication:{label:"Communication Services",etf:"XLC",cyclical:true,drivers:[{symbol:"^TNX",label:"10Y Yield",weight:-0.35}],newsQuery:"communication media advertising regulation"},
+    discretionary:{label:"Consumer Discretionary",etf:"XLY",cyclical:true,drivers:[{symbol:"^TNX",label:"10Y Yield",weight:-0.45},{symbol:"CL=F",label:"Crude Oil",weight:-0.15}],newsQuery:"consumer spending retail demand economy"},
+    staples:{label:"Consumer Staples",etf:"XLP",defensive:true,drivers:[],newsQuery:"consumer staples inflation pricing demand"},
+    energy:{label:"Energy",etf:"XLE",cyclical:true,drivers:[{symbol:"CL=F",label:"Crude Oil",weight:1.0},{symbol:"NG=F",label:"Natural Gas",weight:0.25}],newsQuery:"oil natural gas production OPEC energy"},
+    financials:{label:"Financials",etf:"XLF",cyclical:true,drivers:[{symbol:"^TNX",label:"10Y Yield",weight:0.18}],newsQuery:"banks credit losses rates economy financial"},
+    healthcare:{label:"Health Care",etf:"XLV",defensive:true,drivers:[],newsQuery:"healthcare FDA drug pricing clinical trial"},
+    industrials:{label:"Industrials",etf:"XLI",cyclical:true,drivers:[{symbol:"HG=F",label:"Copper",weight:0.25},{symbol:"CL=F",label:"Crude Oil",weight:-0.12}],newsQuery:"industrial orders manufacturing freight economy"},
+    materials:{label:"Materials",etf:"XLB",cyclical:true,drivers:[{symbol:"HG=F",label:"Copper",weight:0.75},{symbol:"DX-Y.NYB",label:"U.S. Dollar",weight:-0.35}],newsQuery:"materials commodities construction China demand"},
+    realestate:{label:"Real Estate",etf:"XLRE",cyclical:true,drivers:[{symbol:"^TNX",label:"10Y Yield",weight:-1.0}],newsQuery:"real estate REIT rates refinancing vacancies"},
+    utilities:{label:"Utilities",etf:"XLU",defensive:true,drivers:[{symbol:"^TNX",label:"10Y Yield",weight:-0.8},{symbol:"NG=F",label:"Natural Gas",weight:-0.12}],newsQuery:"utilities rates power demand regulation"},
+    airlines:{label:"Airlines",etf:"JETS",cyclical:true,drivers:[{symbol:"CL=F",label:"Crude Oil",weight:-1.0}],newsQuery:"airline airport delays FAA fuel demand"},
+    semiconductors:{label:"Semiconductors",etf:"SOXX",cyclical:true,drivers:[{symbol:"^TNX",label:"10Y Yield",weight:-0.5},{symbol:"QQQ",label:"Nasdaq 100",weight:0.3}],newsQuery:"semiconductors chips export controls AI demand"},
+    banks:{label:"Banks",etf:"KRE",cyclical:true,drivers:[{symbol:"^TNX",label:"10Y Yield",weight:0.2}],newsQuery:"banks deposits credit losses delinquencies rates"},
+    biotech:{label:"Biotechnology",etf:"XBI",cyclical:true,drivers:[{symbol:"^TNX",label:"10Y Yield",weight:-0.45}],newsQuery:"biotech FDA clinical trial approval failure"},
+    retail:{label:"Retail",etf:"XRT",cyclical:true,drivers:[{symbol:"^TNX",label:"10Y Yield",weight:-0.4},{symbol:"CL=F",label:"Crude Oil",weight:-0.1}],newsQuery:"retail consumer spending sales guidance economy"},
+    homebuilders:{label:"Homebuilders",etf:"XHB",cyclical:true,drivers:[{symbol:"^TNX",label:"10Y Yield",weight:-1.0}],newsQuery:"homebuilders mortgage rates housing demand permits"},
+    transportation:{label:"Transportation",etf:"IYT",cyclical:true,drivers:[{symbol:"CL=F",label:"Crude Oil",weight:-0.5},{symbol:"HG=F",label:"Copper",weight:0.12}],newsQuery:"transportation freight demand fuel shipping economy"},
+    goldminers:{label:"Gold Miners",etf:"GDX",cyclical:false,drivers:[{symbol:"GC=F",label:"Gold",weight:1.0},{symbol:"DX-Y.NYB",label:"U.S. Dollar",weight:-0.5},{symbol:"^TNX",label:"10Y Yield",weight:-0.25}],newsQuery:"gold miners gold prices dollar rates"}
+};
+
+const TICKER_PROFILE = Object.fromEntries(Object.entries({
+    technology:["AAPL","MSFT","ORCL","CRM","ADBE","NOW","IBM","ACN","CSCO","PANW","CRWD","PLTR","DELL","HPQ","HPE","INTU","SNOW","IREN"],
+    communication:["GOOGL","GOOG","META","NFLX","DIS","CMCSA","T","VZ","TMUS","SNAP","PINS","ROKU","PARA","WBD","SPOT"],
+    discretionary:["AMZN","TSLA","HD","LOW","NKE","MCD","SBUX","BKNG","ABNB","TJX","ROST","GM","F","RIVN","LULU"],
+    staples:["WMT","COST","PG","KO","PEP","PM","MO","MDLZ","CL","KMB","KR","TGT","KDP","GIS"],
+    energy:["XOM","CVX","COP","OXY","SLB","EOG","MPC","VLO","PSX","HAL","DVN","FANG","BKR"],
+    financials:["JPM","BAC","WFC","C","GS","MS","BLK","SCHW","AXP","V","MA","PYPL","COF","ICE","CME"],
+    healthcare:["LLY","UNH","JNJ","MRK","ABBV","PFE","TMO","ABT","AMGN","GILD","CVS","CI","HUM","ISRG","MDT"],
+    industrials:["CAT","DE","GE","RTX","BA","HON","UPS","FDX","UNP","CSX","LMT","NOC","ETN","MMM","EMR"],
+    materials:["LIN","APD","SHW","FCX","NEM","NUE","DOW","DD","ECL","MLM","VMC","STLD","AA"],
+    realestate:["AMT","PLD","EQIX","O","SPG","PSA","WELL","DLR","VICI","CCI","AVB","EQR","ARE"],
+    utilities:["NEE","SO","DUK","AEP","SRE","D","EXC","XEL","ED","PEG","PCG","WEC","AWK"],
+    airlines:["UAL","AAL","DAL","LUV","JBLU","ALK","SAVE","SKYW","HA"],
+    semiconductors:["NVDA","AMD","AVGO","TSM","MU","INTC","QCOM","TXN","AMAT","LRCX","KLAC","MRVL","ARM","SMCI","ON"],
+    banks:["CFG","KEY","FITB","HBAN","RF","ZION","CMA","WAL","FHN","MTB","PNC","TFC","USB"],
+    biotech:["REGN","VRTX","BIIB","MRNA","BNTX","CRSP","BEAM","NTLA","IONS","ALNY","EXAS"],
+    retail:["WMT","TGT","COST","DG","DLTR","BBY","M","KSS","ANF","GPS","BURL","ULTA","CHWY"],
+    homebuilders:["DHI","LEN","PHM","NVR","TOL","KBH","MTH","TMHC","MDC"],
+    transportation:["UPS","FDX","UNP","CSX","NSC","ODFL","JBHT","CHRW","XPO","ZIM","MATX"],
+    goldminers:["NEM","GOLD","AEM","KGC","AU","WPM","FNV","RGLD","AGI"]
+}).flatMap(([profile,tickers])=>tickers.map(t=>[t,profile])));
+
+const GENERIC_NEGATIVE_NEWS=["cuts guidance","guidance cut","lowers guidance","profit warning","weak demand","demand slowdown","recession","margin pressure","regulatory probe","investigation","data breach","cyberattack","lawsuit","strike","outage","recall","bankruptcy","default","layoffs"];
+const GENERIC_POSITIVE_NEWS=["raises guidance","raised guidance","beats estimates","earnings beat","strong demand","record revenue","margin expansion","approval","contract award","buyback","dividend increase"];
+const PROFILE_NEWS_TERMS={
+    airlines:{negative:["fuel cost","oil surge","airport delay","delays","cancellation","ground stop","faa","staffing shortage","weather disruption","capacity cut"],positive:["pricing power","record demand","capacity discipline","fuel costs fall"]},
+    technology:{negative:["export controls","chip restrictions","antitrust","cybersecurity breach","data center slowdown"],positive:["AI demand","cloud growth","subscription growth"]},
+    semiconductors:{negative:["export controls","chip restrictions","inventory correction","wafer shortage"],positive:["AI demand","chip demand","data center demand"]},
+    banks:{negative:["deposit outflows","credit losses","delinquencies","defaults","net interest margin compression"],positive:["deposit growth","credit quality improves","net interest income rises"]},
+    financials:{negative:["credit losses","delinquencies","defaults","trading loss"],positive:["assets under management rise","loan growth"]},
+    healthcare:{negative:["trial failure","FDA rejection","safety concern","patent loss"],positive:["FDA approval","trial success","positive clinical data"]},
+    biotech:{negative:["trial failure","FDA rejection","clinical hold","safety concern"],positive:["FDA approval","trial success","breakthrough designation"]},
+    realestate:{negative:["refinancing risk","vacancy","tenant default","cap rates rise","foreclosure"],positive:["occupancy rises","rent growth","rates fall"]},
+    homebuilders:{negative:["mortgage rates rise","housing demand weakens","cancellations rise"],positive:["mortgage rates fall","orders rise","housing demand improves"]},
+    energy:{negative:["oil prices fall","production disruption","refinery outage"],positive:["oil prices rise","production cut","OPEC cut"]},
+    retail:{negative:["same-store sales decline","consumer spending weakens","inventory glut"],positive:["same-store sales rise","holiday sales strong"]},
+    industrials:{negative:["order cancellations","backlog declines","supply chain disruption"],positive:["backlog growth","new orders rise","contract award"]},
+    materials:{negative:["commodity slump","construction slowdown","China demand weakens"],positive:["copper rises","commodity rally","China stimulus"]},
+    utilities:{negative:["wildfire liability","storm damage","rate case rejected"],positive:["rate case approved","power demand rises"]}
+};
+
+function applyStyleDefaults(){
+    const style = document.getElementById("style").value;
+    if (STYLE_DEFAULT_CHART[style]) document.getElementById("timeframe").value = STYLE_DEFAULT_CHART[style];
+}
+
+function getTimeframes(){
+    const style = document.getElementById("style").value;
+    const selected = document.getElementById("timeframe").value;
+    if (STYLE_PACKS[style]) return [...new Set([...STYLE_PACKS[style], selected])].sort((a,b)=>TF_ORDER.indexOf(a)-TF_ORDER.indexOf(b));
+    const idx = Math.max(0, TF_ORDER.indexOf(selected));
+    const candidates = [TF_ORDER[Math.max(0,idx-1)], selected, TF_ORDER[Math.min(TF_ORDER.length-1,idx+1)], TF_ORDER[Math.min(TF_ORDER.length-1,idx+2)]];
+    return [...new Set(candidates)];
+}
+
+function setStatus(text, color="var(--green)"){
+    document.getElementById("engineStatus").textContent = text;
+    document.querySelector(".status-dot").style.background = color;
+}
+
+function initChart(){
+    const box = document.getElementById("chart");
+    if (chart) { try { chart.remove(); } catch (e) {} }
+    box.innerHTML = "";
+    if (typeof LightweightCharts === "undefined") throw new Error("Chart library did not load. Internet access is required.");
+    chart = LightweightCharts.createChart(box, {
+        width: box.clientWidth,
+        height: box.clientHeight,
+        layout:{background:{color:"#020617"},textColor:"#cbd5e1"},
+        grid:{vertLines:{color:"#172033"},horzLines:{color:"#172033"}},
+        crosshair:{mode:LightweightCharts.CrosshairMode.Normal},
+        rightPriceScale:{borderColor:"#1e293b"},
+        timeScale:{borderColor:"#1e293b",timeVisible:true,secondsVisible:false}
+    });
+    candleSeries = chart.addCandlestickSeries({upColor:"#22c55e",downColor:"#ef4444",borderVisible:false,wickUpColor:"#22c55e",wickDownColor:"#ef4444"});
+    ema9Series = chart.addLineSeries({color:"#22d3ee",lineWidth:1,title:"EMA 9"});
+    ema21Series = chart.addLineSeries({color:"#60a5fa",lineWidth:2,title:"EMA 21"});
+    sma50Series = chart.addLineSeries({color:"#facc15",lineWidth:1,title:"SMA 50"});
+    sma200Series = chart.addLineSeries({color:"#f87171",lineWidth:2,title:"SMA 200"});
+    const resize = () => chart && chart.applyOptions({width:box.clientWidth,height:box.clientHeight});
+    if (!box.dataset.resizeBound){window.addEventListener("resize",resize);box.dataset.resizeBound="1";}
+}
+
+function sleep(ms){return new Promise(resolve=>setTimeout(resolve,ms));}
+async function fetchWithTimeout(url,options={},timeoutMs=8000){
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),timeoutMs);
+    try{return await fetch(url,{...options,signal:controller.signal,cache:"no-store"});}
+    finally{clearTimeout(timer);}
+}
+function yahooAlternateUrl(url){
+    return String(url).includes("query1.finance.yahoo.com")?String(url).replace("query1.finance.yahoo.com","query2.finance.yahoo.com"):null;
+}
+function jsonLooksUsable(data){return !!(data&&(data.chart||data.news||data.quotes));}
+async function parseJsonResponse(r){
+    if(!r.ok)throw new Error(`HTTP ${r.status}`);
+    const text=await r.text();
+    if(!text||text.length<2)throw new Error("empty response");
+    try{return JSON.parse(text);}catch(e){throw new Error("invalid JSON");}
+}
+async function fetchJson(url){
+    if(responseCache.has(url))return responseCache.get(url);
+    const alternate=yahooAlternateUrl(url);
+    const read=async(u,t)=>{const data=await parseJsonResponse(await fetchWithTimeout(u,{},t));if(!jsonLooksUsable(data))throw new Error("unusable response");return data;};
+    // Fast path: try both Yahoo hosts at the same time instead of waiting for serial timeouts.
+    const direct=[read(url,4600)];if(alternate)direct.push(read(alternate,4600));
+    try{const data=await Promise.any(direct);responseCache.set(url,data);return data;}catch(e){}
+    // Backup path: race independent browser proxies. This sharply reduces worst-case wait time.
+    const proxyUrls=[
+        `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+        `https://corsproxy.io/?${encodeURIComponent(url)}`,
+        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`
+    ];
+    try{const data=await Promise.any(proxyUrls.map(u=>read(u,7000)));responseCache.set(url,data);return data;}
+    catch(e){console.warn("Halifax market-data failure",url,e);throw new Error("Market data could not be loaded. Yahoo/direct access and the backup browser proxies all failed or timed out. This is a data-source/CORS connection problem, not a trade-score calculation error.");}
+}
+
+async function fetchTextWithFallback(url){
+    const attempts=[
+        {name:"Direct",run:async()=>{const r=await fetchWithTimeout(url,{},7000);if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.text();}},
+        {name:"AllOrigins",run:async()=>{const r=await fetchWithTimeout(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,{},9000);if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.text();}},
+        {name:"CorsProxy",run:async()=>{const r=await fetchWithTimeout(`https://corsproxy.io/?${encodeURIComponent(url)}`,{},9000);if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.text();}},
+        {name:"CodeTabs",run:async()=>{const r=await fetchWithTimeout(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,{},9000);if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.text();}}
+    ];
+    for(const attempt of attempts){try{const t=await attempt.run();if(t&&t.length>30)return t;}catch(e){}}
+    throw new Error("Economic data service did not respond before the timeout.");
+}
+function parseFredCSV(text){
+    const lines=String(text||"").trim().split(/\r?\n/);if(lines.length<2)return {};
+    const headers=lines[0].split(",").map(x=>x.trim().replace(/^\"|\"$/g,""));const out={};for(const h of headers.slice(1))out[h]=[];
+    for(const line of lines.slice(1)){
+        const cols=line.split(",");const date=cols[0]?.replace(/^\"|\"$/g,"");
+        for(let i=1;i<headers.length;i++){const raw=(cols[i]||"").replace(/^\"|\"$/g,"").trim(),v=Number(raw);if(date&&raw!=="."&&raw!==""&&Number.isFinite(v))out[headers[i]].push({date,value:v});}
+    }
+    return out;
+}
+function seriesLatest(series){return Array.isArray(series)&&series.length?series.at(-1):null;}
+function pctChange(a,b){return Number.isFinite(a)&&Number.isFinite(b)&&b!==0?(a/b-1)*100:null;}
+function yoyFromSeries(series){if(!series||series.length<13)return null;return pctChange(series.at(-1).value,series.at(-13).value);}
+function momFromSeries(series){if(!series||series.length<2)return null;return pctChange(series.at(-1).value,series.at(-2).value);}
+function buildEconomicDataFromFred(series){
+    const cpi=series.CPIAUCSL||[],coreCpi=series.CPILFESL||[],pce=series.PCEPI||[],corePce=series.PCEPILFE||[],pay=series.PAYEMS||[],un=series.UNRATE||[],fed=series.DFF||[],y2=series.DGS2||[],y10=series.DGS10||[];
+    const latestPay=seriesLatest(pay),prevPay=pay.length>1?pay.at(-2):null,prev2Pay=pay.length>2?pay.at(-3):null,latestUn=seriesLatest(un),prevUn=un.length>1?un.at(-2):null,latestFed=seriesLatest(fed),latest2=seriesLatest(y2),latest10=seriesLatest(y10);
+    const data={source:"FRED / official source series",snapshotDate:[seriesLatest(cpi)?.date,seriesLatest(pce)?.date,latestPay?.date,latest2?.date].filter(Boolean).sort().at(-1)||new Date().toISOString().slice(0,10),cpiYoY:yoyFromSeries(cpi),cpiMoM:momFromSeries(cpi),coreCpiYoY:yoyFromSeries(coreCpi),coreCpiMoM:momFromSeries(coreCpi),pceYoY:yoyFromSeries(pce),pceMoM:momFromSeries(pce),corePceYoY:yoyFromSeries(corePce),corePceMoM:momFromSeries(corePce),nfpChange:latestPay&&prevPay?latestPay.value-prevPay.value:null,prevNfpChange:prevPay&&prev2Pay?prevPay.value-prev2Pay.value:null,unemployment:latestUn?.value??null,prevUnemployment:prevUn?.value??null,fedFunds:latestFed?.value??null,treasury2y:latest2?.value??null,treasury10y:latest10?.value??null,dates:{cpi:seriesLatest(cpi)?.date||"—",pce:seriesLatest(pce)?.date||"—",jobs:latestPay?.date||"—",rates:latest2?.date||"—"}};
+    for(const [k,v] of Object.entries(ECON_FALLBACK))if((data[k]==null||!Number.isFinite(data[k]))&&Number.isFinite(v))data[k]=v;
+    return data;
+}
+function getOptionalNumber(id){const el=document.getElementById(id);if(!el||String(el.value).trim()==="")return null;const v=Number(el.value);return Number.isFinite(v)?v:null;}
+function setEconInput(id,value,d=2){const el=document.getElementById(id);if(el&&Number.isFinite(value))el.value=Number(value).toFixed(d).replace(/\.00$/,"");}
+function sigmoid(x){return 1/(1+Math.exp(-x));}
+function probabilityFromScore(score){return Math.round(clamp(sigmoid(score)*100,1,99));}
+function consensusSurprise(actual,consensus,scale){return Number.isFinite(actual)&&Number.isFinite(consensus)&&scale?clamp((actual-consensus)/scale,-3,3):0;}
+function calculateEconomicProbability(data=null){
+    const d=data||economicState||ECON_FALLBACK,cpi=getOptionalNumber("econCpi")??d.cpiYoY,coreCpi=getOptionalNumber("econCoreCpi")??d.coreCpiYoY,pce=getOptionalNumber("econPce")??d.pceYoY,corePce=getOptionalNumber("econCorePce")??d.corePceYoY,nfp=getOptionalNumber("econNfp")??d.nfpChange,unemp=getOptionalNumber("econUnemp")??d.unemployment,fed=getOptionalNumber("econFed")??d.fedFunds,y2=getOptionalNumber("econ2y")??d.treasury2y,y10=getOptionalNumber("econ10y")??d.treasury10y;
+    const cpiCons=getOptionalNumber("econCpiCons"),coreCpiCons=getOptionalNumber("econCoreCpiCons"),pceCons=getOptionalNumber("econPceCons"),corePceCons=getOptionalNumber("econCorePceCons"),nfpCons=getOptionalNumber("econNfpCons"),unempCons=getOptionalNumber("econUnempCons");
+    const cpiLevel=((cpi-2.3)/1.4)*.45+((coreCpi-2.3)/1.2)*.55,pceLevel=((pce-2.0)/1.4)*.40+((corePce-2.0)/1.2)*.60;
+    const cpiMomentum=clamp(((d.cpiMoM??0)-.2)/.35,-2,2)*.45+clamp(((d.coreCpiMoM??0)-.2)/.25,-2,2)*.55,pceMomentum=clamp(((d.pceMoM??0)-.2)/.30,-2,2)*.40+clamp(((d.corePceMoM??0)-.2)/.22,-2,2)*.60;
+    const cpiSurprise=consensusSurprise(cpi,cpiCons,.2)*.45+consensusSurprise(coreCpi,coreCpiCons,.2)*.55,pceSurprise=consensusSurprise(pce,pceCons,.2)*.40+consensusSurprise(corePce,corePceCons,.2)*.60;
+    const cpiPressureScore=clamp(cpiLevel+cpiMomentum*.45+cpiSurprise*.75,-4,4),pcePressureScore=clamp(pceLevel+pceMomentum*.45+pceSurprise*.75,-4,4),inflationSurprise=cpiSurprise*.48+pceSurprise*.52,inflationScore=clamp(cpiPressureScore*.45+pcePressureScore*.55,-4,4),nfpBase=clamp((nfp-100)/160,-3,3),unempTrend=Number.isFinite(d.prevUnemployment)?clamp((d.prevUnemployment-unemp)/.25,-2,2):0;
+    const jobsSurprise=consensusSurprise(nfp,nfpCons,75)*.7+(Number.isFinite(unempCons)?clamp((unempCons-unemp)/.15,-3,3):0)*.3,laborScore=clamp(nfpBase*.62+unempTrend*.38+jobsSurprise*.6,-4,4),weakGrowthScore=clamp((-nfpBase)*.65+clamp((unemp-(d.prevUnemployment??unemp))/.20,-2,2)*.35-jobsSurprise*.25,-4,4),yieldGap=Number.isFinite(y2)&&Number.isFinite(fed)?clamp((y2-fed)/1.25,-2.5,2.5):0,curve=Number.isFinite(y10)&&Number.isFinite(y2)?y10-y2:null,rateScore=clamp(inflationScore*.62+laborScore*.22+yieldGap*.55,-4,4);
+    const cpiHotProb=probabilityFromScore(cpiPressureScore*1.12),pceHotProb=probabilityFromScore(pcePressureScore*1.12),inflationProb=probabilityFromScore(inflationScore*1.15),laborProb=probabilityFromScore(laborScore*1.10),weakGrowthProb=probabilityFromScore(weakGrowthScore*1.10),hawkishProb=probabilityFromScore(rateScore*1.10),easingProb=100-hawkishProb,goldilocksGrowth=1-Math.min(1,Math.abs(laborScore-.15)/2.4),equityScore=clamp((-inflationScore*.50-rateScore*.38)+(goldilocksGrowth-.5)*1.05-weakGrowthScore*.42,-4,4),equityTailwindProb=probabilityFromScore(equityScore*1.10),surpriseCount=[cpiCons,coreCpiCons,pceCons,corePceCons,nfpCons,unempCons].filter(Number.isFinite).length,surpriseScore=clamp(-inflationSurprise*.65+(inflationScore>0?-jobsSurprise*.20:jobsSurprise*.25),-3,3);
+    return {cpi,coreCpi,pce,corePce,nfp,unemp,fed,y2,y10,curve,cpiPressureScore,pcePressureScore,inflationScore,laborScore,weakGrowthScore,rateScore,equityScore,cpiHotProb,pceHotProb,inflationProb,laborProb,weakGrowthProb,hawkishProb,easingProb,equityTailwindProb,inflationSurprise,jobsSurprise,surpriseScore,surpriseCount,source:d.source||"Manual",snapshotDate:d.snapshotDate||"—",dates:d.dates||{}};
+}
+function economicSectorImpact(profileKey,econ){
+    if(document.getElementById("econGuard")?.checked===false||!econ)return {applies:false,adjustment:0,reasons:[],blockLong:false,blockShort:false};
+    const snapshotMs=Date.parse(econ.snapshotDate||""),ageDays=Number.isFinite(snapshotMs)?(Date.now()-snapshotMs)/86400000:Infinity,isManual=String(econ.source||"").toLowerCase().includes("manual");
+    if(ageDays>45&&!isManual)return {applies:true,adjustment:0,reasons:[`Economic snapshot is ${Math.round(ageDays)} days old; it is displayed but excluded from the trading score until refreshed or manually updated.`],blockLong:false,blockShort:false,stale:true};
+    const rateSens=ECON_RATE_SENSITIVITY[profileKey]??ECON_RATE_SENSITIVITY.broad,growthSens=ECON_GROWTH_SENSITIVITY[profileKey]??ECON_GROWTH_SENSITIVITY.broad,ratePressure=(econ.hawkishProb-50)/50,weakGrowth=(econ.weakGrowthProb-50)/50,equityBias=(econ.equityTailwindProb-50)/50;
+    let adjustment=equityBias*10-ratePressure*rateSens*7-weakGrowth*growthSens*7;if(["financials","banks"].includes(profileKey)&&econ.hawkishProb>=55&&econ.weakGrowthProb<55)adjustment+=2.5;if(profileKey==="goldminers"&&econ.inflationProb>=65)adjustment+=2;adjustment=Math.round(clamp(adjustment,-18,14));
+    const reasons=[`Economic model: inflation pressure ${econ.inflationProb}%, hawkish-rate pressure ${econ.hawkishProb}%, weak-growth risk ${econ.weakGrowthProb}%, equity tailwind ${econ.equityTailwindProb}%.`,econ.surpriseCount?`${econ.surpriseCount} consensus input(s) supplied; release-surprise effects are included.`:"No consensus forecasts supplied; economic score uses current levels and trends, not a release-surprise assumption."];if(Math.abs(adjustment)>=5)reasons.push(`Economic data contributes ${adjustment>0?"+":""}${adjustment} sector-adjusted points.`);
+    return {applies:true,adjustment,reasons,blockLong:econ.hawkishProb>=82&&econ.weakGrowthProb>=70&&adjustment<=-10,blockShort:econ.equityTailwindProb>=82&&econ.hawkishProb<=40&&adjustment>=9,rateSensitivity:rateSens,growthSensitivity:growthSens};
+}
+function renderEconomicProbability(econ){
+    if(!econ)return;const out=document.getElementById("econProbabilityOutput");if(!out)return;
+    const probTile=(label,pct,goodWhenHigh,meta)=>{const good=goodWhenHigh?pct>=60:pct<=40,bad=goodWhenHigh?pct<=40:pct>=60,cls=good?"green":bad?"red":"yellow";return `<div class="prob-tile"><div class="prob-label">${escapeHTML(label)}</div><div class="prob-value ${cls}">${pct}%</div><div class="prob-track"><div class="prob-fill" style="width:${pct}%"></div></div><div class="econ-meta">${escapeHTML(meta)}</div></div>`;};
+    out.innerHTML=[probTile("CPI Hot / Restrictive",econ.cpiHotProb,false,`CPI ${econ.cpi.toFixed(1)}% • Core CPI ${econ.coreCpi.toFixed(1)}%`),probTile("PCE Hot / Restrictive",econ.pceHotProb,false,`PCE ${econ.pce.toFixed(1)}% • Core PCE ${econ.corePce.toFixed(1)}%`),probTile("Inflation Pressure",econ.inflationProb,false,"Combined CPI + PCE regime"),probTile("NFP / Labor Strength",econ.laborProb,true,`NFP ${econ.nfp>=0?"+":""}${Math.round(econ.nfp)}k • unemployment ${econ.unemp.toFixed(1)}%`),probTile("Hawkish Rate Pressure",econ.hawkishProb,false,`Fed ${econ.fed.toFixed(2)}% • 2Y ${econ.y2.toFixed(2)}%${Number.isFinite(econ.curve)?` • 10Y-2Y ${signed(econ.curve,2)}%`:""}`),probTile("Rate-Easing Bias",econ.easingProb,true,"Model complement of hawkish-rate pressure"),probTile("Weak-Growth Risk",econ.weakGrowthProb,false,"Labor slowdown / unemployment pressure"),probTile("Equity Macro Tailwind",econ.equityTailwindProb,true,"Goldilocks score after inflation, rates and growth")].join("");
+    const src=document.getElementById("econSource");if(src)src.innerHTML=`<span>${escapeHTML(econ.source)} • snapshot ${escapeHTML(econ.snapshotDate)}</span><span>CPI ${escapeHTML(econ.dates?.cpi||"—")} • PCE ${escapeHTML(econ.dates?.pce||"—")} • Jobs ${escapeHTML(econ.dates?.jobs||"—")} • Rates ${escapeHTML(econ.dates?.rates||"—")}</span><span>${econ.surpriseCount?`${econ.surpriseCount} consensus input(s) active`:"No consensus inputs — regime probability only"}</span><span><a href="https://www.bls.gov/cpi/" target="_blank" rel="noopener noreferrer" class="blue">BLS CPI</a> • <a href="https://www.bls.gov/ces/" target="_blank" rel="noopener noreferrer" class="blue">BLS Jobs</a> • <a href="https://www.bea.gov/data/personal-consumption-expenditures-price-index" target="_blank" rel="noopener noreferrer" class="blue">BEA PCE</a> • <a href="https://fred.stlouisfed.org/" target="_blank" rel="noopener noreferrer" class="blue">FRED Rates</a></span>`;
+}
+function recalculateEconomicProbability(source="manual"){if(source==="manual"&&economicState)economicState={...economicState,source:economicState.source.includes("manual")?economicState.source:`${economicState.source} + manual overrides`};const econ=calculateEconomicProbability(economicState||ECON_FALLBACK);renderEconomicProbability(econ);return econ;}
+async function loadOfficialEconomicData(showStatus=false){
+    const btn=document.getElementById("econLoadBtn");if(btn)btn.disabled=true;if(showStatus)setStatus("Refreshing CPI, PCE, jobs and rates…","var(--yellow)");
+    try{
+        const ids=["CPIAUCSL","CPILFESL","PCEPI","PCEPILFE","PAYEMS","UNRATE","DFF","DGS2","DGS10"],joined=ids.join(",");
+        let csv=await fetchTextWithFallback(`https://fred.stlouisfed.org/graph/fredgraph.csv?id=${joined}`),series=parseFredCSV(csv);
+        if(ids.some(id=>!series[id]?.length)){
+            const parts=await mapLimit(ids,3,async id=>{try{const one=parseFredCSV(await fetchTextWithFallback(`https://fred.stlouisfed.org/graph/fredgraph.csv?id=${id}`));return [id,one[id]||[]];}catch(e){return [id,[]];}});series=Object.fromEntries(parts);
+        }
+        const fresh=buildEconomicDataFromFred(series);if(!Number.isFinite(fresh.cpiYoY)||!Number.isFinite(fresh.pceYoY)||!Number.isFinite(fresh.nfpChange))throw new Error("Incomplete FRED response");economicState=fresh;setEconInput("econCpi",fresh.cpiYoY,2);setEconInput("econCoreCpi",fresh.coreCpiYoY,2);setEconInput("econPce",fresh.pceYoY,2);setEconInput("econCorePce",fresh.corePceYoY,2);setEconInput("econNfp",fresh.nfpChange,0);setEconInput("econUnemp",fresh.unemployment,2);setEconInput("econFed",fresh.fedFunds,2);setEconInput("econ2y",fresh.treasury2y,2);setEconInput("econ10y",fresh.treasury10y,2);recalculateEconomicProbability();if(showStatus)setStatus("Economic data refreshed");return fresh;
+    }catch(e){if(!economicState)economicState={...ECON_FALLBACK,source:"Official-data snapshot fallback"};recalculateEconomicProbability();if(showStatus)setStatus("Using built-in economic snapshot","var(--yellow)");return economicState;}finally{if(btn)btn.disabled=false;}
+}
+
+function timeframeRange(tf){
+    const map={"1m":"7d","2m":"60d","5m":"60d","15m":"60d","30m":"60d","60m":"1y","90m":"60d","1d":"2y","5d":"10y","1wk":"10y","1mo":"max","3mo":"max"};
+    return map[tf] || "2y";
+}
+
+function mean(values){return values.length?values.reduce((a,b)=>a+b,0)/values.length:null;}
+function smaAt(values,period){if(values.length<period)return null;return mean(values.slice(-period));}
+function emaSeries(values,period){
+    if(values.length<period)return [];
+    const out=new Array(values.length).fill(null);let seed=mean(values.slice(0,period));out[period-1]=seed;const k=2/(period+1);
+    for(let i=period;i<values.length;i++){seed=(values[i]-seed)*k+seed;out[i]=seed;}return out;
+}
+function emaAt(values,period){const s=emaSeries(values,period);return s.length?s[s.length-1]:null;}
+function rsiSeries(values,period=14){
+    const out=new Array(values.length).fill(null);if(values.length<=period)return out;
+    let gain=0,loss=0;for(let i=1;i<=period;i++){const d=values[i]-values[i-1];gain+=Math.max(d,0);loss+=Math.max(-d,0);}
+    let avgGain=gain/period,avgLoss=loss/period;out[period]=avgLoss===0?100:100-(100/(1+avgGain/avgLoss));
+    for(let i=period+1;i<values.length;i++){const d=values[i]-values[i-1];avgGain=((avgGain*(period-1))+Math.max(d,0))/period;avgLoss=((avgLoss*(period-1))+Math.max(-d,0))/period;out[i]=avgLoss===0?100:100-(100/(1+avgGain/avgLoss));}
+    return out;
+}
+function atrSeries(high,low,close,period=14){
+    const tr=new Array(close.length).fill(null);for(let i=1;i<close.length;i++)tr[i]=Math.max(high[i]-low[i],Math.abs(high[i]-close[i-1]),Math.abs(low[i]-close[i-1]));
+    const out=new Array(close.length).fill(null);if(close.length<=period)return out;let value=mean(tr.slice(1,period+1));out[period]=value;
+    for(let i=period+1;i<close.length;i++){value=((value*(period-1))+tr[i])/period;out[i]=value;}return out;
+}
+function macdData(values){
+    const fast=emaSeries(values,12),slow=emaSeries(values,26),line=new Array(values.length).fill(null);
+    for(let i=0;i<values.length;i++)if(fast[i]!=null&&slow[i]!=null)line[i]=fast[i]-slow[i];
+    const compact=line.filter(v=>v!=null),signalCompact=emaSeries(compact,9),signal=new Array(values.length).fill(null);let j=0;
+    for(let i=0;i<line.length;i++)if(line[i]!=null){signal[i]=signalCompact[j]??null;j++;}
+    const i=values.length-1;return {line:line[i]??0,signal:signal[i]??0,hist:(line[i]??0)-(signal[i]??0),prevHist:i>0&&line[i-1]!=null&&signal[i-1]!=null?line[i-1]-signal[i-1]:0};
+}
+function adxValue(high,low,close,period=14){
+    if(close.length<period*2+1)return null;const tr=[],plusDM=[],minusDM=[];
+    for(let i=1;i<close.length;i++){tr.push(Math.max(high[i]-low[i],Math.abs(high[i]-close[i-1]),Math.abs(low[i]-close[i-1])));const up=high[i]-high[i-1],down=low[i-1]-low[i];plusDM.push(up>down&&up>0?up:0);minusDM.push(down>up&&down>0?down:0);}
+    let trN=tr.slice(0,period).reduce((a,b)=>a+b,0),plusN=plusDM.slice(0,period).reduce((a,b)=>a+b,0),minusN=minusDM.slice(0,period).reduce((a,b)=>a+b,0);const dx=[];
+    for(let i=period;i<tr.length;i++){if(i>period){trN=trN-trN/period+tr[i];plusN=plusN-plusN/period+plusDM[i];minusN=minusN-minusN/period+minusDM[i];}const p=trN?100*plusN/trN:0,m=trN?100*minusN/trN:0;dx.push((p+m)?100*Math.abs(p-m)/(p+m):0);}
+    if(dx.length<period)return mean(dx);let adx=mean(dx.slice(0,period));for(let i=period;i<dx.length;i++)adx=((adx*(period-1))+dx[i])/period;return adx;
+}
+function standardDeviation(values){const m=mean(values);return m==null?null:Math.sqrt(mean(values.map(v=>(v-m)**2)));}
+function roc(values,period=20){if(values.length<=period)return 0;const base=values[values.length-1-period];return base?((values[values.length-1]/base)-1)*100:0;}
+function slopePct(values,period=10){if(values.length<=period)return 0;const a=values[values.length-1-period],b=values[values.length-1];return a?((b/a)-1)*100/period:0;}
+
+
+function buildTickerDataFromRows(ticker,timeframe,rows,meta={},derivedFrom=null){
+    const unique=[...new Map((rows||[]).map(r=>[r.time,r])).values()].filter(r=>[r.time,r.open,r.high,r.low,r.close].every(Number.isFinite)).sort((a,b)=>a.time-b.time);
+    if(unique.length<20)throw new Error(`Not enough clean ${TF_LABELS[timeframe]||timeframe} data for ${ticker}`);
+    const close=unique.map(r=>r.close),high=unique.map(r=>r.high),low=unique.map(r=>r.low),volume=unique.map(r=>Number.isFinite(r.volume)?r.volume:0);
+    const price=close.at(-1),ema9=emaAt(close,9),ema21=emaAt(close,21),sma50=smaAt(close,50),sma200=smaAt(close,200);
+    const rsi=rsiSeries(close,14).at(-1)??50,atr=atrSeries(high,low,close,14).at(-1)??price*.02,macd=macdData(close),adx=adxValue(high,low,close,14);
+    const lookback=Math.min(20,close.length),support=Math.min(...low.slice(-lookback)),resistance=Math.max(...high.slice(-lookback));
+    const avgVolume=mean(volume.slice(-20))||0,volumeRatio=avgVolume?volume.at(-1)/avgVolume:0;
+    const dailyVolumeFactor={"1m":390,"2m":195,"5m":78,"15m":26,"30m":13,"60m":6.5,"90m":4.3,"1d":1,"5d":0.2,"1wk":0.2,"1mo":1/21,"3mo":1/63}[timeframe]||1;
+    const avgDollarVolume=avgVolume*price*dailyVolumeFactor;
+    const bbSlice=close.slice(-20),bbMid=mean(bbSlice)||price,bbSd=standardDeviation(bbSlice)||0,bbUpper=bbMid+2*bbSd,bbLower=bbMid-2*bbSd;
+    const prevClose=close.length>1?close.at(-2):price,gapPct=prevClose?((unique.at(-1).open/prevClose)-1)*100:0;
+    return {
+        ticker,timeframe,
+        candles:unique.map(({time,open,high,low,close,volume})=>({time,open,high,low,close,volume:Number.isFinite(volume)?volume:0})),
+        close,high,low,volume,price,ema9,ema21,sma50,sma200,rsi,atr,macd,adx,support,resistance,avgVolume,volumeRatio,avgDollarVolume,bbUpper,bbLower,bbMid,
+        roc20:roc(close,20),ema21Slope:slopePct(emaSeries(close,21).filter(Number.isFinite),10),gapPct,
+        currency:meta.currency||"USD",exchange:meta.exchangeName||meta.exchange||"",dataTime:unique.at(-1).time,
+        derived:Boolean(derivedFrom),derivedFrom:derivedFrom||null
+    };
+}
+
+function resampleCandles(sourceData,targetTimeframe){
+    const candles=(sourceData?.candles||[]).map((c,i)=>({...c,volume:Number.isFinite(c.volume)?c.volume:(sourceData.volume?.[i]||0)}));
+    if(!candles.length)throw new Error("No source candles available for fallback resampling.");
+    const bucketKey=(t)=>{
+        const d=new Date(t*1000);
+        if(targetTimeframe==="5m")return Math.floor(t/300)*300;
+        if(targetTimeframe==="15m")return Math.floor(t/900)*900;
+        if(targetTimeframe==="60m")return Math.floor(t/3600)*3600;
+        if(targetTimeframe==="1d")return Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate())/1000;
+        if(targetTimeframe==="1wk"){
+            const day=(d.getUTCDay()+6)%7;
+            return Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate()-day)/1000;
+        }
+        if(targetTimeframe==="1mo")return Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),1)/1000;
+        if(targetTimeframe==="3mo")return Date.UTC(d.getUTCFullYear(),Math.floor(d.getUTCMonth()/3)*3,1)/1000;
+        return t;
+    };
+    const groups=new Map();
+    for(const c of candles){
+        const k=bucketKey(c.time);
+        if(!groups.has(k))groups.set(k,{time:k,open:c.open,high:c.high,low:c.low,close:c.close,volume:c.volume||0});
+        else{
+            const g=groups.get(k);
+            g.high=Math.max(g.high,c.high);g.low=Math.min(g.low,c.low);g.close=c.close;g.volume+=(c.volume||0);
+        }
+    }
+    return [...groups.values()].sort((a,b)=>a.time-b.time);
+}
+
+function deriveTimeframeData(sourceData,targetTimeframe){
+    const rows=resampleCandles(sourceData,targetTimeframe);
+    return buildTickerDataFromRows(
+        sourceData.ticker,targetTimeframe,rows,
+        {currency:sourceData.currency,exchangeName:sourceData.exchange},
+        sourceData.timeframe
+    );
+}
+
+function fallbackTargetFor(timeframe){
+    return {"1m":"5m","2m":"5m","5m":"15m","15m":"60m","30m":"60m","60m":"1d","90m":"1d","1d":"1wk","5d":"1mo","1wk":"1mo","1mo":"3mo"}[timeframe]||null;
+}
+
+function recoverFrameSet(ticker,requestedTimeframes,frameResults){
+    const good=frameResults.filter(x=>x&&!x.error);
+    const failures=frameResults.filter(x=>x?.error);
+    const byTf=new Map(good.map(x=>[x.timeframe,x]));
+    const warnings=[];
+    let used=false;
+
+    for(const source of [...good].sort((a,b)=>TF_ORDER.indexOf(b.timeframe)-TF_ORDER.indexOf(a.timeframe))){
+        if(byTf.size>=2)break;
+        const target=fallbackTargetFor(source.timeframe);
+        if(!target||byTf.has(target))continue;
+        try{
+            const derived=deriveTimeframeData(source,target);
+            byTf.set(target,derived);used=true;
+            warnings.push(`${TF_LABELS[target]||target} was rebuilt from loaded ${TF_LABELS[source.timeframe]||source.timeframe} candles because the separate ${TF_LABELS[target]||target} feed was unavailable.`);
+        }catch(e){}
+    }
+
+    if(byTf.size<2&&good.length){
+        const source=good[0],chain=["1d","1wk","1mo","3mo"];
+        let idx=chain.indexOf(source.timeframe);
+        while(byTf.size<2&&idx>=0&&idx<chain.length-1){
+            const target=chain[++idx];
+            if(byTf.has(target))continue;
+            try{
+                const derived=deriveTimeframeData(source,target);
+                byTf.set(target,derived);used=true;
+                warnings.push(`${TF_LABELS[target]||target} confirmation was derived from ${TF_LABELS[source.timeframe]||source.timeframe} candles.`);
+            }catch(e){}
+        }
+    }
+
+    const frames=[...byTf.values()].sort((a,b)=>TF_ORDER.indexOf(a.timeframe)-TF_ORDER.indexOf(b.timeframe));
+    const primaryRequested=document.getElementById("timeframe")?.value||"1d";
+    const primaryAvailable=frames.some(f=>f.timeframe===primaryRequested);
+    return {
+        frames,used,warnings,primaryRequested,primaryAvailable,
+        failed:failures.map(x=>`${TF_LABELS[x.timeframe]||x.timeframe}: ${x.error}`)
+    };
+}
+
+function applyDataFallbackCaution(analysis,recovery,style){
+    if(!recovery?.used)return analysis;
+    analysis.dataFallback={
+        used:true,
+        warnings:[...recovery.warnings],
+        failed:[...recovery.failed],
+        primaryAvailable:recovery.primaryAvailable,
+        primaryRequested:recovery.primaryRequested
+    };
+    analysis.confidence=Math.max(1,analysis.confidence-(recovery.primaryAvailable?8:14));
+    const tfNames=analysis.analyses.map(x=>`${TF_LABELS[x.data.timeframe]||x.data.timeframe}${x.data.derived?" (derived)":""}`).join(" + ");
+    analysis.reasons.unshift(`DATA FALLBACK MODE: analysis completed with ${tfNames}. Confidence was reduced because one or more requested feeds did not load.`);
+    if(!recovery.primaryAvailable)analysis.reasons.unshift(`The selected primary ${TF_LABELS[recovery.primaryRequested]||recovery.primaryRequested} feed was unavailable, so the closest usable timeframe became primary.`);
+
+    const hasSwingAnchor=analysis.analyses.some(x=>["1d","1wk","1mo"].includes(x.data.timeframe));
+    const hasPositionAnchor=analysis.analyses.some(x=>["1wk","1mo","3mo"].includes(x.data.timeframe));
+    if(style==="swing"&&!hasSwingAnchor){
+        analysis.direction="WAIT";analysis.score=clamp(analysis.score,-19,19);analysis.confidence=Math.min(analysis.confidence,49);analysis.guardrailBlocked=true;
+        analysis.reasons.unshift("Swing safety rule: no Daily/Weekly-or-higher anchor loaded, so Halifax will show WAIT instead of authorizing a swing trade.");
+    }
+    if(style==="position"&&!hasPositionAnchor){
+        analysis.direction="WAIT";analysis.score=clamp(analysis.score,-19,19);analysis.confidence=Math.min(analysis.confidence,49);analysis.guardrailBlocked=true;
+        analysis.reasons.unshift("Position safety rule: no Weekly/Monthly-or-higher anchor loaded, so Halifax will show WAIT instead of authorizing a position trade.");
+    }
+    return analysis;
+}
+
+async function loadTickerData(ticker,timeframe,rangeOverride=null){
+    const range=rangeOverride||timeframeRange(timeframe),prepost=document.getElementById("prepost").checked?"true":"false";
+    const url=`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?interval=${timeframe}&range=${range}&includePrePost=${prepost}&events=div%2Csplits`;
+    const raw=await fetchJson(url);
+    const result=raw?.chart?.result?.[0];if(!result)throw new Error(raw?.chart?.error?.description||`No chart data for ${ticker}`);
+    const quote=result.indicators?.quote?.[0];if(!quote||!result.timestamp)throw new Error(`Incomplete chart data for ${ticker}`);
+    const rows=[];
+    for(let i=0;i<result.timestamp.length;i++){
+        const time=result.timestamp[i],open=quote.open?.[i],high=quote.high?.[i],low=quote.low?.[i],close=quote.close?.[i],volume=quote.volume?.[i]||0;
+        if([time,open,high,low,close].every(Number.isFinite))rows.push({time,open,high,low,close,volume:Number.isFinite(volume)?volume:0});
+    }
+    return buildTickerDataFromRows(ticker,timeframe,rows,result.meta||{},null);
+}
+
+function classifyTimeframe(data){
+    let score=0;const reasons=[];
+    if(data.ema9&&data.ema21){if(data.price>data.ema9&&data.ema9>data.ema21){score+=2;reasons.push("price > EMA9 > EMA21");}else if(data.price<data.ema9&&data.ema9<data.ema21){score-=2;reasons.push("price < EMA9 < EMA21");}}
+    if(data.sma50){score+=data.price>data.sma50?1:-1;}
+    if(data.sma200){score+=data.price>data.sma200?1.5:-1.5;}
+    if(data.ema21Slope>.03)score+=1;else if(data.ema21Slope<-.03)score-=1;
+    if(data.rsi>=52&&data.rsi<=72)score+=1.25;else if(data.rsi<=48&&data.rsi>=28)score-=1.25;else if(data.rsi>78)score-=.25;else if(data.rsi<22)score+=.25;
+    if(data.macd.hist>0&&data.macd.hist>=data.macd.prevHist)score+=1.25;else if(data.macd.hist<0&&data.macd.hist<=data.macd.prevHist)score-=1.25;
+    if(data.volumeRatio>=1.3)score+=Math.sign(score||data.macd.hist)*.75;
+    const direction=score>=2?"BULLISH":score<=-2?"BEARISH":"NEUTRAL";
+    const confidence=Math.min(99,Math.round(50+Math.abs(score)*6+(data.adx&&data.adx>25?7:0)));
+    return {score,direction,confidence,reasons};
+}
+
+function uniqueTerms(terms=[]){return [...new Set(terms.map(x=>String(x).toLowerCase()))];}
+function headlineRisk(news=[],profileKey="broad"){
+    const titles=news.map(n=>String(n?.title||"").toLowerCase());
+    const extra=PROFILE_NEWS_TERMS[profileKey]||{};
+    const negativeTerms=uniqueTerms([...GENERIC_NEGATIVE_NEWS,...(extra.negative||[])]),positiveTerms=uniqueTerms([...GENERIC_POSITIVE_NEWS,...(extra.positive||[])]);
+    const negative=[],positive=[];
+    for(const title of titles){
+        for(const term of negativeTerms)if(title.includes(term)&&!negative.includes(term))negative.push(term);
+        for(const term of positiveTerms)if(title.includes(term)&&!positive.includes(term))positive.push(term);
+    }
+    const score=Math.max(-18,Math.min(8,positive.length*2-negative.length*3));
+    return {score,negative,positive,count:titles.length};
+}
+
+function normalizeProfileKey(sectorText="",industryText=""){
+    const sector=String(sectorText).toLowerCase(),industry=String(industryText).toLowerCase();
+    if(industry.includes("airline"))return "airlines";
+    if(industry.includes("semiconductor"))return "semiconductors";
+    if(industry.includes("biotech"))return "biotech";
+    if(industry.includes("bank"))return "banks";
+    if(industry.includes("homebuild")||industry.includes("residential construction"))return "homebuilders";
+    if(industry.includes("retail"))return "retail";
+    if(["railroad","trucking","freight","marine shipping","transportation"].some(x=>industry.includes(x)))return "transportation";
+    if(industry.includes("gold"))return "goldminers";
+    if(sector.includes("technology"))return "technology";
+    if(sector.includes("communication"))return "communication";
+    if(sector.includes("consumer cyclical")||sector.includes("consumer discretionary"))return "discretionary";
+    if(sector.includes("consumer defensive")||sector.includes("consumer staples"))return "staples";
+    if(sector.includes("energy"))return "energy";
+    if(sector.includes("financial"))return "financials";
+    if(sector.includes("health"))return "healthcare";
+    if(sector.includes("industrial"))return "industrials";
+    if(sector.includes("basic materials")||sector.includes("materials"))return "materials";
+    if(sector.includes("real estate"))return "realestate";
+    if(sector.includes("utilities"))return "utilities";
+    return "";
+}
+
+function getSpecialInstrument(ticker){return SPECIAL_INSTRUMENTS[String(ticker||"").toUpperCase()]||null;}
+function invertUnderlyingDirection(direction){return direction==="SHORT"?"LONG":direction==="LONG"?"EXIT":"WAIT";}
+function instrumentGuardTimeframes(){
+    const style=document.getElementById("style")?.value||"day";
+    return style==="scalp"?["1m","5m","15m","60m"]:["5m","15m","60m","1d"];
+}
+function applySpecialInstrumentGuardrails(ticker,baseAnalysis,special,underlyingAnalysis){
+    if(!special||document.getElementById("leverageGuard")?.checked===false)return baseAnalysis;
+    const style=document.getElementById("style")?.value||"swing",underDir=underlyingAnalysis?.direction||"WAIT";
+    const inverseUnderlyingScore=underlyingAnalysis?clamp(-underlyingAnalysis.score,-100,100):0;
+    let combined=clamp(Math.round(inverseUnderlyingScore*.75+(baseAnalysis.technicalScore??baseAnalysis.score)*.25),-100,100);
+    let direction="WAIT",positionAction="WAIT / REVIEW",guardrailBlocked=false;
+    const reasons=[...baseAnalysis.reasons];
+    reasons.unshift(`${ticker} is a ${special.dailyMultiple}× daily inverse product tied to ${special.underlying}; ${special.underlying} is the primary directional signal.`);
+    if(!special.allowedStyles.includes(style)){
+        guardrailBlocked=true;combined=clamp(combined,-19,19);positionAction="DAILY RESET: SWITCH TO DAY/SCALP OR EXIT BEFORE HOLDING MULTI-DAY";
+        reasons.unshift(`Daily-reset guardrail blocks ${style.toUpperCase()} signals for ${ticker}.`);
+    }else if(underDir==="LONG"){
+        guardrailBlocked=true;combined=Math.min(combined,19);positionAction=`EXIT / REDUCE ${ticker}: ${special.underlying} is bullish`;
+        reasons.unshift(`${special.underlying} is LONG, which is adverse to a long ${ticker} position.`);
+    }else if(underDir==="SHORT"){
+        if(baseAnalysis.direction==="SHORT"){
+            guardrailBlocked=true;combined=clamp(combined,-19,19);positionAction="CONFLICT: UNDERLYING IS BEARISH BUT ETF CHART IS ALSO BEARISH";
+            reasons.unshift(`Signal conflict: bearish ${special.underlying} should support ${ticker}, but ${ticker}'s own chart is bearish. No trade is authorized.`);
+        }else if(combined>=20){
+            direction="LONG";positionAction=`LONG / HOLD ${ticker}: ${special.underlying} bearish confirmation`;
+            reasons.unshift(`${special.underlying} is SHORT; inverse mapping supports a LONG/HOLD bias in ${ticker}.`);
+        }else{
+            guardrailBlocked=true;combined=clamp(combined,-19,19);positionAction="WAIT: UNDERLYING BEARISH BUT ETF EXECUTION CHART IS NOT CONFIRMED";
+        }
+    }else{
+        guardrailBlocked=true;combined=clamp(combined,-19,19);positionAction=`WAIT / REDUCE RISK: ${special.underlying} has no confirmed direction`;
+        reasons.unshift(`${special.underlying} is not a confirmed SHORT, so a new long ${ticker} position is blocked.`);
+    }
+    // Never recommend opening a short in a daily inverse ETF; bullish-underlying cases are shown as EXIT/AVOID instead.
+    if(direction==="SHORT"){direction="WAIT";guardrailBlocked=true;positionAction=`EXIT / AVOID ${ticker} — do not open a contradictory short`;combined=Math.min(combined,19);}
+    const confidence=underlyingAnalysis?Math.min(99,Math.round((baseAnalysis.confidence+underlyingAnalysis.confidence)/2)):baseAnalysis.confidence;
+    return {...baseAnalysis,direction,score:combined,confidence,guardrailBlocked,reasons,instrumentContext:{ticker,label:special.label,underlying:special.underlying,dailyMultiple:special.dailyMultiple,dailyReset:special.dailyReset,underlyingDirection:underDir,underlyingScore:underlyingAnalysis?.score??0,underlyingConfidence:underlyingAnalysis?.confidence??0,inverseUnderlyingScore,baseDirection:baseAnalysis.direction,baseScore:baseAnalysis.score,positionAction,styleBlocked:!special.allowedStyles.includes(style)}};
+}
+
+function resolveSectorProfile(ticker,quote=null,{ignoreOverride=false}={}){
+    const override=!ignoreOverride?(document.getElementById("sectorOverride")?.value||"auto"):"auto";
+    let key=override!=="auto"?override:"";let source=override!=="auto"?"manual override":"";
+    const sector=quote?.sectorDisp||quote?.sector||"",industry=quote?.industryDisp||quote?.industry||"";
+    if(!key){key=normalizeProfileKey(sector,industry);if(key)source="Yahoo profile";}
+    if(!key&&TICKER_PROFILE[ticker]){key=TICKER_PROFILE[ticker];source="ticker map";}
+    if(!key){key="broad";source="broad-market fallback";}
+    return {...SECTOR_PROFILES[key],key,source,reportedSector:sector,reportedIndustry:industry};
+}
+
+function buildMacroContext(ticker,profile,{sector=null,vix=null,spy=null,drivers={},news=[]}={}){
+    const sectorApplies=document.getElementById("macroGuard")?.checked!==false,econApplies=document.getElementById("econGuard")?.checked!==false,applies=sectorApplies||econApplies;
+    if(!applies)return {applies:false,adjustment:0,blockLong:false,blockShort:false,riskLevel:"N/A",reasons:[],profileKey:profile.key,profileLabel:profile.label};
+    let adjustment=0,riskPoints=0,tailwindPoints=0;const reasons=[];
+    if(!sectorApplies){sector=null;vix=null;spy=null;drivers={};news=[];}
+    const sectorTrend=sector?classifyTimeframe(sector).direction:"UNAVAILABLE",spyTrend=spy?classifyTimeframe(spy).direction:"UNAVAILABLE";
+    const sectorRelative=sector&&spy?sector.roc20-spy.roc20:null;
+    if(sectorTrend==="BEARISH"){adjustment-=12;riskPoints+=2;reasons.push(`${profile.etf} ${profile.label} trend is bearish on the daily chart.`);}
+    else if(sectorTrend==="BULLISH"){adjustment+=4;tailwindPoints+=1;reasons.push(`${profile.etf} ${profile.label} trend is bullish on the daily chart.`);}
+    if(sectorRelative!=null){
+        if(sectorRelative<=-3){adjustment-=6;riskPoints+=1;reasons.push(`${profile.etf} is underperforming SPY by ${Math.abs(sectorRelative).toFixed(1)} percentage points over 20 bars.`);}
+        else if(sectorRelative>=3){adjustment+=3;tailwindPoints+=1;reasons.push(`${profile.etf} is outperforming SPY by ${sectorRelative.toFixed(1)} percentage points over 20 bars.`);}
+    }
+    if(spyTrend==="BEARISH"){
+        const penalty=profile.defensive?3:profile.cyclical?8:5;adjustment-=penalty;riskPoints+=profile.cyclical?2:1;reasons.push(`SPY daily trend is bearish${profile.cyclical?", a headwind for this cyclical group":""}.`);
+    }else if(spyTrend==="BULLISH"&&profile.cyclical){adjustment+=2;tailwindPoints+=1;}
+    const vixPrice=vix?.price??null,vixFactor=profile.defensive?.7:profile.cyclical?1.1:1;
+    if(vixPrice!=null){
+        if(vixPrice>=30){adjustment-=Math.round(11*vixFactor);riskPoints+=2;reasons.push(`VIX is elevated at ${vixPrice.toFixed(1)}.`);}
+        else if(vixPrice>=22){adjustment-=Math.round(5*vixFactor);riskPoints+=1;reasons.push(`VIX is above normal at ${vixPrice.toFixed(1)}.`);}
+    }
+    const driverReadings=[];
+    for(const driver of profile.drivers||[]){
+        const data=drivers[driver.symbol]||null,rocValue=data?.roc20??null,vol=data?.price?100*data.atr/data.price:null;
+        let impact=0;
+        if(rocValue!=null){
+            const effective=rocValue*driver.weight;
+            if(effective<=-12){impact=-12;riskPoints+=2;}
+            else if(effective<=-6){impact=-8;riskPoints+=2;}
+            else if(effective<=-2){impact=-4;riskPoints+=1;}
+            else if(effective>=12){impact=7;tailwindPoints+=2;}
+            else if(effective>=6){impact=4;tailwindPoints+=1;}
+            else if(effective>=2){impact=2;tailwindPoints+=1;}
+            adjustment+=impact;
+            if(Math.abs(impact)>=4)reasons.push(`${driver.label} changed ${signed(rocValue,1)}% over 20 bars — ${impact<0?"macro headwind":"macro tailwind"} for ${profile.label}.`);
+        }
+        if(vol!=null&&vol>=5&&Math.abs(driver.weight)>=.5){adjustment-=3;riskPoints+=1;reasons.push(`${driver.label} volatility is elevated at ${vol.toFixed(1)}% ATR per bar.`);}
+        driverReadings.push({...driver,roc:rocValue,vol,impact});
+    }
+    const newsRisk=headlineRisk(news,profile.key);adjustment+=newsRisk.score;
+    if(newsRisk.negative.length){riskPoints+=Math.min(2,Math.ceil(newsRisk.negative.length/2));reasons.push(`Recent ${profile.label.toLowerCase()} headlines flag: ${newsRisk.negative.slice(0,4).join(", ")}.`);}
+    if(newsRisk.positive.length){tailwindPoints+=1;reasons.push(`Positive headline offsets: ${newsRisk.positive.slice(0,3).join(", ")}.`);}
+    const economicProbability=calculateEconomicProbability(economicState||ECON_FALLBACK),economicImpact=economicSectorImpact(profile.key,economicProbability);
+    if(economicImpact.applies){adjustment+=economicImpact.adjustment;reasons.push(...economicImpact.reasons);if(economicImpact.adjustment<=-8)riskPoints+=2;else if(economicImpact.adjustment<=-4)riskPoints+=1;if(economicImpact.adjustment>=5)tailwindPoints+=1;}
+    adjustment=Math.max(-55,Math.min(35,adjustment));
+    const riskLevel=riskPoints>=6?"HIGH":riskPoints>=3?"ELEVATED":"NORMAL";
+    const bias=adjustment<=-18?"HEADWIND":adjustment>=12?"TAILWIND":"MIXED";
+    const blockLong=riskLevel==="HIGH"||adjustment<=-24||economicImpact.blockLong;
+    const blockShort=(adjustment>=18&&tailwindPoints>=3&&sectorTrend==="BULLISH")||economicImpact.blockShort;
+    if(blockLong)reasons.push(`Sector guardrail blocks a new LONG until the ${profile.label.toLowerCase()} backdrop improves.`);
+    if(blockShort)reasons.push(`Sector guardrail blocks a new SHORT because sector and macro conditions are strongly supportive.`);
+    return {applies:true,adjustment,blockLong,blockShort,riskLevel,bias,reasons,profileKey:profile.key,profileLabel:profile.label,profileSource:profile.source,sectorETF:profile.etf,sectorTrend,sectorRelative,sectorRoc:sector?.roc20??null,spyTrend,vixPrice,driverReadings,newsRisk,economicProbability,economicImpact};
+}
+
+function aggregateAnalysis(frames,benchmarkData,macroContext=null,primaryTimeframe=null){
+    const analyses=frames.map((data,i)=>({data,analysis:classifyTimeframe(data),weight:1+i*.35}));
+    const weighted=analyses.reduce((sum,x)=>sum+x.analysis.score*x.weight,0),max=analyses.reduce((sum,x)=>sum+8*x.weight,0);
+    let normalized=max?weighted/max*100:0;
+    const technicalScore=Math.max(-100,Math.min(100,normalized));
+    const bullish=analyses.filter(x=>x.analysis.direction==="BULLISH").length,bearish=analyses.filter(x=>x.analysis.direction==="BEARISH").length;
+    const alignment=Math.max(bullish,bearish)/analyses.length;
+    const primary=frames.find(f=>f.timeframe===(primaryTimeframe||document.getElementById("timeframe").value))||frames.at(-1);
+    const relativeStrength=benchmarkData?primary.roc20-benchmarkData.roc20:0;
+    if(relativeStrength>2)normalized+=5;else if(relativeStrength<-2)normalized-=5;
+    const benchmarkRegime=benchmarkData?classifyTimeframe(benchmarkData):null;
+    if(benchmarkRegime?.direction==="BULLISH"&&normalized>0)normalized+=4;
+    if(benchmarkRegime?.direction==="BEARISH"&&normalized<0)normalized-=4;
+    if(macroContext?.applies)normalized+=macroContext.adjustment;
+    normalized=Math.max(-100,Math.min(100,normalized));
+    let direction="WAIT";
+    if(normalized>=20&&bullish>=2)direction="LONG";
+    else if(normalized<=-20&&bearish>=2)direction="SHORT";
+    let guardrailBlocked=false;
+    if(direction==="LONG"&&macroContext?.blockLong){direction="WAIT";guardrailBlocked=true;normalized=Math.min(normalized,19);}
+    if(direction==="SHORT"&&macroContext?.blockShort){direction="WAIT";guardrailBlocked=true;normalized=Math.max(normalized,-19);}
+    if(direction==="LONG"&&macroContext?.riskLevel==="ELEVATED"&&(normalized<35||bullish<3)){direction="WAIT";guardrailBlocked=true;normalized=Math.min(normalized,19);}
+    let confidence=Math.min(99,Math.round(Math.abs(normalized)*.65+alignment*25+(benchmarkRegime&&benchmarkRegime.direction!=="NEUTRAL"?5:0)));
+    if(direction==="WAIT"&&(macroContext?.blockLong||macroContext?.blockShort))confidence=Math.min(confidence,64);
+    const reasons=[];
+    reasons.push(`${bullish}/${analyses.length} timeframes bullish; ${bearish}/${analyses.length} bearish`);
+    reasons.push(`Higher-timeframe alignment: ${Math.round(alignment*100)}%`);
+    reasons.push(`Technical-only score before macro filters: ${Math.round(technicalScore)}`);
+    if(benchmarkData)reasons.push(`Relative strength vs ${benchmarkData.ticker}: ${signed(relativeStrength,2)}% over 20 bars`);
+    else reasons.push("Benchmark data unavailable; market-regime and relative-strength filters were not applied.");
+    if(benchmarkRegime)reasons.push(`${benchmarkData.ticker} regime: ${benchmarkRegime.direction} (${TF_LABELS[benchmarkData.timeframe]})`);
+    if(macroContext?.applies){reasons.push(`${macroContext.profileLabel} macro adjustment: ${macroContext.adjustment>0?"+":""}${macroContext.adjustment} points (${macroContext.riskLevel} risk, ${macroContext.bias.toLowerCase()} bias)`);reasons.push(`Sector classification: ${macroContext.profileLabel} via ${macroContext.profileSource}.`);reasons.push(...macroContext.reasons);}
+    if(primary.adx!=null)reasons.push(`Trend strength ADX: ${primary.adx.toFixed(1)} (${primary.adx>=25?"trending":"weak/range-bound"})`);
+    reasons.push(`Primary volume: ${primary.volumeRatio.toFixed(2)}× 20-bar average`);
+    return {direction,score:Math.round(normalized),technicalScore:Math.round(technicalScore),confidence,analyses,alignment,relativeStrength,benchmarkRegime,primary,reasons,macroContext,guardrailBlocked};
+}
+
+function marketRegime(data){
+    if(!data)return "UNAVAILABLE";
+    if(data.price>(data.sma50||data.ema21)&&(!data.sma200||data.sma50>data.sma200))return "RISK-ON";
+    if(data.price<(data.sma50||data.ema21)&&(!data.sma200||data.sma50<data.sma200))return "RISK-OFF";
+    return "MIXED";
+}
+
+function calculateTrade(data,analysis){
+    const account=Math.max(0,Number(document.getElementById("account").value)||0),riskPct=clamp(Number(document.getElementById("risk").value)||1,.1,5),maxPositionPct=clamp(Number(document.getElementById("maxPosition").value)||20,1,100);
+    const atrMult=clamp(Number(document.getElementById("atrMultiple").value)||1.7,.5,5),maxStopPct=clamp(Number(document.getElementById("maxStopPct").value)||8,1,25),rewardMult=clamp(Number(document.getElementById("rewardMultiple").value)||2.5,1,10),slippagePct=clamp(Number(document.getElementById("slippage").value)||0,0,3)/100;
+    const isShort=analysis.direction==="SHORT",isTrade=analysis.direction!=="WAIT",marketEntry=isShort?data.price*(1-slippagePct):data.price*(1+slippagePct);
+    const anchor=isShort?Math.min(marketEntry,data.ema9||marketEntry):Math.max(marketEntry,data.ema9||marketEntry);
+
+    // Use ATR plus recent structure, but never allow an old weekly/monthly high or bad data point
+    // to create an unusable stop. Example: a $14 short with an 8% cap cannot exceed $15.12.
+    const atrDistance=Math.max(data.atr*atrMult,anchor*.003);
+    const rawStructuralStop=isShort?Math.max(data.resistance+data.atr*.10,anchor+atrDistance):Math.min(data.support-data.atr*.10,anchor-atrDistance);
+    const rawStopDistance=Math.abs(anchor-rawStructuralStop);
+    const maxStopDistance=anchor*(maxStopPct/100);
+    const stopWasCapped=Number.isFinite(rawStopDistance)&&rawStopDistance>maxStopDistance;
+    let stopDistance=Number.isFinite(rawStopDistance)?Math.min(rawStopDistance,maxStopDistance):Math.min(atrDistance,maxStopDistance);
+    stopDistance=Math.max(stopDistance,anchor*.003);
+
+    let stop=isShort?anchor+stopDistance:anchor-stopDistance;
+    if(!isShort && stop>=anchor)stop=Math.max(.01,anchor-stopDistance);
+    if(isShort && stop<=anchor)stop=anchor+stopDistance;
+    stopDistance=Math.abs(anchor-stop);
+
+    const t1=Math.max(.01,isShort?anchor-stopDistance:anchor+stopDistance);
+    const t2=Math.max(.01,isShort?anchor-stopDistance*rewardMult:anchor+stopDistance*rewardMult);
+    const runnerR=Math.max(3,rewardMult+1);
+    const t3=Math.max(.01,isShort?anchor-stopDistance*runnerR:anchor+stopDistance*runnerR);
+    const dollarRisk=account*riskPct/100,riskShares=stopDistance?Math.floor(dollarRisk/stopDistance):0,allocationShares=anchor?Math.floor((account*maxPositionPct/100)/anchor):0;
+    const liquidityCap=data.avgDollarVolume?Math.floor((data.avgDollarVolume*.01)/anchor):Infinity;
+    const shares=isTrade?Math.max(0,Math.min(riskShares,allocationShares,liquidityCap)):0;
+    const stopPct=anchor?stopDistance/anchor*100:0;
+    const t1Pct=anchor?Math.abs(t1-anchor)/anchor*100:0;
+    const t2Pct=anchor?Math.abs(t2-anchor)/anchor*100:0;
+    const t3Pct=anchor?Math.abs(t3-anchor)/anchor*100:0;
+    const rr1=stopDistance?Math.abs(t1-anchor)/stopDistance:0;
+    const rr2=stopDistance?Math.abs(t2-anchor)/stopDistance:0;
+    const rr3=stopDistance?Math.abs(t3-anchor)/stopDistance:0;
+    const warnings=[];
+    if(stopWasCapped)warnings.push(`Raw structural stop ${money(rawStructuralStop)} was rejected as too far away. Stop distance was capped at ${maxStopPct.toFixed(1)}% of entry.`);
+    if(data.avgDollarVolume<10_000_000)warnings.push("Liquidity warning: average dollar volume is below $10 million.");
+    if(data.volumeRatio<.7)warnings.push("Current volume is below 70% of its 20-bar average.");
+    if(stopPct>=maxStopPct-.01)warnings.push(`Stop is at the selected ${maxStopPct.toFixed(1)}% maximum; consider waiting for a tighter entry or reducing size.`);
+    if(data.adx!=null&&data.adx<18)warnings.push("ADX indicates a weak or range-bound trend; breakout signals have lower reliability.");
+    if(!isShort&&data.price>data.bbUpper)warnings.push("Long entry is extended above the upper volatility band; avoid chasing and wait for a controlled entry.");
+    if(isShort&&data.price<data.bbLower)warnings.push("Short entry is extended below the lower volatility band; avoid chasing and wait for a controlled entry.");
+    if(Math.abs(data.gapPct)>=4)warnings.push(`Large opening gap detected (${signed(data.gapPct,2)}%); spreads and reversal risk may be elevated.`);
+    if(analysis.macroContext?.applies&&(analysis.macroContext.riskLevel!=="NORMAL"||Math.abs(analysis.macroContext.adjustment)>=8))warnings.push(`${analysis.macroContext.profileLabel} sector guardrail: ${analysis.macroContext.riskLevel} risk with a ${analysis.macroContext.adjustment} point score adjustment.`);
+    if(analysis.direction==="WAIT")warnings.push(analysis.macroContext?.blockLong?`No LONG is authorized because ${analysis.macroContext.profileLabel} macro conditions conflict with the technical setup.`:analysis.macroContext?.blockShort?`No SHORT is authorized because ${analysis.macroContext.profileLabel} macro conditions strongly support the stock.`:"No trade is authorized because multi-timeframe confirmation is insufficient.");
+    if(shares===0&&isTrade)warnings.push("Position size calculated as zero under the current risk and allocation limits.");
+    return {entry:anchor,entryLow:isShort?anchor:Math.max(0,anchor-data.atr*.15),entryHigh:isShort?anchor+data.atr*.15:anchor,stop,t1,t2,t3,stopDistance,stopPct,t1Pct,t2Pct,t3Pct,rr1,rr2,rr3,shares,positionValue:shares*anchor,estimatedRisk:shares*stopDistance,riskBudget:dollarRisk,rewardMult,runnerR,maxStopPct,rawStructuralStop,stopWasCapped,warnings,isShort,isTrade};
+}
+function renderChart(data,trade){
+    initChart();candleSeries.setData(data.candles);
+    setSeries(ema9Series,data,9,"ema");setSeries(ema21Series,data,21,"ema");setSeries(sma50Series,data,50,"sma");setSeries(sma200Series,data,200,"sma");
+    clearPriceLines();
+    if(trade.isTrade){
+        const up=trade.isShort?"▼":"▲", down=trade.isShort?"▲":"▼";
+        entryPriceLine=candleSeries.createPriceLine({price:trade.entry,color:"#60a5fa",lineWidth:2,lineStyle:LightweightCharts.LineStyle.Dashed,axisLabelVisible:true,title:`Entry ${up}`});
+        stopPriceLine=candleSeries.createPriceLine({price:trade.stop,color:"#f87171",lineWidth:2,lineStyle:LightweightCharts.LineStyle.Dashed,axisLabelVisible:true,title:`Stop ${down}`});
+        target1PriceLine=candleSeries.createPriceLine({price:trade.t1,color:"#facc15",lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dotted,axisLabelVisible:true,title:`T1 ${up}`});
+        target2PriceLine=candleSeries.createPriceLine({price:trade.t2,color:"#4ade80",lineWidth:2,lineStyle:LightweightCharts.LineStyle.Dashed,axisLabelVisible:true,title:`T2 ${up}`});
+    }
+    chart.timeScale().fitContent();
+}
+function setSeries(series,data,period,type){const values=type==="ema"?emaSeries(data.close,period):data.close.map((_,i)=>i+1>=period?mean(data.close.slice(i+1-period,i+1)):null);const rows=[];for(let i=0;i<values.length;i++)if(Number.isFinite(values[i]))rows.push({time:data.candles[i].time,value:values[i]});series.setData(rows);}
+function clearPriceLines(){if(!candleSeries)return;for(const line of [entryPriceLine,stopPriceLine,target1PriceLine,target2PriceLine])if(line)try{candleSeries.removePriceLine(line)}catch(e){}entryPriceLine=stopPriceLine=target1PriceLine=target2PriceLine=null;}
+
+function renderRegime(analysis,benchmarkData){
+    const p=analysis.primary,regime=marketRegime(benchmarkData),volatility=p.price?100*p.atr/p.price:0,m=analysis.macroContext;
+    const e=m?.economicProbability;
+    const macroTiles=m?.applies?[
+        tile(`${m.profileLabel} Guardrail`,`${m.riskLevel} / ${m.bias}`,m.riskLevel==="HIGH"?"red":m.riskLevel==="ELEVATED"?"yellow":m.bias==="TAILWIND"?"green":"blue"),
+        tile("Macro Score Impact",`${m.adjustment>0?"+":""}${m.adjustment} points`,m.adjustment<0?"red":m.adjustment>0?"green":"yellow"),
+        tile(`${m.sectorETF} Daily Trend`,`${directionArrow(m.sectorTrend)} ${m.sectorTrend}`,m.sectorTrend==="BEARISH"?"red":m.sectorTrend==="BULLISH"?"green":"yellow"),
+        tile("Sector vs SPY",m.sectorRelative==null?"Unavailable":`${signedArrow(m.sectorRelative,1)} pts`,m.sectorRelative>2?"green":m.sectorRelative<-2?"red":"yellow"),
+        tile("VIX",m.vixPrice==null?"Unavailable":m.vixPrice.toFixed(1),m.vixPrice>=30?"red":m.vixPrice>=22?"yellow":"green"),
+        ...(e?[tile("Inflation Pressure",`${e.inflationProb}%`,e.inflationProb>=65?"red":e.inflationProb<=40?"green":"yellow"),tile("Hawkish Rate Pressure",`${e.hawkishProb}%`,e.hawkishProb>=65?"red":e.hawkishProb<=40?"green":"yellow"),tile("Weak-Growth Risk",`${e.weakGrowthProb}%`,e.weakGrowthProb>=65?"red":e.weakGrowthProb<=40?"green":"yellow"),tile("Equity Macro Tailwind",`${e.equityTailwindProb}%`,e.equityTailwindProb>=60?"green":e.equityTailwindProb<=40?"red":"yellow")]:[]),
+        ...m.driverReadings.slice(0,4).map(d=>tile(`${d.label} — 20 Bars`,d.roc==null?"Unavailable":`${signedArrow(d.roc,1)}%`,d.impact<0?"red":d.impact>0?"green":"yellow"))
+    ]:[];
+    document.getElementById("regimeCard").style.display="block";
+    document.getElementById("regimeOutput").innerHTML=[
+        tile(`${benchmarkData?.ticker||"Market"} Regime`,`${directionArrow(regime)} ${regime}`,regime==="RISK-ON"?"green":regime==="RISK-OFF"?"red":"yellow"),
+        tile("Stock Relative Strength",`${signedArrow(analysis.relativeStrength,2)}%`,analysis.relativeStrength>0?"green":analysis.relativeStrength<0?"red":"yellow"),
+        tile("ATR Volatility",`${volatility.toFixed(2)}% / bar`,volatility>4?"red":volatility>2?"yellow":"green"),
+        tile("Est. Daily Dollar Volume",compactMoney(p.avgDollarVolume),p.avgDollarVolume>=50_000_000?"green":p.avgDollarVolume>=10_000_000?"yellow":"red"),
+        tile("Current Volume",`${p.volumeRatio.toFixed(2)}× average`,p.volumeRatio>=1.2?"green":p.volumeRatio<.7?"red":"yellow"),
+        tile("Opening Gap",`${signedArrow(p.gapPct,2)}%`,Math.abs(p.gapPct)>=4?"red":Math.abs(p.gapPct)>=2?"yellow":"green"),
+        ...macroTiles,
+        tile("Last Data Bar",formatDateTime(p.dataTime),"blue")
+    ].join("");
+}
+function tile(label,value,cls){return `<div class="regime-tile"><div class="regime-label">${escapeHTML(label)}</div><div class="regime-value ${cls}">${escapeHTML(value)}</div></div>`;}
+
+function renderMTF(analysis){
+    document.getElementById("mtfCard").style.display="block";
+    document.getElementById("mtfOutput").innerHTML=`<table><thead><tr><th>Timeframe</th><th>Trend</th><th>Score</th><th>Price</th><th>RSI</th><th>ADX</th><th>Vol Ratio</th><th>ROC 20</th></tr></thead><tbody>${analysis.analyses.map(x=>{const d=x.data,a=x.analysis,cls=a.direction==="BULLISH"?"green":a.direction==="BEARISH"?"red":"yellow";return `<tr><td>${TF_LABELS[d.timeframe]}${d.derived?' <span class="tiny yellow">(derived)</span>':''}</td><td class="${cls}">${directionArrow(a.direction)} ${a.direction}</td><td>${a.score.toFixed(2)}</td><td>${money(d.price)}</td><td>${d.rsi.toFixed(1)}</td><td>${d.adx==null?"—":d.adx.toFixed(1)}</td><td>${d.volumeRatio.toFixed(2)}×</td><td class="${d.roc20>=0?"green":"red"}">${signedArrow(d.roc20,2)}%</td></tr>`}).join("")}</tbody></table>`;
+}
+
+function readPositionSettings(){
+    return {ticker:String(document.getElementById("positionTicker")?.value||"").trim().toUpperCase(),shares:Math.max(0,Number(document.getElementById("positionShares")?.value)||0),cost:Math.max(0,Number(document.getElementById("positionCost")?.value)||0),maxLossPct:clamp(Number(document.getElementById("positionMaxLoss")?.value)||8,1,40)};
+}
+function savePositionSettings(){
+    try{localStorage.setItem("halifaxTradePosition",JSON.stringify({...readPositionSettings(),leverageGuard:document.getElementById("leverageGuard")?.checked!==false}));}catch(e){}
+}
+function loadPositionSettings(){
+    try{
+        const raw=localStorage.getItem("halifaxTradePosition")||localStorage.getItem("tradedeskPosition")||"null";
+        const saved=JSON.parse(raw);if(!saved)return;
+        if(saved.ticker)document.getElementById("positionTicker").value=saved.ticker;
+        if(Number.isFinite(saved.shares))document.getElementById("positionShares").value=saved.shares;
+        if(Number.isFinite(saved.cost))document.getElementById("positionCost").value=saved.cost;
+        if(Number.isFinite(saved.maxLossPct))document.getElementById("positionMaxLoss").value=saved.maxLossPct;
+        if(typeof saved.leverageGuard==="boolean")document.getElementById("leverageGuard").checked=saved.leverageGuard;
+    }catch(e){}
+}
+function centralReviewWindow(){
+    try{
+        const parts=Object.fromEntries(new Intl.DateTimeFormat("en-US",{timeZone:"America/Chicago",weekday:"short",hour:"2-digit",minute:"2-digit",hour12:false}).formatToParts(new Date()).filter(x=>x.type!=="literal").map(x=>[x.type,x.value]));
+        const minutes=Number(parts.hour)*60+Number(parts.minute),weekday=parts.weekday;return {open:["Mon","Tue","Wed","Thu","Fri"].includes(weekday)&&minutes>=14*60+45&&minutes<=16*60,minutes,weekday};
+    }catch(e){return {open:false};}
+}
+function renderPositionGuardrails(ticker,data,analysis){
+    const card=document.getElementById("positionCard"),settings=readPositionSettings();
+    if(!settings.ticker||settings.ticker!==ticker||settings.shares<=0||settings.cost<=0){card.style.display="none";return;}
+    card.style.display="block";
+    const special=getSpecialInstrument(ticker),currentValue=settings.shares*data.price,totalCost=settings.shares*settings.cost,pnl=currentValue-totalCost,pnlPct=settings.cost?((data.price/settings.cost)-1)*100:0;
+    const alertPrice=settings.cost*(1-settings.maxLossPct/100),alertBreached=data.price<=alertPrice,account=Math.max(0,Number(document.getElementById("account")?.value)||0),concentration=account?currentValue/account*100:null;
+    const context=analysis.instrumentContext,review=centralReviewWindow();
+    let action=context?.positionAction||(`${analysis.direction} signal`),actionClass=action.startsWith("LONG")?"green":action.startsWith("EXIT")||action.startsWith("CONFLICT")?"red":"yellow";
+    const border=actionClass==="green"?"green-border":actionClass==="red"?"red-border":"";
+    const rules=[];
+    if(special?.dailyReset)rules.push(`Daily-reset product: reassess ${special.underlying} and ${ticker} before 2:45 PM Central each trading day.`);
+    if(context)rules.push(`${special.underlying} signal: ${directionArrow(context.underlyingDirection)} ${context.underlyingDirection} (${context.underlyingScore>0?"+":""}${context.underlyingScore}, ${context.underlyingConfidence}% confidence).`);
+    rules.push(`User-set loss alert: ${money(alertPrice)} (${settings.maxLossPct.toFixed(1)}% below average cost).`);
+    if(concentration!=null&&concentration>20)rules.push(`Concentration warning: this position is ${concentration.toFixed(1)}% of the account value entered above.`);
+    if(review.open)rules.push("The 2:45 PM Central daily review window is currently open.");
+    if(alertBreached)rules.unshift("LOSS ALERT BREACHED: current price is at or below the user-set loss threshold.");
+    document.getElementById("positionOutput").innerHTML=`
+        <div class="guardrail-banner ${border}"><div class="guardrail-action ${actionClass}">${escapeHTML(action)}</div><div class="guardrail-sub">${special?`${escapeHTML(special.label)} • ${special.dailyMultiple}× daily inverse exposure to ${special.underlying}`:"Position guardrails"}</div></div>
+        <div class="position-grid">
+            <div class="position-tile"><div class="label">Shares</div><div class="value">${settings.shares.toLocaleString()}</div></div>
+            <div class="position-tile"><div class="label">Average Cost</div><div class="value">${money(settings.cost)}</div></div>
+            <div class="position-tile"><div class="label">Total Cost Basis</div><div class="value">${money(totalCost)}</div></div>
+            <div class="position-tile"><div class="label">Current Price</div><div class="value">${money(data.price)}</div></div>
+            <div class="position-tile"><div class="label">Current Value</div><div class="value">${money(currentValue)}</div></div>
+            <div class="position-tile"><div class="label">Unrealized P/L</div><div class="value ${pnl>=0?"green":"red"}">${pnl>=0?"▲":"▼"} ${money(pnl)} (${signed(pnlPct,2)}%)</div></div>
+            <div class="position-tile"><div class="label">Loss Alert Price</div><div class="value ${alertBreached?"red":"yellow"}">${money(alertPrice)}</div></div>
+            <div class="position-tile"><div class="label">Account Concentration</div><div class="value ${concentration!=null&&concentration>20?"red":"blue"}">${concentration==null?"Set account value":percent(concentration,1)}</div></div>
+        </div>
+        <div class="risk-box"><div class="panel-title">Active Position Guardrails</div><ul class="reasoning-list">${rules.map(r=>`<li>• ${escapeHTML(r)}</li>`).join("")}</ul></div>
+        <div class="notice">The loss alert is a dashboard warning only; it does not place or transmit an order. Daily-reset products can diverge materially from their stated multiple over periods longer than one trading day.</div>`;
+}
+
+
+function setupQuality(analysis,trade){
+    const d=analysis.primary,m=analysis.macroContext||{};
+    let q=38;
+    q+=Math.round((analysis.alignment||0)*22);
+    q+=Math.min(16,Math.round(Math.abs(analysis.score||0)*.16));
+    if(d.adx!=null){if(d.adx>=30)q+=10;else if(d.adx>=25)q+=7;else if(d.adx>=20)q+=3;else if(d.adx<18)q-=7;}
+    if(d.volumeRatio>=1.5)q+=9;else if(d.volumeRatio>=1.1)q+=5;else if(d.volumeRatio<.7)q-=7;
+    if(m.riskLevel==="HIGH")q-=14;else if(m.riskLevel==="ELEVATED")q-=7;
+    if(analysis.direction==="LONG"&&m.bias==="TAILWIND")q+=5;
+    if(analysis.direction==="SHORT"&&m.bias==="HEADWIND")q+=5;
+    if(analysis.guardrailBlocked)q-=10;
+    if(trade.stopPct>=trade.maxStopPct-.01)q-=5;
+    if(analysis.direction==="WAIT")q-=7;
+    q=Math.round(clamp(q,0,100));
+    const grade=q>=90?"A+":q>=84?"A":q>=78?"A−":q>=72?"B+":q>=66?"B":q>=60?"B−":q>=54?"C+":q>=48?"C":q>=40?"D":"F";
+    const label=q>=84?"Excellent":q>=72?"Strong":q>=60?"Usable":q>=48?"Mixed":"Weak";
+    return {score:q,grade,label};
+}
+
+function plainTrendWord(direction){
+    return direction==="BULLISH"?"rising":direction==="BEARISH"?"falling":"mixed";
+}
+function volumePlain(v){
+    if(v>=1.5)return `Volume is strong at ${v.toFixed(2)}× normal, so more traders are participating than usual.`;
+    if(v>=1.1)return `Volume is healthy at ${v.toFixed(2)}× normal, which helps confirm the move.`;
+    if(v<.7)return `Volume is light at only ${v.toFixed(2)}× normal, so the move has weaker confirmation.`;
+    return `Volume is near normal at ${v.toFixed(2)}× its 20-bar average.`;
+}
+function adxPlain(adx){
+    if(adx==null)return "Trend-strength data is unavailable on this timeframe.";
+    if(adx>=30)return `ADX is ${adx.toFixed(1)}, which means the current trend is strong.`;
+    if(adx>=25)return `ADX is ${adx.toFixed(1)}, which means the trend has useful strength.`;
+    if(adx>=18)return `ADX is ${adx.toFixed(1)}, so the trend exists but is not especially strong.`;
+    return `ADX is only ${adx.toFixed(1)}, which usually means a choppy or range-bound market.`;
+}
+function rsiPlain(rsi){
+    if(rsi>=70)return `RSI is ${rsi.toFixed(1)}, so price is stretched on the upside and chasing is riskier.`;
+    if(rsi<=30)return `RSI is ${rsi.toFixed(1)}, so price is stretched on the downside and chasing a short is riskier.`;
+    if(rsi>=58)return `RSI is ${rsi.toFixed(1)}, showing positive momentum without being extremely overbought.`;
+    if(rsi<=42)return `RSI is ${rsi.toFixed(1)}, showing negative momentum without being extremely oversold.`;
+    return `RSI is ${rsi.toFixed(1)}, which is neutral momentum.`;
+}
+function entryTimingRead(analysis,trade){
+    const d=analysis.primary,dir=analysis.direction,atr=Math.max(Number(d.atr)||0,Math.max(.01,d.price*.005));
+    const emaGap=d.ema9?Math.abs(d.price-d.ema9)/atr:0;
+    const longExtended=d.price>d.bbUpper||emaGap>1.55||d.rsi>=72;
+    const shortExtended=d.price<d.bbLower||emaGap>1.55||d.rsi<=28;
+    const nearResistance=Number.isFinite(d.resistance)&&d.resistance>=d.price&&d.resistance-d.price<=atr*.45;
+    const nearSupport=Number.isFinite(d.support)&&d.support<=d.price&&d.price-d.support<=atr*.45;
+    if(dir==="LONG"){
+        if(longExtended)return {action:"WAIT FOR PULLBACK",cls:"yellow",note:`The trend is bullish, but price is stretched. A controlled pullback toward ${money(trade.entryLow)}–${money(trade.entryHigh)} is safer than chasing.`};
+        if(nearResistance)return {action:"WAIT FOR BREAKOUT HOLD",cls:"yellow",note:`Price is close to resistance near ${money(d.resistance)}. Prefer a clean break and hold with healthy volume.`};
+        return {action:"LONG CANDIDATE",cls:"green",note:`The engine authorizes a long setup. Use the planned entry zone and do not move the stop farther away after entry.`};
+    }
+    if(dir==="SHORT"){
+        if(shortExtended)return {action:"WAIT FOR BOUNCE",cls:"yellow",note:`The trend is bearish, but price is stretched lower. A failed bounce is safer than chasing weakness.`};
+        if(nearSupport)return {action:"WAIT FOR BREAKDOWN HOLD",cls:"yellow",note:`Price is close to support near ${money(d.support)}. Prefer a clean break below support and failure to reclaim it.`};
+        return {action:"SHORT CANDIDATE",cls:"red",note:`The engine authorizes a short setup. Use the planned entry zone and keep the stop above the invalidation level.`};
+    }
+    if(analysis.score>=8)return {action:"WAIT — BULLISH LEAN",cls:"yellow",note:`The evidence leans bullish, but the engine does not have enough confirmation yet. A break and hold above ${money(d.resistance)} would improve the setup.`};
+    if(analysis.score<=-8)return {action:"WAIT — BEARISH LEAN",cls:"yellow",note:`The evidence leans bearish, but the engine does not have enough confirmation yet. A break below ${money(d.support)} that stays below would improve the setup.`};
+    return {action:"WAIT",cls:"yellow",note:"The timeframes disagree. Let price choose a direction before risking money."};
+}
+function buildPlainEnglishExplanation(analysis,trade){
+    const d=analysis.primary,m=analysis.macroContext||{},n=analysis.analyses.length;
+    const bullish=analysis.analyses.filter(x=>x.analysis.direction==="BULLISH").length;
+    const bearish=analysis.analyses.filter(x=>x.analysis.direction==="BEARISH").length;
+    const neutral=n-bullish-bearish;
+    const quality=setupQuality(analysis,trade),timing=entryTimingRead(analysis,trade);
+    const tfText=`${bullish} of ${n} timeframes are rising, ${bearish} are falling${neutral?`, and ${neutral} are mixed`:""}.`;
+    let headline,summary,confirm,fail;
+    if(analysis.direction==="LONG"){
+        headline=`Bullish setup — but buy the setup, not the excitement.`;
+        summary=`${d.ticker} qualifies as a LONG because the combined trend, momentum and multi-timeframe score are bullish enough under the selected rules. ${tfText}`;
+        confirm=`Best confirmation: a controlled entry inside ${money(trade.entryLow)}–${money(trade.entryHigh)} or a clean break above resistance near ${money(d.resistance)} with volume at or above normal.`;
+        fail=`The long idea is damaged if price loses support near ${money(d.support)}. The engine's hard invalidation/stop is ${money(trade.stop)}; that is where the planned trade thesis is considered wrong.`;
+    }else if(analysis.direction==="SHORT"){
+        headline=`Bearish setup — wait for weakness you can define.`;
+        summary=`${d.ticker} qualifies as a SHORT because the combined trend, momentum and multi-timeframe score are bearish enough under the selected rules. ${tfText}`;
+        confirm=`Best confirmation: a failed bounce into the entry area or a clean break below support near ${money(d.support)} that cannot reclaim the level, preferably with healthy volume.`;
+        fail=`The short idea is damaged if price reclaims resistance near ${money(d.resistance)}. The engine's hard invalidation/stop is ${money(trade.stop)}.`;
+    }else{
+        headline=analysis.score>=8?`Bullish lean, but not enough proof yet.`:analysis.score<=-8?`Bearish lean, but not enough proof yet.`:`No clear edge yet — waiting is the trade.`;
+        summary=`${d.ticker} does not currently pass the engine's confirmation rules. ${tfText} The system is deliberately choosing WAIT rather than forcing a trade.`;
+        confirm=analysis.score>=8?`A break and hold above resistance near ${money(d.resistance)}, stronger volume, and better timeframe alignment would move this closer to a LONG.`:analysis.score<=-8?`A break below support near ${money(d.support)}, stronger downside volume, and better timeframe alignment would move this closer to a SHORT.`:`Watch ${money(d.resistance)} on the upside and ${money(d.support)} on the downside. The better trade is the side that breaks and then holds with stronger confirmation.`;
+        fail=`Because no trade is authorized, there is no active stop order from this signal. Avoid creating a position just because price is moving quickly.`;
+    }
+    const macroSentence=!m.applies?"Macro guardrails are turned off.":m.riskLevel==="HIGH"?`Macro/sector risk is HIGH and is working against aggressive entries.`:m.riskLevel==="ELEVATED"?`Macro/sector risk is elevated, so the engine requires stronger confirmation.`:m.bias==="TAILWIND"?`The sector/macro backdrop is supportive of the current setup.`:m.bias==="HEADWIND"?`The sector/macro backdrop is a headwind and lowers conviction.`:`The sector/macro backdrop is mixed rather than strongly supportive or hostile.`;
+    const rel=analysis.benchmarkRegime?`Relative strength versus the benchmark is ${analysis.relativeStrength>=0?"positive":"negative"} at ${signed(analysis.relativeStrength,2)}% over 20 bars.`:"Benchmark confirmation was unavailable.";
+    return {
+        quality,timing,headline,summary,confirm,fail,
+        bullets:[tfText,adxPlain(d.adx),volumePlain(d.volumeRatio),rsiPlain(d.rsi),macroSentence,rel]
+    };
+}
+
+function saveSignalJournal(analysis,trade){
+    try{
+        const key="halifaxSignalJournal";
+        const list=JSON.parse(localStorage.getItem(key)||"[]");
+        const d=analysis.primary;
+        list.unshift({ts:new Date().toISOString(),ticker:d.ticker,style:document.getElementById("style")?.value||"",timeframe:d.timeframe,direction:analysis.direction,score:analysis.score,confidence:analysis.confidence,quality:setupQuality(analysis,trade).score,price:d.price,entry:trade.entry,stop:trade.stop,t1:trade.t1,t2:trade.t2,alignment:Math.round((analysis.alignment||0)*100),volumeRatio:d.volumeRatio,adx:d.adx,macroAdjustment:analysis.macroContext?.adjustment??0});
+        localStorage.setItem(key,JSON.stringify(list.slice(0,250)));
+        renderSignalJournal();
+    }catch(e){}
+}
+function getSignalJournal(){
+    try{return JSON.parse(localStorage.getItem("halifaxSignalJournal")||"[]");}catch(e){return [];}
+}
+function renderSignalJournal(){
+    const list=getSignalJournal(),summary=document.getElementById("journalSummary"),out=document.getElementById("journalOutput");
+    if(!summary||!out)return;
+    summary.textContent=list.length?`${list.length} analyses saved locally. Showing the most recent ${Math.min(12,list.length)}. Use the CSV export for later outcome validation.`:"No Halifax signals have been saved in this browser yet.";
+    if(!list.length){out.innerHTML="";return;}
+    out.innerHTML=`<table><thead><tr><th>Time</th><th>Ticker</th><th>Signal</th><th>Score</th><th>Quality</th><th>Confidence</th><th>Price</th><th>Entry</th><th>Stop</th><th>T2</th><th>MTF</th><th>Volume</th><th>ADX</th><th>Macro</th></tr></thead><tbody>${list.slice(0,12).map(r=>`<tr><td>${escapeHTML(new Date(r.ts).toLocaleString(undefined,{timeZone:"America/Chicago",timeZoneName:"short"}))}</td><td>${escapeHTML(r.ticker)}</td><td class="${r.direction==="LONG"?"green":r.direction==="SHORT"?"red":"yellow"}">${directionArrow(r.direction)} ${escapeHTML(r.direction)}</td><td>${r.score>0?"+":""}${r.score}</td><td>${Number(r.quality||0).toFixed(0)}/100</td><td>${Number(r.confidence||0).toFixed(0)}%</td><td>${money(Number(r.price))}</td><td>${money(Number(r.entry))}</td><td>${money(Number(r.stop))}</td><td>${money(Number(r.t2))}</td><td>${Number(r.alignment||0).toFixed(0)}%</td><td>${Number(r.volumeRatio||0).toFixed(2)}×</td><td>${r.adx==null?"—":Number(r.adx).toFixed(1)}</td><td>${Number(r.macroAdjustment||0)>0?"+":""}${Number(r.macroAdjustment||0).toFixed(0)}</td></tr>`).join("")}</tbody></table>`;
+}
+function exportSignalJournal(){
+    const list=getSignalJournal();if(!list.length){alert("No saved Halifax signals to export yet.");return;}
+    const cols=["ts","ticker","style","timeframe","direction","score","confidence","quality","price","entry","stop","t1","t2","alignment","volumeRatio","adx","macroAdjustment"];
+    const esc=v=>`"${String(v??"").replace(/"/g,'""')}"`;
+    const csv=[cols.join(","),...list.map(r=>cols.map(c=>esc(r[c])).join(","))].join("\n");
+    const blob=new Blob([csv],{type:"text/csv;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");
+    a.href=url;a.download=`Halifax_Signal_Journal_${new Date().toISOString().slice(0,10)}.csv`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+function clearSignalJournal(){
+    if(!confirm("Clear the Halifax signal journal saved in this browser?"))return;
+    try{localStorage.removeItem("halifaxSignalJournal");}catch(e){}
+    renderSignalJournal();
+}
+
+function renderTradeOutput(analysis,trade){
+    const d=analysis.primary,dir=analysis.direction,cls=dir==="LONG"?"green":dir==="SHORT"?"red":"yellow",btn=dir==="LONG"?"btn-buy":dir==="SHORT"?"btn-sell":"btn-neutral";
+    const arrow=directionArrow(dir),targetArrow=trade.isShort?"▼":"▲",stopArrow=trade.isShort?"▲":"▼";
+    const setup=dir==="LONG"?`${arrow} LONG SETUP`:dir==="SHORT"?`${arrow} SHORT SETUP`:`${arrow} NO-TRADE / WAIT`;
+    const plain=buildPlainEnglishExplanation(analysis,trade);
+    document.getElementById("tradeOutput").innerHTML=`
+        <div class="score-box"><div><div class="panel-title" style="margin-bottom:3px">HALIFAX COMPOSITE SCORE</div><div class="${cls}" style="font-weight:900">${setup}</div><div style="font-size:10px;color:#64748b;margin-top:3px">Confidence ${analysis.confidence}% • Technical ${analysis.technicalScore>0?"+":""}${analysis.technicalScore} • Macro ${analysis.macroContext?.adjustment>0?"+":""}${analysis.macroContext?.adjustment??0}</div></div><div class="score ${cls}">${analysis.score>0?"+":""}${analysis.score}</div></div>
+        ${analysis.dataFallback?.used?`<div class="risk-box" style="margin:0 0 12px;border-left-color:#f59e0b"><div class="panel-title yellow">Limited-data fallback active</div><div style="font-size:11.5px;color:#cbd5e1;line-height:1.5">Halifax completed the analysis instead of failing. ${escapeHTML(analysis.dataFallback.warnings.join(" "))} Confidence is automatically reduced, and Halifax will force WAIT when the higher-timeframe anchor needed for the selected trading style is missing.</div></div>`:""}
+
+        <div class="explain-card">
+            <div class="explain-hero">
+                <div>
+                    <div class="panel-title cyan">Plain-English Trade Explanation</div>
+                    <div class="explain-headline ${plain.timing.cls}">${escapeHTML(plain.headline)}</div>
+                    <div class="explain-summary">${escapeHTML(plain.summary)}</div>
+                </div>
+                <div class="quality-chip">
+                    <div class="q-label">Setup Quality</div>
+                    <div class="q-grade ${plain.quality.score>=72?"green":plain.quality.score>=55?"yellow":"red"}">${plain.quality.grade}</div>
+                    <div class="q-score">${plain.quality.score}/100 • ${escapeHTML(plain.quality.label)}</div>
+                </div>
+            </div>
+            <div class="action-banner">
+                <div><div class="a-label">What I would do with this signal</div><div class="a-value ${plain.timing.cls}">${escapeHTML(plain.timing.action)}</div></div>
+                <div class="a-note">${escapeHTML(plain.timing.note)}</div>
+            </div>
+            <div class="explain-grid">
+                <div class="explain-block"><div class="e-title">Why the engine says this</div><ul class="explain-bullets">${plain.bullets.map(x=>`<li>• ${escapeHTML(x)}</li>`).join("")}</ul></div>
+                <div class="explain-block"><div class="e-title">What would confirm it</div><p>${escapeHTML(plain.confirm)}</p></div>
+                <div class="explain-block"><div class="e-title">What would prove it wrong</div><p>${escapeHTML(plain.fail)}</p></div>
+                <div class="explain-block"><div class="e-title">Risk in normal language</div><p>${dir==="WAIT"?"No position is authorized, so the safest risk amount is $0 until confirmation improves.":`At the engine entry of ${money(trade.entry)}, the stop is ${money(trade.stop)}. That is ${money(trade.stopDistance)} risk per share. With your current account/risk settings, the engine caps size at ${trade.shares.toLocaleString()} shares and planned risk at about ${money(trade.estimatedRisk)}.`}</p></div>
+            </div>
+            <div class="signal-journal-note">Halifax v13.1 automatically saves the last 250 analyses in this browser's local signal journal so future validation/backtesting work can compare what the engine said with what happened afterward.</div>
+        </div>
+
+        <div class="plan-grid" style="margin-top:13px">
+            <div class="metric"><span>Entry Zone ${targetArrow}</span><span class="blue">${money(trade.entryLow)} – ${money(trade.entryHigh)}</span></div>
+            <div class="metric"><span>Execution Entry ${targetArrow}</span><span class="blue">${money(trade.entry)}</span></div>
+            <div class="metric"><span>Protective Stop ${stopArrow}</span><span class="red">${money(trade.stop)} <span class="tiny">(${percent(trade.stopPct)} ${trade.isShort?"above":"below"} entry)</span></span></div>
+            <div class="metric"><span>Risk Per Share</span><span>${money(trade.stopDistance)}</span></div>
+            <div class="metric"><span>Target 1 ${targetArrow} — ${trade.rr1.toFixed(2)}R</span><span class="yellow">${money(trade.t1)} <span class="tiny">(${percent(trade.t1Pct)})</span></span></div>
+            <div class="metric"><span>Target 2 ${targetArrow} — ${trade.rr2.toFixed(2)}R</span><span class="green">${money(trade.t2)} <span class="tiny">(${percent(trade.t2Pct)})</span></span></div>
+            <div class="metric"><span>Target 3 ${targetArrow} — ${trade.rr3.toFixed(2)}R</span><span class="green">${money(trade.t3)} <span class="tiny">(${percent(trade.t3Pct)})</span></span></div>
+            <div class="metric"><span>Stop / Reward Ratio</span><span>1 : ${trade.rr2.toFixed(2)}</span></div>
+            <div class="metric"><span>Maximum Stop Allowed</span><span>${trade.maxStopPct.toFixed(1)}%</span></div>
+            <div class="metric"><span>Maximum Shares</span><span>${trade.shares.toLocaleString()}</span></div>
+            <div class="metric"><span>Position Value</span><span>${money(trade.positionValue)}</span></div>
+            <div class="metric"><span>Planned Dollar Risk</span><span>${money(trade.estimatedRisk)} / ${money(trade.riskBudget)}</span></div>
+            <div class="metric"><span>Primary RSI / ADX</span><span>${d.rsi.toFixed(1)} / ${d.adx==null?"—":d.adx.toFixed(1)}</span></div>
+            <div class="metric"><span>Support / Resistance</span><span>${money(d.support)} / ${money(d.resistance)}</span></div>
+            <div class="metric"><span>Sector Classification</span><span>${escapeHTML(analysis.macroContext?.profileLabel||"Broad Market")}</span></div>
+            <div class="metric"><span>Sector Risk / Bias</span><span>${escapeHTML(`${analysis.macroContext?.riskLevel||"N/A"} / ${analysis.macroContext?.bias||"N/A"}`)}</span></div>
+            <div class="metric"><span>Inflation / Hawkish Rates</span><span>${analysis.macroContext?.economicProbability?`${analysis.macroContext.economicProbability.inflationProb}% / ${analysis.macroContext.economicProbability.hawkishProb}%`:"N/A"}</span></div>
+            <div class="metric"><span>Weak Growth / Equity Tailwind</span><span>${analysis.macroContext?.economicProbability?`${analysis.macroContext.economicProbability.weakGrowthProb}% / ${analysis.macroContext.economicProbability.equityTailwindProb}%`:"N/A"}</span></div>
+            ${analysis.instrumentContext?`<div class="metric"><span>Instrument Guardrail</span><span class="yellow">${escapeHTML(analysis.instrumentContext.positionAction)}</span></div><div class="metric"><span>Underlying Signal</span><span class="${analysis.instrumentContext.underlyingDirection==="LONG"?"green":analysis.instrumentContext.underlyingDirection==="SHORT"?"red":"yellow"}">${directionArrow(analysis.instrumentContext.underlyingDirection)} ${analysis.instrumentContext.underlying} ${analysis.instrumentContext.underlyingDirection}</span></div>`:""}
+        </div>
+        <button class="${btn}" type="button">${setup}</button>
+        <div class="reasoning-box"><div class="panel-title">Decision Evidence</div><ul class="reasoning-list">${analysis.reasons.map(r=>`<li>• ${escapeHTML(r)}</li>`).join("")}</ul></div>
+        <div class="risk-box"><div class="panel-title">Risk Desk Checks</div><ul class="reasoning-list">${(trade.warnings.length?trade.warnings:["Risk, liquidity, and trend-strength checks passed under the selected settings."]).map(r=>`<li>• ${escapeHTML(r)}</li>`).join("")}</ul></div>
+        <div class="notice">This is a rules-based technical and macro research tool, not a broker recommendation, guarantee, or prediction. Setup Quality is a transparent Halifax heuristic based on alignment, score strength, ADX, volume, macro risk and stop quality; it is not a historical win probability. Verify prices, fundamentals, corporate events, borrow availability, and order details with your brokerage before trading.</div>`;
+    lastPlanText=buildPlanText(analysis,trade);
+    saveSignalJournal(analysis,trade);
+}
+
+function buildPlanText(analysis,trade){
+    const d=analysis.primary,m=analysis.macroContext,plain=buildPlainEnglishExplanation(analysis,trade);
+    return `HALIFAX TRADE ENGINE v13.2 — ${d.ticker} ${analysis.direction} TRADE PLAN
+Plain-English read: ${plain.headline}
+Action: ${plain.timing.action}
+Why: ${plain.summary}
+Confirmation: ${plain.confirm}
+Invalidation: ${plain.fail}
+Setup quality: ${plain.quality.grade} (${plain.quality.score}/100, ${plain.quality.label})
+Composite score: ${analysis.score} | Technical score: ${analysis.technicalScore} | Confidence: ${analysis.confidence}%
+Sector: ${m?.profileLabel||"Broad Market"} | Macro adjustment: ${m?.adjustment??0} | Risk/Bias: ${m?.riskLevel||"N/A"}/${m?.bias||"N/A"}
+Economic probabilities: Inflation ${m?.economicProbability?.inflationProb??"N/A"}% | Hawkish rates ${m?.economicProbability?.hawkishProb??"N/A"}% | Weak growth ${m?.economicProbability?.weakGrowthProb??"N/A"}% | Equity tailwind ${m?.economicProbability?.equityTailwindProb??"N/A"}%
+Primary timeframe: ${TF_LABELS[d.timeframe]}
+Entry zone: ${money(trade.entryLow)} - ${money(trade.entryHigh)}
+Execution entry: ${money(trade.entry)}
+Stop: ${money(trade.stop)} (${percent(trade.stopPct)})
+T1: ${money(trade.t1)} (${trade.rr1.toFixed(2)}R) | T2: ${money(trade.t2)} (${trade.rr2.toFixed(2)}R) | T3: ${money(trade.t3)} (${trade.rr3.toFixed(2)}R)
+Shares: ${trade.shares.toLocaleString()} | Position: ${money(trade.positionValue)} | Risk: ${money(trade.estimatedRisk)}
+RSI: ${d.rsi.toFixed(1)} | ADX: ${d.adx==null?"N/A":d.adx.toFixed(1)} | Volume: ${d.volumeRatio.toFixed(2)}x avg
+Warnings: ${(trade.warnings.length?trade.warnings:["None"]).join(" ")}`;
+}
+async function copyTradePlan(){if(!lastPlanText){alert("Run an analysis first.");return;}try{await navigator.clipboard.writeText(lastPlanText);setStatus("Trade plan copied");}catch(e){prompt("Copy this trade plan:",lastPlanText);}}
+
+async function fetchTickerSnapshot(query){
+    try{
+        const raw=await fetchJson(`https://query1.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(query)}&quotesCount=5&newsCount=8`);
+        const quotes=Array.isArray(raw.quotes)?raw.quotes:[];
+        const exact=quotes.find(q=>String(q.symbol||"").toUpperCase()===String(query).toUpperCase())||quotes[0]||null;
+        return {news:Array.isArray(raw.news)?raw.news:[],quote:exact};
+    }catch(e){return {news:[],quote:null};}
+}
+async function fetchTickerNews(query){return (await fetchTickerSnapshot(query)).news;}
+
+async function loadMacroAssets(profile){
+    const symbols=[profile.etf,"^VIX","SPY",...(profile.drivers||[]).map(d=>d.symbol)];
+    const unique=[...new Set(symbols.filter(Boolean))],values=await mapLimit(unique,3,async symbol=>[symbol,await loadTickerData(symbol,"1d").catch(()=>null)]);
+    const map=Object.fromEntries(values),drivers={};
+    for(const d of profile.drivers||[])drivers[d.symbol]=map[d.symbol]||null;
+    return {sector:map[profile.etf]||null,vix:map["^VIX"]||null,spy:map.SPY||null,drivers};
+}
+function renderNews(news,ticker){
+    const box=document.getElementById("newsOutput");if(!news.length){box.innerHTML=`<div class="loading">No recent news was returned for ${escapeHTML(ticker)}.</div>`;return;}
+    box.innerHTML=news.slice(0,8).map(n=>{const link=safeUrl(n.link),title=escapeHTML(n.title||"Market update"),pub=escapeHTML(n.publisher||"Financial source"),time=n.providerPublishTime?new Date(n.providerPublishTime*1000).toLocaleString():"Recent";return `<div class="news-item"><div class="news-header"><span class="news-publisher">${pub}</span><span class="news-time">${escapeHTML(time)}</span></div><a class="news-title" href="${link}" target="_blank" rel="noopener noreferrer">${title}</a></div>`}).join("");
+}
+
+async function mapLimit(items,limit,worker){const results=new Array(items.length);let next=0;async function runner(){while(true){const i=next++;if(i>=items.length)return;results[i]=await worker(items[i],i);}}await Promise.all(Array.from({length:Math.min(limit,items.length)},runner));return results;}
+
+async function runEngine(){
+    const ticker=document.getElementById("ticker").value.trim().toUpperCase().replace(/[^A-Z0-9.\-^=]/g,"");if(!ticker){document.getElementById("tradeOutput").innerHTML='<div class="red">Enter a valid ticker.</div>';return;}
+    const button=document.getElementById("analyzeBtn");button.disabled=true;setStatus(`Analyzing ${ticker}…`,"var(--yellow)");document.getElementById("tradeOutput").innerHTML=`<div class="loading">Loading multi-timeframe, sector, and instrument-guardrail data for ${escapeHTML(ticker)}…</div>`;document.getElementById("newsOutput").innerHTML='<div class="loading">Loading news catalysts…</div>';
+    try{
+        if(document.getElementById("econGuard")?.checked!==false&&!economicState)await loadOfficialEconomicData(false);
+        const timeframes=getTimeframes(),benchmark=document.getElementById("benchmark").value,chartTF=document.getElementById("timeframe").value,special=getSpecialInstrument(ticker),guardOn=document.getElementById("macroGuard").checked;
+        const [frameResults,benchmarkResult,snapshot]=await Promise.all([
+            mapLimit(timeframes,2,async tf=>{try{return await loadTickerData(ticker,tf)}catch(e){return {error:e.message,timeframe:tf}}}),
+            loadTickerData(benchmark,chartTF).catch(()=>null),
+            fetchTickerSnapshot(ticker)
+        ]);
+        const recovery=recoverFrameSet(ticker,timeframes,frameResults),frames=recovery.frames;
+        if(frames.length<2){
+            const failed=recovery.failed.join(" | ");
+            throw new Error(`No usable multi-timeframe set could be built. ${failed||"Market-data feeds did not return enough candles."}`);
+        }
+        let analysis,displayNews=snapshot.news,underlyingAnalysis=null;
+        if(special&&document.getElementById("leverageGuard")?.checked!==false){
+            const underTFs=instrumentGuardTimeframes(),underPrimary=underTFs.includes(chartTF)?chartTF:"1d";
+            const [underResults,underSnapshot,underBenchmark]=await Promise.all([
+                mapLimit(underTFs,2,async tf=>{try{return await loadTickerData(special.underlying,tf)}catch(e){return {error:e.message,timeframe:tf}}}),
+                fetchTickerSnapshot(special.underlying),
+                loadTickerData(benchmark,underPrimary).catch(()=>null)
+            ]);
+            const underRecovery=recoverFrameSet(special.underlying,underTFs,underResults),underFrames=underRecovery.frames;
+            if(underFrames.length<2)throw new Error(`Underlying guardrail could not build enough ${special.underlying} timeframes.`);
+            const profile=resolveSectorProfile(special.underlying,underSnapshot.quote),macroAssets=guardOn?await loadMacroAssets(profile):{sector:null,vix:null,spy:null,drivers:{}},macroNews=guardOn?await fetchTickerNews(`${profile.label} ${profile.newsQuery}`):[];
+            const underlyingMacro=buildMacroContext(special.underlying,profile,{...macroAssets,news:[...underSnapshot.news,...macroNews]});
+            underlyingAnalysis=applyDataFallbackCaution(aggregateAnalysis(underFrames,underBenchmark,underlyingMacro,underPrimary),underRecovery,document.getElementById("style").value);
+            const baseAnalysis=applyDataFallbackCaution(aggregateAnalysis(frames,benchmarkResult,null),recovery,document.getElementById("style").value);
+            analysis=applySpecialInstrumentGuardrails(ticker,baseAnalysis,special,underlyingAnalysis);
+            analysis.macroContext={...underlyingMacro,profileLabel:`${special.label} via ${special.underlying}`,profileSource:"underlying-aware instrument guardrail"};
+            displayNews=[...underSnapshot.news,...snapshot.news].slice(0,8);
+        }else{
+            const profile=resolveSectorProfile(ticker,snapshot.quote),macroAssets=guardOn?await loadMacroAssets(profile):{sector:null,vix:null,spy:null,drivers:{}},macroNews=guardOn?await fetchTickerNews(`${profile.label} ${profile.newsQuery}`):[];
+            const macroContext=buildMacroContext(ticker,profile,{...macroAssets,news:[...snapshot.news,...macroNews]});
+            analysis=applyDataFallbackCaution(aggregateAnalysis(frames,benchmarkResult,macroContext),recovery,document.getElementById("style").value);
+        }
+        if(special&&recovery.used&&!analysis.dataFallback)analysis=applyDataFallbackCaution(analysis,recovery,document.getElementById("style").value);
+        const trade=calculateTrade(analysis.primary,analysis);
+        renderChart(analysis.primary,trade);renderRegime(analysis,benchmarkResult);renderMTF(analysis);renderTradeOutput(analysis,trade);renderPositionGuardrails(ticker,analysis.primary,analysis);renderNews(displayNews,ticker);
+        document.getElementById("decisionCard")?.scrollIntoView({behavior:"smooth",block:"start"});
+        setStatus(`${ticker} analysis complete`);document.title=`${ticker} | Halifax Trade Engine v13.2`;
+    }catch(error){console.error(error);document.getElementById("tradeOutput").innerHTML=`<div class="red" style="font-weight:900">Analysis failed</div><div style="font-size:12px;color:#cbd5e1;margin-top:8px;line-height:1.5">${escapeHTML(error.message)}</div><div class="notice">Halifax v13.2 rebuilds a slower confirmation timeframe from any usable loaded candles when a separate interval feed fails. A red failure should now appear only when no valid two-timeframe set can be constructed at all.</div>`;document.getElementById("positionCard").style.display="none";setStatus("Analysis failed","var(--red)");}
+    finally{button.disabled=false;}
+}
+
+function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
+function money(v){return Number.isFinite(v)?v.toLocaleString(undefined,{style:"currency",currency:"USD",minimumFractionDigits:2,maximumFractionDigits:2}):"—";}
+function compactMoney(v){if(!Number.isFinite(v))return"—";return new Intl.NumberFormat(undefined,{style:"currency",currency:"USD",notation:"compact",maximumFractionDigits:1}).format(v);}
+function percent(v,d=2){return Number.isFinite(v)?`${Number(v).toFixed(d)}%`:"—";}
+function directionArrow(direction){return ["LONG","BULLISH","RISK-ON"].includes(direction)?"▲":["SHORT","BEARISH","RISK-OFF"].includes(direction)?"▼":"▶";}
+function arrowClass(direction){return ["LONG","BULLISH","RISK-ON"].includes(direction)?"dir-up":["SHORT","BEARISH","RISK-OFF"].includes(direction)?"dir-down":"dir-flat";}
+function signedArrow(v,d=1){const n=Number(v||0);return `${n>0?"▲":n<0?"▼":"▶"} ${n>=0?"+":""}${n.toFixed(d)}`;}
+function signed(v,d=1){return `${v>=0?"+":""}${Number(v||0).toFixed(d)}`;}
+function formatDateTime(unix){return Number.isFinite(unix)?new Date(unix*1000).toLocaleString(undefined,{timeZone:"America/Chicago",timeZoneName:"short"}):"—";}
+function escapeHTML(value){return String(value??"").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));}
+function safeUrl(url){try{const u=new URL(url);return ["http:","https:"].includes(u.protocol)?u.href:"#";}catch(e){return"#";}}
+
+window.addEventListener("load",()=>{const q=new URLSearchParams(location.search).get("ticker");if(q&&document.getElementById("ticker"))document.getElementById("ticker").value=String(q).toUpperCase().replace(/[^A-Z0-9.\-^=]/g,"");loadPositionSettings();renderSignalJournal();economicState={...ECON_FALLBACK};recalculateEconomicProbability();try{initChart();setStatus("Engine ready");setTimeout(()=>loadOfficialEconomicData(false),600);}catch(e){document.getElementById("chart").innerHTML=`<div class="red" style="padding:20px">${escapeHTML(e.message)}</div>`;setStatus("Chart unavailable","var(--red)");}});
+</script>
+</body>
+</html>
