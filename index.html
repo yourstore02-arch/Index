@@ -14,7 +14,7 @@
 <meta name="application-name" content="Halifax Trade Engine">
 <meta name="format-detection" content="telephone=no">
 
-<title>Halifax Trade Engine v19.0 Lite - Strategy Tournament + Pattern Radar</title>
+<title>Halifax Trade Engine v19.1 Lite - Fundamentals + Strategy Lab</title>
 
 <style>
 :root{
@@ -407,6 +407,33 @@ tr:hover td{background:rgba(24,78,132,.10)}
     .header-actions{width:auto}
     .badge.system-badge{min-width:0}
 }
+
+/* Halifax v19.1 company intelligence + button polish */
+button{font-size:11px;letter-spacing:.35px;line-height:1.15;white-space:normal;text-align:center;overflow-wrap:anywhere;min-width:0}
+.quick-actions button,.bt-actions button{min-width:108px}
+.fund-card{border-color:rgba(59,130,246,.42);box-shadow:0 0 0 1px rgba(37,99,235,.08),0 12px 34px rgba(0,0,0,.28)}
+.fund-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:start}
+.fund-name{font-size:20px;font-weight:950;color:#dbeafe;letter-spacing:-.25px}
+.fund-meta{font-size:11px;color:#93c5fd;margin-top:5px;line-height:1.45}
+.fund-desc{font-size:11.5px;color:#cbd5e1;line-height:1.55;margin-top:9px;max-width:1050px}
+.fund-grade{min-width:118px;border:1px solid rgba(96,165,250,.5);background:linear-gradient(180deg,rgba(30,64,175,.22),rgba(2,6,23,.94));border-radius:12px;padding:10px;text-align:center}
+.fund-grade .fg-label{font-size:8.5px;color:#93c5fd;font-weight:900;text-transform:uppercase;letter-spacing:.65px}
+.fund-grade .fg-grade{font-size:27px;font-weight:950;margin-top:2px;color:#60a5fa}
+.fund-grade .fg-score{font-size:9.5px;color:#94a3b8;margin-top:2px}
+.fund-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:12px}
+.fund-metric{background:rgba(2,6,23,.82);border:1px solid rgba(51,65,85,.85);border-radius:10px;padding:9px;min-height:69px}
+.fund-metric .fm-label{font-size:8.5px;color:#64748b;text-transform:uppercase;font-weight:900;letter-spacing:.45px}
+.fund-metric .fm-value{font-size:14px;font-weight:900;color:#e2e8f0;margin-top:5px;overflow-wrap:anywhere}
+.fund-metric .fm-sub{font-size:9px;color:#64748b;margin-top:3px;line-height:1.3}
+.fund-section{margin-top:12px;border-top:1px solid rgba(51,65,85,.65);padding-top:11px}
+.fund-section-title{font-size:9px;color:#60a5fa;text-transform:uppercase;font-weight:950;letter-spacing:.7px;margin-bottom:7px}
+.fund-score-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.fund-score-box{background:#020617;border:1px solid #1e3a5f;border-radius:9px;padding:8px}
+.fund-score-box span{display:block;font-size:8.5px;color:#64748b;text-transform:uppercase;font-weight:900}
+.fund-score-box b{display:block;font-size:15px;margin-top:3px;color:#bfdbfe}
+.fund-source{font-size:9.5px;color:#64748b;line-height:1.45;margin-top:10px}
+@media(max-width:700px){.fund-head{grid-template-columns:1fr}.fund-grade{width:100%}.fund-score-row{grid-template-columns:1fr 1fr}.quick-actions button{flex:1 1 110px}}
+
 </style>
 </head>
 <body>
@@ -414,7 +441,7 @@ tr:hover td{background:rgba(24,78,132,.10)}
     <div class="card header">
         <div class="brand-stack">
             <div class="terminal-kicker"><span class="kicker-dot"></span> HALIFAX QUANT RESEARCH TERMINAL</div>
-            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v19.0 Lite</span></span></div>
+            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v19.1 Lite</span></span></div>
             <div class="subtitle">Predictive swing research • Strategy tournament • Pattern radar • Point-in-time validation</div>
         </div>
         <div class="header-actions"><div class="badge system-badge"><span class="status-dot"></span><span id="engineStatus">Engine ready</span></div></div>
@@ -445,10 +472,10 @@ tr:hover td{background:rgba(24,78,132,.10)}
                 <label>Risk Per Trade (%)</label>
                 <input id="risk" type="number" value="1" min="0.1" max="5" step="0.1">
             </div>
-            <button id="analyzeBtn" class="btn-primary full-mobile" onclick="runEngine()">RUN HALIFAX PREDICTION</button>
+            <button id="analyzeBtn" class="btn-primary full-mobile" onclick="runEngine()">ANALYZE</button>
         </div>
         <div class="quick-actions">
-            <button class="btn-dark" onclick="copyTradePlan()">COPY LAST PLAN</button><button class="btn-dark" onclick="logPaperPlan()">LOG PAPER PLAN</button><button class="btn-dark" onclick="resetHalifaxApp()">RESET APP</button>
+            <button class="btn-dark" onclick="copyTradePlan()">COPY PLAN</button><button class="btn-dark" onclick="logPaperPlan()">PAPER TRADE</button><button class="btn-dark" onclick="resetHalifaxApp()">RESET</button>
         </div>
 
         <details class="compact-details">
@@ -479,12 +506,17 @@ tr:hover td{background:rgba(24,78,132,.10)}
         <div id="tradeOutput"><div class="loading">Enter a ticker and run the Halifax analysis.</div></div>
     </div>
 
+    <div id="fundamentalsCard" class="card fund-card" style="display:none">
+        <div class="panel-title blue">Company Intelligence &amp; Fundamentals</div>
+        <div id="fundamentalsOutput"><div class="loading">Run an analysis to load company and fundamental data.</div></div>
+    </div>
+
 
     <details id="paperJournalPanel" class="card compact-details">
         <summary>Paper Signal Journal — Local Track Record</summary>
         <div class="compact-body">
             <div class="panel-title purple">Transparent Paper-Trade Record</div>
-            <div class="bt-note">Use <b>LOG PAPER PLAN</b> after a Halifax LONG or SHORT signal. The journal stores the exact entry, stop, target, score and timestamp in this browser. Closing a paper signal requires you to enter the exit price manually; Halifax then calculates the realized R result. It does not invent fills or reconstruct an unobserved price path.</div>
+            <div class="bt-note">Use <b>PAPER TRADE</b> after a Halifax LONG or SHORT signal. The journal stores the exact entry, stop, target, score and timestamp in this browser. Closing a paper signal requires you to enter the exit price manually; Halifax then calculates the realized R result. It does not invent fills or reconstruct an unobserved price path.</div>
             <div id="paperJournalOutput"></div>
         </div>
     </details>
@@ -503,7 +535,7 @@ tr:hover td{background:rgba(24,78,132,.10)}
                 <div class="field"><label>Max Hold (Sessions)</label><input id="btMaxHold" type="number" value="20" min="1" max="90" step="1"></div>
                 <div class="field"><label>History</label><select id="btRange"><option value="3y">3 Years</option><option value="5y" selected>5 Years</option><option value="10y">10 Years</option></select></div>
                 <div class="field"><label>Benchmark Filter</label><div class="checkbox-row"><input id="btBenchmark" type="checkbox" checked> Use selected benchmark</div></div>
-                <button id="backtestBtn" class="btn-purple" onclick="runBacktest()">RUN SELECTED BACKTEST</button><button id="tournamentBtn" class="btn-dark" onclick="runStrategyTournament()">RUN STRATEGY TOURNAMENT</button>
+                <button id="backtestBtn" class="btn-purple" onclick="runBacktest()">BACKTEST</button><button id="tournamentBtn" class="btn-dark" onclick="runStrategyTournament()">COMPARE STRATEGIES</button>
             </div>
             <div class="bt-note">This replays one of four fixed point-in-time technical strategies using Daily structure plus the prior completed Weekly bar, with optional benchmark relative strength. It intentionally excludes historical news, current macro overrides, smart-money filings, and live intraday confirmation because those data are not reconstructed point-in-time here. Signals use the close; entries use the next session open. Slippage, ATR/structure stops, stop caps, and non-overlapping trades are applied.</div>
             <div id="backtestOutput"><div class="loading">Choose settings and run the historical backtest.</div></div><div id="tournamentOutput"></div>
@@ -542,7 +574,7 @@ tr:hover td{background:rgba(24,78,132,.10)}
                 <div class="field"><label>Fed Funds Effective (%)</label><input id="econFed" type="number" value="3.63" step="0.01" oninput="recalculateEconomicProbability('manual')"></div>
                 <div class="field"><label>2Y Treasury (%)</label><input id="econ2y" type="number" value="4.25" step="0.01" oninput="recalculateEconomicProbability('manual')"></div>
                 <div class="field"><label>10Y Treasury (%)</label><input id="econ10y" type="number" value="4.69" step="0.01" oninput="recalculateEconomicProbability('manual')"></div>
-                <button id="econLoadBtn" class="btn-dark" onclick="loadOfficialEconomicData(true)">REFRESH FRED DATA</button>
+                <button id="econLoadBtn" class="btn-dark" onclick="loadOfficialEconomicData(true)">REFRESH MACRO</button>
             </div>
             <div id="econProbabilityOutput" class="econ-results"></div>
             <div id="econSource" class="econ-source">Built-in official-data snapshot through Aug. 7, 2026. Refresh attempts to load newer FRED series. Consensus fields are optional and are never invented.</div>
@@ -745,7 +777,7 @@ async function fetchWithTimeout(url,options={},timeoutMs=8000){
 function yahooAlternateUrl(url){
     return String(url).includes("query1.finance.yahoo.com")?String(url).replace("query1.finance.yahoo.com","query2.finance.yahoo.com"):null;
 }
-function jsonLooksUsable(data){return !!(data&&(data.chart||data.news||data.quotes));}
+function jsonLooksUsable(data){return !!(data&&(data.chart||data.news||data.quotes||data.quoteSummary||data.quoteResponse));}
 async function parseJsonResponse(r){
     if(!r.ok)throw new Error(`HTTP ${r.status}`);
     const text=await r.text();
@@ -1692,7 +1724,7 @@ function renderTradeOutput(analysis,trade){
             <div class="metric"><span>Smart-Money Filing Overlay</span><span class="${(analysis.smartMoneyContribution||0)>0?"green":(analysis.smartMoneyContribution||0)<0?"red":"yellow"}">${analysis.smartMoneyContribution==null?"N/A":`${analysis.smartMoneyContribution>=0?"+":""}${analysis.smartMoneyContribution} pts`}</span></div>
             ${analysis.instrumentContext?`<div class="metric"><span>Instrument Guardrail</span><span class="yellow">${escapeHTML(analysis.instrumentContext.positionAction)}</span></div><div class="metric"><span>Underlying Signal</span><span class="${analysis.instrumentContext.underlyingDirection==="LONG"?"green":analysis.instrumentContext.underlyingDirection==="SHORT"?"red":"yellow"}">${directionArrow(analysis.instrumentContext.underlyingDirection)} ${analysis.instrumentContext.underlying} ${analysis.instrumentContext.underlyingDirection}</span></div>`:""}
         </div>
-        <button class="${btn}" type="button" ${dir==="WAIT"?"disabled":'onclick="logPaperPlan()"'}>${dir==="WAIT"?setup:`${setup} • LOG PAPER PLAN`}</button>
+        <button class="${btn}" type="button" ${dir==="WAIT"?"disabled":'onclick="logPaperPlan()"'}>${dir==="WAIT"?setup:`${setup} • PAPER TRADE`}</button>
         <details class="compact-details"><summary>Detailed Decision Evidence &amp; Risk Checks</summary><div class="compact-body"><div class="evidence-section"><div class="panel-title">Decision Evidence</div><ul class="reasoning-list">${analysis.reasons.map(r=>`<li>• ${escapeHTML(r)}</li>`).join("")}</ul></div><div class="evidence-section"><div class="panel-title">Risk Desk Checks</div><ul class="reasoning-list">${(trade.warnings.length?trade.warnings:["Risk, liquidity, and trend-strength checks passed under the selected settings."]).map(r=>`<li>• ${escapeHTML(r)}</li>`).join("")}</ul></div></div></details>
         <div class="notice">This is a rules-based research tool, not a broker recommendation or guarantee. Prediction Strength and letter grades are Halifax model scores, not win probabilities. The History Grade uses point-in-time Daily analogs from up to five years of loaded history and can still fail out of sample. Smart-money scoring uses reported insider and institutional filings with deliberately small weights because disclosure data can be delayed. Verify prices, fundamentals, corporate events, borrow availability, and order details with your brokerage before trading.</div>`;
     lastPlanText=buildPlanText(analysis,trade);lastAnalysis=analysis;lastTrade=trade;
@@ -1738,7 +1770,7 @@ function closePaperSignal(id){
 function deletePaperSignal(id){if(!confirm("Delete this paper signal from the local journal?"))return;writePaperJournal(readPaperJournal().filter(x=>String(x.id)!==String(id)));}
 function renderPaperJournal(){
     const box=document.getElementById("paperJournalOutput");if(!box)return;const rows=readPaperJournal(),closed=rows.filter(x=>x.status==="CLOSED"&&Number.isFinite(x.resultR)),wins=closed.filter(x=>x.resultR>0),totalR=closed.reduce((a,x)=>a+x.resultR,0),winRate=closed.length?100*wins.length/closed.length:0,expectancy=closed.length?totalR/closed.length:0;
-    const body=rows.slice().reverse().map(r=>`<tr><td>${new Date(r.loggedAt).toLocaleDateString()}</td><td><b>${escapeHTML(r.ticker)}</b></td><td class="${r.direction==='LONG'?'green':'red'}">${r.direction}</td><td>${money(r.entry)}</td><td>${money(r.stop)}</td><td>${money(r.target)}</td><td>${r.score>0?'+':''}${r.score}</td><td>${escapeHTML(r.grade||'—')}</td><td class="${r.status==='CLOSED'?(r.resultR>0?'green':'red'):'yellow'}">${r.status==='CLOSED'?`${r.resultR>=0?'+':''}${r.resultR.toFixed(2)}R`:'OPEN'}</td><td><div class="journal-actions">${r.status==='OPEN'?`<button class="btn-sm" onclick="closePaperSignal('${r.id}')">CLOSE</button>`:''}<button class="btn-dark" onclick="deletePaperSignal('${r.id}')">DELETE</button></div></td></tr>`).join('');
+    const body=rows.slice().reverse().map(r=>`<tr><td>${new Date(r.loggedAt).toLocaleDateString()}</td><td><b>${escapeHTML(r.ticker)}</b></td><td class="${r.direction==='LONG'?'green':'red'}">${r.direction}</td><td>${money(r.entry)}</td><td>${money(r.stop)}</td><td>${money(r.target)}</td><td>${r.score>0?'+':''}${r.score}</td><td>${escapeHTML(r.grade||'—')}</td><td class="${r.status==='CLOSED'?(r.resultR>0?'green':'red'):'yellow'}">${r.status==='CLOSED'?`${r.resultR>=0?'+':''}${r.resultR.toFixed(2)}R`:'OPEN'}</td><td><div class="journal-actions">${r.status==='OPEN'?`<button class="btn-sm" onclick="closePaperSignal('${r.id}')">CLOSE TRADE</button>`:''}<button class="btn-dark" onclick="deletePaperSignal('${r.id}')">REMOVE</button></div></td></tr>`).join('');
     box.innerHTML=`<div class="journal-summary"><div class="journal-stat"><div class="j-label">Logged Signals</div><div class="j-value">${rows.length}</div></div><div class="journal-stat"><div class="j-label">Closed Paper Trades</div><div class="j-value">${closed.length}</div></div><div class="journal-stat"><div class="j-label">Manual Win Rate</div><div class="j-value ${winRate>=50?'green':'yellow'}">${closed.length?winRate.toFixed(1)+'%':'—'}</div></div><div class="journal-stat"><div class="j-label">Manual Expectancy</div><div class="j-value ${expectancy>0?'green':expectancy<0?'red':'yellow'}">${closed.length?(expectancy>=0?'+':'')+expectancy.toFixed(2)+'R':'—'}</div></div></div><div class="table-wrap"><table><thead><tr><th>Logged</th><th>Ticker</th><th>Side</th><th>Entry</th><th>Stop</th><th>Target</th><th>Score</th><th>Grade</th><th>Result</th><th>Actions</th></tr></thead><tbody>${body||'<tr><td colspan="10">No paper signals logged yet.</td></tr>'}</tbody></table></div><div class="bt-note">This journal lives only in this browser/device unless you export or copy it. Manual exits are used so the app does not fabricate fills.</div>`;
 }
 
@@ -1928,6 +1960,110 @@ function renderSmartMoney(ticker,sm){
     </div>`;
 }
 
+
+// ================= Halifax v19.1 Company Intelligence =================
+function fundRaw(v){
+    if(v==null)return null;
+    if(typeof v==="number")return Number.isFinite(v)?v:null;
+    if(typeof v==="object"&&v!==null){
+        if(Number.isFinite(v.raw))return v.raw;
+        if(Number.isFinite(v.fmt))return v.fmt;
+    }
+    const n=Number(v);return Number.isFinite(n)?n:null;
+}
+function fundText(v){
+    if(v==null)return "";
+    if(typeof v==="object"&&v!==null)return String(v.fmt??v.longFmt??v.raw??"");
+    return String(v);
+}
+function fundPct(v,d=1){const n=fundRaw(v);return Number.isFinite(n)?`${(Math.abs(n)<=2?n*100:n).toFixed(d)}%`:"—";}
+function fundNum(v,d=1){const n=fundRaw(v);return Number.isFinite(n)?n.toLocaleString(undefined,{maximumFractionDigits:d}):"—";}
+function fundMoney(v){const n=fundRaw(v);return Number.isFinite(n)?compactMoney(n):"—";}
+function fundMetric(label,value,sub=""){return `<div class="fund-metric"><div class="fm-label">${escapeHTML(label)}</div><div class="fm-value">${escapeHTML(value)}</div>${sub?`<div class="fm-sub">${escapeHTML(sub)}</div>`:""}</div>`;}
+function scorePiece(value,rules){if(!Number.isFinite(value))return null;for(const [test,score] of rules)if(test(value))return score;return null;}
+function avgAvailable(parts){const vals=parts.filter(Number.isFinite);return vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:null;}
+function gradeFundamentals(f){
+    const rev=f.revenueGrowth,earn=f.earningsGrowth,profit=f.profitMargins,op=f.operatingMargins,roe=f.returnOnEquity,current=f.currentRatio,de=f.debtToEquity,fcf=f.freeCashflow,fpe=f.forwardPE,peg=f.pegRatio;
+    const growth=avgAvailable([
+        scorePiece(rev,[[v=>v>=.20,100],[v=>v>=.10,85],[v=>v>=0,68],[v=>v>=-.10,42],[()=>true,20]]),
+        scorePiece(earn,[[v=>v>=.20,100],[v=>v>=.10,85],[v=>v>=0,68],[v=>v>=-.10,42],[()=>true,20]])
+    ]);
+    const profitability=avgAvailable([
+        scorePiece(profit,[[v=>v>=.20,100],[v=>v>=.10,84],[v=>v>=.05,70],[v=>v>=0,55],[()=>true,22]]),
+        scorePiece(op,[[v=>v>=.20,100],[v=>v>=.10,82],[v=>v>=.05,68],[v=>v>=0,52],[()=>true,22]]),
+        scorePiece(roe,[[v=>v>=.25,100],[v=>v>=.15,84],[v=>v>=.08,68],[v=>v>=0,52],[()=>true,25]])
+    ]);
+    const balance=avgAvailable([
+        scorePiece(current,[[v=>v>=1.5,90],[v=>v>=1.0,70],[v=>v>=.75,48],[()=>true,25]]),
+        scorePiece(de,[[v=>v<=50,92],[v=>v<=100,75],[v=>v<=200,52],[()=>true,25]]),
+        scorePiece(fcf,[[v=>v>0,82],[()=>true,28]])
+    ]);
+    const valuation=avgAvailable([
+        scorePiece(fpe,[[v=>v>0&&v<=15,92],[v=>v>15&&v<=25,78],[v=>v>25&&v<=40,58],[v=>v>40,38],[()=>true,null]]),
+        scorePiece(peg,[[v=>v>0&&v<=1,90],[v=>v>1&&v<=2,70],[v=>v>2,42],[()=>true,null]])
+    ]);
+    const buckets=[{name:"Growth",score:growth,w:30},{name:"Profitability",score:profitability,w:30},{name:"Balance Sheet",score:balance,w:25},{name:"Valuation",score:valuation,w:15}].filter(x=>Number.isFinite(x.score));
+    const weight=buckets.reduce((a,x)=>a+x.w,0),score=weight?Math.round(buckets.reduce((a,x)=>a+x.score*x.w,0)/weight):null;
+    const grade=score==null?"N/A":score>=90?"A+":score>=82?"A":score>=74?"B+":score>=66?"B":score>=58?"C":score>=50?"D":"F";
+    return {score,grade,buckets};
+}
+async function loadCompanyFundamentals(ticker,snapshotQuote=null){
+    const symbol=String(ticker||"").toUpperCase();
+    const modules="price,summaryProfile,summaryDetail,defaultKeyStatistics,financialData,calendarEvents";
+    let summary=null,quote=null,error=null;
+    try{
+        const raw=await fetchJson(`https://query1.finance.yahoo.com/v10/finance/quoteSummary/${encodeURIComponent(symbol)}?modules=${modules}`);
+        summary=raw?.quoteSummary?.result?.[0]||null;
+    }catch(e){error=e;}
+    try{
+        const raw=await fetchJson(`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${encodeURIComponent(symbol)}`);
+        quote=raw?.quoteResponse?.result?.[0]||null;
+    }catch(e){if(!error)error=e;}
+    const p=summary?.price||{},profile=summary?.summaryProfile||{},sd=summary?.summaryDetail||{},ks=summary?.defaultKeyStatistics||{},fd=summary?.financialData||{},cal=summary?.calendarEvents||{},q=quote||snapshotQuote||{};
+    const quoteType=fundText(p.quoteType||q.quoteType||q.typeDisp).toUpperCase();
+    const isFund=["ETF","MUTUALFUND","INDEX","CRYPTOCURRENCY","FUTURE"].some(x=>quoteType.replace(/\s+/g,"").includes(x));
+    const earningsDate=Array.isArray(cal?.earnings?.earningsDate)&&cal.earnings.earningsDate.length?fundRaw(cal.earnings.earningsDate[0]):null;
+    const data={
+        ticker:symbol,available:!!(summary||quote||snapshotQuote),isFund,quoteType:quoteType||"EQUITY",
+        name:fundText(p.longName||p.shortName||q.longName||q.shortName)||symbol,
+        sector:fundText(profile.sector||q.sector),industry:fundText(profile.industry||q.industry),website:fundText(profile.website),
+        employees:fundRaw(profile.fullTimeEmployees),description:fundText(profile.longBusinessSummary),country:fundText(profile.country),city:fundText(profile.city),
+        marketCap:fundRaw(p.marketCap||q.marketCap),enterpriseValue:fundRaw(ks.enterpriseValue),
+        trailingPE:fundRaw(sd.trailingPE||q.trailingPE),forwardPE:fundRaw(sd.forwardPE||ks.forwardPE||q.forwardPE),pegRatio:fundRaw(ks.pegRatio),priceToBook:fundRaw(ks.priceToBook||q.priceToBook),
+        revenue:fundRaw(fd.totalRevenue),revenueGrowth:fundRaw(fd.revenueGrowth),earningsGrowth:fundRaw(fd.earningsGrowth),
+        profitMargins:fundRaw(fd.profitMargins),operatingMargins:fundRaw(fd.operatingMargins),grossMargins:fundRaw(fd.grossMargins),returnOnEquity:fundRaw(fd.returnOnEquity),returnOnAssets:fundRaw(fd.returnOnAssets),
+        totalCash:fundRaw(fd.totalCash),totalDebt:fundRaw(fd.totalDebt),debtToEquity:fundRaw(fd.debtToEquity),currentRatio:fundRaw(fd.currentRatio),freeCashflow:fundRaw(fd.freeCashflow),operatingCashflow:fundRaw(fd.operatingCashflow),
+        targetMean:fundRaw(fd.targetMeanPrice),targetHigh:fundRaw(fd.targetHighPrice),targetLow:fundRaw(fd.targetLowPrice),analystCount:fundRaw(fd.numberOfAnalystOpinions),recommendation:fundText(fd.recommendationKey),recommendationMean:fundRaw(fd.recommendationMean),
+        currentPrice:fundRaw(fd.currentPrice||p.regularMarketPrice||q.regularMarketPrice),beta:fundRaw(sd.beta||q.beta),dividendYield:fundRaw(sd.dividendYield||q.trailingAnnualDividendYield),
+        sharesOutstanding:fundRaw(ks.sharesOutstanding||q.sharesOutstanding),heldInsiders:fundRaw(ks.heldPercentInsiders),heldInstitutions:fundRaw(ks.heldPercentInstitutions),shortFloat:fundRaw(ks.shortPercentOfFloat),earningsDate,
+        source:summary?"Yahoo Finance company/fundamental modules":"Yahoo Finance quote fallback",detailAvailable:!!summary,error:error?.message||null
+    };
+    data.grade=isFund?{score:null,grade:"N/A",buckets:[]}:gradeFundamentals(data);
+    return data;
+}
+function renderCompanyFundamentals(f){
+    const card=document.getElementById("fundamentalsCard"),box=document.getElementById("fundamentalsOutput");if(!card||!box)return;card.style.display="block";
+    if(!f?.available){box.innerHTML='<div class="loading">Company fundamental data is unavailable from the current market-data feeds. No values were estimated.</div>';return;}
+    const g=f.grade||{score:null,grade:"N/A",buckets:[]},loc=[f.city,f.country].filter(Boolean).join(", "),meta=[f.quoteType,f.sector,f.industry,loc].filter(Boolean).join(" • ");
+    const upside=Number.isFinite(f.targetMean)&&Number.isFinite(f.currentPrice)&&f.currentPrice>0?(f.targetMean/f.currentPrice-1):null;
+    const earnings=f.earningsDate?new Date(f.earningsDate*1000).toLocaleDateString():"—";
+    const gradeBlock=f.isFund?`<div class="fund-grade"><div class="fg-label">Fundamental Grade</div><div class="fg-grade">N/A</div><div class="fg-score">Fund / non-operating security</div></div>`:`<div class="fund-grade"><div class="fg-label">Fundamental Quality</div><div class="fg-grade">${escapeHTML(g.grade)}</div><div class="fg-score">${Number.isFinite(g.score)?g.score+" / 100":"Insufficient data"}</div></div>`;
+    const desc=f.description?`<div class="fund-desc">${escapeHTML(f.description.length>720?f.description.slice(0,717)+"…":f.description)}</div>`:"";
+    const buckets=!f.isFund&&g.buckets?.length?`<div class="fund-section"><div class="fund-section-title">Fundamental Score Components</div><div class="fund-score-row">${g.buckets.map(x=>`<div class="fund-score-box"><span>${escapeHTML(x.name)}</span><b>${Math.round(x.score)}/100</b></div>`).join("")}</div></div>`:"";
+    const metrics=[
+        fundMetric("Market Cap",fundMoney(f.marketCap)),fundMetric("Enterprise Value",fundMoney(f.enterpriseValue)),fundMetric("Revenue",fundMoney(f.revenue),"Trailing / provider-reported"),fundMetric("Revenue Growth",fundPct(f.revenueGrowth)),
+        fundMetric("Earnings Growth",fundPct(f.earningsGrowth)),fundMetric("Gross Margin",fundPct(f.grossMargins)),fundMetric("Operating Margin",fundPct(f.operatingMargins)),fundMetric("Profit Margin",fundPct(f.profitMargins)),
+        fundMetric("Return on Equity",fundPct(f.returnOnEquity)),fundMetric("Return on Assets",fundPct(f.returnOnAssets)),fundMetric("Free Cash Flow",fundMoney(f.freeCashflow)),fundMetric("Operating Cash Flow",fundMoney(f.operatingCashflow)),
+        fundMetric("Forward P/E",fundNum(f.forwardPE,1)),fundMetric("Trailing P/E",fundNum(f.trailingPE,1)),fundMetric("PEG",fundNum(f.pegRatio,2)),fundMetric("Price / Book",fundNum(f.priceToBook,2)),
+        fundMetric("Total Cash",fundMoney(f.totalCash)),fundMetric("Total Debt",fundMoney(f.totalDebt)),fundMetric("Debt / Equity",Number.isFinite(f.debtToEquity)?fundNum(f.debtToEquity,1)+"%":"—"),fundMetric("Current Ratio",fundNum(f.currentRatio,2)),
+        fundMetric("Analyst Target",fundMoney(f.targetMean),Number.isFinite(upside)?`${upside>=0?"+":""}${(upside*100).toFixed(1)}% vs current price`:"No target comparison"),fundMetric("Analyst View",f.recommendation?f.recommendation.replace(/_/g," ").toUpperCase():"—",Number.isFinite(f.analystCount)?`${Math.round(f.analystCount)} analyst opinion(s)`:""),
+        fundMetric("Beta",fundNum(f.beta,2)),fundMetric("Dividend Yield",fundPct(f.dividendYield,2)),fundMetric("Next Earnings",earnings),fundMetric("Employees",Number.isFinite(f.employees)?Math.round(f.employees).toLocaleString():"—"),
+        fundMetric("Shares Outstanding",Number.isFinite(f.sharesOutstanding)?compactMoney(f.sharesOutstanding).replace("$",""):"—"),fundMetric("Insider Hold",fundPct(f.heldInsiders)),fundMetric("Institutional Hold",fundPct(f.heldInstitutions)),fundMetric("Short % Float",fundPct(f.shortFloat))
+    ].join("");
+    box.innerHTML=`<div class="fund-head"><div><div class="fund-name">${escapeHTML(f.name)} <span class="tiny">${escapeHTML(f.ticker)}</span></div><div class="fund-meta">${escapeHTML(meta||"Security profile")}</div>${desc}</div>${gradeBlock}</div><div class="fund-grid">${metrics}</div>${buckets}<div class="fund-source">Source: ${escapeHTML(f.source)}. Fundamental fields are displayed only when returned by the market-data provider; missing values remain “—”. The grade is a transparent quality screen based on available growth, profitability, balance-sheet and valuation fields, not a price target or trade signal.${f.isFund?" Corporate fundamental grading is disabled for funds and non-operating securities.":""}</div>`;
+}
+// ================= End Company Intelligence =================
+
 function renderNews(news,ticker){
     const box=document.getElementById("newsOutput");if(!news.length){box.innerHTML=`<div class="loading">No recent news was returned for ${escapeHTML(ticker)}.</div>`;return;}
     box.innerHTML=news.slice(0,8).map(n=>{const link=safeUrl(n.link),title=escapeHTML(n.title||"Market update"),pub=escapeHTML(n.publisher||"Financial source"),time=n.providerPublishTime?new Date(n.providerPublishTime*1000).toLocaleString():"Recent";return `<div class="news-item"><div class="news-header"><span class="news-publisher">${pub}</span><span class="news-time">${escapeHTML(time)}</span></div><a class="news-title" href="${link}" target="_blank" rel="noopener noreferrer">${title}</a></div>`}).join("");
@@ -1954,7 +2090,7 @@ let halifaxRunId=0;
 async function runEngine(){
     const runId=++halifaxRunId;
     const ticker=document.getElementById("ticker").value.trim().toUpperCase().replace(/[^A-Z0-9.\-^=]/g,"");if(!ticker){document.getElementById("tradeOutput").innerHTML='<div class="red">Enter a valid ticker.</div>';return;}
-    const button=document.getElementById("analyzeBtn");button.disabled=true;setStatus(`Analyzing ${ticker}…`,"var(--yellow)");document.getElementById("tradeOutput").innerHTML=`<div class="loading">Loading multi-timeframe, sector, and instrument-guardrail data for ${escapeHTML(ticker)}…</div>`;document.getElementById("newsOutput").innerHTML='<div class="loading">Loading news catalysts…</div>';document.getElementById("smartMoneyCard").style.display="block";document.getElementById("smartMoneyOutput").innerHTML='<div class="loading">Loading insider, institutional and public-filing context in parallel…</div>';
+    const button=document.getElementById("analyzeBtn");button.disabled=true;setStatus(`Analyzing ${ticker}…`,"var(--yellow)");document.getElementById("tradeOutput").innerHTML=`<div class="loading">Loading multi-timeframe, sector, and instrument-guardrail data for ${escapeHTML(ticker)}…</div>`;document.getElementById("newsOutput").innerHTML='<div class="loading">Loading news catalysts…</div>';document.getElementById("smartMoneyCard").style.display="block";document.getElementById("smartMoneyOutput").innerHTML='<div class="loading">Loading insider, institutional and public-filing context in parallel…</div>';document.getElementById("fundamentalsCard").style.display="block";document.getElementById("fundamentalsOutput").innerHTML='<div class="loading">Loading company profile and fundamental data in parallel…</div>';
     try{
         if(document.getElementById("econGuard")?.checked!==false&&!economicState)await loadOfficialEconomicData(false);
         const timeframes=getTimeframes(),benchmark=document.getElementById("benchmark").value,chartTF=document.getElementById("timeframe").value,special=getSpecialInstrument(ticker),guardOn=document.getElementById("macroGuard").checked;
@@ -1965,6 +2101,7 @@ async function runEngine(){
             loadTickerData(benchmark,chartTF,chartTF==="1d"?"1y":null).catch(()=>null),
             fetchTickerSnapshot(ticker)
         ]);
+        const fundamentalsPromise=loadCompanyFundamentals(ticker,snapshot.quote).catch(()=>null);
         const recovery=recoverFrameSet(ticker,timeframes,frameResults),frames=recovery.frames;
         if(frames.length<2){
             const failed=recovery.failed.join(" | ");
@@ -1999,7 +2136,12 @@ async function runEngine(){
         renderChart(analysis.primary,trade);renderRegime(analysis,benchmarkResult);renderMTF(analysis);renderTradeOutput(analysis,trade);renderPositionGuardrails(ticker,analysis.primary,analysis);renderNews(displayNews,ticker);
         document.getElementById("smartMoneyOutput").innerHTML='<div class="loading">Core prediction is complete. Loading insider, institutional and public-filing context in the background…</div>';
         document.getElementById("decisionCard")?.scrollIntoView({behavior:"smooth",block:"start"});
-        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v19.0 Lite`;
+        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v19.1 Lite`;
+        fundamentalsPromise.then(f=>{
+            if(runId!==halifaxRunId)return;
+            if(!f){document.getElementById("fundamentalsOutput").innerHTML='<div class="loading">Company fundamental feeds are unavailable right now. No values were estimated.</div>';return;}
+            renderCompanyFundamentals(f);
+        }).catch(()=>{});
         smartMoneyPromise.then(sm=>{
             if(runId!==halifaxRunId)return;
             if(!sm){document.getElementById("smartMoneyOutput").innerHTML='<div class="loading">Smart-money feeds are unavailable right now. Core Halifax prediction remains valid.</div>';return;}
@@ -2007,7 +2149,7 @@ async function runEngine(){
             renderTradeOutput(analysis,trade);renderPositionGuardrails(ticker,analysis.primary,analysis);renderSmartMoney(special?.underlying||ticker,sm);
             setStatus(`${ticker} prediction + smart money complete`);
         }).catch(()=>{});
-    }catch(error){console.error(error);document.getElementById("tradeOutput").innerHTML=`<div class="red" style="font-weight:900">Analysis failed</div><div style="font-size:12px;color:#cbd5e1;margin-top:8px;line-height:1.5">${escapeHTML(error.message)}</div><div class="notice">Halifax v19.0 Lite rebuilds a slower confirmation timeframe from any usable loaded candles when a separate interval feed fails. A red failure should now appear only when no valid two-timeframe set can be constructed at all.</div>`;document.getElementById("positionCard").style.display="none";setStatus("Analysis failed","var(--red)");}
+    }catch(error){console.error(error);document.getElementById("tradeOutput").innerHTML=`<div class="red" style="font-weight:900">Analysis failed</div><div style="font-size:12px;color:#cbd5e1;margin-top:8px;line-height:1.5">${escapeHTML(error.message)}</div><div class="notice">Halifax v19.1 Lite rebuilds a slower confirmation timeframe from any usable loaded candles when a separate interval feed fails. A red failure should now appear only when no valid two-timeframe set can be constructed at all.</div>`;document.getElementById("positionCard").style.display="none";document.getElementById("fundamentalsOutput").innerHTML='<div class="loading">Company fundamentals were not completed because the main analysis failed.</div>';setStatus("Analysis failed","var(--red)");}
     finally{button.disabled=false;}
 }
 
@@ -2088,7 +2230,7 @@ function renderBacktestResult(result){
     out.innerHTML=`${specialNote}<div class="guardrail-banner green-border"><div class="guardrail-action">${escapeHTML(result.strategyLabel||"Halifax Core")}</div><div class="guardrail-sub">Point-in-time strategy backtest • Reliability ${rel.grade} (${rel.score}/100). Reliability combines expectancy, profit factor, sample size, recent-vs-earlier consistency and drawdown; it is not a win probability.</div></div><div class="backtest-metrics">${btMetric("Reliability",`${rel.grade} • ${rel.score}/100`,`Transparent robustness grade`,rel.score>=72?"bt-positive":rel.score>=55?"bt-neutral":"bt-negative")}${btMetric("Trades",s.count,`${s.wins} wins / ${s.losses} losses`)}${btMetric("Win Rate",`${btFmt(s.winRate,1)}%`,`Non-overlapping trades`,s.winRate>=50?"bt-positive":"bt-neutral")}${btMetric("Expectancy",`${s.expectancy>=0?"+":""}${btFmt(s.expectancy,2)}R`,`Average per trade`,expCls)}${btMetric("Profit Factor",pf,`Gross winning R ÷ losing R`,s.profitFactor>=1.3?"bt-positive":s.profitFactor<1?"bt-negative":"bt-neutral")}${btMetric("Total R",`${s.totalR>=0?"+":""}${btFmt(s.totalR,2)}R`,`Before compounding`,s.totalR>=0?"bt-positive":"bt-negative")}${btMetric("Max Drawdown",`${btFmt(result.maxDrawdownPct,1)}%`,`Risk-adjusted equity`,result.maxDrawdownPct<=15?"bt-positive":"bt-negative")}${btMetric("Start Equity",money(result.startEquity),`${btFmt(result.riskPct,2)}% risk/trade`)}${btMetric("End Equity",money(result.endEquity),`${result.totalReturn>=0?"+":""}${btFmt(result.totalReturn,1)}%`,eqCls)}${btMetric("Buy & Hold",`${result.buyHold>=0?"+":""}${btFmt(result.buyHold,1)}%`,`Same test window`,result.buyHold>=0?"bt-positive":"bt-negative")}${btMetric("Avg Hold",`${btFmt(s.avgHold,1)} days`,`Max losing streak: ${s.maxLossStreak}`)}</div>
     <div class="bt-segment-grid"><div class="bt-segment"><b>Long side</b><br>${lr.count} trades • ${btFmt(lr.winRate,1)}% wins • ${lr.expectancy>=0?"+":""}${btFmt(lr.expectancy,2)}R expectancy</div><div class="bt-segment"><b>Short side</b><br>${sr.count} trades • ${btFmt(sr.winRate,1)}% wins • ${sr.expectancy>=0?"+":""}${btFmt(sr.expectancy,2)}R expectancy</div><div class="bt-segment"><b>Recent 30% segment</b><br>${recent.count} trades • ${btFmt(recent.winRate,1)}% wins • ${recent.expectancy>=0?"+":""}${btFmt(recent.expectancy,2)}R expectancy<br><span class="tiny">Earlier 70%: ${first.count} trades • ${btFmt(first.expectancy,2)}R expectancy</span></div></div>
     <div class="bt-chart-wrap"><canvas id="backtestCanvas"></canvas></div>
-    <div class="bt-actions"><button class="btn-dark" onclick="exportBacktestCSV()">EXPORT TRADES CSV</button></div>
+    <div class="bt-actions"><button class="btn-dark" onclick="exportBacktestCSV()">EXPORT CSV</button></div>
     <div class="table-wrap" style="margin-top:10px"><table><thead><tr><th>Side</th><th>Signal</th><th>Entry</th><th>Exit</th><th>Score</th><th>Entry $</th><th>Stop $</th><th>Exit $</th><th>Result</th><th>Days</th><th>Reason</th></tr></thead><tbody>${rows||'<tr><td colspan="11">No qualifying trades.</td></tr>'}</tbody></table></div>
     <div class="bt-note"><b>Test window:</b> ${btDate(result.testStartTime)} to ${btDate(result.testEndTime)}. Strategy ${escapeHTML(result.strategyLabel||"Halifax Core")}; threshold ${result.threshold}; target ${btFmt(result.targetR,2)}R; max hold ${result.maxHold} sessions; slippage ${btFmt(result.slippagePct,2)}% per fill; ATR stop ${btFmt(result.atrMult,2)}× capped at ${btFmt(result.maxStopPct,1)}%. The Weekly filter uses only the prior completed week, which avoids weekly look-ahead. If a daily bar touches both stop and target, the stop is counted first. Fees, taxes, hard-to-borrow charges, locate availability, dividends, and historical corporate/news/macro events are not reconstructed.</div>`;
     requestAnimationFrame(()=>drawBacktestCurve(result.equityCurve));
