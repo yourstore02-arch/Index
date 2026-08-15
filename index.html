@@ -14,7 +14,7 @@
 <meta name="application-name" content="Halifax Trade Engine">
 <meta name="format-detection" content="telephone=no">
 
-<title>Halifax Trade Engine v19.1 Lite - Fundamentals + Strategy Lab</title>
+<title>Halifax Trade Engine v19.2 Lite - Reliable Fundamentals + Strategy Lab</title>
 
 <style>
 :root{
@@ -408,7 +408,7 @@ tr:hover td{background:rgba(24,78,132,.10)}
     .badge.system-badge{min-width:0}
 }
 
-/* Halifax v19.1 company intelligence + button polish */
+/* Halifax v19.2 company intelligence + button polish */
 button{font-size:11px;letter-spacing:.35px;line-height:1.15;white-space:normal;text-align:center;overflow-wrap:anywhere;min-width:0}
 .quick-actions button,.bt-actions button{min-width:108px}
 .fund-card{border-color:rgba(59,130,246,.42);box-shadow:0 0 0 1px rgba(37,99,235,.08),0 12px 34px rgba(0,0,0,.28)}
@@ -441,7 +441,7 @@ button{font-size:11px;letter-spacing:.35px;line-height:1.15;white-space:normal;t
     <div class="card header">
         <div class="brand-stack">
             <div class="terminal-kicker"><span class="kicker-dot"></span> HALIFAX QUANT RESEARCH TERMINAL</div>
-            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v19.1 Lite</span></span></div>
+            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v19.2 Lite</span></span></div>
             <div class="subtitle">Predictive swing research • Strategy tournament • Pattern radar • Point-in-time validation</div>
         </div>
         <div class="header-actions"><div class="badge system-badge"><span class="status-dot"></span><span id="engineStatus">Engine ready</span></div></div>
@@ -1961,19 +1961,20 @@ function renderSmartMoney(ticker,sm){
 }
 
 
-// ================= Halifax v19.1 Company Intelligence =================
+// ================= Halifax v19.2 Company Intelligence =================
 function fundRaw(v){
     if(v==null)return null;
     if(typeof v==="number")return Number.isFinite(v)?v:null;
     if(typeof v==="object"&&v!==null){
         if(Number.isFinite(v.raw))return v.raw;
         if(Number.isFinite(v.fmt))return v.fmt;
+        if(v.value!=null)return fundRaw(v.value);
     }
-    const n=Number(v);return Number.isFinite(n)?n:null;
+    const n=Number(String(v).replace(/[$,%\s,]/g,""));return Number.isFinite(n)?n:null;
 }
 function fundText(v){
     if(v==null)return "";
-    if(typeof v==="object"&&v!==null)return String(v.fmt??v.longFmt??v.raw??"");
+    if(typeof v==="object"&&v!==null)return String(v.value??v.fmt??v.longFmt??v.raw??"");
     return String(v);
 }
 function fundPct(v,d=1){const n=fundRaw(v);return Number.isFinite(n)?`${(Math.abs(n)<=2?n*100:n).toFixed(d)}%`:"—";}
@@ -1983,7 +1984,7 @@ function fundMetric(label,value,sub=""){return `<div class="fund-metric"><div cl
 function scorePiece(value,rules){if(!Number.isFinite(value))return null;for(const [test,score] of rules)if(test(value))return score;return null;}
 function avgAvailable(parts){const vals=parts.filter(Number.isFinite);return vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:null;}
 function gradeFundamentals(f){
-    const rev=f.revenueGrowth,earn=f.earningsGrowth,profit=f.profitMargins,op=f.operatingMargins,roe=f.returnOnEquity,current=f.currentRatio,de=f.debtToEquity,fcf=f.freeCashflow,fpe=f.forwardPE,peg=f.pegRatio;
+    const rev=f.revenueGrowth,earn=f.earningsGrowth,profit=f.profitMargins,op=f.operatingMargins,roe=f.returnOnEquity,current=f.currentRatio,de=f.debtToEquity,fcf=f.freeCashflow,fpe=f.forwardPE||f.trailingPE,peg=f.pegRatio;
     const growth=avgAvailable([
         scorePiece(rev,[[v=>v>=.20,100],[v=>v>=.10,85],[v=>v>=0,68],[v=>v>=-.10,42],[()=>true,20]]),
         scorePiece(earn,[[v=>v>=.20,100],[v=>v>=.10,85],[v=>v>=0,68],[v=>v>=-.10,42],[()=>true,20]])
@@ -2003,64 +2004,108 @@ function gradeFundamentals(f){
         scorePiece(peg,[[v=>v>0&&v<=1,90],[v=>v>1&&v<=2,70],[v=>v>2,42],[()=>true,null]])
     ]);
     const buckets=[{name:"Growth",score:growth,w:30},{name:"Profitability",score:profitability,w:30},{name:"Balance Sheet",score:balance,w:25},{name:"Valuation",score:valuation,w:15}].filter(x=>Number.isFinite(x.score));
-    const weight=buckets.reduce((a,x)=>a+x.w,0),score=weight?Math.round(buckets.reduce((a,x)=>a+x.score*x.w,0)/weight):null;
-    const grade=score==null?"N/A":score>=90?"A+":score>=82?"A":score>=74?"B+":score>=66?"B":score>=58?"C":score>=50?"D":"F";
+    if(buckets.length<2)return {score:null,grade:"N/A",buckets};
+    const weight=buckets.reduce((a,x)=>a+x.w,0),score=Math.round(buckets.reduce((a,x)=>a+x.score*x.w,0)/weight);
+    const grade=score>=90?"A+":score>=82?"A":score>=74?"B+":score>=66?"B":score>=58?"C":score>=50?"D":"F";
     return {score,grade,buckets};
+}
+function nasdaqField(obj,key){return fundText(obj?.[key]);}
+function nasdaqFirst(obj,keys){for(const k of keys){const v=nasdaqField(obj,k);if(v&&v!=="N/A"&&v!=="--")return v;}return "";}
+function parseNasdaqNumber(v){
+    if(v==null)return null;let s=fundText(v).trim();if(!s||s==="--"||/^n\/?a$/i.test(s))return null;
+    const neg=/^\(.*\)$/.test(s)||s.startsWith("-");let mult=1;
+    if(/[Tt]\s*$/.test(s))mult=1e12;else if(/[Bb]\s*$/.test(s))mult=1e9;else if(/[Mm]\s*$/.test(s))mult=1e6;else if(/[Kk]\s*$/.test(s))mult=1e3;
+    s=s.replace(/[TtBbMmKk]\s*$/,'').replace(/[$,%()\s,]/g,'');const n=Number(s);return Number.isFinite(n)?(neg?-Math.abs(n):n)*mult:null;
+}
+function parseNasdaqPct(v){const n=parseNasdaqNumber(v);return Number.isFinite(n)?n/100:null;}
+function normalizedLabel(v){return String(v||"").toLowerCase().replace(/&/g,"and").replace(/[^a-z0-9]+/g," ").trim();}
+function nasdaqRow(table,labels){
+    const wanted=labels.map(normalizedLabel),rows=Array.isArray(table?.rows)?table.rows:[];
+    return rows.find(r=>{const lab=normalizedLabel(r?.value1||r?.label);return wanted.some(x=>lab===x||lab.includes(x)||x.includes(lab));})||null;
+}
+function nasdaqRowValues(table,labels,scale=1000){
+    const row=nasdaqRow(table,labels);if(!row)return {latest:null,prior:null};
+    const latest=parseNasdaqNumber(row.value2),prior=parseNasdaqNumber(row.value3);
+    return {latest:Number.isFinite(latest)?latest*scale:null,prior:Number.isFinite(prior)?prior*scale:null};
+}
+function safeGrowth(latest,prior){return Number.isFinite(latest)&&Number.isFinite(prior)&&prior!==0?latest/prior-1:null;}
+function safeRatio(a,b){return Number.isFinite(a)&&Number.isFinite(b)&&b!==0?a/b:null;}
+function extractNasdaqEarningsDate(info){
+    const notes=Array.isArray(info?.notifications)?info.notifications:[];
+    for(const n of notes){for(const e of (n?.eventTypes||[])){if(String(e?.eventName||"").toLowerCase().includes("earnings")){const m=String(e?.message||"").match(/:\s*(.+)$/);if(m){const d=Date.parse(m[1]);if(Number.isFinite(d))return Math.floor(d/1000);}}}}
+    return null;
 }
 async function loadCompanyFundamentals(ticker,snapshotQuote=null){
     const symbol=String(ticker||"").toUpperCase();
-    const modules="price,summaryProfile,summaryDetail,defaultKeyStatistics,financialData,calendarEvents";
-    let summary=null,quote=null,error=null;
-    try{
-        const raw=await fetchJson(`https://query1.finance.yahoo.com/v10/finance/quoteSummary/${encodeURIComponent(symbol)}?modules=${modules}`);
-        summary=raw?.quoteSummary?.result?.[0]||null;
-    }catch(e){error=e;}
-    try{
-        const raw=await fetchJson(`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${encodeURIComponent(symbol)}`);
-        quote=raw?.quoteResponse?.result?.[0]||null;
-    }catch(e){if(!error)error=e;}
-    const p=summary?.price||{},profile=summary?.summaryProfile||{},sd=summary?.summaryDetail||{},ks=summary?.defaultKeyStatistics||{},fd=summary?.financialData||{},cal=summary?.calendarEvents||{},q=quote||snapshotQuote||{};
-    const quoteType=fundText(p.quoteType||q.quoteType||q.typeDisp).toUpperCase();
+    const base=`https://api.nasdaq.com/api`;
+    const [sumRaw,infoRaw,profileRaw,finRaw]=await Promise.all([
+        fetchExternalJson(`${base}/quote/${encodeURIComponent(symbol)}/summary?assetclass=stocks`,5600).catch(()=>null),
+        fetchExternalJson(`${base}/quote/${encodeURIComponent(symbol)}/info?assetclass=stocks`,5600).catch(()=>null),
+        fetchExternalJson(`${base}/company/${encodeURIComponent(symbol)}/company-profile`,5600).catch(()=>null),
+        fetchExternalJson(`${base}/company/${encodeURIComponent(symbol)}/financials?frequency=1`,6500).catch(()=>null)
+    ]);
+    const summary=sumRaw?.data?.summaryData||{},info=infoRaw?.data||{},profile=profileRaw?.data||{},fin=finRaw?.data||{},q=snapshotQuote||{};
+    const quoteType=String(info?.assetClass||q.quoteType||q.typeDisp||"EQUITY").toUpperCase();
     const isFund=["ETF","MUTUALFUND","INDEX","CRYPTOCURRENCY","FUTURE"].some(x=>quoteType.replace(/\s+/g,"").includes(x));
-    const earningsDate=Array.isArray(cal?.earnings?.earningsDate)&&cal.earnings.earningsDate.length?fundRaw(cal.earnings.earningsDate[0]):null;
+    const inc=fin?.incomeStatementTable||{},bal=fin?.balanceSheetTable||{},cf=fin?.cashFlowTable||{};
+    const revenue=nasdaqRowValues(inc,["Total Revenue","Revenue"]),gross=nasdaqRowValues(inc,["Gross Profit"]),oper=nasdaqRowValues(inc,["Operating Income or Loss","Operating Income"]),net=nasdaqRowValues(inc,["Net Income","Net Income Applicable To Common Shares"]);
+    const assets=nasdaqRowValues(bal,["Total Assets"]),equity=nasdaqRowValues(bal,["Total Stockholders Equity","Total Shareholders Equity","Stock Holders Equity","Total Equity"]),curAssets=nasdaqRowValues(bal,["Total Current Assets"]),curLiab=nasdaqRowValues(bal,["Total Current Liabilities"]),cash=nasdaqRowValues(bal,["Cash and Cash Equivalents","Cash"]),debt=nasdaqRowValues(bal,["Total Debt","Long Term Debt"]);
+    const opcf=nasdaqRowValues(cf,["Cash From Operating Activities","Operating Cash Flow","Total Cash Flow From Operating Activities"]),capex=nasdaqRowValues(cf,["Capital Expenditures","Capital Expenditure"]);
+    const marketCap=parseNasdaqNumber(nasdaqFirst(summary,["MarketCap"]));
+    const currentPrice=parseNasdaqNumber(info?.primaryData?.lastSalePrice)||fundRaw(q.regularMarketPrice);
+    const oneYrTarget=parseNasdaqNumber(nasdaqFirst(summary,["OneYrTarget"]));
+    const pe=parseNasdaqNumber(nasdaqFirst(summary,["PERatio"])),forwardPE=parseNasdaqNumber(nasdaqFirst(summary,["ForwardPE1Yr"]));
+    const dividendYield=parseNasdaqPct(nasdaqFirst(summary,["Yield"])),beta=parseNasdaqNumber(nasdaqFirst(summary,["Beta"]));
+    const earningsDate=extractNasdaqEarningsDate(info);
+    const companyName=nasdaqFirst(profile,["CompanyName"])||fundText(info.companyName)||fundText(q.longname||q.longName||q.shortname||q.shortName)||symbol;
+    const sector=nasdaqFirst(summary,["Sector"])||nasdaqFirst(profile,["Sector"])||fundText(q.sectorDisp||q.sector);
+    const industry=nasdaqFirst(summary,["Industry"])||nasdaqFirst(profile,["Industry"])||fundText(q.industryDisp||q.industry);
+    const description=nasdaqFirst(profile,["CompanyDescription","CompanySummary","Description"]);
+    const address=nasdaqFirst(profile,["Address"]),website=nasdaqFirst(profile,["Website","CompanyWebsite"]);
+    const annualDividend=parseNasdaqNumber(nasdaqFirst(summary,["AnnualizedDividend"]));
+    const fcf=Number.isFinite(opcf.latest)?opcf.latest-(Number.isFinite(capex.latest)?Math.abs(capex.latest):0):null;
+    const totalDebt=debt.latest;
+    const debtToEquity=Number.isFinite(totalDebt)&&Number.isFinite(equity.latest)&&equity.latest!==0?100*totalDebt/equity.latest:null;
     const data={
-        ticker:symbol,available:!!(summary||quote||snapshotQuote),isFund,quoteType:quoteType||"EQUITY",
-        name:fundText(p.longName||p.shortName||q.longName||q.shortName)||symbol,
-        sector:fundText(profile.sector||q.sector),industry:fundText(profile.industry||q.industry),website:fundText(profile.website),
-        employees:fundRaw(profile.fullTimeEmployees),description:fundText(profile.longBusinessSummary),country:fundText(profile.country),city:fundText(profile.city),
-        marketCap:fundRaw(p.marketCap||q.marketCap),enterpriseValue:fundRaw(ks.enterpriseValue),
-        trailingPE:fundRaw(sd.trailingPE||q.trailingPE),forwardPE:fundRaw(sd.forwardPE||ks.forwardPE||q.forwardPE),pegRatio:fundRaw(ks.pegRatio),priceToBook:fundRaw(ks.priceToBook||q.priceToBook),
-        revenue:fundRaw(fd.totalRevenue),revenueGrowth:fundRaw(fd.revenueGrowth),earningsGrowth:fundRaw(fd.earningsGrowth),
-        profitMargins:fundRaw(fd.profitMargins),operatingMargins:fundRaw(fd.operatingMargins),grossMargins:fundRaw(fd.grossMargins),returnOnEquity:fundRaw(fd.returnOnEquity),returnOnAssets:fundRaw(fd.returnOnAssets),
-        totalCash:fundRaw(fd.totalCash),totalDebt:fundRaw(fd.totalDebt),debtToEquity:fundRaw(fd.debtToEquity),currentRatio:fundRaw(fd.currentRatio),freeCashflow:fundRaw(fd.freeCashflow),operatingCashflow:fundRaw(fd.operatingCashflow),
-        targetMean:fundRaw(fd.targetMeanPrice),targetHigh:fundRaw(fd.targetHighPrice),targetLow:fundRaw(fd.targetLowPrice),analystCount:fundRaw(fd.numberOfAnalystOpinions),recommendation:fundText(fd.recommendationKey),recommendationMean:fundRaw(fd.recommendationMean),
-        currentPrice:fundRaw(fd.currentPrice||p.regularMarketPrice||q.regularMarketPrice),beta:fundRaw(sd.beta||q.beta),dividendYield:fundRaw(sd.dividendYield||q.trailingAnnualDividendYield),
-        sharesOutstanding:fundRaw(ks.sharesOutstanding||q.sharesOutstanding),heldInsiders:fundRaw(ks.heldPercentInsiders),heldInstitutions:fundRaw(ks.heldPercentInstitutions),shortFloat:fundRaw(ks.shortPercentOfFloat),earningsDate,
-        source:summary?"Yahoo Finance company/fundamental modules":"Yahoo Finance quote fallback",detailAvailable:!!summary,error:error?.message||null
+        ticker:symbol,available:!!(sumRaw?.data||infoRaw?.data||profileRaw?.data||finRaw?.data||snapshotQuote),isFund,quoteType:quoteType||"EQUITY",
+        name:companyName,sector,industry,website,employees:null,description,country:"",city:"",address,
+        marketCap,enterpriseValue:null,
+        trailingPE:pe,forwardPE,pegRatio:null,priceToBook:Number.isFinite(marketCap)&&Number.isFinite(equity.latest)&&equity.latest!==0?marketCap/equity.latest:null,
+        revenue:revenue.latest,revenueGrowth:safeGrowth(revenue.latest,revenue.prior),earningsGrowth:safeGrowth(net.latest,net.prior),
+        profitMargins:safeRatio(net.latest,revenue.latest),operatingMargins:safeRatio(oper.latest,revenue.latest),grossMargins:safeRatio(gross.latest,revenue.latest),returnOnEquity:safeRatio(net.latest,equity.latest),returnOnAssets:safeRatio(net.latest,assets.latest),
+        totalCash:cash.latest,totalDebt,debtToEquity,currentRatio:safeRatio(curAssets.latest,curLiab.latest),freeCashflow:fcf,operatingCashflow:opcf.latest,
+        targetMean:oneYrTarget,targetHigh:null,targetLow:null,analystCount:null,recommendation:"",recommendationMean:null,
+        currentPrice,beta,dividendYield,annualDividend,
+        sharesOutstanding:Number.isFinite(marketCap)&&Number.isFinite(currentPrice)&&currentPrice>0?marketCap/currentPrice:null,heldInsiders:null,heldInstitutions:null,shortFloat:null,earningsDate,
+        source:finRaw?.data?"Nasdaq company profile, quote summary & annual financial statements":"Nasdaq company profile / quote summary",
+        detailAvailable:!!finRaw?.data,error:null
     };
     data.grade=isFund?{score:null,grade:"N/A",buckets:[]}:gradeFundamentals(data);
     return data;
 }
+async function refreshFundamentals(){
+    const ticker=document.getElementById("ticker")?.value.trim().toUpperCase().replace(/[^A-Z0-9.\-^=]/g,"");if(!ticker)return;
+    const box=document.getElementById("fundamentalsOutput"),btn=document.getElementById("fundRefreshBtn");if(btn)btn.disabled=true;if(box)box.innerHTML='<div class="loading">Refreshing Nasdaq company and financial-statement data…</div>';
+    try{const snap=await fetchTickerSnapshot(ticker);renderCompanyFundamentals(await loadCompanyFundamentals(ticker,snap.quote));}catch(e){if(box)box.innerHTML=`<div class="red" style="font-weight:900">Fundamental refresh failed</div><div class="bt-note">${escapeHTML(e.message||"Data source unavailable")}</div>`;}finally{if(btn)btn.disabled=false;}
+}
 function renderCompanyFundamentals(f){
     const card=document.getElementById("fundamentalsCard"),box=document.getElementById("fundamentalsOutput");if(!card||!box)return;card.style.display="block";
     if(!f?.available){box.innerHTML='<div class="loading">Company fundamental data is unavailable from the current market-data feeds. No values were estimated.</div>';return;}
-    const g=f.grade||{score:null,grade:"N/A",buckets:[]},loc=[f.city,f.country].filter(Boolean).join(", "),meta=[f.quoteType,f.sector,f.industry,loc].filter(Boolean).join(" • ");
+    const g=f.grade||{score:null,grade:"N/A",buckets:[]},meta=[f.quoteType,f.sector,f.industry].filter(Boolean).join(" • ");
     const upside=Number.isFinite(f.targetMean)&&Number.isFinite(f.currentPrice)&&f.currentPrice>0?(f.targetMean/f.currentPrice-1):null;
     const earnings=f.earningsDate?new Date(f.earningsDate*1000).toLocaleDateString():"—";
     const gradeBlock=f.isFund?`<div class="fund-grade"><div class="fg-label">Fundamental Grade</div><div class="fg-grade">N/A</div><div class="fg-score">Fund / non-operating security</div></div>`:`<div class="fund-grade"><div class="fg-label">Fundamental Quality</div><div class="fg-grade">${escapeHTML(g.grade)}</div><div class="fg-score">${Number.isFinite(g.score)?g.score+" / 100":"Insufficient data"}</div></div>`;
     const desc=f.description?`<div class="fund-desc">${escapeHTML(f.description.length>720?f.description.slice(0,717)+"…":f.description)}</div>`:"";
     const buckets=!f.isFund&&g.buckets?.length?`<div class="fund-section"><div class="fund-section-title">Fundamental Score Components</div><div class="fund-score-row">${g.buckets.map(x=>`<div class="fund-score-box"><span>${escapeHTML(x.name)}</span><b>${Math.round(x.score)}/100</b></div>`).join("")}</div></div>`:"";
     const metrics=[
-        fundMetric("Market Cap",fundMoney(f.marketCap)),fundMetric("Enterprise Value",fundMoney(f.enterpriseValue)),fundMetric("Revenue",fundMoney(f.revenue),"Trailing / provider-reported"),fundMetric("Revenue Growth",fundPct(f.revenueGrowth)),
-        fundMetric("Earnings Growth",fundPct(f.earningsGrowth)),fundMetric("Gross Margin",fundPct(f.grossMargins)),fundMetric("Operating Margin",fundPct(f.operatingMargins)),fundMetric("Profit Margin",fundPct(f.profitMargins)),
-        fundMetric("Return on Equity",fundPct(f.returnOnEquity)),fundMetric("Return on Assets",fundPct(f.returnOnAssets)),fundMetric("Free Cash Flow",fundMoney(f.freeCashflow)),fundMetric("Operating Cash Flow",fundMoney(f.operatingCashflow)),
-        fundMetric("Forward P/E",fundNum(f.forwardPE,1)),fundMetric("Trailing P/E",fundNum(f.trailingPE,1)),fundMetric("PEG",fundNum(f.pegRatio,2)),fundMetric("Price / Book",fundNum(f.priceToBook,2)),
-        fundMetric("Total Cash",fundMoney(f.totalCash)),fundMetric("Total Debt",fundMoney(f.totalDebt)),fundMetric("Debt / Equity",Number.isFinite(f.debtToEquity)?fundNum(f.debtToEquity,1)+"%":"—"),fundMetric("Current Ratio",fundNum(f.currentRatio,2)),
-        fundMetric("Analyst Target",fundMoney(f.targetMean),Number.isFinite(upside)?`${upside>=0?"+":""}${(upside*100).toFixed(1)}% vs current price`:"No target comparison"),fundMetric("Analyst View",f.recommendation?f.recommendation.replace(/_/g," ").toUpperCase():"—",Number.isFinite(f.analystCount)?`${Math.round(f.analystCount)} analyst opinion(s)`:""),
-        fundMetric("Beta",fundNum(f.beta,2)),fundMetric("Dividend Yield",fundPct(f.dividendYield,2)),fundMetric("Next Earnings",earnings),fundMetric("Employees",Number.isFinite(f.employees)?Math.round(f.employees).toLocaleString():"—"),
-        fundMetric("Shares Outstanding",Number.isFinite(f.sharesOutstanding)?compactMoney(f.sharesOutstanding).replace("$",""):"—"),fundMetric("Insider Hold",fundPct(f.heldInsiders)),fundMetric("Institutional Hold",fundPct(f.heldInstitutions)),fundMetric("Short % Float",fundPct(f.shortFloat))
+        fundMetric("Market Cap",fundMoney(f.marketCap)),fundMetric("Revenue",fundMoney(f.revenue),"Latest annual statement"),fundMetric("Revenue Growth",fundPct(f.revenueGrowth),"Latest year vs prior year"),fundMetric("Earnings Growth",fundPct(f.earningsGrowth),"Net income growth"),
+        fundMetric("Gross Margin",fundPct(f.grossMargins)),fundMetric("Operating Margin",fundPct(f.operatingMargins)),fundMetric("Profit Margin",fundPct(f.profitMargins)),fundMetric("Return on Equity",fundPct(f.returnOnEquity)),
+        fundMetric("Return on Assets",fundPct(f.returnOnAssets)),fundMetric("Free Cash Flow",fundMoney(f.freeCashflow),"Operating cash flow less capex"),fundMetric("Operating Cash Flow",fundMoney(f.operatingCashflow)),fundMetric("Current Ratio",fundNum(f.currentRatio,2)),
+        fundMetric("Total Cash",fundMoney(f.totalCash)),fundMetric("Total Debt",fundMoney(f.totalDebt)),fundMetric("Debt / Equity",Number.isFinite(f.debtToEquity)?fundNum(f.debtToEquity,1)+"%":"—"),fundMetric("Price / Book",fundNum(f.priceToBook,2)),
+        fundMetric("Forward P/E",fundNum(f.forwardPE,1)),fundMetric("Trailing P/E",fundNum(f.trailingPE,1)),fundMetric("1-Year Target",fundMoney(f.targetMean),Number.isFinite(upside)?`${upside>=0?"+":""}${(upside*100).toFixed(1)}% vs current price`:"Provider target unavailable"),fundMetric("Beta",fundNum(f.beta,2)),
+        fundMetric("Dividend Yield",fundPct(f.dividendYield,2)),fundMetric("Annual Dividend",Number.isFinite(f.annualDividend)?money(f.annualDividend):"—"),fundMetric("Next Earnings",earnings),fundMetric("Shares Outstanding",Number.isFinite(f.sharesOutstanding)?compactMoney(f.sharesOutstanding).replace("$",""):"—")
     ].join("");
-    box.innerHTML=`<div class="fund-head"><div><div class="fund-name">${escapeHTML(f.name)} <span class="tiny">${escapeHTML(f.ticker)}</span></div><div class="fund-meta">${escapeHTML(meta||"Security profile")}</div>${desc}</div>${gradeBlock}</div><div class="fund-grid">${metrics}</div>${buckets}<div class="fund-source">Source: ${escapeHTML(f.source)}. Fundamental fields are displayed only when returned by the market-data provider; missing values remain “—”. The grade is a transparent quality screen based on available growth, profitability, balance-sheet and valuation fields, not a price target or trade signal.${f.isFund?" Corporate fundamental grading is disabled for funds and non-operating securities.":""}</div>`;
+    box.innerHTML=`<div class="fund-head"><div><div class="fund-name">${escapeHTML(f.name)} <span class="tiny">${escapeHTML(f.ticker)}</span></div><div class="fund-meta">${escapeHTML(meta||"Security profile")}</div>${desc}</div>${gradeBlock}</div><div class="bt-actions" style="margin:10px 0"><button id="fundRefreshBtn" class="btn-dark" onclick="refreshFundamentals()">REFRESH FUNDAMENTALS</button></div><div class="fund-grid">${metrics}</div>${buckets}<div class="fund-source">Source: ${escapeHTML(f.source)}. Annual financial-statement values are provider-reported and displayed only when returned; missing fields remain “—”. Halifax does not estimate analyst ratings or unavailable balance-sheet fields. The fundamental grade requires at least two available scoring categories and is a quality screen, not a price target or trade signal.${f.isFund?" Corporate fundamental grading is disabled for funds and non-operating securities.":""}</div>`;
 }
 // ================= End Company Intelligence =================
 
@@ -2136,7 +2181,7 @@ async function runEngine(){
         renderChart(analysis.primary,trade);renderRegime(analysis,benchmarkResult);renderMTF(analysis);renderTradeOutput(analysis,trade);renderPositionGuardrails(ticker,analysis.primary,analysis);renderNews(displayNews,ticker);
         document.getElementById("smartMoneyOutput").innerHTML='<div class="loading">Core prediction is complete. Loading insider, institutional and public-filing context in the background…</div>';
         document.getElementById("decisionCard")?.scrollIntoView({behavior:"smooth",block:"start"});
-        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v19.1 Lite`;
+        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v19.2 Lite`;
         fundamentalsPromise.then(f=>{
             if(runId!==halifaxRunId)return;
             if(!f){document.getElementById("fundamentalsOutput").innerHTML='<div class="loading">Company fundamental feeds are unavailable right now. No values were estimated.</div>';return;}
@@ -2149,7 +2194,7 @@ async function runEngine(){
             renderTradeOutput(analysis,trade);renderPositionGuardrails(ticker,analysis.primary,analysis);renderSmartMoney(special?.underlying||ticker,sm);
             setStatus(`${ticker} prediction + smart money complete`);
         }).catch(()=>{});
-    }catch(error){console.error(error);document.getElementById("tradeOutput").innerHTML=`<div class="red" style="font-weight:900">Analysis failed</div><div style="font-size:12px;color:#cbd5e1;margin-top:8px;line-height:1.5">${escapeHTML(error.message)}</div><div class="notice">Halifax v19.1 Lite rebuilds a slower confirmation timeframe from any usable loaded candles when a separate interval feed fails. A red failure should now appear only when no valid two-timeframe set can be constructed at all.</div>`;document.getElementById("positionCard").style.display="none";document.getElementById("fundamentalsOutput").innerHTML='<div class="loading">Company fundamentals were not completed because the main analysis failed.</div>';setStatus("Analysis failed","var(--red)");}
+    }catch(error){console.error(error);document.getElementById("tradeOutput").innerHTML=`<div class="red" style="font-weight:900">Analysis failed</div><div style="font-size:12px;color:#cbd5e1;margin-top:8px;line-height:1.5">${escapeHTML(error.message)}</div><div class="notice">Halifax v19.2 Lite rebuilds a slower confirmation timeframe from any usable loaded candles when a separate interval feed fails. A red failure should now appear only when no valid two-timeframe set can be constructed at all.</div>`;document.getElementById("positionCard").style.display="none";document.getElementById("fundamentalsOutput").innerHTML='<div class="loading">Company fundamentals were not completed because the main analysis failed.</div>';setStatus("Analysis failed","var(--red)");}
     finally{button.disabled=false;}
 }
 
