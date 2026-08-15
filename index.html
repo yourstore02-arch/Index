@@ -14,7 +14,7 @@
 <meta name="application-name" content="Halifax Trade Engine">
 <meta name="format-detection" content="telephone=no">
 
-<title>Halifax Trade Engine v17.2 Lite - Robust Predictive Swing Engine</title>
+<title>Halifax Trade Engine v19.0 Lite - Strategy Tournament + Pattern Radar</title>
 
 <style>
 :root{
@@ -53,17 +53,7 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .metric span:last-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:800;text-align:right}
 .decision-card{border:1px solid #2563eb;box-shadow:0 0 0 1px rgba(37,99,235,.12),0 8px 24px rgba(0,0,0,.28)}
 .score-box{margin:4px 0 12px;padding:13px;border-radius:10px;background:var(--bg);border-left:4px solid #2563eb;display:flex;justify-content:space-between;align-items:center;gap:12px}
-.score-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:6px;min-width:132px}
-.score{font-size:31px;font-weight:950;line-height:1}
-.mini-score-scale{width:116px}
-.mini-score-labels{display:flex;justify-content:space-between;align-items:center;font-size:8.5px;color:#64748b;font-weight:800;line-height:1;margin-bottom:4px}
-.mini-score-track{position:relative;height:7px;border-radius:999px;background:linear-gradient(90deg,rgba(248,113,113,.22) 0%,rgba(248,113,113,.14) 45%,rgba(100,116,139,.18) 50%,rgba(74,222,128,.14) 55%,rgba(74,222,128,.22) 100%);border:1px solid rgba(51,65,85,.85);overflow:hidden}
-.mini-score-zero{position:absolute;left:50%;top:-2px;bottom:-2px;width:1px;background:rgba(148,163,184,.75)}
-.mini-score-fill{position:absolute;top:0;bottom:0;border-radius:999px;opacity:.95}
-.mini-score-fill.neg{background:linear-gradient(90deg,rgba(248,113,113,.35),rgba(248,113,113,.9))}
-.mini-score-fill.pos{background:linear-gradient(90deg,rgba(74,222,128,.9),rgba(74,222,128,.35))}
-.mini-score-marker{position:absolute;top:50%;width:9px;height:9px;border-radius:50%;transform:translate(-50%,-50%);background:#e2e8f0;border:2px solid #0f172a;box-shadow:0 0 0 1px rgba(148,163,184,.6)}
-.mini-score-caption{font-size:8.5px;color:#94a3b8;font-weight:800;text-align:right;line-height:1;margin-top:4px}
+.score{font-size:31px;font-weight:950}
 .reasoning-box,.risk-box{background:var(--bg);border-radius:9px;padding:11px;margin-top:11px;border-left:3px solid #3b82f6}
 .risk-box{border-left-color:#f59e0b}
 .reasoning-list{list-style:none;font-size:11.5px;color:#cbd5e1;display:flex;flex-direction:column;gap:6px;line-height:1.35}
@@ -165,20 +155,56 @@ td{padding:8px;font-size:11.5px;border-bottom:1px solid var(--line);white-space:
 /* v17 streamlined layout */
 .quick-controls{display:grid;grid-template-columns:1.15fr 1fr 1fr 1fr auto;gap:10px;align-items:end}
 .quick-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.compact-details{border:1px solid var(--border);border-radius:12px;background:rgba(15,23,42,.72);margin-top:12px;overflow:hidden}
+.compact-details{border:1px solid var(--line);border-radius:12px;background:rgba(15,23,42,.72);margin-top:12px;overflow:hidden}
 .compact-details>summary{cursor:pointer;list-style:none;padding:12px 14px;font-size:11px;font-weight:900;letter-spacing:.65px;text-transform:uppercase;color:#cbd5e1;display:flex;align-items:center;justify-content:space-between}
 .compact-details>summary::-webkit-details-marker{display:none}
 .compact-details>summary::after{content:'+';font-size:18px;color:#64748b;font-weight:500}
 .compact-details[open]>summary::after{content:'−'}
-.compact-details[open]>summary{border-bottom:1px solid var(--border)}
+.compact-details[open]>summary{border-bottom:1px solid var(--line)}
 .compact-body{padding:13px 14px}
 .advanced-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
 .evidence-section{padding:12px 0}
-.evidence-section+.evidence-section{border-top:1px solid var(--border)}
+.evidence-section+.evidence-section{border-top:1px solid var(--line)}
 .chart-card{padding:8px}
 .clean-note{font-size:10px;color:#64748b;line-height:1.4;margin-top:8px}
 @media(max-width:900px){.quick-controls{grid-template-columns:1fr 1fr}.quick-controls .full-mobile{grid-column:1/-1}.advanced-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.quick-controls,.advanced-grid{grid-template-columns:1fr}.quick-controls .full-mobile{grid-column:auto}}
+
+
+
+/* v18 point-in-time backtest lab */
+.backtest-toolbar{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:10px;align-items:end;margin-top:10px}
+.backtest-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:9px;margin:13px 0}
+.bt-metric{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;min-height:72px}
+.bt-metric .bt-label{font-size:9px;color:var(--muted);text-transform:uppercase;font-weight:900;letter-spacing:.45px}
+.bt-metric .bt-value{font-size:19px;font-weight:950;margin-top:5px}
+.bt-metric .bt-sub{font-size:9px;color:#64748b;margin-top:4px;line-height:1.3}
+.bt-positive{color:var(--green)}.bt-negative{color:var(--red)}.bt-neutral{color:var(--yellow)}
+.bt-chart-wrap{height:220px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px;margin:10px 0 13px;overflow:hidden}
+#backtestCanvas{display:block;width:100%;height:100%}
+.bt-segment-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:10px 0}
+.bt-segment{background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:10px;font-size:10.5px;line-height:1.5;color:#cbd5e1}
+.bt-segment b{font-size:12px;color:var(--text)}
+.bt-note{font-size:10px;color:#94a3b8;line-height:1.48;margin-top:9px}
+.bt-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}
+@media(max-width:700px){.bt-segment-grid{grid-template-columns:1fr}.backtest-metrics{grid-template-columns:1fr 1fr}.bt-chart-wrap{height:190px}}
+
+
+/* Halifax v19 research lab */
+.pattern-radar{margin-top:12px;border:1px solid var(--line2);border-radius:11px;background:var(--bg);padding:11px}
+.pattern-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:8px;margin-top:8px}
+.pattern-tile{border:1px solid var(--line);border-radius:9px;padding:9px;background:#0b1220;min-height:88px}
+.pattern-name{font-size:11px;font-weight:950}
+.pattern-quality{font-size:9px;color:#94a3b8;margin-top:3px}
+.pattern-note{font-size:10px;color:#cbd5e1;line-height:1.4;margin-top:6px}
+.tournament-table td,.tournament-table th{font-size:10.5px}
+.tournament-leader{border-left:4px solid var(--green);background:rgba(74,222,128,.05);padding:10px;border-radius:9px;margin:10px 0}
+.journal-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:8px;margin-bottom:10px}
+.journal-stat{background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:9px}
+.journal-stat .j-label{font-size:9px;color:#94a3b8;text-transform:uppercase;font-weight:900}
+.journal-stat .j-value{font-size:16px;font-weight:950;margin-top:4px}
+.journal-actions{display:flex;gap:5px;flex-wrap:wrap}.journal-actions button{padding:5px 8px;font-size:10px}
+@media(max-width:620px){.pattern-grid{grid-template-columns:1fr}.tournament-table{min-width:760px}}
 
 </style>
 </head>
@@ -186,8 +212,8 @@ td{padding:8px;font-size:11.5px;border-bottom:1px solid var(--line);white-space:
 <div class="container">
     <div class="card header">
         <div>
-            <div class="title">📊 Halifax Trade Engine v17.2 Lite</div>
-            <div class="subtitle">Robust swing decisions • Faster core data path • 5-year point-in-time validation • Smart-money context</div>
+            <div class="title">📊 Halifax Trade Engine v19.0 Lite</div>
+            <div class="subtitle">Robust swing decisions • Strategy tournament • Pattern radar • Transparent paper journal</div>
         </div>
         <div class="header-actions"><button id="installAppBtn" class="install-button" onclick="installHalifaxApp()">INSTALL APP</button><div class="badge"><span class="status-dot"></span><span id="engineStatus">Engine ready</span></div></div>
     </div>
@@ -219,7 +245,7 @@ td{padding:8px;font-size:11.5px;border-bottom:1px solid var(--line);white-space:
             <button id="analyzeBtn" class="btn-primary full-mobile" onclick="runEngine()">RUN HALIFAX PREDICTION</button>
         </div>
         <div class="quick-actions">
-            <button class="btn-dark" onclick="copyTradePlan()">COPY LAST PLAN</button><button class="btn-dark" onclick="resetHalifaxApp()">RESET APP</button>
+            <button class="btn-dark" onclick="copyTradePlan()">COPY LAST PLAN</button><button class="btn-dark" onclick="logPaperPlan()">LOG PAPER PLAN</button><button class="btn-dark" onclick="resetHalifaxApp()">RESET APP</button>
         </div>
 
         <details class="compact-details">
@@ -249,6 +275,37 @@ td{padding:8px;font-size:11.5px;border-bottom:1px solid var(--line);white-space:
         <div class="panel-title">Halifax Predictive Trade Decision</div>
         <div id="tradeOutput"><div class="loading">Enter a ticker and run the Halifax analysis.</div></div>
     </div>
+
+
+    <details id="paperJournalPanel" class="card compact-details">
+        <summary>Paper Signal Journal — Local Track Record</summary>
+        <div class="compact-body">
+            <div class="panel-title purple">Transparent Paper-Trade Record</div>
+            <div class="bt-note">Use <b>LOG PAPER PLAN</b> after a Halifax LONG or SHORT signal. The journal stores the exact entry, stop, target, score and timestamp in this browser. Closing a paper signal requires you to enter the exit price manually; Halifax then calculates the realized R result. It does not invent fills or reconstruct an unobserved price path.</div>
+            <div id="paperJournalOutput"></div>
+        </div>
+    </details>
+
+
+
+    <details id="backtestPanel" class="card compact-details">
+        <summary>Historical Strategy Lab — Daily + Prior Weekly</summary>
+        <div class="compact-body">
+            <div class="panel-title cyan">Point-in-Time Halifax Backtest</div>
+            <div class="backtest-toolbar">
+                <div class="field"><label>Strategy</label><select id="btStrategy"><option value="core" selected>Halifax Core</option><option value="pullback">Trend Pullback</option><option value="breakout">Momentum Breakout</option><option value="relative">Relative Strength</option></select></div>
+                <div class="field"><label>Direction</label><select id="btDirection"><option value="both" selected>Long + Short</option><option value="long">Long Only</option><option value="short">Short Only</option></select></div>
+                <div class="field"><label>Signal Threshold</label><input id="btThreshold" type="number" value="24" min="10" max="80" step="1"></div>
+                <div class="field"><label>Profit Target (R)</label><input id="btTargetR" type="number" value="2" min="1" max="10" step="0.25"></div>
+                <div class="field"><label>Max Hold (Sessions)</label><input id="btMaxHold" type="number" value="20" min="1" max="90" step="1"></div>
+                <div class="field"><label>History</label><select id="btRange"><option value="3y">3 Years</option><option value="5y" selected>5 Years</option><option value="10y">10 Years</option></select></div>
+                <div class="field"><label>Benchmark Filter</label><div class="checkbox-row"><input id="btBenchmark" type="checkbox" checked> Use selected benchmark</div></div>
+                <button id="backtestBtn" class="btn-purple" onclick="runBacktest()">RUN SELECTED BACKTEST</button><button id="tournamentBtn" class="btn-dark" onclick="runStrategyTournament()">RUN STRATEGY TOURNAMENT</button>
+            </div>
+            <div class="bt-note">This replays one of four fixed point-in-time technical strategies using Daily structure plus the prior completed Weekly bar, with optional benchmark relative strength. It intentionally excludes historical news, current macro overrides, smart-money filings, and live intraday confirmation because those data are not reconstructed point-in-time here. Signals use the close; entries use the next session open. Slippage, ATR/structure stops, stop caps, and non-overlapping trades are applied.</div>
+            <div id="backtestOutput"><div class="loading">Choose settings and run the historical backtest.</div></div><div id="tournamentOutput"></div>
+        </div>
+    </details>
 
     <details id="riskMacroPanel" class="card compact-details">
         <summary>Advanced Position, Leveraged ETF &amp; Macro Inputs</summary>
@@ -323,6 +380,7 @@ td{padding:8px;font-size:11.5px;border-bottom:1px solid var(--line);white-space:
 let chart, candleSeries, ema9Series, ema21Series, sma50Series, sma200Series;
 let entryPriceLine, stopPriceLine, target1PriceLine, target2PriceLine;
 let lastPlanText = "";
+let lastAnalysis = null, lastTrade = null;
 const responseCache = new Map();
 let economicState = null;
 
@@ -1344,13 +1402,37 @@ function buildPlainEnglishExplanation(analysis,trade){
     return {quality,grades,timing,headline,summary,confirm,fail,bullets:[tfText,adxPlain(d.adx),volumePlain(d.volumeRatio),rsiPlain(d.rsi),analogSentence,smartSentence,macroSentence,rel]};
 }
 
+
+function detectChartPatterns(data){
+    const c=data?.candles||[];if(c.length<30)return [];
+    const last=c.at(-1),prior=c.slice(-21,-1),atr=Math.max(Number(data.atr)||0,Math.max(.01,data.price*.005));
+    const prevHigh=Math.max(...prior.map(x=>x.high)),prevLow=Math.min(...prior.map(x=>x.low));
+    const patterns=[];
+    const add=(name,side,quality,note)=>patterns.push({name,side,quality:Math.round(clamp(quality,0,100)),note});
+    const v=data.volumeRatio||0,adx=data.adx||0,rsi=data.rsi||50;
+    if(data.price>prevHigh){const q=58+Math.min(18,(data.price-prevHigh)/atr*12)+Math.min(16,Math.max(0,v-1)*18)+(adx>=22?8:0);add('20-Bar Breakout','LONG',q,`Close is above the prior 20-bar high ${money(prevHigh)} with ${v.toFixed(2)}× average volume.`);}
+    if(data.price<prevLow){const q=58+Math.min(18,(prevLow-data.price)/atr*12)+Math.min(16,Math.max(0,v-1)*18)+(adx>=22?8:0);add('20-Bar Breakdown','SHORT',q,`Close is below the prior 20-bar low ${money(prevLow)} with ${v.toFixed(2)}× average volume.`);}
+    const dist21=Math.abs(data.price-data.ema21)/atr;
+    if(data.ema9>data.ema21&&data.price>=data.ema21&&dist21<=.9&&rsi>=42&&rsi<=66&&data.ema21Slope>0){const q=62+(1-dist21)*16+(rsi>=48&&rsi<=60?8:0)+(v>=.8?6:0);add('Bull Trend Pullback','LONG',q,`Price is ${dist21.toFixed(2)} ATR from EMA21 while EMA9 > EMA21 and RSI is ${rsi.toFixed(1)}.`);}
+    if(data.ema9<data.ema21&&data.price<=data.ema21&&dist21<=.9&&rsi>=34&&rsi<=58&&data.ema21Slope<0){const q=62+(1-dist21)*16+(rsi>=40&&rsi<=52?8:0)+(v>=.8?6:0);add('Bear Trend Rally','SHORT',q,`Price is ${dist21.toFixed(2)} ATR from EMA21 while EMA9 < EMA21 and RSI is ${rsi.toFixed(1)}.`);}
+    if(data.sma50&&data.sma200&&data.price>data.sma50&&data.sma50>data.sma200&&data.roc20>=3&&adx>=23){const q=55+Math.min(18,data.roc20*1.5)+Math.min(12,(adx-20)*1.2)+(v>=1?6:0);add('Trend Continuation','LONG',q,`Price > SMA50 > SMA200, 20-bar momentum is ${signed(data.roc20,1)}%, and ADX is ${adx.toFixed(1)}.`);}
+    if(data.sma50&&data.sma200&&data.price<data.sma50&&data.sma50<data.sma200&&data.roc20<=-3&&adx>=23){const q=55+Math.min(18,Math.abs(data.roc20)*1.5)+Math.min(12,(adx-20)*1.2)+(v>=1?6:0);add('Bear Trend Continuation','SHORT',q,`Price < SMA50 < SMA200, 20-bar momentum is ${signed(data.roc20,1)}%, and ADX is ${adx.toFixed(1)}.`);}
+    const widths=[];const closes=c.map(x=>x.close);for(let i=Math.max(19,closes.length-80);i<closes.length;i++){const a=closes.slice(i-19,i+1),m=mean(a),sd=standardDeviation(a);if(m&&Number.isFinite(sd))widths.push((4*sd/m)*100);}
+    if(widths.length>=20){const cur=widths.at(-1),sorted=[...widths].sort((a,b)=>a-b),pct=100*sorted.filter(x=>x<=cur).length/sorted.length;if(pct<=25){const bias=data.ema9>data.ema21?'LONG':data.ema9<data.ema21?'SHORT':'NEUTRAL';add('Volatility Squeeze',bias,70-pct/2,`Bollinger-style bandwidth is in roughly the lowest ${pct.toFixed(0)}% of the recent sample; expansion risk is rising.`);}}
+    if(!patterns.length)add('No Dominant Pattern','NEUTRAL',45,'No breakout, structured pullback, strong continuation, or volatility squeeze currently passes the objective pattern rules.');
+    return patterns.sort((a,b)=>b.quality-a.quality).slice(0,4);
+}
+function renderPatternRadar(analysis){
+    const patterns=detectChartPatterns(analysis.primary);return `<div class="pattern-radar"><div class="panel-title cyan">Automatic Pattern Radar</div><div class="tiny">Objective chart-pattern flags; quality is rule fit, not a win probability.</div><div class="pattern-grid">${patterns.map(p=>`<div class="pattern-tile"><div class="pattern-name ${p.side==='LONG'?'green':p.side==='SHORT'?'red':'yellow'}">${directionArrow(p.side)} ${escapeHTML(p.name)}</div><div class="pattern-quality">Pattern quality ${p.quality}/100 • ${escapeHTML(p.side)}</div><div class="pattern-note">${escapeHTML(p.note)}</div></div>`).join('')}</div></div>`;
+}
+
 function renderTradeOutput(analysis,trade){
     const d=analysis.primary,dir=analysis.direction,cls=dir==="LONG"?"green":dir==="SHORT"?"red":"yellow",btn=dir==="LONG"?"btn-buy":dir==="SHORT"?"btn-sell":"btn-neutral";
     const arrow=directionArrow(dir),targetArrow=trade.isShort?"▼":"▲",stopArrow=trade.isShort?"▲":"▼";
     const setup=dir==="LONG"?`${arrow} LONG SETUP`:dir==="SHORT"?`${arrow} SHORT SETUP`:`${arrow} NO-TRADE / WAIT`;
     const plain=buildPlainEnglishExplanation(analysis,trade);
     document.getElementById("tradeOutput").innerHTML=`
-        <div class="score-box"><div><div class="panel-title" style="margin-bottom:3px">HALIFAX COMPOSITE SCORE</div><div class="${cls}" style="font-weight:900">${setup}</div><div style="font-size:10px;color:#64748b;margin-top:3px">Prediction strength ${analysis.predictionStrength??analysis.confidence}/100 • Technical ${analysis.technicalScore>0?"+":""}${analysis.technicalScore} • Macro contribution ${analysis.macroContribution>0?"+":""}${analysis.macroContribution??0}</div></div><div class="score-wrap"><div class="score ${cls}">${analysis.score>0?"+":""}${analysis.score}</div>${renderCompositeScale(analysis.score)}</div></div>
+        <div class="score-box"><div><div class="panel-title" style="margin-bottom:3px">HALIFAX COMPOSITE SCORE</div><div class="${cls}" style="font-weight:900">${setup}</div><div style="font-size:10px;color:#64748b;margin-top:3px">Prediction strength ${analysis.predictionStrength??analysis.confidence}/100 • Technical ${analysis.technicalScore>0?"+":""}${analysis.technicalScore} • Macro contribution ${analysis.macroContribution>0?"+":""}${analysis.macroContribution??0}</div></div><div class="score ${cls}">${analysis.score>0?"+":""}${analysis.score}</div></div>
         ${analysis.dataFallback?.used?`<div class="risk-box" style="margin:0 0 12px;border-left-color:#f59e0b"><div class="panel-title yellow">Limited-data fallback active</div><div style="font-size:11.5px;color:#cbd5e1;line-height:1.5">Halifax completed the analysis instead of failing. ${escapeHTML(analysis.dataFallback.warnings.join(" "))} Prediction strength is automatically reduced, and Halifax will force WAIT when the higher-timeframe anchor needed for the selected trading style is missing.</div></div>`:""}
         <div class="grade-strip">
             <div class="grade-tile"><div class="g-label">Trend Grade</div><div class="g-grade ${plain.grades.trend.score>=72?"green":plain.grades.trend.score>=55?"yellow":"red"}">${plain.grades.trend.grade}</div><div class="g-score">${plain.grades.trend.score}/100 • Daily/Weekly</div></div>
@@ -1383,6 +1465,7 @@ function renderTradeOutput(analysis,trade){
                 <div class="explain-block"><div class="e-title">Risk in normal language</div><p>${dir==="WAIT"?"No position is authorized, so the safest risk amount is $0 until confirmation improves.":`At the engine entry of ${money(trade.entry)}, the stop is ${money(trade.stop)}. That is ${money(trade.stopDistance)} risk per share. With your current account/risk settings, the engine caps size at ${trade.shares.toLocaleString()} shares and planned risk at about ${money(trade.estimatedRisk)}.`}</p></div>
             </div>
         </div>
+        ${renderPatternRadar(analysis)}
 
         <div class="plan-grid" style="margin-top:13px">
             <div class="metric"><span>Entry Zone ${targetArrow}</span><span class="blue">${money(trade.entryLow)} – ${money(trade.entryHigh)}</span></div>
@@ -1406,15 +1489,15 @@ function renderTradeOutput(analysis,trade){
             <div class="metric"><span>Smart-Money Filing Overlay</span><span class="${(analysis.smartMoneyContribution||0)>0?"green":(analysis.smartMoneyContribution||0)<0?"red":"yellow"}">${analysis.smartMoneyContribution==null?"N/A":`${analysis.smartMoneyContribution>=0?"+":""}${analysis.smartMoneyContribution} pts`}</span></div>
             ${analysis.instrumentContext?`<div class="metric"><span>Instrument Guardrail</span><span class="yellow">${escapeHTML(analysis.instrumentContext.positionAction)}</span></div><div class="metric"><span>Underlying Signal</span><span class="${analysis.instrumentContext.underlyingDirection==="LONG"?"green":analysis.instrumentContext.underlyingDirection==="SHORT"?"red":"yellow"}">${directionArrow(analysis.instrumentContext.underlyingDirection)} ${analysis.instrumentContext.underlying} ${analysis.instrumentContext.underlyingDirection}</span></div>`:""}
         </div>
-        <button class="${btn}" type="button">${setup}</button>
+        <button class="${btn}" type="button" ${dir==="WAIT"?"disabled":'onclick="logPaperPlan()"'}>${dir==="WAIT"?setup:`${setup} • LOG PAPER PLAN`}</button>
         <details class="compact-details"><summary>Detailed Decision Evidence &amp; Risk Checks</summary><div class="compact-body"><div class="evidence-section"><div class="panel-title">Decision Evidence</div><ul class="reasoning-list">${analysis.reasons.map(r=>`<li>• ${escapeHTML(r)}</li>`).join("")}</ul></div><div class="evidence-section"><div class="panel-title">Risk Desk Checks</div><ul class="reasoning-list">${(trade.warnings.length?trade.warnings:["Risk, liquidity, and trend-strength checks passed under the selected settings."]).map(r=>`<li>• ${escapeHTML(r)}</li>`).join("")}</ul></div></div></details>
         <div class="notice">This is a rules-based research tool, not a broker recommendation or guarantee. Prediction Strength and letter grades are Halifax model scores, not win probabilities. The History Grade uses point-in-time Daily analogs from up to five years of loaded history and can still fail out of sample. Smart-money scoring uses reported insider and institutional filings with deliberately small weights because disclosure data can be delayed. Verify prices, fundamentals, corporate events, borrow availability, and order details with your brokerage before trading.</div>`;
-    lastPlanText=buildPlanText(analysis,trade);
+    lastPlanText=buildPlanText(analysis,trade);lastAnalysis=analysis;lastTrade=trade;
 }
 
 function buildPlanText(analysis,trade){
     const d=analysis.primary,m=analysis.macroContext,plain=buildPlainEnglishExplanation(analysis,trade);
-    return `HALIFAX TRADE ENGINE v17.0 LITE — ${d.ticker} ${analysis.direction} TRADE PLAN
+    return `HALIFAX TRADE ENGINE v19.0 LITE — ${d.ticker} ${analysis.direction} TRADE PLAN
 Plain-English read: ${plain.headline}
 Action: ${plain.timing.action}
 Why: ${plain.summary}
@@ -1434,6 +1517,28 @@ Shares: ${trade.shares.toLocaleString()} | Position: ${money(trade.positionValue
 RSI: ${d.rsi.toFixed(1)} | ADX: ${d.adx==null?"N/A":d.adx.toFixed(1)} | Volume: ${d.volumeRatio.toFixed(2)}x avg
 Warnings: ${(trade.warnings.length?trade.warnings:["None"]).join(" ")}`;
 }
+
+const PAPER_JOURNAL_KEY="halifaxPaperJournalV1";
+function readPaperJournal(){try{return JSON.parse(localStorage.getItem(PAPER_JOURNAL_KEY)||"[]")||[];}catch(e){return[];}}
+function writePaperJournal(rows){try{localStorage.setItem(PAPER_JOURNAL_KEY,JSON.stringify(rows.slice(-100)));}catch(e){}renderPaperJournal();}
+function logPaperPlan(){
+    if(!lastAnalysis||!lastTrade){alert("Run an analysis first.");return;}
+    if(!["LONG","SHORT"].includes(lastAnalysis.direction)){alert("Halifax is currently WAIT. There is no authorized LONG or SHORT plan to log.");return;}
+    const rows=readPaperJournal(),plain=buildPlainEnglishExplanation(lastAnalysis,lastTrade),d=lastAnalysis.primary;
+    rows.push({id:Date.now()+Math.random(),loggedAt:Date.now(),dataTime:(d.dataTime||d.candles?.at(-1)?.time||null),ticker:d.ticker,direction:lastAnalysis.direction,entry:lastTrade.entry,stop:lastTrade.stop,target:lastTrade.t2,score:lastAnalysis.score,strength:lastAnalysis.predictionStrength??lastAnalysis.confidence,grade:plain.grades.overall.grade,status:"OPEN"});
+    writePaperJournal(rows);document.getElementById("paperJournalPanel")?.setAttribute("open","");setStatus(`${d.ticker} paper plan logged`);
+}
+function closePaperSignal(id){
+    const rows=readPaperJournal(),r=rows.find(x=>String(x.id)===String(id));if(!r)return;const raw=prompt(`Enter paper exit price for ${r.ticker} ${r.direction}:`);if(raw==null)return;const exit=Number(raw);if(!Number.isFinite(exit)||exit<=0){alert("Enter a valid exit price.");return;}
+    const risk=Math.abs(r.entry-r.stop);if(!risk){alert("This journal item has no valid stop distance.");return;}r.exit=exit;r.closedAt=Date.now();r.status="CLOSED";r.resultR=r.direction==="LONG"?(exit-r.entry)/risk:(r.entry-exit)/risk;writePaperJournal(rows);
+}
+function deletePaperSignal(id){if(!confirm("Delete this paper signal from the local journal?"))return;writePaperJournal(readPaperJournal().filter(x=>String(x.id)!==String(id)));}
+function renderPaperJournal(){
+    const box=document.getElementById("paperJournalOutput");if(!box)return;const rows=readPaperJournal(),closed=rows.filter(x=>x.status==="CLOSED"&&Number.isFinite(x.resultR)),wins=closed.filter(x=>x.resultR>0),totalR=closed.reduce((a,x)=>a+x.resultR,0),winRate=closed.length?100*wins.length/closed.length:0,expectancy=closed.length?totalR/closed.length:0;
+    const body=rows.slice().reverse().map(r=>`<tr><td>${new Date(r.loggedAt).toLocaleDateString()}</td><td><b>${escapeHTML(r.ticker)}</b></td><td class="${r.direction==='LONG'?'green':'red'}">${r.direction}</td><td>${money(r.entry)}</td><td>${money(r.stop)}</td><td>${money(r.target)}</td><td>${r.score>0?'+':''}${r.score}</td><td>${escapeHTML(r.grade||'—')}</td><td class="${r.status==='CLOSED'?(r.resultR>0?'green':'red'):'yellow'}">${r.status==='CLOSED'?`${r.resultR>=0?'+':''}${r.resultR.toFixed(2)}R`:'OPEN'}</td><td><div class="journal-actions">${r.status==='OPEN'?`<button class="btn-sm" onclick="closePaperSignal('${r.id}')">CLOSE</button>`:''}<button class="btn-dark" onclick="deletePaperSignal('${r.id}')">DELETE</button></div></td></tr>`).join('');
+    box.innerHTML=`<div class="journal-summary"><div class="journal-stat"><div class="j-label">Logged Signals</div><div class="j-value">${rows.length}</div></div><div class="journal-stat"><div class="j-label">Closed Paper Trades</div><div class="j-value">${closed.length}</div></div><div class="journal-stat"><div class="j-label">Manual Win Rate</div><div class="j-value ${winRate>=50?'green':'yellow'}">${closed.length?winRate.toFixed(1)+'%':'—'}</div></div><div class="journal-stat"><div class="j-label">Manual Expectancy</div><div class="j-value ${expectancy>0?'green':expectancy<0?'red':'yellow'}">${closed.length?(expectancy>=0?'+':'')+expectancy.toFixed(2)+'R':'—'}</div></div></div><div class="table-wrap"><table><thead><tr><th>Logged</th><th>Ticker</th><th>Side</th><th>Entry</th><th>Stop</th><th>Target</th><th>Score</th><th>Grade</th><th>Result</th><th>Actions</th></tr></thead><tbody>${body||'<tr><td colspan="10">No paper signals logged yet.</td></tr>'}</tbody></table></div><div class="bt-note">This journal lives only in this browser/device unless you export or copy it. Manual exits are used so the app does not fabricate fills.</div>`;
+}
+
 async function copyTradePlan(){if(!lastPlanText){alert("Run an analysis first.");return;}try{await navigator.clipboard.writeText(lastPlanText);setStatus("Trade plan copied");}catch(e){prompt("Copy this trade plan:",lastPlanText);}}
 
 async function fetchTickerSnapshot(query){
@@ -1691,7 +1796,7 @@ async function runEngine(){
         renderChart(analysis.primary,trade);renderRegime(analysis,benchmarkResult);renderMTF(analysis);renderTradeOutput(analysis,trade);renderPositionGuardrails(ticker,analysis.primary,analysis);renderNews(displayNews,ticker);
         document.getElementById("smartMoneyOutput").innerHTML='<div class="loading">Core prediction is complete. Loading insider, institutional and public-filing context in the background…</div>';
         document.getElementById("decisionCard")?.scrollIntoView({behavior:"smooth",block:"start"});
-        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v17.2 Lite`;
+        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v19.0 Lite`;
         smartMoneyPromise.then(sm=>{
             if(runId!==halifaxRunId)return;
             if(!sm){document.getElementById("smartMoneyOutput").innerHTML='<div class="loading">Smart-money feeds are unavailable right now. Core Halifax prediction remains valid.</div>';return;}
@@ -1699,9 +1804,147 @@ async function runEngine(){
             renderTradeOutput(analysis,trade);renderPositionGuardrails(ticker,analysis.primary,analysis);renderSmartMoney(special?.underlying||ticker,sm);
             setStatus(`${ticker} prediction + smart money complete`);
         }).catch(()=>{});
-    }catch(error){console.error(error);document.getElementById("tradeOutput").innerHTML=`<div class="red" style="font-weight:900">Analysis failed</div><div style="font-size:12px;color:#cbd5e1;margin-top:8px;line-height:1.5">${escapeHTML(error.message)}</div><div class="notice">Halifax v17.2 Lite rebuilds a slower confirmation timeframe from any usable loaded candles when a separate interval feed fails. A red failure should now appear only when no valid two-timeframe set can be constructed at all.</div>`;document.getElementById("positionCard").style.display="none";setStatus("Analysis failed","var(--red)");}
+    }catch(error){console.error(error);document.getElementById("tradeOutput").innerHTML=`<div class="red" style="font-weight:900">Analysis failed</div><div style="font-size:12px;color:#cbd5e1;margin-top:8px;line-height:1.5">${escapeHTML(error.message)}</div><div class="notice">Halifax v19.0 Lite rebuilds a slower confirmation timeframe from any usable loaded candles when a separate interval feed fails. A red failure should now appear only when no valid two-timeframe set can be constructed at all.</div>`;document.getElementById("positionCard").style.display="none";setStatus("Analysis failed","var(--red)");}
     finally{button.disabled=false;}
 }
+
+
+
+// ========================= Halifax v18 Backtest Lab =========================
+let lastBacktestResult=null;
+function btRollingSma(values,period){
+    const out=new Array(values.length).fill(null);let sum=0;
+    for(let i=0;i<values.length;i++){sum+=values[i];if(i>=period)sum-=values[i-period];if(i>=period-1)out[i]=sum/period;}
+    return out;
+}
+function btMacdSeries(values){
+    const fast=emaSeries(values,12),slow=emaSeries(values,26),line=new Array(values.length).fill(null);
+    for(let i=0;i<values.length;i++)if(Number.isFinite(fast[i])&&Number.isFinite(slow[i]))line[i]=fast[i]-slow[i];
+    const compact=line.filter(Number.isFinite),sigCompact=emaSeries(compact,9),signal=new Array(values.length).fill(null),hist=new Array(values.length).fill(null);let j=0;
+    for(let i=0;i<line.length;i++)if(Number.isFinite(line[i])){signal[i]=sigCompact[j]??null;if(Number.isFinite(signal[i]))hist[i]=line[i]-signal[i];j++;}
+    return {line,signal,hist};
+}
+function btAdxSeries(high,low,close,period=14){
+    const n=close.length,out=new Array(n).fill(null);if(n<=period*2)return out;
+    let trN=0,pN=0,mN=0,adx=null;const dx=[];
+    for(let i=1;i<n;i++){
+        const tr=Math.max(high[i]-low[i],Math.abs(high[i]-close[i-1]),Math.abs(low[i]-close[i-1]));
+        const up=high[i]-high[i-1],down=low[i-1]-low[i],p=up>down&&up>0?up:0,m=down>up&&down>0?down:0;
+        if(i<=period){trN+=tr;pN+=p;mN+=m;if(i<period)continue;}
+        else{trN=trN-trN/period+tr;pN=pN-pN/period+p;mN=mN-mN/period+m;}
+        const pdi=trN?100*pN/trN:0,mdi=trN?100*mN/trN:0,d=(pdi+mdi)?100*Math.abs(pdi-mdi)/(pdi+mdi):0;dx.push(d);
+        if(dx.length===period){adx=mean(dx);out[i]=adx;}
+        else if(dx.length>period){adx=((adx*(period-1))+d)/period;out[i]=adx;}
+    }
+    return out;
+}
+function btFeaturePack(candles){
+    const close=candles.map(x=>x.close),high=candles.map(x=>x.high),low=candles.map(x=>x.low),volume=candles.map(x=>Number(x.volume)||0);
+    return {candles,close,high,low,volume,ema9:emaSeries(close,9),ema21:emaSeries(close,21),sma50:btRollingSma(close,50),sma200:btRollingSma(close,200),rsi:rsiSeries(close,14),atr:atrSeries(high,low,close,14),macd:btMacdSeries(close),adx:btAdxSeries(high,low,close,14)};
+}
+function btSnapshot(pack,i,ticker,timeframe){
+    if(!pack||i<20||i>=pack.close.length)return null;
+    const c=pack.close,h=pack.high,l=pack.low,v=pack.volume,price=c[i],ema9=pack.ema9[i],ema21=pack.ema21[i];
+    const start=Math.max(0,i-19),vSlice=v.slice(start,i+1),avgVolume=mean(vSlice)||0;
+    const support=Math.min(...l.slice(start,i+1)),resistance=Math.max(...h.slice(start,i+1));
+    const rocAt=(p)=>i>=p&&c[i-p]?((c[i]/c[i-p])-1)*100:0;
+    const emaSlope=i>=10&&Number.isFinite(pack.ema21[i-10])&&pack.ema21[i-10]?((pack.ema21[i]/pack.ema21[i-10])-1)*100/10:0;
+    return {ticker,timeframe,price,ema9,ema21,sma50:pack.sma50[i],sma200:pack.sma200[i],rsi:pack.rsi[i]??50,atr:pack.atr[i]??price*.02,macd:{hist:pack.macd.hist[i]??0,prevHist:i>0?(pack.macd.hist[i-1]??0):0},adx:pack.adx[i],support,resistance,avgVolume,volumeRatio:avgVolume?(v[i]||0)/avgVolume:0,roc5:rocAt(5),roc20:rocAt(20),roc60:rocAt(60),ema21Slope:emaSlope,gapPct:i>0&&c[i-1]?((pack.candles[i].open/c[i-1])-1)*100:0};
+}
+function btWeekBucket(unix){
+    const d=new Date(unix*1000),day=(d.getUTCDay()+6)%7;
+    return Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate()-day)/1000;
+}
+function btWeeklyCandles(dailyCandles){
+    const map=new Map();
+    for(const c of dailyCandles){const k=btWeekBucket(c.time);let b=map.get(k);if(!b){b={time:k,open:c.open,high:c.high,low:c.low,close:c.close,volume:Number(c.volume)||0};map.set(k,b);}else{b.high=Math.max(b.high,c.high);b.low=Math.min(b.low,c.low);b.close=c.close;b.volume+=(Number(c.volume)||0);}}
+    return [...map.values()].sort((a,b)=>a.time-b.time);
+}
+function btStats(trades){
+    if(!trades.length)return {count:0,wins:0,losses:0,winRate:0,expectancy:0,totalR:0,profitFactor:null,avgHold:0,maxLossStreak:0};
+    const wins=trades.filter(t=>t.r>0),losses=trades.filter(t=>t.r<=0),totalR=trades.reduce((s,t)=>s+t.r,0),grossWin=wins.reduce((s,t)=>s+t.r,0),grossLoss=Math.abs(losses.reduce((s,t)=>s+t.r,0));
+    let streak=0,maxLossStreak=0;for(const t of trades){if(t.r<=0){streak++;maxLossStreak=Math.max(maxLossStreak,streak);}else streak=0;}
+    return {count:trades.length,wins:wins.length,losses:losses.length,winRate:100*wins.length/trades.length,expectancy:totalR/trades.length,totalR,profitFactor:grossLoss?grossWin/grossLoss:(grossWin>0?Infinity:null),avgHold:trades.reduce((s,t)=>s+t.hold,0)/trades.length,maxLossStreak};
+}
+function btFmt(v,d=2){return Number.isFinite(v)?Number(v).toFixed(d):"—";}
+function btDate(unix){return Number.isFinite(unix)?new Date(unix*1000).toLocaleDateString(undefined,{year:"2-digit",month:"short",day:"2-digit"}):"—";}
+function btMetric(label,value,sub="",cls="") {return `<div class="bt-metric"><div class="bt-label">${escapeHTML(label)}</div><div class="bt-value ${cls}">${value}</div>${sub?`<div class="bt-sub">${sub}</div>`:""}</div>`;}
+function drawBacktestCurve(curve){
+    const canvas=document.getElementById("backtestCanvas");if(!canvas||!curve?.length)return;const rect=canvas.getBoundingClientRect(),dpr=Math.max(1,window.devicePixelRatio||1),w=Math.max(300,rect.width),h=Math.max(150,rect.height);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);const ctx=canvas.getContext("2d");ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);
+    const pad=12,vals=curve.map(x=>x.equity),min=Math.min(...vals),max=Math.max(...vals),span=Math.max(1,max-min);ctx.strokeStyle="#1e293b";ctx.lineWidth=1;for(let g=0;g<=4;g++){const y=pad+(h-pad*2)*g/4;ctx.beginPath();ctx.moveTo(pad,y);ctx.lineTo(w-pad,y);ctx.stroke();}
+    ctx.strokeStyle=vals.at(-1)>=vals[0]?"#4ade80":"#f87171";ctx.lineWidth=2;ctx.beginPath();curve.forEach((p,i)=>{const x=pad+(w-pad*2)*(i/Math.max(1,curve.length-1)),y=pad+(max-p.equity)/span*(h-pad*2);if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);});ctx.stroke();
+}
+function exportBacktestCSV(){
+    const r=lastBacktestResult;if(!r?.trades?.length)return;const rows=[["Direction","Signal Date","Entry Date","Exit Date","Score","Entry","Stop","Target","Exit","R","Hold Sessions","Exit Reason"],...r.trades.map(t=>[t.direction,btDate(t.signalTime),btDate(t.entryTime),btDate(t.exitTime),t.score.toFixed(1),t.entry.toFixed(4),t.stop.toFixed(4),t.target.toFixed(4),t.exit.toFixed(4),t.r.toFixed(4),t.hold,t.reason])];
+    const csv=rows.map(row=>row.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(",")).join("\n"),blob=new Blob([csv],{type:"text/csv;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`Halifax_Backtest_${r.ticker}_${(r.strategyLabel||"Core").replace(/[^A-Za-z0-9]+/g,"_")}_${new Date().toISOString().slice(0,10)}.csv`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);
+}
+function renderBacktestResult(result){
+    const out=document.getElementById("backtestOutput"),s=result.stats,lr=result.longStats,sr=result.shortStats,recent=result.recentStats,first=result.firstStats,pf=s.profitFactor===Infinity?"∞":btFmt(s.profitFactor,2),eqCls=result.endEquity>=result.startEquity?"bt-positive":"bt-negative",expCls=s.expectancy>0?"bt-positive":s.expectancy<0?"bt-negative":"bt-neutral",rel=result.reliability||btReliability(s,first,recent,result.maxDrawdownPct);
+    const specialNote=result.special?`<div class="guardrail-banner red-border"><div class="guardrail-action">Leveraged / inverse product caution</div><div class="guardrail-sub">${escapeHTML(result.special.label)} is a daily-reset instrument. This historical module tests its own price series only and does not recreate the live underlying-direction guardrail. Multi-day results can differ materially from the underlying.</div></div>`:"";
+    const rows=result.trades.slice(-15).reverse().map(t=>`<tr><td class="${t.direction==="LONG"?"green":"red"}">${t.direction}</td><td>${btDate(t.signalTime)}</td><td>${btDate(t.entryTime)}</td><td>${btDate(t.exitTime)}</td><td>${btFmt(t.score,0)}</td><td>${money(t.entry)}</td><td>${money(t.stop)}</td><td>${money(t.exit)}</td><td class="${t.r>0?"green":"red"}">${t.r>=0?"+":""}${btFmt(t.r,2)}R</td><td>${t.hold}</td><td>${escapeHTML(t.reason)}</td></tr>`).join("");
+    out.innerHTML=`${specialNote}<div class="guardrail-banner green-border"><div class="guardrail-action">${escapeHTML(result.strategyLabel||"Halifax Core")}</div><div class="guardrail-sub">Point-in-time strategy backtest • Reliability ${rel.grade} (${rel.score}/100). Reliability combines expectancy, profit factor, sample size, recent-vs-earlier consistency and drawdown; it is not a win probability.</div></div><div class="backtest-metrics">${btMetric("Reliability",`${rel.grade} • ${rel.score}/100`,`Transparent robustness grade`,rel.score>=72?"bt-positive":rel.score>=55?"bt-neutral":"bt-negative")}${btMetric("Trades",s.count,`${s.wins} wins / ${s.losses} losses`)}${btMetric("Win Rate",`${btFmt(s.winRate,1)}%`,`Non-overlapping trades`,s.winRate>=50?"bt-positive":"bt-neutral")}${btMetric("Expectancy",`${s.expectancy>=0?"+":""}${btFmt(s.expectancy,2)}R`,`Average per trade`,expCls)}${btMetric("Profit Factor",pf,`Gross winning R ÷ losing R`,s.profitFactor>=1.3?"bt-positive":s.profitFactor<1?"bt-negative":"bt-neutral")}${btMetric("Total R",`${s.totalR>=0?"+":""}${btFmt(s.totalR,2)}R`,`Before compounding`,s.totalR>=0?"bt-positive":"bt-negative")}${btMetric("Max Drawdown",`${btFmt(result.maxDrawdownPct,1)}%`,`Risk-adjusted equity`,result.maxDrawdownPct<=15?"bt-positive":"bt-negative")}${btMetric("Start Equity",money(result.startEquity),`${btFmt(result.riskPct,2)}% risk/trade`)}${btMetric("End Equity",money(result.endEquity),`${result.totalReturn>=0?"+":""}${btFmt(result.totalReturn,1)}%`,eqCls)}${btMetric("Buy & Hold",`${result.buyHold>=0?"+":""}${btFmt(result.buyHold,1)}%`,`Same test window`,result.buyHold>=0?"bt-positive":"bt-negative")}${btMetric("Avg Hold",`${btFmt(s.avgHold,1)} days`,`Max losing streak: ${s.maxLossStreak}`)}</div>
+    <div class="bt-segment-grid"><div class="bt-segment"><b>Long side</b><br>${lr.count} trades • ${btFmt(lr.winRate,1)}% wins • ${lr.expectancy>=0?"+":""}${btFmt(lr.expectancy,2)}R expectancy</div><div class="bt-segment"><b>Short side</b><br>${sr.count} trades • ${btFmt(sr.winRate,1)}% wins • ${sr.expectancy>=0?"+":""}${btFmt(sr.expectancy,2)}R expectancy</div><div class="bt-segment"><b>Recent 30% segment</b><br>${recent.count} trades • ${btFmt(recent.winRate,1)}% wins • ${recent.expectancy>=0?"+":""}${btFmt(recent.expectancy,2)}R expectancy<br><span class="tiny">Earlier 70%: ${first.count} trades • ${btFmt(first.expectancy,2)}R expectancy</span></div></div>
+    <div class="bt-chart-wrap"><canvas id="backtestCanvas"></canvas></div>
+    <div class="bt-actions"><button class="btn-dark" onclick="exportBacktestCSV()">EXPORT TRADES CSV</button></div>
+    <div class="table-wrap" style="margin-top:10px"><table><thead><tr><th>Side</th><th>Signal</th><th>Entry</th><th>Exit</th><th>Score</th><th>Entry $</th><th>Stop $</th><th>Exit $</th><th>Result</th><th>Days</th><th>Reason</th></tr></thead><tbody>${rows||'<tr><td colspan="11">No qualifying trades.</td></tr>'}</tbody></table></div>
+    <div class="bt-note"><b>Test window:</b> ${btDate(result.testStartTime)} to ${btDate(result.testEndTime)}. Strategy ${escapeHTML(result.strategyLabel||"Halifax Core")}; threshold ${result.threshold}; target ${btFmt(result.targetR,2)}R; max hold ${result.maxHold} sessions; slippage ${btFmt(result.slippagePct,2)}% per fill; ATR stop ${btFmt(result.atrMult,2)}× capped at ${btFmt(result.maxStopPct,1)}%. The Weekly filter uses only the prior completed week, which avoids weekly look-ahead. If a daily bar touches both stop and target, the stop is counted first. Fees, taxes, hard-to-borrow charges, locate availability, dividends, and historical corporate/news/macro events are not reconstructed.</div>`;
+    requestAnimationFrame(()=>drawBacktestCurve(result.equityCurve));
+}
+
+const BT_STRATEGIES={core:"Halifax Core",pullback:"Trend Pullback",breakout:"Momentum Breakout",relative:"Relative Strength"};
+function btSignalForStrategy(strategy,ctx){
+    const {d,w,b,dailyPack,i,threshold,side}=ctx,da=classifyTimeframe(d),wa=classifyTimeframe(w),rs=b?d.roc20-b.roc20:0;
+    const conflict=Math.sign(da.score)!==Math.sign(wa.score)&&Math.abs(da.score)>=2.4&&Math.abs(wa.score)>=2.4;
+    let raw=((da.score*.61+wa.score*.39)/10)*100;if(b){raw+=clamp(rs*1.2,-6,6);const ba=classifyTimeframe(b);if(ba.direction==="BULLISH"&&raw>0)raw+=3;if(ba.direction==="BEARISH"&&raw<0)raw-=3;}raw=clamp(raw,-100,100);
+    let longOk=false,shortOk=false,score=raw;
+    if(strategy==="core"){
+        longOk=!conflict&&score>=threshold&&da.score>=2.2&&wa.score>-1.5;
+        shortOk=!conflict&&score<=-threshold&&da.score<=-2.2&&wa.score<1.5;
+    }else if(strategy==="pullback"){
+        const dist=Math.abs(d.price-d.ema21)/Math.max(d.atr,d.price*.005);score=clamp(raw+(1-Math.min(1.5,dist))*8,-100,100);
+        longOk=!conflict&&score>=Math.max(18,threshold-6)&&d.ema9>d.ema21&&d.price>=d.ema21&&dist<=.9&&d.rsi>=42&&d.rsi<=66&&d.ema21Slope>0&&wa.score>-1.2;
+        shortOk=!conflict&&score<=-Math.max(18,threshold-6)&&d.ema9<d.ema21&&d.price<=d.ema21&&dist<=.9&&d.rsi>=34&&d.rsi<=58&&d.ema21Slope<0&&wa.score<1.2;
+    }else if(strategy==="breakout"){
+        const ph=Math.max(...dailyPack.high.slice(Math.max(0,i-20),i)),pl=Math.min(...dailyPack.low.slice(Math.max(0,i-20),i));score=clamp(raw+(d.volumeRatio>=1.2?(raw>=0?7:-7):0),-100,100);
+        longOk=!conflict&&d.price>ph&&d.volumeRatio>=1.15&&(d.adx||0)>=18&&wa.score>-1.2&&score>=Math.max(15,threshold-8);
+        shortOk=!conflict&&d.price<pl&&d.volumeRatio>=1.15&&(d.adx||0)>=18&&wa.score<1.2&&score<=-Math.max(15,threshold-8);
+    }else if(strategy==="relative"){
+        score=clamp(raw+clamp(rs*1.8,-12,12),-100,100);
+        longOk=!!b&&!conflict&&rs>=4&&d.roc20>=2&&d.ema9>d.ema21&&wa.score>=0&&score>=Math.max(18,threshold-4);
+        shortOk=!!b&&!conflict&&rs<=-4&&d.roc20<=-2&&d.ema9<d.ema21&&wa.score<=0&&score<=-Math.max(18,threshold-4);
+    }
+    if(longOk&&side!=="short")return {direction:"LONG",score};if(shortOk&&side!=="long")return {direction:"SHORT",score};return null;
+}
+function btReliability(stats,first,recent,maxDD){
+    let score=50;score+=clamp(stats.expectancy*24,-24,24);if(Number.isFinite(stats.profitFactor))score+=clamp((stats.profitFactor-1)*12,-12,15);score+=stats.count>=40?12:stats.count>=25?8:stats.count>=12?3:-12;if(first.count>=5&&recent.count>=5){if(first.expectancy>0&&recent.expectancy>0)score+=8;else if(Math.sign(first.expectancy)!==Math.sign(recent.expectancy))score-=10;}score-=maxDD>25?10:maxDD>15?5:0;return gradeBand(clamp(score,0,100));
+}
+function btSimulateLoaded({ticker,benchmark,data,bench,strategy,threshold,targetR,maxHold,side,useBenchmark,account,riskPct,atrMult,maxStopPct,slippagePct}){
+    const candles=data.candles,dailyPack=btFeaturePack(candles),weekly=btWeeklyCandles(candles),weeklyPack=btFeaturePack(weekly),benchPack=bench?btFeaturePack(bench.candles):null;let wPtr=-1,bPtr=-1,nextEligible=200,testStartIndex=null;const trades=[];
+    for(let i=200;i<candles.length-1;i++){
+        if(i<nextEligible)continue;const bucket=btWeekBucket(candles[i].time);while(wPtr+1<weekly.length&&weekly[wPtr+1].time<bucket)wPtr++;if(wPtr<25)continue;if(benchPack){while(bPtr+1<bench.candles.length&&bench.candles[bPtr+1].time<=candles[i].time)bPtr++;}
+        const d=btSnapshot(dailyPack,i,ticker,"1d"),w=btSnapshot(weeklyPack,wPtr,ticker,"1wk"),b=benchPack&&bPtr>=20?btSnapshot(benchPack,bPtr,benchmark,"1d"):null;if(!d||!w)continue;if(testStartIndex==null)testStartIndex=i;
+        const sig=btSignalForStrategy(strategy,{d,w,b,dailyPack,i,threshold,side});if(!sig)continue;const direction=sig.direction,score=sig.score;
+        const entryIndex=i+1,entryBar=candles[entryIndex],rawEntry=entryBar.open,isShort=direction==="SHORT",entry=isShort?rawEntry*(1-slippagePct):rawEntry*(1+slippagePct),atr=Math.max(d.atr||0,entry*.005),atrDist=Math.max(atr*atrMult,entry*.003),structStop=isShort?Math.max(d.resistance+atr*.10,entry+atrDist):Math.min(d.support-atr*.10,entry-atrDist),maxDist=entry*maxStopPct/100;
+        let stopDist=Math.abs(entry-structStop);if(!Number.isFinite(stopDist)||stopDist<=0)stopDist=atrDist;stopDist=Math.max(entry*.003,Math.min(stopDist,maxDist));const stop=isShort?entry+stopDist:Math.max(.01,entry-stopDist),target=isShort?Math.max(.01,entry-targetR*stopDist):entry+targetR*stopDist;
+        let exitIndex=Math.min(candles.length-1,entryIndex+maxHold-1),exitRaw=candles[exitIndex].close,reason="TIME";for(let j=entryIndex;j<=exitIndex;j++){const bar=candles[j];if(!isShort){if(bar.open<=stop){exitIndex=j;exitRaw=bar.open;reason="GAP STOP";break;}if(bar.low<=stop){exitIndex=j;exitRaw=stop;reason="STOP";break;}if(bar.high>=target){exitIndex=j;exitRaw=target;reason="TARGET";break;}}else{if(bar.open>=stop){exitIndex=j;exitRaw=bar.open;reason="GAP STOP";break;}if(bar.high>=stop){exitIndex=j;exitRaw=stop;reason="STOP";break;}if(bar.low<=target){exitIndex=j;exitRaw=target;reason="TARGET";break;}}}
+        const exit=isShort?exitRaw*(1+slippagePct):exitRaw*(1-slippagePct),r=(isShort?(entry-exit):(exit-entry))/stopDist,hold=exitIndex-entryIndex+1;trades.push({direction,signalTime:candles[i].time,entryTime:entryBar.time,exitTime:candles[exitIndex].time,score,entry,stop,target,exit,r,hold,reason});nextEligible=exitIndex+1;
+    }
+    const stats=btStats(trades),longStats=btStats(trades.filter(t=>t.direction==="LONG")),shortStats=btStats(trades.filter(t=>t.direction==="SHORT")),split=Math.floor(trades.length*.70),firstStats=btStats(trades.slice(0,split)),recentStats=btStats(trades.slice(split));let equity=account,peak=equity,maxDrawdownPct=0;const equityCurve=[{time:(trades[0]?.entryTime||candles[testStartIndex||200].time),equity}];for(const t of trades){equity+=equity*(riskPct/100)*t.r;peak=Math.max(peak,equity);maxDrawdownPct=Math.max(maxDrawdownPct,peak?100*(peak-equity)/peak:0);equityCurve.push({time:t.exitTime,equity});}const startIdx=testStartIndex??200,buyHold=candles[startIdx]?.close?100*(candles.at(-1).close/candles[startIdx].close-1):0,reliability=btReliability(stats,firstStats,recentStats,maxDrawdownPct);
+    return {ticker,benchmark,strategy,strategyLabel:BT_STRATEGIES[strategy]||strategy,threshold,targetR,maxHold,side,useBenchmark,startEquity:account,endEquity:equity,totalReturn:100*(equity/account-1),riskPct,atrMult,maxStopPct,slippagePct:slippagePct*100,trades,stats,longStats,shortStats,firstStats,recentStats,equityCurve,maxDrawdownPct,buyHold,reliability,testStartTime:candles[startIdx].time,testEndTime:candles.at(-1).time,special:getSpecialInstrument(ticker)};
+}
+async function btLoadConfig(){
+    const ticker=document.getElementById("ticker").value.trim().toUpperCase().replace(/[^A-Z0-9.\-^=]/g,"");if(!ticker)throw new Error("Enter a valid ticker first.");const range=document.getElementById("btRange")?.value||"5y",threshold=clamp(Number(document.getElementById("btThreshold")?.value)||24,10,80),targetR=clamp(Number(document.getElementById("btTargetR")?.value)||2,1,10),maxHold=Math.round(clamp(Number(document.getElementById("btMaxHold")?.value)||20,1,90)),side=document.getElementById("btDirection")?.value||"both",useBenchmark=document.getElementById("btBenchmark")?.checked!==false,benchmark=document.getElementById("benchmark")?.value||"SPY",account=Math.max(100,Number(document.getElementById("account")?.value)||25000),riskPct=clamp(Number(document.getElementById("risk")?.value)||1,.1,5),atrMult=clamp(Number(document.getElementById("atrMultiple")?.value)||1.7,.5,5),maxStopPct=clamp(Number(document.getElementById("maxStopPct")?.value)||8,1,25),slippagePct=clamp(Number(document.getElementById("slippage")?.value)||0,0,3)/100;
+    const [data,bench]=await Promise.all([loadTickerData(ticker,"1d",range),useBenchmark?loadTickerData(benchmark,"1d",range).catch(()=>null):Promise.resolve(null)]);if(data.candles.length<260)throw new Error(`Only ${data.candles.length} Daily candles loaded. At least 260 are required.`);return {ticker,benchmark,range,threshold,targetR,maxHold,side,useBenchmark,account,riskPct,atrMult,maxStopPct,slippagePct,data,bench};
+}
+function renderTournament(results){
+    const out=document.getElementById("tournamentOutput");if(!out)return;const ranked=[...results].sort((a,b)=>b.reliability.score-a.reliability.score||b.stats.expectancy-a.stats.expectancy),leader=ranked[0];const rows=ranked.map((r,i)=>`<tr><td>${i+1}</td><td><b>${escapeHTML(r.strategyLabel)}</b></td><td>${r.stats.count}</td><td>${btFmt(r.stats.winRate,1)}%</td><td class="${r.stats.expectancy>0?'green':r.stats.expectancy<0?'red':'yellow'}">${r.stats.expectancy>=0?'+':''}${btFmt(r.stats.expectancy,2)}R</td><td>${r.stats.profitFactor===Infinity?'∞':btFmt(r.stats.profitFactor,2)}</td><td>${btFmt(r.maxDrawdownPct,1)}%</td><td>${r.recentStats.count?`${r.recentStats.expectancy>=0?'+':''}${btFmt(r.recentStats.expectancy,2)}R`:'—'}</td><td class="${r.reliability.score>=72?'green':r.reliability.score>=55?'yellow':'red'}">${r.reliability.grade} (${r.reliability.score})</td></tr>`).join('');out.innerHTML=`<div class="section-divider"></div><div class="panel-title purple">Strategy Tournament</div><div class="tournament-leader"><b>Research leader in this sample: ${escapeHTML(leader.strategyLabel)}</b><br><span class="tiny">Reliability ${leader.reliability.grade} (${leader.reliability.score}/100), ${leader.stats.count} trades, ${leader.stats.expectancy>=0?'+':''}${btFmt(leader.stats.expectancy,2)}R expectancy. This is a historical ranking, not permission to trade or an automatically optimized future strategy.</span></div><div class="table-wrap"><table class="tournament-table"><thead><tr><th>Rank</th><th>Strategy</th><th>Trades</th><th>Win %</th><th>Expectancy</th><th>Profit Factor</th><th>Max DD</th><th>Recent 30%</th><th>Reliability</th></tr></thead><tbody>${rows}</tbody></table></div><div class="bt-note">Every strategy uses the same next-session entry, stop/target, slippage and non-overlap rules. The tournament uses fixed strategy definitions; it does not curve-fit parameters after seeing the result.</div>`;
+}
+
+async function runBacktest(){
+    const button=document.getElementById("backtestBtn"),out=document.getElementById("backtestOutput");button.disabled=true;out.innerHTML='<div class="loading">Loading history and replaying the selected point-in-time strategy…</div>';try{const cfg=await btLoadConfig(),strategy=document.getElementById("btStrategy")?.value||"core";setStatus(`Backtesting ${cfg.ticker} • ${BT_STRATEGIES[strategy]}…`,"var(--yellow)");const result=btSimulateLoaded({...cfg,strategy});lastBacktestResult=result;renderBacktestResult(result);setStatus(`${cfg.ticker} ${BT_STRATEGIES[strategy]} backtest complete`);document.getElementById("backtestPanel")?.setAttribute("open","");}catch(error){console.error(error);out.innerHTML=`<div class="red" style="font-weight:900">Backtest failed</div><div style="font-size:12px;color:#cbd5e1;margin-top:8px;line-height:1.5">${escapeHTML(error.message)}</div>`;setStatus("Backtest failed","var(--red)");}finally{button.disabled=false;}}
+async function runStrategyTournament(){
+    const button=document.getElementById("tournamentBtn"),out=document.getElementById("tournamentOutput");button.disabled=true;out.innerHTML='<div class="loading">Running four fixed point-in-time strategies on the same history and execution assumptions…</div>';try{const cfg=await btLoadConfig();setStatus(`Running ${cfg.ticker} strategy tournament…`,"var(--yellow)");const results=Object.keys(BT_STRATEGIES).map(strategy=>btSimulateLoaded({...cfg,strategy}));renderTournament(results);setStatus(`${cfg.ticker} strategy tournament complete`);document.getElementById("backtestPanel")?.setAttribute("open","");}catch(error){console.error(error);out.innerHTML=`<div class="red" style="font-weight:900">Tournament failed</div><div class="bt-note">${escapeHTML(error.message)}</div>`;setStatus("Tournament failed","var(--red)");}finally{button.disabled=false;}}
+// ======================= End Halifax v19 Strategy Lab =======================
 
 function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
 function money(v){return Number.isFinite(v)?v.toLocaleString(undefined,{style:"currency",currency:"USD",minimumFractionDigits:2,maximumFractionDigits:2}):"—";}
@@ -1713,7 +1956,6 @@ function signedArrow(v,d=1){const n=Number(v||0);return `${n>0?"▲":n<0?"▼":"
 function signed(v,d=1){return `${v>=0?"+":""}${Number(v||0).toFixed(d)}`;}
 function formatDateTime(unix){return Number.isFinite(unix)?new Date(unix*1000).toLocaleString(undefined,{timeZone:"America/Chicago",timeZoneName:"short"}):"—";}
 function escapeHTML(value){return String(value??"").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));}
-function renderCompositeScale(score){const value=clamp(Number(score)||0,-100,100),pos=((value+100)/200)*100;const fill=value>=0?`<div class="mini-score-fill pos" style="left:50%;width:${Math.max(0,pos-50).toFixed(2)}%"></div>`:`<div class="mini-score-fill neg" style="left:${pos.toFixed(2)}%;width:${Math.max(0,50-pos).toFixed(2)}%"></div>`;return `<div class="mini-score-scale" aria-hidden="true"><div class="mini-score-labels"><span>-100</span><span>0</span><span>+100</span></div><div class="mini-score-track"><div class="mini-score-zero"></div>${fill}<div class="mini-score-marker" style="left:${pos.toFixed(2)}%"></div></div><div class="mini-score-caption">Score scale</div></div>`;}
 function safeUrl(url){try{const u=new URL(url);return ["http:","https:"].includes(u.protocol)?u.href:"#";}catch(e){return"#";}}
 
 
@@ -1754,7 +1996,7 @@ async function registerHalifaxPWA(){
   }catch(e){console.warn('Halifax PWA registration failed',e);}
 }
 
-window.addEventListener("load",()=>{const q=new URLSearchParams(location.search).get("ticker");if(q&&document.getElementById("ticker"))document.getElementById("ticker").value=String(q).toUpperCase().replace(/[^A-Z0-9.\-^=]/g,"");loadPositionSettings();economicState={...ECON_FALLBACK};recalculateEconomicProbability();const box=document.getElementById("chart");if(box)box.innerHTML='<div class="loading" style="padding:20px">Halifax is ready. Interactive chart loads in the background.</div>';setStatus("Engine ready");loadChartLibrary().catch(()=>{});});
+window.addEventListener("load",()=>{const q=new URLSearchParams(location.search).get("ticker");if(q&&document.getElementById("ticker"))document.getElementById("ticker").value=String(q).toUpperCase().replace(/[^A-Z0-9.\-^=]/g,"");loadPositionSettings();renderPaperJournal();economicState={...ECON_FALLBACK};recalculateEconomicProbability();const box=document.getElementById("chart");if(box)box.innerHTML='<div class="loading" style="padding:20px">Halifax is ready. Interactive chart loads in the background.</div>';setStatus("Engine ready");loadChartLibrary().catch(()=>{});});
 window.addEventListener("load",registerHalifaxPWA);
 </script>
 </body>
