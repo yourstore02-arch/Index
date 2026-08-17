@@ -18,7 +18,7 @@
 <meta name="application-name" content="Halifax">
 <meta name="format-detection" content="telephone=no">
 
-<title>Halifax Trade Engine v20.2 Lite - Plain-English Options Outlook</title>
+<title>Halifax Trade Engine v20.3 Lite - Earnings & Fundamental Risk</title>
 
 <style>
 :root{
@@ -1120,7 +1120,7 @@ td{border-bottom:1px solid #223b52}
     <div class="card header">
         <div class="brand-stack">
             <div class="terminal-kicker"><span class="kicker-dot"></span> HALIFAX QUANT RESEARCH TERMINAL</div>
-            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v20.2 Lite</span></span></div>
+            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v20.3 Lite</span></span></div>
             <div class="subtitle">Predictive swing research • Execution planning • Pattern radar • Point-in-time validation</div>
         </div>
         <div class="header-actions"><div class="badge system-badge"><span class="status-dot"></span><span id="engineStatus">Engine ready</span></div></div>
@@ -1213,7 +1213,7 @@ td{border-bottom:1px solid #223b52}
     <div id="optionsCard" class="card options-card" style="display:none">
         <div class="panel-title green">Options Direction — Plain English</div>
         <div id="optionsOutput"><div class="loading">Run an analysis to read the available options chain.</div></div>
-        <div class="clean-note">Options are used as confirmation only in v20.0. A LONG or SHORT options lean does not prove trader intent because option volume and open interest can include hedges and multi-leg spreads.</div>
+        <div class="clean-note">Options are used as confirmation only. A LONG or SHORT options lean does not prove trader intent because option volume and open interest can include hedges and multi-leg spreads.</div>
     </div>
 
 
@@ -1418,8 +1418,8 @@ const TICKER_PROFILE = Object.fromEntries(Object.entries({
     goldminers:["NEM","GOLD","AEM","KGC","AU","WPM","FNV","RGLD","AGI"]
 }).flatMap(([profile,tickers])=>tickers.map(t=>[t,profile])));
 
-const GENERIC_NEGATIVE_NEWS=["cuts guidance","guidance cut","lowers guidance","profit warning","weak demand","demand slowdown","recession","margin pressure","regulatory probe","investigation","data breach","cyberattack","lawsuit","strike","outage","recall","bankruptcy","default","layoffs"];
-const GENERIC_POSITIVE_NEWS=["raises guidance","raised guidance","beats estimates","earnings beat","strong demand","record revenue","margin expansion","approval","contract award","buyback","dividend increase"];
+const GENERIC_NEGATIVE_NEWS=["cuts guidance","guidance cut","lowers guidance","weak guidance","lowers outlook","profit warning","misses estimates","earnings miss","revenue miss","eps miss","weak demand","demand slowdown","recession","margin pressure","secondary offering","share dilution","accounting restatement","regulatory probe","sec probe","investigation","data breach","cyberattack","lawsuit","strike","outage","recall","bankruptcy","default","layoffs"];
+const GENERIC_POSITIVE_NEWS=["raises guidance","raised guidance","raises outlook","beats estimates","earnings beat","revenue beat","eps beat","strong demand","record revenue","margin expansion","approval","contract award","buyback","dividend increase"];
 const PROFILE_NEWS_TERMS={
     airlines:{negative:["fuel cost","oil surge","airport delay","delays","cancellation","ground stop","faa","staffing shortage","weather disruption","capacity cut"],positive:["pricing power","record demand","capacity discipline","fuel costs fall"]},
     technology:{negative:["export controls","chip restrictions","antitrust","cybersecurity breach","data center slowdown"],positive:["AI demand","cloud growth","subscription growth"]},
@@ -2295,7 +2295,7 @@ function marketRegime(data){
 }
 
 function calculateTrade(data,analysis){
-    const account=Math.max(0,Number(document.getElementById("account").value)||0),riskPct=clamp(Number(document.getElementById("risk").value)||1,.1,5),maxPositionPct=clamp(Number(document.getElementById("maxPosition").value)||20,1,100);
+    const account=Math.max(0,Number(document.getElementById("account").value)||0),riskPct=clamp(Number(document.getElementById("risk").value)||1,.1,5),eventRiskMultiplier=clamp(analysis.fundamentalEventContext?.riskMultiplier??1,.30,1),effectiveRiskPct=riskPct*eventRiskMultiplier,maxPositionPct=clamp(Number(document.getElementById("maxPosition").value)||20,1,100);
     const atrMult=clamp(Number(document.getElementById("atrMultiple").value)||1.7,.5,5),maxStopPct=clamp(Number(document.getElementById("maxStopPct").value)||8,1,25),rewardMult=clamp(Number(document.getElementById("rewardMultiple").value)||2.5,1,10),slippagePct=clamp(Number(document.getElementById("slippage").value)||0,0,3)/100;
     const isShort=analysis.direction==="SHORT",isTrade=analysis.direction!=="WAIT",marketEntry=isShort?data.price*(1-slippagePct):data.price*(1+slippagePct);
     const anchor=isShort?Math.min(marketEntry,data.ema9||marketEntry):Math.max(marketEntry,data.ema9||marketEntry);
@@ -2319,7 +2319,7 @@ function calculateTrade(data,analysis){
     const t2=Math.max(.01,isShort?anchor-stopDistance*rewardMult:anchor+stopDistance*rewardMult);
     const runnerR=Math.max(3,rewardMult+1);
     const t3=Math.max(.01,isShort?anchor-stopDistance*runnerR:anchor+stopDistance*runnerR);
-    const dollarRisk=account*riskPct/100,riskShares=stopDistance?Math.floor(dollarRisk/stopDistance):0,allocationShares=anchor?Math.floor((account*maxPositionPct/100)/anchor):0;
+    const dollarRisk=account*effectiveRiskPct/100,riskShares=stopDistance?Math.floor(dollarRisk/stopDistance):0,allocationShares=anchor?Math.floor((account*maxPositionPct/100)/anchor):0;
     const liquidityCap=data.avgDollarVolume?Math.floor((data.avgDollarVolume*.01)/anchor):Infinity;
     const shares=isTrade?Math.max(0,Math.min(riskShares,allocationShares,liquidityCap)):0;
     const stopPct=anchor?stopDistance/anchor*100:0;
@@ -2339,9 +2339,11 @@ function calculateTrade(data,analysis){
     if(isShort&&data.price<data.bbLower)warnings.push("Short entry is extended below the lower volatility band; avoid chasing and wait for a controlled entry.");
     if(Math.abs(data.gapPct)>=4)warnings.push(`Large opening gap detected (${signed(data.gapPct,2)}%); spreads and reversal risk may be elevated.`);
     if(analysis.macroContext?.applies&&(analysis.macroContext.riskLevel!=="NORMAL"||Math.abs(analysis.macroContext.adjustment)>=8))warnings.push(`${analysis.macroContext.profileLabel} sector guardrail: ${analysis.macroContext.riskLevel} risk with a ${analysis.macroContext.adjustment} point score adjustment.`);
+    if(eventRiskMultiplier<.999)warnings.push(`Fundamental/event guardrail reduced planned risk to ${Math.round(eventRiskMultiplier*100)}% of your normal ${riskPct.toFixed(2)}% risk setting (effective ${effectiveRiskPct.toFixed(2)}%).`);
+    if(analysis.fundamentalEventContext?.blockNewTrade)warnings.push("New trade blocked by the earnings-event guardrail because the reported earnings date is inside the selected holding window.");
     if(analysis.direction==="WAIT")warnings.push(analysis.macroContext?.blockLong?`No LONG is authorized because ${analysis.macroContext.profileLabel} macro conditions conflict with the technical setup.`:analysis.macroContext?.blockShort?`No SHORT is authorized because ${analysis.macroContext.profileLabel} macro conditions strongly support the stock.`:"No trade is authorized because multi-timeframe confirmation is insufficient.");
     if(shares===0&&isTrade)warnings.push("Position size calculated as zero under the current risk and allocation limits.");
-    return {entry:anchor,entryLow:isShort?anchor:Math.max(0,anchor-data.atr*.15),entryHigh:isShort?anchor+data.atr*.15:anchor,stop,t1,t2,t3,stopDistance,stopPct,t1Pct,t2Pct,t3Pct,rr1,rr2,rr3,shares,positionValue:shares*anchor,estimatedRisk:shares*stopDistance,riskBudget:dollarRisk,rewardMult,runnerR,maxStopPct,rawStructuralStop,stopWasCapped,warnings,isShort,isTrade};
+    return {entry:anchor,entryLow:isShort?anchor:Math.max(0,anchor-data.atr*.15),entryHigh:isShort?anchor+data.atr*.15:anchor,stop,t1,t2,t3,stopDistance,stopPct,t1Pct,t2Pct,t3Pct,rr1,rr2,rr3,shares,positionValue:shares*anchor,estimatedRisk:shares*stopDistance,riskBudget:dollarRisk,baseRiskPct:riskPct,effectiveRiskPct,eventRiskMultiplier,rewardMult,runnerR,maxStopPct,rawStructuralStop,stopWasCapped,warnings,isShort,isTrade};
 }
 function renderChart(data,trade){
     try{
@@ -2533,8 +2535,9 @@ function buildPlainEnglishExplanation(analysis,trade){
     const rel=analysis.benchmarkRegime?`Relative strength versus the benchmark is ${analysis.relativeStrength>=0?"positive":"negative"} at ${signed(analysis.relativeStrength,2)}% over 20 bars.`:"Benchmark confirmation was unavailable.";
     const a=analysis.analogForecast||{},biasLong=analysis.score>=0,r2=biasLong?a.long2R:a.short2R,r5=biasLong?a.long5R:a.short5R,analogSentence=a.samples>=12&&a.upRate!=null?`5-year point-in-time history: ${a.samples} similar Daily setups. Positive-close rates were ${a.upRate5?.toFixed(0)??"—"}% / ${a.upRate.toFixed(0)}% / ${a.upRate20?.toFixed(0)??"—"}% after 5/10/20 sessions; median 10-day return ${signed(a.medianReturn,1)}%. In the current directional bias, ${Number.isFinite(r2)?r2.toFixed(0):"—"}% reached 2R and ${Number.isFinite(r5)?r5.toFixed(0):"—"}% reached 5R before a 1R stop over 20 sessions. Historical evidence, not a win probability.`:"Point-in-time history: not enough comparable Daily setups to use as evidence.";
     const sm=analysis.smartMoneyContext,smartSentence=sm?.available?`Smart-money filings: ${analysis.smartMoneyContribution>=0?"+":""}${analysis.smartMoneyContribution||0} score points from insider and institutional activity. Political trades are displayed separately and are not scored.`:"Smart-money filing overlay was unavailable or skipped so it did not affect the prediction.";
-    const op=analysis.optionsContext,optionsSentence=op?.available?`Options confirmation: ${op.direction} through ${op.expiryText} (${op.confidence.toLowerCase()} confidence). This is confirmation only and is not added to the Halifax score in v20.0.`:"Options confirmation is unavailable or still loading; Halifax does not invent an options bias.";
-    return {quality,grades,timing,headline,summary,confirm,fail,bullets:[tfText,adxPlain(d.adx),volumePlain(d.volumeRatio),rsiPlain(d.rsi),analogSentence,optionsSentence,smartSentence,macroSentence,rel]};
+    const op=analysis.optionsContext,optionsSentence=op?.available?`Options confirmation: ${op.direction} through ${op.expiryText} (${op.confidence.toLowerCase()} confidence). Options remain confirmation-only and are not added to the Halifax score.`:"Options confirmation is unavailable or still loading; Halifax does not invent an options bias.";
+    const fe=analysis.fundamentalEventContext,fundSentence=fe?.available?`Fundamental/event layer: quality ${Number.isFinite(fe.qualityScore)?`${fe.qualityGrade} (${Math.round(fe.qualityScore)}/100), ${fe.qualityContribution>=0?"+":""}${fe.qualityContribution} score points`:"not scored"}; earnings risk ${fe.earningsRisk}${Number.isFinite(fe.daysToEarnings)&&fe.daysToEarnings>=0?` with the reported date ${fe.daysToEarnings} calendar day${fe.daysToEarnings===1?"":"s"} away`:""}; planned-risk multiplier ${Math.round((fe.riskMultiplier??1)*100)}%.`:"Fundamental/event overlay is unavailable or still loading; Halifax does not estimate missing earnings dates or financial data.";
+    return {quality,grades,timing,headline,summary,confirm,fail,bullets:[tfText,adxPlain(d.adx),volumePlain(d.volumeRatio),rsiPlain(d.rsi),analogSentence,fundSentence,optionsSentence,smartSentence,macroSentence,rel]};
 }
 
 
@@ -2636,17 +2639,20 @@ function renderTradeOutput(analysis,trade){
             <div class="metric"><span>Shiller P/E (CAPE)</span><span class="${analysis.macroContext?.economicProbability?.capeClass||"yellow"}">${analysis.macroContext?.economicProbability&&Number.isFinite(analysis.macroContext.economicProbability.cape)?`${analysis.macroContext.economicProbability.cape.toFixed(2)} • ${escapeHTML(analysis.macroContext.economicProbability.capeBand)}`:"N/A"}</span></div>
             <div class="metric"><span>Options Direction / Time Frame</span><span class="${analysis.optionsContext?.cls||"yellow"}">${analysis.optionsContext?.available?`${analysis.optionsContext.arrow} ${escapeHTML(analysis.optionsContext.direction)} • ${escapeHTML(analysis.optionsContext.timeframe)}`:"N/A"}</span></div>
             <div class="metric"><span>Smart-Money Filing Overlay</span><span class="${(analysis.smartMoneyContribution||0)>0?"green":(analysis.smartMoneyContribution||0)<0?"red":"yellow"}">${analysis.smartMoneyContribution==null?"N/A":`${signedHTML(analysis.smartMoneyContribution,0)} pts`}</span></div>
+            <div class="metric"><span>Fundamental Quality Overlay</span><span class="${(analysis.fundamentalContribution||0)>0?"green":(analysis.fundamentalContribution||0)<0?"red":"yellow"}">${analysis.fundamentalEventContext?.available?(Number.isFinite(analysis.fundamentalEventContext.qualityScore)?`${escapeHTML(analysis.fundamentalEventContext.qualityGrade)} ${Math.round(analysis.fundamentalEventContext.qualityScore)}/100 • ${signedHTML(analysis.fundamentalContribution||0,0)} pts`:"Not scored"):"Loading / N/A"}</span></div>
+            <div class="metric"><span>Earnings Event Risk</span><span class="${analysis.fundamentalEventContext?.earningsRisk==="CRITICAL"||analysis.fundamentalEventContext?.earningsRisk==="HIGH"?"red":analysis.fundamentalEventContext?.earningsRisk==="ELEVATED"||analysis.fundamentalEventContext?.earningsRisk==="WATCH"?"yellow":"green"}">${analysis.fundamentalEventContext?.available?`${escapeHTML(analysis.fundamentalEventContext.earningsRisk)}${Number.isFinite(analysis.fundamentalEventContext.daysToEarnings)&&analysis.fundamentalEventContext.daysToEarnings>=0?` • ${analysis.fundamentalEventContext.daysToEarnings}d`:""}`:"Loading / N/A"}</span></div>
+            <div class="metric"><span>Event / Beta Risk Size</span><span class="${(analysis.fundamentalEventContext?.riskMultiplier??1)<.7?"red":(analysis.fundamentalEventContext?.riskMultiplier??1)<1?"yellow":"green"}">${analysis.fundamentalEventContext?.available?`${Math.round((analysis.fundamentalEventContext.riskMultiplier??1)*100)}% of normal risk`:"Loading / N/A"}</span></div>
             ${analysis.instrumentContext?`<div class="metric"><span>Instrument Guardrail</span><span class="yellow">${escapeHTML(analysis.instrumentContext.positionAction)}</span></div><div class="metric"><span>Underlying Signal</span><span class="${analysis.instrumentContext.underlyingDirection==="LONG"?"green":analysis.instrumentContext.underlyingDirection==="SHORT"?"red":"yellow"}">${directionArrow(analysis.instrumentContext.underlyingDirection)} ${analysis.instrumentContext.underlying} ${analysis.instrumentContext.underlyingDirection}</span></div>`:""}
         </div>
         <button class="${btn}" type="button" ${dir==="WAIT"?"disabled":'onclick="logPaperPlan()"'}>${dir==="WAIT"?setup:`${setup} • PAPER TRADE`}</button>
         <details class="compact-details"><summary>Detailed Decision Evidence &amp; Risk Checks</summary><div class="compact-body"><div class="evidence-section"><div class="panel-title">Decision Evidence</div><ul class="reasoning-list">${analysis.reasons.map(r=>`<li>• ${escapeHTML(r)}</li>`).join("")}</ul></div><div class="evidence-section"><div class="panel-title">Risk Desk Checks</div><ul class="reasoning-list">${(trade.warnings.length?trade.warnings:["Risk, liquidity, and trend-strength checks passed under the selected settings."]).map(r=>`<li>• ${escapeHTML(r)}</li>`).join("")}</ul></div></div></details>
-        <div class="notice">This is a rules-based research tool, not a broker recommendation or guarantee. Prediction Strength and letter grades are Halifax model scores, not win probabilities. The History Grade uses point-in-time Daily analogs from up to five years of loaded history and can still fail out of sample. Smart-money scoring uses reported insider and institutional filings with deliberately small weights because disclosure data can be delayed. Verify prices, fundamentals, corporate events, borrow availability, and order details with your brokerage before trading.</div>`;
+        <div class="notice">This is a rules-based research tool, not a broker recommendation or guarantee. Prediction Strength and letter grades are Halifax model scores, not win probabilities. The History Grade uses point-in-time Daily analogs from up to five years of loaded history and can still fail out of sample. Smart-money scoring uses reported insider and institutional filings with deliberately small weights because disclosure data can be delayed. Fundamental quality uses a capped style-dependent overlay; earnings proximity is treated as non-directional gap risk and can reduce size or block a new multi-day trade. Verify prices, earnings release timing, fundamentals, corporate events, borrow availability, and order details with your brokerage before trading.</div>`;
     lastPlanText=buildPlanText(analysis,trade);lastAnalysis=analysis;lastTrade=trade;
 }
 
 function buildPlanText(analysis,trade){
     const d=analysis.primary,m=analysis.macroContext,plain=buildPlainEnglishExplanation(analysis,trade);
-    return `HALIFAX TRADE ENGINE v20.0 LITE — ${d.ticker} ${analysis.direction} TRADE PLAN
+    return `HALIFAX TRADE ENGINE v20.3 LITE — ${d.ticker} ${analysis.direction} TRADE PLAN
 Plain-English read: ${plain.headline}
 Action: ${plain.timing.action}
 Why: ${plain.summary}
@@ -2655,6 +2661,8 @@ Invalidation: ${plain.fail}
 Trend grade: ${plain.grades.trend.grade} (${plain.grades.trend.score}/100) | Entry grade: ${plain.grades.entry.grade} (${plain.grades.entry.score}/100) | History grade: ${plain.grades.history.grade} (${plain.grades.history.score}/100) | Overall: ${plain.grades.overall.grade} (${plain.grades.overall.score}/100)
 Composite score: ${analysis.score} | Technical score: ${analysis.technicalScore} | Prediction strength: ${analysis.predictionStrength??analysis.confidence}/100 (not win probability)
 Historical validation: ${analysis.analogForecast?.samples>=12?`${analysis.analogForecast.samples} similar point-in-time setups | 5D ${analysis.analogForecast.upRate5?.toFixed(0)??"—"}% up | 10D ${analysis.analogForecast.upRate.toFixed(0)}% up | 20D ${analysis.analogForecast.upRate20?.toFixed(0)??"—"}% up | 10D median ${signed(analysis.analogForecast.medianReturn,1)}%`:"Insufficient comparable samples"}\nSmart-money filing adjustment: ${analysis.smartMoneyContribution>=0?"+":""}${analysis.smartMoneyContribution||0} points | Corporate insiders + 13F institutions; political trades informational only
+Fundamental quality adjustment: ${analysis.fundamentalContribution>=0?"+":""}${analysis.fundamentalContribution||0} points | ${analysis.fundamentalEventContext?.available&&Number.isFinite(analysis.fundamentalEventContext.qualityScore)?`${analysis.fundamentalEventContext.qualityGrade} ${Math.round(analysis.fundamentalEventContext.qualityScore)}/100`:"Unavailable / not scored"}
+Earnings event risk: ${analysis.fundamentalEventContext?.available?`${analysis.fundamentalEventContext.earningsRisk}${Number.isFinite(analysis.fundamentalEventContext.daysToEarnings)&&analysis.fundamentalEventContext.daysToEarnings>=0?` | ${analysis.fundamentalEventContext.daysToEarnings} calendar days away`:""} | risk size ${Math.round((analysis.fundamentalEventContext.riskMultiplier??1)*100)}% of normal`:"Unavailable / not guessed"}
 Sector: ${m?.profileLabel||"Broad Market"} | Macro adjustment: ${m?.adjustment??0} | Risk/Bias: ${m?.riskLevel||"N/A"}/${m?.bias||"N/A"}
 Economic probabilities: Inflation ${m?.economicProbability?.inflationProb??"N/A"}% | Hawkish rates ${m?.economicProbability?.hawkishProb??"N/A"}% | Weak growth ${m?.economicProbability?.weakGrowthProb??"N/A"}% | Equity tailwind ${m?.economicProbability?.equityTailwindProb??"N/A"}%
 Shiller CAPE: ${Number.isFinite(m?.economicProbability?.cape)?m.economicProbability.cape.toFixed(2):"N/A"} | ${m?.economicProbability?.capeBand||"N/A"} | CAPE is a long-horizon valuation input, not a short-term timing signal
@@ -2999,18 +3007,93 @@ async function loadCompanyFundamentals(ticker,snapshotQuote=null){
     data.grade=isFund?{score:null,grade:"N/A",buckets:[]}:gradeFundamentals(data);
     return data;
 }
+
+// ================= Halifax v20.3 Fundamental + Earnings Event Overlay =================
+function calendarDaysUntilUnix(ts){
+    if(!Number.isFinite(ts))return null;
+    const now=new Date(),evt=new Date(ts*1000);
+    const a=Date.UTC(now.getFullYear(),now.getMonth(),now.getDate()),b=Date.UTC(evt.getFullYear(),evt.getMonth(),evt.getDate());
+    return Math.round((b-a)/86400000);
+}
+function fundamentalStyleCap(style){return ({scalp:1,day:2,swing:7,position:10,custom:6})[style]??6;}
+function recomputeDirectionFromComposite(analysis,score){
+    if(analysis.guardrailBlocked||analysis.structuralConflict)return "WAIT";
+    const daily=analysis.analyses.find(x=>x.data.timeframe==="1d"),weekly=analysis.analyses.find(x=>x.data.timeframe==="1wk");
+    if(analysis.style==="swing"){
+        const longStructure=daily?(daily.analysis.score>=2.2&&(!weekly||weekly.analysis.score>-1.5)):true;
+        const shortStructure=daily?(daily.analysis.score<=-2.2&&(!weekly||weekly.analysis.score<1.5)):true;
+        if(score>=24&&longStructure)return "LONG";
+        if(score<=-24&&shortStructure)return "SHORT";
+        return "WAIT";
+    }
+    const bullish=analysis.analyses.filter(x=>x.analysis.direction==="BULLISH").length,bearish=analysis.analyses.filter(x=>x.analysis.direction==="BEARISH").length;
+    if(score>=22&&bullish>=2)return "LONG";
+    if(score<=-22&&bearish>=2)return "SHORT";
+    return "WAIT";
+}
+function buildFundamentalEventContext(f,style="swing"){
+    if(!f?.available)return {available:false,qualityContribution:0,riskMultiplier:1,reasons:["Fundamental/event data was unavailable, so no values were estimated or scored."]};
+    const g=f.grade||{},cap=fundamentalStyleCap(style),qualityScore=!f.isFund&&Number.isFinite(g.score)?g.score:null;
+    const qualityContribution=Number.isFinite(qualityScore)?Math.round(clamp(((qualityScore-50)/50)*cap,-cap,cap)):0;
+    const daysToEarnings=calendarDaysUntilUnix(f.earningsDate),earningsUpcoming=Number.isFinite(daysToEarnings)&&daysToEarnings>=0;
+    let earningsRisk="NONE",blockNewTrade=false,confidencePenalty=0,riskMultiplier=1;
+    const reasons=[];
+    if(Number.isFinite(qualityScore))reasons.push(`Fundamental quality ${g.grade} (${Math.round(qualityScore)}/100) contributes ${qualityContribution>=0?"+":""}${qualityContribution} point${Math.abs(qualityContribution)===1?"":"s"} in ${style} mode. Growth, profitability, balance-sheet strength and valuation are capped so fundamentals cannot overpower the chart.`);
+    else if(f.isFund)reasons.push("Corporate fundamental scoring is not applied to ETFs/funds; instrument and underlying guardrails remain in control.");
+    else reasons.push("Fundamental quality did not have enough verified categories to change the score.");
+    if(earningsUpcoming){
+        if(daysToEarnings===0){
+            earningsRisk="CRITICAL";confidencePenalty=12;riskMultiplier=.5;
+            if(style!=="scalp")blockNewTrade=true;
+            reasons.push("Reported earnings date is today. Exact release timing/status is not verified, so Halifax treats this as event risk rather than guessing whether results are already out.");
+        }else if(daysToEarnings<=2){
+            earningsRisk="HIGH";confidencePenalty=10;riskMultiplier=.6;
+            if(["swing","position","custom"].includes(style))blockNewTrade=true;
+            reasons.push(`Reported earnings are ${daysToEarnings} calendar day${daysToEarnings===1?"":"s"} away. New multi-day trades are blocked because an earnings gap can invalidate normal stops.`);
+        }else if(daysToEarnings<=5){
+            earningsRisk="ELEVATED";confidencePenalty=6;riskMultiplier=.7;
+            reasons.push(`Reported earnings are ${daysToEarnings} calendar days away. Halifax reduces confidence and planned risk because the holding window can overlap the report.`);
+        }else if(style==="position"&&daysToEarnings<=10){
+            earningsRisk="WATCH";confidencePenalty=3;riskMultiplier=.85;
+            reasons.push(`Reported earnings are ${daysToEarnings} calendar days away, which matters for a position-trade holding period.`);
+        }else reasons.push(`Next reported earnings date is ${daysToEarnings} calendar days away; no near-term earnings penalty is applied.`);
+    }else if(f.earningsDate)reasons.push("The returned earnings date is in the past, so Halifax does not treat it as an upcoming catalyst.");
+    else reasons.push("No next earnings date was returned by the company-data feed; Halifax does not guess one.");
+    if(Number.isFinite(f.beta)){
+        if(f.beta>=2.5){riskMultiplier*=.75;confidencePenalty+=4;reasons.push(`Beta is ${f.beta.toFixed(2)}, so planned dollar risk is reduced for unusually high market sensitivity.`);}
+        else if(f.beta>=1.75){riskMultiplier*=.85;confidencePenalty+=2;reasons.push(`Beta is ${f.beta.toFixed(2)}, so position risk is modestly reduced for above-average market sensitivity.`);}
+    }
+    riskMultiplier=clamp(riskMultiplier,.30,1);
+    return {available:true,qualityScore,qualityGrade:g.grade||"N/A",qualityContribution,daysToEarnings,earningsUpcoming,earningsRisk,blockNewTrade,confidencePenalty,riskMultiplier,beta:Number.isFinite(f.beta)?f.beta:null,reasons};
+}
+function applyFundamentalEventOverlay(analysis,f){
+    const ctx=buildFundamentalEventContext(f,analysis.style||document.getElementById("style")?.value||"swing");
+    if(!ctx.available)return {...analysis,fundamentalEventContext:ctx,fundamentalContribution:0};
+    let score=clamp((analysis.score||0)+(ctx.qualityContribution||0),-100,100);
+    let direction=recomputeDirectionFromComposite(analysis,score),guardrailBlocked=analysis.guardrailBlocked;
+    if(ctx.blockNewTrade){direction="WAIT";guardrailBlocked=true;score=clamp(score,-19,19);}
+    let predictionStrength=(analysis.predictionStrength||analysis.confidence||50)-(ctx.confidencePenalty||0);
+    if(ctx.qualityContribution){const agrees=(score>0&&ctx.qualityContribution>0)||(score<0&&ctx.qualityContribution<0);predictionStrength+=agrees?Math.min(4,Math.abs(ctx.qualityContribution)):-Math.min(3,Math.abs(ctx.qualityContribution));}
+    predictionStrength=Math.round(clamp(predictionStrength,15,95));
+    if(direction==="WAIT")predictionStrength=Math.min(predictionStrength,74);
+    if(guardrailBlocked)predictionStrength=Math.min(predictionStrength,62);
+    const reasons=[...analysis.reasons,...ctx.reasons,`Fundamental/event overlay: ${ctx.qualityContribution>=0?"+":""}${ctx.qualityContribution} score points; earnings risk ${ctx.earningsRisk}; planned-risk multiplier ${Math.round(ctx.riskMultiplier*100)}%.`];
+    return {...analysis,direction,score:Math.round(score),confidence:predictionStrength,predictionStrength,guardrailBlocked,reasons,fundamentalEventContext:ctx,fundamentalContribution:ctx.qualityContribution};
+}
+// ================= End Halifax v20.3 Fundamental + Earnings Event Overlay =============
+
 async function refreshFundamentals(){
     const ticker=document.getElementById("ticker")?.value.trim().toUpperCase().replace(/[^A-Z0-9.\-^=]/g,"");if(!ticker)return;
     const box=document.getElementById("fundamentalsOutput"),btn=document.getElementById("fundRefreshBtn");if(btn)btn.disabled=true;if(box)box.innerHTML='<div class="loading">Refreshing Nasdaq company and financial-statement data…</div>';
-    try{const snap=await fetchTickerSnapshot(ticker);renderCompanyFundamentals(await loadCompanyFundamentals(ticker,snap.quote));}catch(e){if(box)box.innerHTML=`<div class="red" style="font-weight:900">Fundamental refresh failed</div><div class="bt-note">${escapeHTML(e.message||"Data source unavailable")}</div>`;}finally{if(btn)btn.disabled=false;}
+    try{const snap=await fetchTickerSnapshot(ticker),f=await loadCompanyFundamentals(ticker,snap.quote);renderCompanyFundamentals(f,buildFundamentalEventContext(f,document.getElementById("style")?.value||"swing"));}catch(e){if(box)box.innerHTML=`<div class="red" style="font-weight:900">Fundamental refresh failed</div><div class="bt-note">${escapeHTML(e.message||"Data source unavailable")}</div>`;}finally{if(btn)btn.disabled=false;}
 }
-function renderCompanyFundamentals(f){
+function renderCompanyFundamentals(f,ctx=null){
     const card=document.getElementById("fundamentalsCard"),box=document.getElementById("fundamentalsOutput");if(!card||!box)return;card.style.display="block";
     if(!f?.available){box.innerHTML='<div class="loading">Company fundamental data is unavailable from the current market-data feeds. No values were estimated.</div>';return;}
     const g=f.grade||{score:null,grade:"N/A",buckets:[]},meta=[f.quoteType,f.sector,f.industry].filter(Boolean).join(" • ");
     const upside=Number.isFinite(f.targetMean)&&Number.isFinite(f.currentPrice)&&f.currentPrice>0?(f.targetMean/f.currentPrice-1):null;
     const earnings=f.earningsDate?new Date(f.earningsDate*1000).toLocaleDateString():"—";
-    const gradeBlock=f.isFund?`<div class="fund-grade"><div class="fg-label">Fundamental Grade</div><div class="fg-grade">N/A</div><div class="fg-score">Fund / non-operating security</div></div>`:`<div class="fund-grade"><div class="fg-label">Fundamental Quality</div><div class="fg-grade">${escapeHTML(g.grade)}</div><div class="fg-score">${Number.isFinite(g.score)?g.score+" / 100":"Insufficient data"}</div></div>`;
+    const gradeBlock=f.isFund?`<div class="fund-grade"><div class="fg-label">Fundamental Grade</div><div class="fg-grade">N/A</div><div class="fg-score">Fund / non-operating security</div></div>`:`<div class="fund-grade"><div class="fg-label">Fundamental Quality</div><div class="fg-grade">${escapeHTML(g.grade)}</div><div class="fg-score">${Number.isFinite(g.score)?g.score+" / 100":"Insufficient data"}${ctx?.available&&Number.isFinite(ctx.qualityContribution)?` • ${ctx.qualityContribution>=0?"+":""}${ctx.qualityContribution} trade-score pts`:""}</div></div>`;
     const desc=f.description?`<div class="fund-desc">${escapeHTML(f.description.length>720?f.description.slice(0,717)+"…":f.description)}</div>`:"";
     const buckets=!f.isFund&&g.buckets?.length?`<div class="fund-section"><div class="fund-section-title">Fundamental Score Components</div><div class="fund-score-row">${g.buckets.map(x=>`<div class="fund-score-box"><span>${escapeHTML(x.name)}</span><b>${Math.round(x.score)}/100</b></div>`).join("")}</div></div>`:"";
     const metrics=[
@@ -3021,7 +3104,8 @@ function renderCompanyFundamentals(f){
         fundMetric("Forward P/E",fundNum(f.forwardPE,1)),fundMetric("Trailing P/E",fundNum(f.trailingPE,1)),fundMetric("1-Year Target",fundMoney(f.targetMean),Number.isFinite(upside)?`${upside>=0?"+":""}${(upside*100).toFixed(1)}% vs current price`:"Provider target unavailable"),fundMetric("Beta",fundNum(f.beta,2)),
         fundMetric("Dividend Yield",fundPct(f.dividendYield,2)),fundMetric("Annual Dividend",Number.isFinite(f.annualDividend)?money(f.annualDividend):"—"),fundMetric("Next Earnings",earnings),fundMetric("Shares Outstanding",Number.isFinite(f.sharesOutstanding)?compactMoney(f.sharesOutstanding).replace("$",""):"—")
     ].join("");
-    box.innerHTML=`<div class="fund-head"><div><div class="fund-name">${escapeHTML(f.name)} <span class="tiny">${escapeHTML(f.ticker)}</span></div><div class="fund-meta">${escapeHTML(meta||"Security profile")}</div>${desc}</div>${gradeBlock}</div><div class="bt-actions" style="margin:10px 0"><button id="fundRefreshBtn" class="btn-dark" onclick="refreshFundamentals()">REFRESH FUNDAMENTALS</button></div><div class="fund-grid">${metrics}</div>${buckets}<div class="fund-source">Source: ${escapeHTML(f.source)}. Annual financial-statement values are provider-reported and displayed only when returned; missing fields remain “—”. Halifax does not estimate analyst ratings or unavailable balance-sheet fields. The fundamental grade requires at least two available scoring categories and is a quality screen, not a price target or trade signal.${f.isFund?" Corporate fundamental grading is disabled for funds and non-operating securities.":""}</div>`;
+    const eventBox=ctx?.available?`<div class="fund-section"><div class="fund-section-title">Trade Impact &amp; Earnings Risk</div><div class="fund-score-row"><div class="fund-score-box"><span>Score Impact</span><b>${ctx.qualityContribution>=0?"+":""}${ctx.qualityContribution} pts</b></div><div class="fund-score-box"><span>Earnings Risk</span><b>${escapeHTML(ctx.earningsRisk)}</b></div><div class="fund-score-box"><span>Days to Earnings</span><b>${Number.isFinite(ctx.daysToEarnings)&&ctx.daysToEarnings>=0?ctx.daysToEarnings:"—"}</b></div><div class="fund-score-box"><span>Risk Size</span><b>${Math.round((ctx.riskMultiplier??1)*100)}%</b></div></div></div>`:"";
+    box.innerHTML=`<div class="fund-head"><div><div class="fund-name">${escapeHTML(f.name)} <span class="tiny">${escapeHTML(f.ticker)}</span></div><div class="fund-meta">${escapeHTML(meta||"Security profile")}</div>${desc}</div>${gradeBlock}</div><div class="bt-actions" style="margin:10px 0"><button id="fundRefreshBtn" class="btn-dark" onclick="refreshFundamentals()">REFRESH FUNDAMENTALS</button></div><div class="fund-grid">${metrics}</div>${eventBox}${buckets}<div class="fund-source">Source: ${escapeHTML(f.source)}. Annual financial-statement values are provider-reported and displayed only when returned; missing fields remain “—”. Halifax does not estimate analyst ratings or unavailable balance-sheet fields. Fundamental quality now has a capped style-dependent score impact, while earnings proximity changes confidence/risk and can block a new multi-day trade. Earnings release timing is not guessed.${f.isFund?" Corporate fundamental grading is disabled for funds and non-operating securities.":""}</div>`;
 }
 // ================= End Company Intelligence =================
 
@@ -3094,12 +3178,12 @@ async function runEngine(){
         }
         if(special&&recovery.used&&!analysis.dataFallback)analysis=applyDataFallbackCaution(analysis,recovery,document.getElementById("style").value);
         // Render the core decision immediately. Filing data updates the result afterward if it arrives.
-        analysis={...analysis,smartMoneyContext:null,smartMoneyContribution:0,optionsContext:null,reasons:[...analysis.reasons,"Options and smart-money/public-filing data load after the core prediction so slower secondary feeds cannot block the app."]};
+        analysis={...analysis,smartMoneyContext:null,smartMoneyContribution:0,optionsContext:null,fundamentalEventContext:null,fundamentalContribution:0,reasons:[...analysis.reasons,"Fundamentals/earnings, options and smart-money/public-filing data load after the core prediction so slower secondary feeds cannot block the app."]};
         let trade=calculateTrade(analysis.primary,analysis);
         renderChart(analysis.primary,trade);renderRegime(analysis,benchmarkResult);renderMTF(analysis);renderTradeOutput(analysis,trade);renderPositionGuardrails(ticker,analysis.primary,analysis);renderNews(displayNews,ticker);
         document.getElementById("smartMoneyOutput").innerHTML='<div class="loading">Core prediction is complete. Loading insider, institutional and public-filing context in the background…</div>';
         document.getElementById("decisionCard")?.scrollIntoView({behavior:"smooth",block:"start"});
-        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v20.2 Lite`;
+        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v20.3 Lite`;
         const optionsPromise=loadOptionsOutlook(ticker,document.getElementById("style")?.value||"swing",analysis.primary?.price).catch(()=>null);
         optionsPromise.then(op=>{
             if(runId!==halifaxRunId)return;
@@ -3109,7 +3193,9 @@ async function runEngine(){
         fundamentalsPromise.then(f=>{
             if(runId!==halifaxRunId)return;
             if(!f){document.getElementById("fundamentalsOutput").innerHTML='<div class="loading">Company fundamental feeds are unavailable right now. No values were estimated.</div>';return;}
-            renderCompanyFundamentals(f);
+            analysis=applyFundamentalEventOverlay(analysis,f);trade=calculateTrade(analysis.primary,analysis);
+            renderCompanyFundamentals(f,analysis.fundamentalEventContext);renderTradeOutput(analysis,trade);renderPositionGuardrails(ticker,analysis.primary,analysis);
+            setStatus(`${ticker} prediction + earnings/fundamentals complete`);
         }).catch(()=>{});
         smartMoneyPromise.then(sm=>{
             if(runId!==halifaxRunId)return;
@@ -3118,7 +3204,7 @@ async function runEngine(){
             renderTradeOutput(analysis,trade);renderPositionGuardrails(ticker,analysis.primary,analysis);renderSmartMoney(special?.underlying||ticker,sm);
             setStatus(`${ticker} prediction + smart money complete`);
         }).catch(()=>{});
-    }catch(error){console.error(error);document.getElementById("tradeOutput").innerHTML=`<div class="red" style="font-weight:900">Analysis failed</div><div style="font-size:12px;color:#cbd5e1;margin-top:8px;line-height:1.5">${escapeHTML(error.message)}</div><div class="notice">Halifax v19.3 Lite rebuilds a slower confirmation timeframe from any usable loaded candles when a separate interval feed fails. A red failure should now appear only when no valid two-timeframe set can be constructed at all.</div>`;document.getElementById("positionCard").style.display="none";document.getElementById("fundamentalsOutput").innerHTML='<div class="loading">Company fundamentals were not completed because the main analysis failed.</div>';document.getElementById("optionsOutput").innerHTML='<div class="loading">Options analysis was not completed because the main analysis failed.</div>';setStatus("Analysis failed","var(--red)");}
+    }catch(error){console.error(error);document.getElementById("tradeOutput").innerHTML=`<div class="red" style="font-weight:900">Analysis failed</div><div style="font-size:12px;color:#cbd5e1;margin-top:8px;line-height:1.5">${escapeHTML(error.message)}</div><div class="notice">Halifax v20.3 Lite rebuilds a slower confirmation timeframe from any usable loaded candles when a separate interval feed fails. A red failure should now appear only when no valid two-timeframe set can be constructed at all.</div>`;document.getElementById("positionCard").style.display="none";document.getElementById("fundamentalsOutput").innerHTML='<div class="loading">Company fundamentals were not completed because the main analysis failed.</div>';document.getElementById("optionsOutput").innerHTML='<div class="loading">Options analysis was not completed because the main analysis failed.</div>';setStatus("Analysis failed","var(--red)");}
     finally{button.disabled=false;}
 }
 
