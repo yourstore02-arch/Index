@@ -18,7 +18,7 @@
 <meta name="application-name" content="Halifax">
 <meta name="format-detection" content="telephone=no">
 
-<title>Halifax Trade Engine v20.3 Lite - Earnings & Fundamental Risk</title>
+<title>Halifax Trade Engine v20.4 Lite - Clean VWAP Build</title>
 
 <style>
 :root{
@@ -1113,6 +1113,44 @@ td{border-bottom:1px solid #223b52}
 @media(max-width:760px){.options-hero{grid-template-columns:1fr}.options-direction{font-size:26px}}
 @media(max-width:480px){.options-stats{grid-template-columns:1fr 1fr}.options-stat{min-height:64px}.options-time{font-size:14px}}
 
+
+
+/* ===== v20.4 Clean: minimal flow + VWAP, preserving v20.3 layout ===== */
+.flow-index{display:inline-grid;place-items:center;min-width:24px;height:20px;padding:0 5px;margin-right:7px;border:1px solid #2f5d7e;border-radius:4px;background:#102d45;color:#b9d8ed;font-size:9px;font-weight:900;vertical-align:middle}
+.flow-index-small{min-width:21px;height:18px;margin-right:5px;font-size:8px}
+.vwap-bar{display:grid;grid-template-columns:minmax(110px,1fr) auto minmax(145px,1.1fr);align-items:center;gap:10px;margin:-2px 0 10px;padding:9px 11px;border:1px solid #31536e;border-left:4px solid #2c8ed2;border-radius:5px;background:#091d2e}
+.vwap-name span,.vwap-off b{display:block;color:#9bc1db;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.55px}
+.vwap-name small,.vwap-state small,.vwap-off small{display:block;color:#809eb4;font-size:8.5px;line-height:1.35;margin-top:2px}
+.vwap-price{font-size:19px;font-weight:950;color:#f3f8fc;white-space:nowrap}
+.vwap-state{text-align:right;font-size:11px;font-weight:950;white-space:nowrap}
+.vwap-off{grid-template-columns:1fr auto;border-left-color:#64748b}
+.command-footnote b{color:#d7e6f1}
+.decision-card>.panel-title{display:flex;align-items:center}
+@media(max-width:620px){
+    body{padding:5px}
+    .container{gap:8px}
+    .card{padding:9px}
+    .header{padding:9px}
+    .command-hero{padding:8px 9px;margin-bottom:8px}
+    .quick-controls{gap:7px}
+    .field label{margin-bottom:3px}
+    input,select{min-height:40px;padding:8px 9px}
+    .style-buttons{gap:5px}
+    .style-btn{min-height:40px;padding:7px 4px;font-size:9px}
+    .btn-analyze{min-height:52px}
+    .analyze-text{font-size:16px}
+    .style-help{margin-top:7px;padding:8px 9px;line-height:1.4}
+    .quick-actions{margin-top:7px;gap:5px}
+    .quick-actions .btn-dark{min-height:34px;padding:7px 9px;font-size:9px}
+    .command-footnote{font-size:9px;line-height:1.45;margin-top:7px}
+    .compact-details{margin-top:8px}
+    .vwap-bar{grid-template-columns:1fr auto;gap:5px 10px;padding:9px 10px}
+    .vwap-state{grid-column:1/-1;text-align:left;border-top:1px solid #203d53;padding-top:6px;white-space:normal}
+    .vwap-price{font-size:18px}
+    .current-price-banner{padding:10px}
+    .current-price-value{font-size:29px}
+}
+
 </style>
 </head>
 <body>
@@ -1120,7 +1158,7 @@ td{border-bottom:1px solid #223b52}
     <div class="card header">
         <div class="brand-stack">
             <div class="terminal-kicker"><span class="kicker-dot"></span> HALIFAX QUANT RESEARCH TERMINAL</div>
-            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v20.3 Lite</span></span></div>
+            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v20.4 Lite</span></span></div>
             <div class="subtitle">Predictive swing research • Execution planning • Pattern radar • Point-in-time validation</div>
         </div>
         <div class="header-actions"><div class="badge system-badge"><span class="status-dot"></span><span id="engineStatus">Engine ready</span></div></div>
@@ -1175,10 +1213,10 @@ td{border-bottom:1px solid #223b52}
         <div class="quick-actions">
             <button class="btn-dark" onclick="copyTradePlan()">COPY PLAN</button><button class="btn-dark" onclick="logPaperPlan()">PAPER TRADE</button><button class="btn-dark" onclick="resetHalifaxApp()">RESET</button>
         </div>
-        <div class="command-footnote">Primary controls are designed for speed. Open <b>Advanced Trade Settings</b> only when you need to change timeframe, benchmark, stop sizing, sector override, or macro guardrails.</div>
+        <div class="command-footnote"><b>Flow:</b> set ticker, style and risk → tap <b>ANALYZE</b> → Halifax jumps to <b>02 Trade Decision</b>. Open <b>03 Detailed Decision Evidence</b> only when you want the deeper checks. Advanced settings are optional.</div>
 
         <details class="compact-details">
-            <summary>Advanced Trade Settings</summary>
+            <summary>Advanced Trade Settings <span class="tiny">(optional)</span></summary>
             <div class="compact-body advanced-grid">
                 <div class="field">
                     <label>Chart Timeframe</label>
@@ -1201,7 +1239,7 @@ td{border-bottom:1px solid #223b52}
     </div>
 
     <div id="decisionCard" class="card decision-card">
-        <div class="panel-title">Halifax Predictive Trade Decision</div>
+        <div class="panel-title"><span class="flow-index">02</span> Halifax Predictive Trade Decision</div>
         <div id="tradeOutput"><div class="loading">Enter a ticker and run the Halifax analysis.</div></div>
     </div>
 
@@ -1801,7 +1839,7 @@ function buildTickerDataFromRows(ticker,timeframe,rows,meta={},derivedFrom=null)
         candles:unique.map(({time,open,high,low,close,volume})=>({time,open,high,low,close,volume:Number.isFinite(volume)?volume:0})),
         close,high,low,volume,price,ema9,ema21,sma50,sma200,rsi,atr,macd,adx,support,resistance,avgVolume,volumeRatio,avgDollarVolume,bbUpper,bbLower,bbMid,
         roc5:roc(close,5),roc20:roc(close,20),roc60:roc(close,60),ema21Slope:slopePct(emaSeries(close,21).filter(Number.isFinite),10),gapPct,
-        currency:meta.currency||"USD",exchange:meta.exchangeName||meta.exchange||"",dataTime:unique.at(-1).time,quoteTime,previousDayClose,dayChange,dayChangePct,
+        currency:meta.currency||"USD",exchange:meta.exchangeName||meta.exchange||"",gmtoffset:Number.isFinite(Number(meta.gmtoffset))?Number(meta.gmtoffset):0,timezone:meta.exchangeTimezoneName||meta.timezone||"",dataTime:unique.at(-1).time,quoteTime,previousDayClose,dayChange,dayChangePct,
         derived:Boolean(derivedFrom),derivedFrom:derivedFrom||null
     };
 }
@@ -1839,7 +1877,7 @@ function deriveTimeframeData(sourceData,targetTimeframe){
     const rows=resampleCandles(sourceData,targetTimeframe);
     return buildTickerDataFromRows(
         sourceData.ticker,targetTimeframe,rows,
-        {currency:sourceData.currency,exchangeName:sourceData.exchange},
+        {currency:sourceData.currency,exchangeName:sourceData.exchange,gmtoffset:sourceData.gmtoffset,exchangeTimezoneName:sourceData.timezone},
         sourceData.timeframe
     );
 }
@@ -2219,6 +2257,46 @@ function predictionGrades(analysis,trade){
     return {trend:gradeBand(trend),entry:gradeBand(entry),history:gradeBand(history),overall:gradeBand(overall),directionalAnalog};
 }
 
+
+function sessionVWAPContext(frames,style="swing",currentPrice=null){
+    const intradaySet=new Set(["1m","2m","5m","15m","30m","60m","90m"]);
+    const idx=tf=>TF_ORDER.indexOf(tf);
+    const candidates=(frames||[]).filter(f=>{
+        if(!intradaySet.has(f?.timeframe)||!Array.isArray(f?.candles)||!f.candles.length)return false;
+        // Never label a coarse Daily/Weekly fallback as intraday VWAP.
+        if(f.derived&&f.derivedFrom&&idx(f.derivedFrom)>idx(f.timeframe))return false;
+        return true;
+    }).sort((a,b)=>idx(a.timeframe)-idx(b.timeframe));
+    const data=candidates[0];
+    if(!data)return {available:false,reason:"No usable intraday candles were loaded for a session VWAP calculation."};
+    const candles=data.candles.filter(c=>Number.isFinite(c.time)&&Number.isFinite(c.high)&&Number.isFinite(c.low)&&Number.isFinite(c.close));
+    if(!candles.length)return {available:false,reason:"Intraday candles were incomplete."};
+    const offset=Number.isFinite(Number(data.gmtoffset))?Number(data.gmtoffset):0;
+    const localDate=t=>new Date((Number(t)+offset)*1000).toISOString().slice(0,10);
+    const sessionDate=localDate(candles.at(-1).time);
+    const session=candles.filter(c=>localDate(c.time)===sessionDate&&Number(c.volume)>0);
+    if(!session.length)return {available:false,reason:"The latest loaded session did not contain usable volume."};
+    let pv=0,vol=0;const cumulative=[];
+    for(const c of session){
+        const v=Number(c.volume)||0,tp=(Number(c.high)+Number(c.low)+Number(c.close))/3;
+        if(v<=0||!Number.isFinite(tp))continue;
+        pv+=tp*v;vol+=v;cumulative.push(pv/vol);
+    }
+    if(!vol||!cumulative.length)return {available:false,reason:"The latest loaded session did not contain usable price-volume data."};
+    const vwap=cumulative.at(-1),price=Number.isFinite(Number(currentPrice))?Number(currentPrice):Number(data.price),diff=price-vwap,diffPct=vwap?diff/vwap*100:0;
+    const prior=cumulative.length>=3?cumulative.at(-3):cumulative.length>=2?cumulative.at(-2):vwap;
+    const slopePct=prior?((vwap/prior)-1)*100:0;
+    const state=diffPct>.10?"ABOVE":diffPct<-.10?"BELOW":"AT",slope=slopePct>.02?"RISING":slopePct<-.02?"FALLING":"FLAT";
+    const base=style==="scalp"?6:style==="day"?5:style==="swing"?3:1;
+    let contribution=0;
+    // One incomplete/early bar can display VWAP, but it is not allowed to alter the score yet.
+    const scoreReady=session.length>=2;
+    if(scoreReady&&state==="ABOVE")contribution=slope==="RISING"?base:base*.6;
+    if(scoreReady&&state==="BELOW")contribution=-(slope==="FALLING"?base:base*.6);
+    contribution=Math.round(contribution);
+    return {available:true,vwap,price,diff,diffPct,state,slope,slopePct,contribution,timeframe:data.timeframe,sessionDate,bars:session.length,totalVolume:vol,scoreReady,includesExtended:document.getElementById("prepost")?.checked===true};
+}
+
 function aggregateAnalysis(frames,benchmarkData,macroContext=null,primaryTimeframe=null){
     const style=document.getElementById("style")?.value||"swing";
     const analyses=frames.map(data=>{const analysis=classifyTimeframe(data);let weight=timeframePredictionWeight(data.timeframe,style);if(data.derived)weight*=.72;return {data,analysis,weight};});
@@ -2231,12 +2309,15 @@ function aggregateAnalysis(frames,benchmarkData,macroContext=null,primaryTimefra
     const alignment=Math.max(bullWeight,bearWeight)/totalWeight;
     const primary=frames.find(f=>f.timeframe===(primaryTimeframe||document.getElementById("timeframe").value))||frames.at(-1);
     const entryData=style==="swing"?(frames.find(f=>f.timeframe==="60m")||primary):primary;
+    const vwapContext=sessionVWAPContext(frames,style,primary.price),vwapContribution=vwapContext.available?vwapContext.contribution:0;
     const relativeStrength=benchmarkData?primary.roc20-benchmarkData.roc20:0;
     const rsContribution=benchmarkData?clamp(relativeStrength*1.2,-6,6):0;normalized+=rsContribution;
     const benchmarkRegime=benchmarkData?classifyTimeframe(benchmarkData):null;
     if(benchmarkRegime?.direction==="BULLISH"&&normalized>0)normalized+=3;
     if(benchmarkRegime?.direction==="BEARISH"&&normalized<0)normalized-=3;
     const macroContribution=macroContext?.applies?clamp(macroContext.adjustment*.45,-15,12):0;normalized+=macroContribution;
+    // VWAP is confirmation, not the core model. It has a deliberately small style-dependent cap.
+    normalized+=vwapContribution;
     const daily=analyses.find(x=>x.data.timeframe==="1d"),weekly=analyses.find(x=>x.data.timeframe==="1wk");
     const analogForecast=style==="swing"?historicalAnalogForecast(daily?.data||primary,10,40):{samples:0,upRate:null,medianReturn:null,avgReturn:null,horizon:10,quality:0};
     const blendedAnalogUp=analogForecast.samples>=12?[analogForecast.upRate5,analogForecast.upRate,analogForecast.upRate20].filter(Number.isFinite).reduce((s,x,i,a)=>s+x/a.length,0):null;
@@ -2282,9 +2363,11 @@ function aggregateAnalysis(frames,benchmarkData,macroContext=null,primaryTimefra
     if(analogForecast.samples>=12&&analogForecast.upRate!=null)reasons.push(`Point-in-time history: ${analogForecast.samples} similar Daily setups from the 5-year sample. Positive-close rates were ${analogForecast.upRate5?.toFixed(0)??"—"}% / ${analogForecast.upRate.toFixed(0)}% / ${analogForecast.upRate20?.toFixed(0)??"—"}% after 5/10/20 sessions; 10-day median ${signed(analogForecast.medianReturn,1)}%. Similarity quality ${analogForecast.quality}/100. Historical evidence only, not a calibrated win probability.`);
     else reasons.push("Point-in-time historical validation did not have enough comparable Daily setups to influence the score.");
     if(macroContext?.applies){reasons.push(`${macroContext.profileLabel} macro contribution: ${macroContribution>=0?"+":""}${Math.round(macroContribution)} points after capping macro influence (${macroContext.riskLevel} risk, ${macroContext.bias.toLowerCase()} bias).`);reasons.push(`Sector classification: ${macroContext.profileLabel} via ${macroContext.profileSource}.`);reasons.push(...macroContext.reasons);}
+    if(vwapContext.available)reasons.push(`Session VWAP (${TF_LABELS[vwapContext.timeframe]||vwapContext.timeframe} bars): ${money(vwapContext.vwap)}; price is ${Math.abs(vwapContext.diffPct).toFixed(2)}% ${vwapContext.state==="ABOVE"?"above":vwapContext.state==="BELOW"?"below":"near"} VWAP and VWAP is ${vwapContext.slope.toLowerCase()}. Score contribution: ${vwapContribution>=0?"+":""}${vwapContribution} point(s)${vwapContext.scoreReady?"":" (early session; display only until at least two intraday bars load)"}.`);
+    else reasons.push(`Session VWAP unavailable: ${vwapContext.reason||"no usable intraday price-volume data."}`);
     if(primary.adx!=null)reasons.push(`Primary trend strength ADX: ${primary.adx.toFixed(1)} (${primary.adx>=25?"trending":"weak/range-bound"}).`);
     reasons.push(`Primary volume: ${primary.volumeRatio.toFixed(2)}× 20-bar average.`);
-    return {direction,score:Math.round(normalized),technicalScore:Math.round(technicalScore),confidence:predictionStrength,predictionStrength,analyses,alignment,relativeStrength,benchmarkRegime,primary,entryData,reasons,macroContext,macroContribution,analogForecast,analogContribution,guardrailBlocked,structuralConflict,style};
+    return {direction,score:Math.round(normalized),technicalScore:Math.round(technicalScore),confidence:predictionStrength,predictionStrength,analyses,alignment,relativeStrength,benchmarkRegime,primary,entryData,reasons,macroContext,macroContribution,analogForecast,analogContribution,vwapContext,vwapContribution,guardrailBlocked,structuralConflict,style};
 }
 
 function marketRegime(data){
@@ -2575,14 +2658,17 @@ function renderTradeOutput(analysis,trade){
     const setup=dir==="LONG"?`${arrow} LONG SETUP`:dir==="SHORT"?`${arrow} SHORT SETUP`:`${arrow} NO-TRADE / WAIT`;
     const plain=buildPlainEnglishExplanation(analysis,trade);
     const move=d.dayChange||0,movePct=d.dayChangePct||0,moveCls=move>0?"green":move<0?"red":"yellow",moveArrow=move>0?"▲":move<0?"▼":"▶";
+    const vw=analysis.vwapContext||{available:false},vwCls=vw.state==="ABOVE"?"green":vw.state==="BELOW"?"red":"yellow",vwArrow=vw.state==="ABOVE"?"▲":vw.state==="BELOW"?"▼":"▶";
+    const vwapHTML=vw.available?`<div class="vwap-bar"><div class="vwap-name"><span>Session VWAP</span><small>${escapeHTML(TF_LABELS[vw.timeframe]||vw.timeframe)} bars${vw.includesExtended?" • extended hours included":""}</small></div><div class="vwap-price">${money(vw.vwap)}</div><div class="vwap-state ${vwCls}">${vwArrow} ${signedHTML(vw.diffPct,2)}% ${vw.state}<small>${escapeHTML(vw.slope)} • ${vw.scoreReady?`${vw.contribution>=0?"+":""}${vw.contribution} score pts`:"early session • display only"}</small></div></div>`:`<div class="vwap-bar vwap-off"><div><b>Session VWAP</b><small>${escapeHTML(vw.reason||"Intraday price-volume data unavailable.")}</small></div><div class="yellow">N/A</div></div>`;
     document.getElementById("tradeOutput").innerHTML=`
         <div class="current-price-banner">
             <div class="current-price-left"><div class="current-price-label">Current Price</div><div class="current-price-ticker">${escapeHTML(d.ticker)} • ${escapeHTML(d.exchange||"Market data")}</div></div>
             <div><div class="current-price-value">${money(d.price)}</div></div>
             <div class="current-price-right"><div class="current-price-move ${moveCls}">${moveArrow} ${signedHTML(move,2)} <span style="font-size:.88em">(${signedHTML(movePct,2)}%)</span></div><div class="current-price-time">Latest loaded bar: ${escapeHTML(formatDateTime(d.dataTime))}</div></div>
         </div>
+        ${vwapHTML}
         ${optionsInlineHTML(analysis.optionsContext)}
-        <div class="score-box"><div><div class="panel-title" style="margin-bottom:3px">HALIFAX COMPOSITE SCORE</div><div class="${cls}" style="font-weight:900">${setup}</div><div style="font-size:10px;color:#64748b;margin-top:3px">Prediction strength ${analysis.predictionStrength??analysis.confidence}/100 • Technical <span class="${analysis.technicalScore>0?'green signal-inline-positive':analysis.technicalScore<0?'red':''}">${signedHTML(analysis.technicalScore,0)}</span> • Macro contribution <span class="${(analysis.macroContribution||0)>0?'green signal-inline-positive':(analysis.macroContribution||0)<0?'red':''}">${signedHTML(analysis.macroContribution??0,0)}</span></div></div><div class="score ${cls} ${analysis.score>0?'score-positive':''}">${signedHTML(analysis.score,0)}</div></div>
+        <div class="score-box"><div><div class="panel-title" style="margin-bottom:3px">HALIFAX COMPOSITE SCORE</div><div class="${cls}" style="font-weight:900">${setup}</div><div style="font-size:10px;color:#64748b;margin-top:3px">Prediction strength ${analysis.predictionStrength??analysis.confidence}/100 • Technical <span class="${analysis.technicalScore>0?'green signal-inline-positive':analysis.technicalScore<0?'red':''}">${signedHTML(analysis.technicalScore,0)}</span> • Macro contribution <span class="${(analysis.macroContribution||0)>0?'green signal-inline-positive':(analysis.macroContribution||0)<0?'red':''}">${signedHTML(analysis.macroContribution??0,0)}</span> • VWAP <span class="${(analysis.vwapContribution||0)>0?'green signal-inline-positive':(analysis.vwapContribution||0)<0?'red':'yellow'}">${signedHTML(analysis.vwapContribution??0,0)}</span></div></div><div class="score ${cls} ${analysis.score>0?'score-positive':''}">${signedHTML(analysis.score,0)}</div></div>
         ${analysis.dataFallback?.used?`<div class="risk-box" style="margin:0 0 12px;border-left-color:#f59e0b"><div class="panel-title yellow">Limited-data fallback active</div><div style="font-size:11.5px;color:#cbd5e1;line-height:1.5">Halifax completed the analysis instead of failing. ${escapeHTML(analysis.dataFallback.warnings.join(" "))} Prediction strength is automatically reduced, and Halifax will force WAIT when the higher-timeframe anchor needed for the selected trading style is missing.</div></div>`:""}
         <div class="grade-strip">
             <div class="grade-tile"><div class="g-label">Trend Grade</div><div class="g-grade ${plain.grades.trend.score>=72?"green":plain.grades.trend.score>=55?"yellow":"red"}">${plain.grades.trend.grade}</div><div class="g-score">${plain.grades.trend.score}/100 • Daily/Weekly</div></div>
@@ -2645,14 +2731,14 @@ function renderTradeOutput(analysis,trade){
             ${analysis.instrumentContext?`<div class="metric"><span>Instrument Guardrail</span><span class="yellow">${escapeHTML(analysis.instrumentContext.positionAction)}</span></div><div class="metric"><span>Underlying Signal</span><span class="${analysis.instrumentContext.underlyingDirection==="LONG"?"green":analysis.instrumentContext.underlyingDirection==="SHORT"?"red":"yellow"}">${directionArrow(analysis.instrumentContext.underlyingDirection)} ${analysis.instrumentContext.underlying} ${analysis.instrumentContext.underlyingDirection}</span></div>`:""}
         </div>
         <button class="${btn}" type="button" ${dir==="WAIT"?"disabled":'onclick="logPaperPlan()"'}>${dir==="WAIT"?setup:`${setup} • PAPER TRADE`}</button>
-        <details class="compact-details"><summary>Detailed Decision Evidence &amp; Risk Checks</summary><div class="compact-body"><div class="evidence-section"><div class="panel-title">Decision Evidence</div><ul class="reasoning-list">${analysis.reasons.map(r=>`<li>• ${escapeHTML(r)}</li>`).join("")}</ul></div><div class="evidence-section"><div class="panel-title">Risk Desk Checks</div><ul class="reasoning-list">${(trade.warnings.length?trade.warnings:["Risk, liquidity, and trend-strength checks passed under the selected settings."]).map(r=>`<li>• ${escapeHTML(r)}</li>`).join("")}</ul></div></div></details>
+        <details class="compact-details"><summary><span class="flow-index flow-index-small">03</span> Detailed Decision Evidence &amp; Risk Checks</summary><div class="compact-body"><div class="evidence-section"><div class="panel-title">Decision Evidence</div><ul class="reasoning-list">${analysis.reasons.map(r=>`<li>• ${escapeHTML(r)}</li>`).join("")}</ul></div><div class="evidence-section"><div class="panel-title">Risk Desk Checks</div><ul class="reasoning-list">${(trade.warnings.length?trade.warnings:["Risk, liquidity, and trend-strength checks passed under the selected settings."]).map(r=>`<li>• ${escapeHTML(r)}</li>`).join("")}</ul></div></div></details>
         <div class="notice">This is a rules-based research tool, not a broker recommendation or guarantee. Prediction Strength and letter grades are Halifax model scores, not win probabilities. The History Grade uses point-in-time Daily analogs from up to five years of loaded history and can still fail out of sample. Smart-money scoring uses reported insider and institutional filings with deliberately small weights because disclosure data can be delayed. Fundamental quality uses a capped style-dependent overlay; earnings proximity is treated as non-directional gap risk and can reduce size or block a new multi-day trade. Verify prices, earnings release timing, fundamentals, corporate events, borrow availability, and order details with your brokerage before trading.</div>`;
     lastPlanText=buildPlanText(analysis,trade);lastAnalysis=analysis;lastTrade=trade;
 }
 
 function buildPlanText(analysis,trade){
     const d=analysis.primary,m=analysis.macroContext,plain=buildPlainEnglishExplanation(analysis,trade);
-    return `HALIFAX TRADE ENGINE v20.3 LITE — ${d.ticker} ${analysis.direction} TRADE PLAN
+    return `HALIFAX TRADE ENGINE v20.4 LITE — ${d.ticker} ${analysis.direction} TRADE PLAN
 Plain-English read: ${plain.headline}
 Action: ${plain.timing.action}
 Why: ${plain.summary}
@@ -2667,6 +2753,7 @@ Sector: ${m?.profileLabel||"Broad Market"} | Macro adjustment: ${m?.adjustment??
 Economic probabilities: Inflation ${m?.economicProbability?.inflationProb??"N/A"}% | Hawkish rates ${m?.economicProbability?.hawkishProb??"N/A"}% | Weak growth ${m?.economicProbability?.weakGrowthProb??"N/A"}% | Equity tailwind ${m?.economicProbability?.equityTailwindProb??"N/A"}%
 Shiller CAPE: ${Number.isFinite(m?.economicProbability?.cape)?m.economicProbability.cape.toFixed(2):"N/A"} | ${m?.economicProbability?.capeBand||"N/A"} | CAPE is a long-horizon valuation input, not a short-term timing signal
 Options outlook: ${analysis.optionsContext?.available?`${analysis.optionsContext.direction} | ${analysis.optionsContext.timeframe} through ${analysis.optionsContext.expiryText} | ${analysis.optionsContext.confidence} confidence${Number.isFinite(analysis.optionsContext.pricedMove)?` | priced move about ±${money(analysis.optionsContext.pricedMove)}`:""}`:"Unavailable / not guessed"}
+Session VWAP: ${analysis.vwapContext?.available?`${money(analysis.vwapContext.vwap)} | price ${signed(analysis.vwapContext.diffPct,2)}% vs VWAP | ${analysis.vwapContext.state} | ${analysis.vwapContext.slope} | score ${analysis.vwapContribution>=0?"+":""}${analysis.vwapContribution||0}`:"Unavailable"}
 Primary timeframe: ${TF_LABELS[d.timeframe]}
 Entry zone: ${money(trade.entryLow)} - ${money(trade.entryHigh)}
 Execution entry: ${money(trade.entry)}
@@ -3183,7 +3270,7 @@ async function runEngine(){
         renderChart(analysis.primary,trade);renderRegime(analysis,benchmarkResult);renderMTF(analysis);renderTradeOutput(analysis,trade);renderPositionGuardrails(ticker,analysis.primary,analysis);renderNews(displayNews,ticker);
         document.getElementById("smartMoneyOutput").innerHTML='<div class="loading">Core prediction is complete. Loading insider, institutional and public-filing context in the background…</div>';
         document.getElementById("decisionCard")?.scrollIntoView({behavior:"smooth",block:"start"});
-        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v20.3 Lite`;
+        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v20.4 Lite`;
         const optionsPromise=loadOptionsOutlook(ticker,document.getElementById("style")?.value||"swing",analysis.primary?.price).catch(()=>null);
         optionsPromise.then(op=>{
             if(runId!==halifaxRunId)return;
@@ -3204,7 +3291,7 @@ async function runEngine(){
             renderTradeOutput(analysis,trade);renderPositionGuardrails(ticker,analysis.primary,analysis);renderSmartMoney(special?.underlying||ticker,sm);
             setStatus(`${ticker} prediction + smart money complete`);
         }).catch(()=>{});
-    }catch(error){console.error(error);document.getElementById("tradeOutput").innerHTML=`<div class="red" style="font-weight:900">Analysis failed</div><div style="font-size:12px;color:#cbd5e1;margin-top:8px;line-height:1.5">${escapeHTML(error.message)}</div><div class="notice">Halifax v20.3 Lite rebuilds a slower confirmation timeframe from any usable loaded candles when a separate interval feed fails. A red failure should now appear only when no valid two-timeframe set can be constructed at all.</div>`;document.getElementById("positionCard").style.display="none";document.getElementById("fundamentalsOutput").innerHTML='<div class="loading">Company fundamentals were not completed because the main analysis failed.</div>';document.getElementById("optionsOutput").innerHTML='<div class="loading">Options analysis was not completed because the main analysis failed.</div>';setStatus("Analysis failed","var(--red)");}
+    }catch(error){console.error(error);document.getElementById("tradeOutput").innerHTML=`<div class="red" style="font-weight:900">Analysis failed</div><div style="font-size:12px;color:#cbd5e1;margin-top:8px;line-height:1.5">${escapeHTML(error.message)}</div><div class="notice">Halifax v20.4 Lite rebuilds a slower confirmation timeframe from any usable loaded candles when a separate interval feed fails. A red failure should now appear only when no valid two-timeframe set can be constructed at all.</div>`;document.getElementById("positionCard").style.display="none";document.getElementById("fundamentalsOutput").innerHTML='<div class="loading">Company fundamentals were not completed because the main analysis failed.</div>';document.getElementById("optionsOutput").innerHTML='<div class="loading">Options analysis was not completed because the main analysis failed.</div>';setStatus("Analysis failed","var(--red)");}
     finally{button.disabled=false;}
 }
 
