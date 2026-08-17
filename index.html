@@ -18,7 +18,7 @@
 <meta name="application-name" content="Halifax">
 <meta name="format-detection" content="telephone=no">
 
-<title>Halifax Trade Engine v19.9 Lite - Plain-English Options Outlook</title>
+<title>Halifax Trade Engine v20.2 Lite - Plain-English Options Outlook</title>
 
 <style>
 :root{
@@ -675,6 +675,21 @@ select{
 }
 
 
+/* v20.0 trading-style controls */
+.style-engine-select{display:none}
+.style-buttons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+.style-btn{min-height:31px;padding:6px 7px;border-radius:4px;border:1px solid transparent;font-size:9px;font-weight:950;letter-spacing:.45px;color:#dcecff;opacity:.66;filter:saturate(.75);transition:opacity .12s ease,filter .12s ease,box-shadow .12s ease,border-color .12s ease}
+.style-btn:hover{opacity:.92}
+.style-btn.active{opacity:1;filter:saturate(1.15);box-shadow:0 0 0 1px rgba(255,255,255,.12),0 0 15px rgba(73,153,230,.20)}
+.style-btn.mode-scalp{background:#0e5362;border-color:#17778b}.style-btn.mode-scalp.active{background:#087b94;border-color:#22d3ee}
+.style-btn.mode-day{background:#164b7d;border-color:#246ca8}.style-btn.mode-day.active{background:#1269b5;border-color:#58a9ff}
+.style-btn.mode-swing{background:#49347a;border-color:#7051aa}.style-btn.mode-swing.active{background:#6d42a8;border-color:#c084fc}
+.style-btn.mode-position{background:#67501a;border-color:#957427}.style-btn.mode-position.active{background:#8a6814;border-color:#facc15;color:#fff7cf}
+.style-btn.mode-custom{background:#26394a;border-color:#425a6f}.style-btn.mode-custom.active{background:#3a5064;border-color:#94a3b8}
+.style-help{margin-top:9px;padding:9px 11px;border-left:3px solid #c084fc;background:#071725;border-top:1px solid #28445f;border-right:1px solid #28445f;border-bottom:1px solid #28445f;border-radius:4px;color:#bcd0df;font-size:10.5px;line-height:1.45}
+.btn-analyze.mode-scalp{background:#087b94;border-color:#22d3ee}.btn-analyze.mode-day{background:#1269b5;border-color:#58a9ff}.btn-analyze.mode-swing{background:#6d42a8;border-color:#c084fc}.btn-analyze.mode-position{background:#8a6814;border-color:#facc15}.btn-analyze.mode-custom{background:#3a5064;border-color:#94a3b8}
+@media(max-width:620px){.style-buttons{grid-template-columns:repeat(5,minmax(0,1fr))}.style-btn{padding:6px 3px;font-size:8px;letter-spacing:.15px}}
+
 /* v19.6 premium terminal refinement */
 .header{
     background:linear-gradient(145deg,rgba(7,25,46,.96),rgba(4,15,30,.96));
@@ -1056,7 +1071,7 @@ td{border-bottom:1px solid #223b52}
 }
 
 
-/* v19.9 plain-English options outlook */
+/* v20.0 plain-English options outlook */
 .options-card{border-color:rgba(52,153,104,.38)}
 .options-hero{
     display:grid;
@@ -1105,7 +1120,7 @@ td{border-bottom:1px solid #223b52}
     <div class="card header">
         <div class="brand-stack">
             <div class="terminal-kicker"><span class="kicker-dot"></span> HALIFAX QUANT RESEARCH TERMINAL</div>
-            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v19.9 Lite</span></span></div>
+            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v20.2 Lite</span></span></div>
             <div class="subtitle">Predictive swing research • Execution planning • Pattern radar • Point-in-time validation</div>
         </div>
         <div class="header-actions"><div class="badge system-badge"><span class="status-dot"></span><span id="engineStatus">Engine ready</span></div></div>
@@ -1127,11 +1142,18 @@ td{border-bottom:1px solid #223b52}
         <div class="quick-controls">
             <div class="field command-field command-field-ticker">
                 <label>Ticker</label>
-                <input id="ticker" value="IREZ" autocomplete="off" style="text-transform:uppercase">
+                <input id="ticker" value="" autocomplete="off" style="text-transform:uppercase">
             </div>
             <div class="field command-field command-field-style">
                 <label>Trading Style</label>
-                <select id="style" onchange="applyStyleDefaults()">
+                <div class="style-buttons" role="group" aria-label="Trading style">
+                    <button type="button" class="style-btn mode-scalp" data-style="scalp" onclick="setTradingStyle('scalp')">SCALP</button>
+                    <button type="button" class="style-btn mode-day" data-style="day" onclick="setTradingStyle('day')">DAY</button>
+                    <button type="button" class="style-btn mode-swing active" data-style="swing" onclick="setTradingStyle('swing')">SWING</button>
+                    <button type="button" class="style-btn mode-position" data-style="position" onclick="setTradingStyle('position')">POSITION</button>
+                    <button type="button" class="style-btn mode-custom" data-style="custom" onclick="setTradingStyle('custom')">CUSTOM</button>
+                </div>
+                <select id="style" class="style-engine-select" aria-hidden="true" tabindex="-1" onchange="applyStyleDefaults()">
                     <option value="scalp">Scalp</option>
                     <option value="day">Day Trade</option>
                     <option value="swing" selected>Swing Trade</option>
@@ -1149,6 +1171,7 @@ td{border-bottom:1px solid #223b52}
             </div>
             <button id="analyzeBtn" class="btn-primary full-mobile btn-analyze" onclick="runEngine()"><span class="analyze-kicker">RUN</span><span class="analyze-text">ANALYZE</span></button>
         </div>
+        <div id="styleHelp" class="style-help"><b>SWING:</b> Multi-day setup. Halifax emphasizes the Daily and Weekly trend and uses the 1-hour chart mainly for entry timing.</div>
         <div class="quick-actions">
             <button class="btn-dark" onclick="copyTradePlan()">COPY PLAN</button><button class="btn-dark" onclick="logPaperPlan()">PAPER TRADE</button><button class="btn-dark" onclick="resetHalifaxApp()">RESET</button>
         </div>
@@ -1190,7 +1213,7 @@ td{border-bottom:1px solid #223b52}
     <div id="optionsCard" class="card options-card" style="display:none">
         <div class="panel-title green">Options Direction — Plain English</div>
         <div id="optionsOutput"><div class="loading">Run an analysis to read the available options chain.</div></div>
-        <div class="clean-note">Options are used as confirmation only in v19.9. A LONG or SHORT options lean does not prove trader intent because option volume and open interest can include hedges and multi-leg spreads.</div>
+        <div class="clean-note">Options are used as confirmation only in v20.0. A LONG or SHORT options lean does not prove trader intent because option volume and open interest can include hedges and multi-leg spreads.</div>
     </div>
 
 
@@ -1229,12 +1252,12 @@ td{border-bottom:1px solid #223b52}
         <div class="compact-body">
             <div class="panel-title yellow">Position &amp; Leveraged ETF Guardrails</div>
             <div class="position-toolbar">
-                <div class="field"><label>Position Ticker</label><input id="positionTicker" value="IREZ" style="text-transform:uppercase" oninput="savePositionSettings()"></div>
+                <div class="field"><label>Position Ticker</label><input id="positionTicker" value="" style="text-transform:uppercase" oninput="savePositionSettings()"></div>
                 <div class="field"><label>Shares Held</label><input id="positionShares" type="number" value="1000" min="0" step="1" oninput="savePositionSettings()"></div>
                 <div class="field"><label>Average Cost</label><input id="positionCost" type="number" value="13.11" min="0" step="0.01" oninput="savePositionSettings()"></div>
                 <div class="field"><label>Maximum Loss From Cost (%)</label><input id="positionMaxLoss" type="number" value="8" min="1" max="40" step="0.5" oninput="savePositionSettings()"></div>
                 <div class="field"><label>Daily Review Time</label><input id="positionReviewTime" value="2:45 PM CT" readonly></div>
-                <div class="field"><label>Leveraged ETF Guardrail</label><div class="checkbox-row"><input id="leverageGuard" type="checkbox" checked onchange="savePositionSettings()"> Analyze underlying first</div></div>
+                <div class="field"><label>Inverse ETF Guardrail</label><div class="checkbox-row"><input id="leverageGuard" type="checkbox" checked onchange="savePositionSettings()"> Detect inverse ETFs + verify underlying when known</div></div>
             </div>
             <div id="positionCard" class="evidence-section" style="display:none"><div class="panel-title yellow">Active Position Guardrails</div><div id="positionOutput"></div></div>
 
@@ -1327,7 +1350,28 @@ const STYLE_DEFAULT_CHART = { scalp:"5m", day:"15m", swing:"1d", position:"1wk" 
 const TF_LABELS = {"1m":"1 Min","2m":"2 Min","5m":"5 Min","15m":"15 Min","30m":"30 Min","60m":"1 Hour","90m":"90 Min","1d":"Daily","5d":"5 Day","1wk":"Weekly","1mo":"Monthly","3mo":"Quarterly"};
 const TF_ORDER = ["1m","2m","5m","15m","30m","60m","90m","1d","5d","1wk","1mo","3mo"];
 const SPECIAL_INSTRUMENTS = {
-    IREZ:{label:"Tradr 2X Short IREN Daily ETF",underlying:"IREN",dailyMultiple:-2,dailyReset:true,allowedStyles:["scalp","day"]}
+    // Common inverse / leveraged-inverse ETFs with a reliable underlying or close benchmark proxy.
+    // Unknown inverse ETFs are still detected from provider metadata by getSpecialInstrument().
+    SH:{label:"ProShares Short S&P 500",underlying:"^GSPC",dailyMultiple:-1,dailyReset:true,allowedStyles:["scalp","day"]},
+    SDS:{label:"ProShares UltraShort S&P 500",underlying:"^GSPC",dailyMultiple:-2,dailyReset:true,allowedStyles:["scalp","day"]},
+    SPXU:{label:"ProShares UltraPro Short S&P 500",underlying:"^GSPC",dailyMultiple:-3,dailyReset:true,allowedStyles:["scalp","day"]},
+    PSQ:{label:"ProShares Short QQQ",underlying:"^NDX",dailyMultiple:-1,dailyReset:true,allowedStyles:["scalp","day"]},
+    QID:{label:"ProShares UltraShort QQQ",underlying:"^NDX",dailyMultiple:-2,dailyReset:true,allowedStyles:["scalp","day"]},
+    SQQQ:{label:"ProShares UltraPro Short QQQ",underlying:"^NDX",dailyMultiple:-3,dailyReset:true,allowedStyles:["scalp","day"]},
+    DOG:{label:"ProShares Short Dow30",underlying:"^DJI",dailyMultiple:-1,dailyReset:true,allowedStyles:["scalp","day"]},
+    DXD:{label:"ProShares UltraShort Dow30",underlying:"^DJI",dailyMultiple:-2,dailyReset:true,allowedStyles:["scalp","day"]},
+    SDOW:{label:"ProShares UltraPro Short Dow30",underlying:"^DJI",dailyMultiple:-3,dailyReset:true,allowedStyles:["scalp","day"]},
+    RWM:{label:"ProShares Short Russell2000",underlying:"^RUT",dailyMultiple:-1,dailyReset:true,allowedStyles:["scalp","day"]},
+    TWM:{label:"ProShares UltraShort Russell2000",underlying:"^RUT",dailyMultiple:-2,dailyReset:true,allowedStyles:["scalp","day"]},
+    TZA:{label:"Direxion Daily Small Cap Bear 3X Shares",underlying:"^RUT",dailyMultiple:-3,dailyReset:true,allowedStyles:["scalp","day"]},
+    SOXS:{label:"Direxion Daily Semiconductor Bear 3X Shares",underlying:"^SOX",dailyMultiple:-3,dailyReset:true,allowedStyles:["scalp","day"]},
+    FAZ:{label:"Direxion Daily Financial Bear 3X Shares",underlying:"XLF",dailyMultiple:-3,dailyReset:true,allowedStyles:["scalp","day"]},
+    TECS:{label:"Direxion Daily Technology Bear 3X Shares",underlying:"XLK",dailyMultiple:-3,dailyReset:true,allowedStyles:["scalp","day"]},
+    ERY:{label:"Direxion Daily Energy Bear 2X Shares",underlying:"XLE",dailyMultiple:-2,dailyReset:true,allowedStyles:["scalp","day"]},
+    LABD:{label:"Direxion Daily S&P Biotech Bear 3X Shares",underlying:"XBI",dailyMultiple:-3,dailyReset:true,allowedStyles:["scalp","day"]},
+    DRV:{label:"Direxion Daily Real Estate Bear 3X Shares",underlying:"XLRE",dailyMultiple:-3,dailyReset:true,allowedStyles:["scalp","day"]},
+    DUST:{label:"Direxion Daily Gold Miners Bear 2X Shares",underlying:"GDX",dailyMultiple:-2,dailyReset:true,allowedStyles:["scalp","day"]},
+    BITI:{label:"ProShares Short Bitcoin ETF",underlying:"BTC-USD",dailyMultiple:-1,dailyReset:true,allowedStyles:["scalp","day"]}
 };
 const SECTOR_PROFILES = {
     broad:{label:"Broad Market",etf:"SPY",cyclical:false,defensive:false,drivers:[],newsQuery:"stock market economy earnings"},
@@ -1393,10 +1437,39 @@ const PROFILE_NEWS_TERMS={
     utilities:{negative:["wildfire liability","storm damage","rate case rejected"],positive:["rate case approved","power demand rises"]}
 };
 
+const STYLE_UI = {
+    scalp:{label:"SCALP",help:"Very short-term setup. Halifax weighs 1-minute, 5-minute, 15-minute and 1-hour data, with the 5- and 15-minute charts carrying most of the signal."},
+    day:{label:"DAY",help:"Same-session setup. Halifax uses 5-minute, 15-minute, 1-hour and Daily data; the 15-minute and 1-hour charts carry most of the signal."},
+    swing:{label:"SWING",help:"Multi-day setup. Halifax emphasizes the Daily and Weekly trend and uses the 1-hour chart mainly for entry timing."},
+    position:{label:"POSITION",help:"Longer-horizon setup. Halifax emphasizes Daily, Weekly and Monthly structure; the 1-hour chart is only a small timing input."},
+    custom:{label:"CUSTOM",help:"Manual multi-timeframe mode. Choose the primary timeframe in Advanced Trade Settings and Halifax builds a nearby confirmation set around it."}
+};
+
+function syncStyleButtons(){
+    const style=document.getElementById("style")?.value||"swing";
+    document.querySelectorAll(".style-btn").forEach(btn=>btn.classList.toggle("active",btn.dataset.style===style));
+    const analyze=document.getElementById("analyzeBtn");
+    if(analyze){
+        analyze.classList.remove("mode-scalp","mode-day","mode-swing","mode-position","mode-custom");
+        analyze.classList.add(`mode-${style}`);
+    }
+    const help=document.getElementById("styleHelp"),ui=STYLE_UI[style]||STYLE_UI.swing;
+    if(help){help.innerHTML=`<b>${ui.label}:</b> ${ui.help}`;help.style.borderLeftColor=style==="scalp"?"#22d3ee":style==="day"?"#58a9ff":style==="swing"?"#c084fc":style==="position"?"#facc15":"#94a3b8";}
+}
+
+function setTradingStyle(style){
+    const select=document.getElementById("style");
+    if(!select)return;
+    select.value=style;
+    applyStyleDefaults();
+}
+
 function applyStyleDefaults(){
     const style = document.getElementById("style").value;
     if (STYLE_DEFAULT_CHART[style]) document.getElementById("timeframe").value = STYLE_DEFAULT_CHART[style];
+    syncStyleButtons();
 }
+setTimeout(syncStyleButtons,0);
 
 function getTimeframes(){
     const style = document.getElementById("style").value;
@@ -1531,7 +1604,7 @@ function shillerBand(cape){
     return {label:"Historically inexpensive",cls:"green",adjustment:1};
 }
 
-// ======================= Halifax v19.9 Options Outlook =======================
+// ======================= Halifax v20.0 Options Outlook =======================
 function optionsFinite(v){const n=Number(v);return Number.isFinite(n)?n:null;}
 function optionsSum(rows,key){return (rows||[]).reduce((s,r)=>{const n=optionsFinite(r?.[key]);return s+(n&&n>0?n:0);},0);}
 function optionsMedian(values){const a=(values||[]).map(Number).filter(Number.isFinite).sort((x,y)=>x-y);if(!a.length)return null;const m=Math.floor(a.length/2);return a.length%2?a[m]:(a[m-1]+a[m])/2;}
@@ -1597,7 +1670,7 @@ function optionsInlineHTML(outlook){
     if(!outlook?.available)return '';
     return `<div class="options-inline"><div><div class="oi-label">Options say</div><div class="oi-main ${outlook.cls}">${outlook.arrow} ${escapeHTML(outlook.direction)} <span class="tiny">• ${escapeHTML(outlook.confidence)} confidence</span></div><div class="oi-note">${escapeHTML(outlook.sentence)}</div></div><div><div class="oi-label">Options time frame</div><div class="oi-main">${escapeHTML(outlook.timeframe)}</div><div class="oi-note">Through ${escapeHTML(outlook.expiryText)}${Number.isFinite(outlook.pricedMove)?` • priced move about ±${money(outlook.pricedMove)}`:""}</div></div></div>`;
 }
-// ===================== End Halifax v19.9 Options Outlook =====================
+// ===================== End Halifax v20.0 Options Outlook =====================
 
 async function loadShillerPE(showStatus=false){
     if(showStatus)setStatus("Refreshing Shiller CAPE…","var(--yellow)");
@@ -1928,7 +2001,30 @@ function normalizeProfileKey(sectorText="",industryText=""){
     return "";
 }
 
-function getSpecialInstrument(ticker){return SPECIAL_INSTRUMENTS[String(ticker||"").toUpperCase()]||null;}
+function inverseMultipleFromName(name){
+    const n=String(name||"").toLowerCase();
+    const m=n.match(/(?:^|\s)([123])x(?:\s|$)/)||n.match(/([123])x\s+(?:daily\s+)?(?:short|inverse|bear)/);
+    if(m)return -Number(m[1]);
+    if(/ultrapro\s+short/.test(n)||/bear\s+3x/.test(n))return -3;
+    if(/ultrashort/.test(n)||/bear\s+2x/.test(n))return -2;
+    return -1;
+}
+function looksLikeInverseETF(quote){
+    if(!quote)return false;
+    const type=String(quote.quoteType||quote.typeDisp||quote.type||"").toUpperCase().replace(/\s+/g,"");
+    if(type&&!type.includes("ETF")&&!type.includes("FUND"))return false;
+    const name=String(quote.longname||quote.longName||quote.shortname||quote.shortName||quote.name||"").trim();
+    if(!name)return false;
+    const n=name.toLowerCase();
+    return /\binverse\b/.test(n)||/\bultrashort\b/.test(n)||/\bdaily\b.{0,50}\bbear\b/.test(n)||/\bbear\b.{0,30}\bshares\b/.test(n)||/\b[123]x\b.{0,25}\b(?:short|inverse|bear)\b/.test(n)||/\b(?:short|inverse|bear)\b.{0,25}\b[123]x\b/.test(n)||/^(?:proshares|direxion|axs|tradr|t-rex|defiance|graniteshares)\b.*\bshort\b/.test(n);
+}
+function getSpecialInstrument(ticker,quote=null){
+    const symbol=String(ticker||"").toUpperCase();
+    if(SPECIAL_INSTRUMENTS[symbol])return SPECIAL_INSTRUMENTS[symbol];
+    if(!looksLikeInverseETF(quote))return null;
+    const label=String(quote?.longname||quote?.longName||quote?.shortname||quote?.shortName||`${symbol} inverse ETF`);
+    return {label,underlying:null,dailyMultiple:inverseMultipleFromName(label),dailyReset:true,allowedStyles:["scalp","day"],metadataDetected:true};
+}
 function invertUnderlyingDirection(direction){return direction==="SHORT"?"LONG":direction==="LONG"?"EXIT":"WAIT";}
 function instrumentGuardTimeframes(){
     const style=document.getElementById("style")?.value||"day";
@@ -1936,15 +2032,26 @@ function instrumentGuardTimeframes(){
 }
 function applySpecialInstrumentGuardrails(ticker,baseAnalysis,special,underlyingAnalysis){
     if(!special||document.getElementById("leverageGuard")?.checked===false)return baseAnalysis;
-    const style=document.getElementById("style")?.value||"swing",underDir=underlyingAnalysis?.direction||"WAIT";
+    const style=document.getElementById("style")?.value||"swing",underDir=underlyingAnalysis?.direction||"WAIT",hasUnderlying=!!special.underlying;
     const inverseUnderlyingScore=underlyingAnalysis?clamp(-underlyingAnalysis.score,-100,100):0;
-    let combined=clamp(Math.round(inverseUnderlyingScore*.75+(baseAnalysis.technicalScore??baseAnalysis.score)*.25),-100,100);
-    let direction="WAIT",positionAction="WAIT / REVIEW",guardrailBlocked=false;
+    let combined=hasUnderlying?clamp(Math.round(inverseUnderlyingScore*.75+(baseAnalysis.technicalScore??baseAnalysis.score)*.25),-100,100):baseAnalysis.score;
+    let direction=hasUnderlying?"WAIT":baseAnalysis.direction,positionAction="WAIT / REVIEW",guardrailBlocked=false;
     const reasons=[...baseAnalysis.reasons];
-    reasons.unshift(`${ticker} is a ${special.dailyMultiple}× daily inverse product tied to ${special.underlying}; ${special.underlying} is the primary directional signal.`);
+    if(hasUnderlying)reasons.unshift(`${ticker} is a ${special.dailyMultiple}× daily inverse product tied to ${special.underlying}; ${special.underlying} is the primary directional signal.`);
+    else reasons.unshift(`${ticker} was detected as a daily inverse ETF from provider security metadata. Halifax could not verify a specific underlying symbol, so conservative inverse-ETF guardrails are active.`);
     if(!special.allowedStyles.includes(style)){
-        guardrailBlocked=true;combined=clamp(combined,-19,19);positionAction="DAILY RESET: SWITCH TO DAY/SCALP OR EXIT BEFORE HOLDING MULTI-DAY";
+        guardrailBlocked=true;combined=clamp(combined,-19,19);direction="WAIT";positionAction="DAILY RESET: SWITCH TO DAY/SCALP OR EXIT BEFORE HOLDING MULTI-DAY";
         reasons.unshift(`Daily-reset guardrail blocks ${style.toUpperCase()} signals for ${ticker}.`);
+    }else if(!hasUnderlying){
+        if(baseAnalysis.direction==="SHORT"){
+            direction="WAIT";guardrailBlocked=true;combined=clamp(combined,-19,19);positionAction=`EXIT / AVOID SHORTING ${ticker}: inverse ETF underlying was not verified`;
+            reasons.unshift("Inverse-ETF safety rule: Halifax will not authorize a SHORT signal on an inverse ETF when the underlying relationship cannot be verified.");
+        }else if(baseAnalysis.direction==="LONG"){
+            direction="LONG";combined=Math.min(combined,59);positionAction=`LONG / DAY-TRADE ONLY ${ticker}: underlying not verified`;
+            reasons.unshift("Metadata-only inverse detection: LONG is limited to Scalp/Day use and confidence is capped until the underlying can be verified.");
+        }else{
+            direction="WAIT";guardrailBlocked=true;combined=clamp(combined,-19,19);positionAction=`WAIT: inverse ETF underlying not verified`;
+        }
     }else if(underDir==="LONG"){
         guardrailBlocked=true;combined=Math.min(combined,19);positionAction=`EXIT / REDUCE ${ticker}: ${special.underlying} is bullish`;
         reasons.unshift(`${special.underlying} is LONG, which is adverse to a long ${ticker} position.`);
@@ -1962,10 +2069,9 @@ function applySpecialInstrumentGuardrails(ticker,baseAnalysis,special,underlying
         guardrailBlocked=true;combined=clamp(combined,-19,19);positionAction=`WAIT / REDUCE RISK: ${special.underlying} has no confirmed direction`;
         reasons.unshift(`${special.underlying} is not a confirmed SHORT, so a new long ${ticker} position is blocked.`);
     }
-    // Never recommend opening a short in a daily inverse ETF; bullish-underlying cases are shown as EXIT/AVOID instead.
     if(direction==="SHORT"){direction="WAIT";guardrailBlocked=true;positionAction=`EXIT / AVOID ${ticker} — do not open a contradictory short`;combined=Math.min(combined,19);}
-    const confidence=underlyingAnalysis?Math.min(99,Math.round((baseAnalysis.confidence+underlyingAnalysis.confidence)/2)):baseAnalysis.confidence;
-    return {...baseAnalysis,direction,score:combined,confidence,guardrailBlocked,reasons,instrumentContext:{ticker,label:special.label,underlying:special.underlying,dailyMultiple:special.dailyMultiple,dailyReset:special.dailyReset,underlyingDirection:underDir,underlyingScore:underlyingAnalysis?.score??0,underlyingConfidence:underlyingAnalysis?.confidence??0,inverseUnderlyingScore,baseDirection:baseAnalysis.direction,baseScore:baseAnalysis.score,positionAction,styleBlocked:!special.allowedStyles.includes(style)}};
+    const confidence=underlyingAnalysis?Math.min(99,Math.round((baseAnalysis.confidence+underlyingAnalysis.confidence)/2)):(special.metadataDetected?Math.min(baseAnalysis.confidence,59):baseAnalysis.confidence);
+    return {...baseAnalysis,direction,score:combined,confidence,guardrailBlocked,reasons,instrumentContext:{ticker,label:special.label,underlying:special.underlying||null,dailyMultiple:special.dailyMultiple,dailyReset:special.dailyReset,underlyingDirection:hasUnderlying?underDir:"UNVERIFIED",underlyingScore:underlyingAnalysis?.score??0,underlyingConfidence:underlyingAnalysis?.confidence??0,inverseUnderlyingScore,baseDirection:baseAnalysis.direction,baseScore:baseAnalysis.score,positionAction,styleBlocked:!special.allowedStyles.includes(style),metadataDetected:!!special.metadataDetected}};
 }
 
 function resolveSectorProfile(ticker,quote=null,{ignoreOverride=false}={}){
@@ -2318,20 +2424,21 @@ function renderPositionGuardrails(ticker,data,analysis){
     const card=document.getElementById("positionCard"),settings=readPositionSettings();
     if(!settings.ticker||settings.ticker!==ticker||settings.shares<=0||settings.cost<=0){card.style.display="none";return;}
     card.style.display="block";
-    const special=getSpecialInstrument(ticker),currentValue=settings.shares*data.price,totalCost=settings.shares*settings.cost,pnl=currentValue-totalCost,pnlPct=settings.cost?((data.price/settings.cost)-1)*100:0;
+    const special=analysis?.instrumentContext?{...analysis.instrumentContext,label:analysis.instrumentContext.label||ticker}:getSpecialInstrument(ticker),currentValue=settings.shares*data.price,totalCost=settings.shares*settings.cost,pnl=currentValue-totalCost,pnlPct=settings.cost?((data.price/settings.cost)-1)*100:0;
     const alertPrice=settings.cost*(1-settings.maxLossPct/100),alertBreached=data.price<=alertPrice,account=Math.max(0,Number(document.getElementById("account")?.value)||0),concentration=account?currentValue/account*100:null;
     const context=analysis.instrumentContext,review=centralReviewWindow();
     let action=context?.positionAction||(`${analysis.direction} signal`),actionClass=action.startsWith("LONG")?"green":action.startsWith("EXIT")||action.startsWith("CONFLICT")?"red":"yellow";
     const border=actionClass==="green"?"green-border":actionClass==="red"?"red-border":"";
     const rules=[];
-    if(special?.dailyReset)rules.push(`Daily-reset product: reassess ${special.underlying} and ${ticker} before 2:45 PM Central each trading day.`);
-    if(context)rules.push(`${special.underlying} signal: ${directionArrow(context.underlyingDirection)} ${context.underlyingDirection} (${context.underlyingScore>0?"+":""}${context.underlyingScore}, ${context.underlyingConfidence}% confidence).`);
+    if(special?.dailyReset)rules.push(special.underlying?`Daily-reset product: reassess ${special.underlying} and ${ticker} before 2:45 PM Central each trading day.`:`Daily-reset inverse ETF: reassess ${ticker} before 2:45 PM Central each trading day and avoid carrying it as a normal multi-day position.`);
+    if(context?.underlying)rules.push(`${context.underlying} signal: ${directionArrow(context.underlyingDirection)} ${context.underlyingDirection} (${context.underlyingScore>0?"+":""}${context.underlyingScore}, ${context.underlyingConfidence}% confidence).`);
+    else if(context?.metadataDetected)rules.push("Underlying symbol was not verified; conservative metadata-only inverse-ETF guardrails are active.");
     rules.push(`User-set loss alert: ${money(alertPrice)} (${settings.maxLossPct.toFixed(1)}% below average cost).`);
     if(concentration!=null&&concentration>20)rules.push(`Concentration warning: this position is ${concentration.toFixed(1)}% of the account value entered above.`);
     if(review.open)rules.push("The 2:45 PM Central daily review window is currently open.");
     if(alertBreached)rules.unshift("LOSS ALERT BREACHED: current price is at or below the user-set loss threshold.");
     document.getElementById("positionOutput").innerHTML=`
-        <div class="guardrail-banner ${border}"><div class="guardrail-action ${actionClass}">${escapeHTML(action)}</div><div class="guardrail-sub">${special?`${escapeHTML(special.label)} • ${special.dailyMultiple}× daily inverse exposure to ${special.underlying}`:"Position guardrails"}</div></div>
+        <div class="guardrail-banner ${border}"><div class="guardrail-action ${actionClass}">${escapeHTML(action)}</div><div class="guardrail-sub">${special?`${escapeHTML(special.label)} • ${special.dailyMultiple}× daily inverse${special.underlying?` exposure to ${special.underlying}`:" • underlying not verified"}`:"Position guardrails"}</div></div>
         <div class="position-grid">
             <div class="position-tile"><div class="label">Shares</div><div class="value">${settings.shares.toLocaleString()}</div></div>
             <div class="position-tile"><div class="label">Average Cost</div><div class="value">${money(settings.cost)}</div></div>
@@ -2426,7 +2533,7 @@ function buildPlainEnglishExplanation(analysis,trade){
     const rel=analysis.benchmarkRegime?`Relative strength versus the benchmark is ${analysis.relativeStrength>=0?"positive":"negative"} at ${signed(analysis.relativeStrength,2)}% over 20 bars.`:"Benchmark confirmation was unavailable.";
     const a=analysis.analogForecast||{},biasLong=analysis.score>=0,r2=biasLong?a.long2R:a.short2R,r5=biasLong?a.long5R:a.short5R,analogSentence=a.samples>=12&&a.upRate!=null?`5-year point-in-time history: ${a.samples} similar Daily setups. Positive-close rates were ${a.upRate5?.toFixed(0)??"—"}% / ${a.upRate.toFixed(0)}% / ${a.upRate20?.toFixed(0)??"—"}% after 5/10/20 sessions; median 10-day return ${signed(a.medianReturn,1)}%. In the current directional bias, ${Number.isFinite(r2)?r2.toFixed(0):"—"}% reached 2R and ${Number.isFinite(r5)?r5.toFixed(0):"—"}% reached 5R before a 1R stop over 20 sessions. Historical evidence, not a win probability.`:"Point-in-time history: not enough comparable Daily setups to use as evidence.";
     const sm=analysis.smartMoneyContext,smartSentence=sm?.available?`Smart-money filings: ${analysis.smartMoneyContribution>=0?"+":""}${analysis.smartMoneyContribution||0} score points from insider and institutional activity. Political trades are displayed separately and are not scored.`:"Smart-money filing overlay was unavailable or skipped so it did not affect the prediction.";
-    const op=analysis.optionsContext,optionsSentence=op?.available?`Options confirmation: ${op.direction} through ${op.expiryText} (${op.confidence.toLowerCase()} confidence). This is confirmation only and is not added to the Halifax score in v19.9.`:"Options confirmation is unavailable or still loading; Halifax does not invent an options bias.";
+    const op=analysis.optionsContext,optionsSentence=op?.available?`Options confirmation: ${op.direction} through ${op.expiryText} (${op.confidence.toLowerCase()} confidence). This is confirmation only and is not added to the Halifax score in v20.0.`:"Options confirmation is unavailable or still loading; Halifax does not invent an options bias.";
     return {quality,grades,timing,headline,summary,confirm,fail,bullets:[tfText,adxPlain(d.adx),volumePlain(d.volumeRatio),rsiPlain(d.rsi),analogSentence,optionsSentence,smartSentence,macroSentence,rel]};
 }
 
@@ -2539,7 +2646,7 @@ function renderTradeOutput(analysis,trade){
 
 function buildPlanText(analysis,trade){
     const d=analysis.primary,m=analysis.macroContext,plain=buildPlainEnglishExplanation(analysis,trade);
-    return `HALIFAX TRADE ENGINE v19.9 LITE — ${d.ticker} ${analysis.direction} TRADE PLAN
+    return `HALIFAX TRADE ENGINE v20.0 LITE — ${d.ticker} ${analysis.direction} TRADE PLAN
 Plain-English read: ${plain.headline}
 Action: ${plain.timing.action}
 Why: ${plain.summary}
@@ -2947,14 +3054,15 @@ async function runEngine(){
     const button=document.getElementById("analyzeBtn");button.disabled=true;setStatus(`Analyzing ${ticker}…`,"var(--yellow)");document.getElementById("tradeOutput").innerHTML=`<div class="loading">Loading multi-timeframe, sector, and instrument-guardrail data for ${escapeHTML(ticker)}…</div>`;document.getElementById("newsOutput").innerHTML='<div class="loading">Loading news catalysts…</div>';document.getElementById("smartMoneyCard").style.display="block";document.getElementById("smartMoneyOutput").innerHTML='<div class="loading">Loading insider, institutional and public-filing context in parallel…</div>';document.getElementById("fundamentalsCard").style.display="block";document.getElementById("fundamentalsOutput").innerHTML='<div class="loading">Loading company profile and fundamental data in parallel…</div>';document.getElementById("optionsCard").style.display="block";document.getElementById("optionsOutput").innerHTML='<div class="loading">Reading listed options for a plain-English LONG / SHORT / MIXED outlook…</div>';
     try{
         if(document.getElementById("econGuard")?.checked!==false&&!economicState)await loadOfficialEconomicData(false);
-        const timeframes=getTimeframes(),benchmark=document.getElementById("benchmark").value,chartTF=document.getElementById("timeframe").value,special=getSpecialInstrument(ticker),guardOn=document.getElementById("macroGuard").checked;
+        const timeframes=getTimeframes(),benchmark=document.getElementById("benchmark").value,chartTF=document.getElementById("timeframe").value,knownSpecial=getSpecialInstrument(ticker),guardOn=document.getElementById("macroGuard").checked;
         // Smart-money feeds are useful context but must never be allowed to break the core engine.
-        const smartMoneyPromise=loadSmartMoneyContext(special?.underlying||ticker).catch(()=>null);
+        const smartMoneyPromise=loadSmartMoneyContext(knownSpecial?.underlying||ticker).catch(()=>null);
         const [frameResults,benchmarkResult,snapshot]=await Promise.all([
             loadPredictionFrames(ticker,timeframes),
             loadTickerData(benchmark,chartTF,chartTF==="1d"?"1y":null).catch(()=>null),
             fetchTickerSnapshot(ticker)
         ]);
+        const special=getSpecialInstrument(ticker,snapshot.quote)||knownSpecial;
         const fundamentalsPromise=loadCompanyFundamentals(ticker,snapshot.quote).catch(()=>null);
         const recovery=recoverFrameSet(ticker,timeframes,frameResults),frames=recovery.frames;
         if(frames.length<2){
@@ -2962,7 +3070,7 @@ async function runEngine(){
             throw new Error(`No usable multi-timeframe set could be built. ${failed||"Market-data feeds did not return enough candles."}`);
         }
         let analysis,displayNews=snapshot.news,underlyingAnalysis=null;
-        if(special&&document.getElementById("leverageGuard")?.checked!==false){
+        if(special?.underlying&&document.getElementById("leverageGuard")?.checked!==false){
             const underTFs=instrumentGuardTimeframes(),underPrimary=underTFs.includes(chartTF)?chartTF:"1d";
             const [underResults,underSnapshot,underBenchmark]=await Promise.all([
                 loadPredictionFrames(special.underlying,underTFs),
@@ -2982,6 +3090,7 @@ async function runEngine(){
             const profile=resolveSectorProfile(ticker,snapshot.quote),macroAssets=guardOn?await loadMacroAssets(profile):{sector:null,vix:null,spy:null,drivers:{}};
             const macroContext=buildMacroContext(ticker,profile,{...macroAssets,news:snapshot.news});
             analysis=applyDataFallbackCaution(aggregateAnalysis(frames,benchmarkResult,macroContext),recovery,document.getElementById("style").value);
+            if(special&&document.getElementById("leverageGuard")?.checked!==false)analysis=applySpecialInstrumentGuardrails(ticker,analysis,special,null);
         }
         if(special&&recovery.used&&!analysis.dataFallback)analysis=applyDataFallbackCaution(analysis,recovery,document.getElementById("style").value);
         // Render the core decision immediately. Filing data updates the result afterward if it arrives.
@@ -2990,7 +3099,7 @@ async function runEngine(){
         renderChart(analysis.primary,trade);renderRegime(analysis,benchmarkResult);renderMTF(analysis);renderTradeOutput(analysis,trade);renderPositionGuardrails(ticker,analysis.primary,analysis);renderNews(displayNews,ticker);
         document.getElementById("smartMoneyOutput").innerHTML='<div class="loading">Core prediction is complete. Loading insider, institutional and public-filing context in the background…</div>';
         document.getElementById("decisionCard")?.scrollIntoView({behavior:"smooth",block:"start"});
-        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v19.9 Lite`;
+        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v20.2 Lite`;
         const optionsPromise=loadOptionsOutlook(ticker,document.getElementById("style")?.value||"swing",analysis.primary?.price).catch(()=>null);
         optionsPromise.then(op=>{
             if(runId!==halifaxRunId)return;
