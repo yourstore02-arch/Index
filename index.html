@@ -18,7 +18,7 @@
 <meta name="application-name" content="Halifax">
 <meta name="format-detection" content="telephone=no">
 
-<title>Halifax Trade Engine v20.5 Lite - Direction Lock Build</title>
+<title>Halifax Trade Engine v21.0 Lite - Live Market Intelligence Build</title>
 
 <style>
 :root{
@@ -1151,6 +1151,20 @@ td{border-bottom:1px solid #223b52}
     .current-price-value{font-size:29px}
 }
 
+
+
+/* ===== Halifax v21.0 live market intelligence layer ===== */
+textarea{width:100%;background:#071827;color:#eff8ff;border:1px solid rgba(32,93,146,.95);border-radius:7px;padding:9px 10px;font:inherit;font-size:12px;font-weight:700;resize:vertical;outline:none}
+textarea:focus{border-color:#4da7ff;box-shadow:0 0 0 2px rgba(59,130,246,.16)}
+.live-feed-strip{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:-4px 0 10px;padding:8px 10px;border:1px solid #28445f;border-left:4px solid #4aa3df;border-radius:5px;background:#081b2b}
+.live-feed-main{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.feed-chip{display:inline-flex;align-items:center;gap:6px;padding:4px 7px;border-radius:3px;border:1px solid #3b5f80;background:#0a2136;font-size:9px;font-weight:950;letter-spacing:.55px;text-transform:uppercase}.feed-dot{width:7px;height:7px;border-radius:50%;background:#f1c861}.feed-chip.fresh .feed-dot{background:#36c98f}.feed-chip.stale .feed-dot{background:#ee6b76}.feed-detail{font-size:10px;color:#9ab1c3}.feed-spread{font-size:10px;font-weight:900;color:#d6e8f5}
+.trade-quality{margin:10px 0 12px;border:1px solid #31536e;border-radius:7px;background:#081b2b;padding:11px}.trade-quality-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.trade-quality-title{font-size:10px;color:#8fb7d4;text-transform:uppercase;font-weight:950;letter-spacing:.75px}.trade-quality-decision{font-size:18px;font-weight:950}.quality-grid-v21{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:9px}.quality-tile-v21{background:#061320;border:1px solid #173a56;border-radius:5px;padding:8px}.quality-tile-v21 span{display:block;font-size:8.5px;color:#819db5;text-transform:uppercase;font-weight:900}.quality-tile-v21 b{display:block;font-size:14px;margin-top:3px}.quality-foot{font-size:9px;color:#7892a8;line-height:1.4;margin-top:8px}
+.signal-change{margin:9px 0;padding:9px 10px;border:1px solid #28445f;border-left:4px solid #8ea7ff;border-radius:5px;background:#071827;font-size:10.5px;line-height:1.45;color:#c6d8e7}.signal-change b{color:#edf7ff}
+.bond-card{border-color:rgba(85,200,232,.36)}.bond-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}.bond-tile{background:#061320;border:1px solid #173a56;border-radius:6px;padding:9px;min-height:72px}.bond-tile .b-label{font-size:8.5px;color:#7f9ab2;text-transform:uppercase;font-weight:900;letter-spacing:.5px}.bond-tile .b-value{font-size:16px;font-weight:950;margin-top:5px}.bond-tile .b-sub{font-size:9px;color:#718ba2;margin-top:4px;line-height:1.35}.bond-source{font-size:9.5px;color:#718ba2;margin-top:9px;line-height:1.45}
+.portfolio-risk-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:8px}.portfolio-peer{background:#061320;border:1px solid #173a56;border-radius:5px;padding:8px;font-size:10px}.portfolio-peer b{font-size:12px}
+.catalyst-strip{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:9px 0;padding:8px 10px;border:1px solid #28445f;border-radius:5px;background:#071827;font-size:10px}
+@media(max-width:760px){.quality-grid-v21{grid-template-columns:1fr 1fr}.trade-quality-decision{font-size:16px}}
+@media(max-width:480px){.quality-grid-v21{grid-template-columns:1fr 1fr}.live-feed-strip{align-items:flex-start}.feed-spread{width:100%}}
 </style>
 </head>
 <body>
@@ -1158,8 +1172,8 @@ td{border-bottom:1px solid #223b52}
     <div class="card header">
         <div class="brand-stack">
             <div class="terminal-kicker"><span class="kicker-dot"></span> HALIFAX QUANT RESEARCH TERMINAL</div>
-            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v20.5 Lite</span></span></div>
-            <div class="subtitle">Predictive swing research • Execution planning • Pattern radar • Point-in-time validation</div>
+            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v21.0 Lite</span></span></div>
+            <div class="subtitle">Predictive swing research • Live quote quality • Bonds + options • Execution planning • Point-in-time validation</div>
         </div>
         <div class="header-actions"><div class="badge system-badge"><span class="status-dot"></span><span id="engineStatus">Engine ready</span></div></div>
     </div>
@@ -1234,6 +1248,7 @@ td{border-bottom:1px solid #223b52}
                 <div class="field"><label>Session Data</label><div class="checkbox-row"><input id="prepost" type="checkbox"> Include pre/post market</div></div>
                 <div class="field"><label>Macro Guardrails</label><div class="checkbox-row"><input id="macroGuard" type="checkbox" checked> Sector, VIX &amp; ticker news</div></div>
                 <div class="field"><label>Economic Regime</label><div class="checkbox-row"><input id="econGuard" type="checkbox" checked> CPI, PCE, jobs &amp; rates</div></div>
+                <div class="field"><label>Public Quote Refresh</label><select id="liveRefresh"><option value="5" selected>Every 5 sec</option><option value="10">Every 10 sec</option><option value="30">Every 30 sec</option><option value="0">Off</option></select></div>
             </div>
         </details>
     </div>
@@ -1252,6 +1267,12 @@ td{border-bottom:1px solid #223b52}
         <div class="panel-title green">Options Direction — Plain English</div>
         <div id="optionsOutput"><div class="loading">Run an analysis to read the available options chain.</div></div>
         <div class="clean-note">Options are used as confirmation only. A LONG or SHORT options lean does not prove trader intent because option volume and open interest can include hedges and multi-leg spreads.</div>
+    </div>
+
+    <div id="bondCard" class="card bond-card" style="display:none">
+        <div class="panel-title cyan">Bond &amp; Rates Risk Dashboard</div>
+        <div id="bondOutput"><div class="loading">Run an analysis to load Treasury, duration and credit-risk context.</div></div>
+        <div class="clean-note">Bond/rates context is a macro guardrail. It can strengthen or weaken the macro score and trade quality, but it does not independently reverse a price-action LONG into a SHORT or vice versa.</div>
     </div>
 
 
@@ -1296,8 +1317,10 @@ td{border-bottom:1px solid #223b52}
                 <div class="field"><label>Maximum Loss From Cost (%)</label><input id="positionMaxLoss" type="number" value="8" min="1" max="40" step="0.5" oninput="savePositionSettings()"></div>
                 <div class="field"><label>Daily Review Time</label><input id="positionReviewTime" value="2:45 PM CT" readonly></div>
                 <div class="field"><label>Inverse ETF Guardrail</label><div class="checkbox-row"><input id="leverageGuard" type="checkbox" checked onchange="savePositionSettings()"> Detect inverse ETFs + verify underlying when known</div></div>
+                <div class="field full-mobile"><label>Portfolio / Watchlist Tickers (optional)</label><textarea id="portfolioTickers" rows="2" placeholder="NVDA, AMD, IREN" oninput="savePortfolioSettings()"></textarea></div>
             </div>
             <div id="positionCard" class="evidence-section" style="display:none"><div class="panel-title yellow">Active Position Guardrails</div><div id="positionOutput"></div></div>
+            <div id="portfolioRiskCard" class="evidence-section" style="display:none"><div class="panel-title cyan">Portfolio Correlation Guardrail</div><div id="portfolioRiskOutput"></div></div>
 
             <div class="section-divider"></div>
             <div class="panel-title cyan">Manual Economic Overrides</div>
@@ -1369,7 +1392,7 @@ const ECON_FALLBACK = {
     cpiYoY:3.5, cpiMoM:-0.4, coreCpiYoY:2.6, coreCpiMoM:0.0,
     pceYoY:3.7, pceMoM:-0.1, corePceYoY:3.3, corePceMoM:0.1,
     nfpChange:-23, prevNfpChange:57, unemployment:4.1, prevUnemployment:4.2,
-    fedFunds:3.63, treasury2y:4.25, treasury10y:4.69, shillerPE:42.56, shillerDate:"2026-08-14",
+    fedFunds:3.63, treasury2y:4.25, treasury10y:4.69, treasury30y:null, real10y:null, hyOAS:null, igOAS:null, shillerPE:42.56, shillerDate:"2026-08-14",
     dates:{cpi:"2026-06",pce:"2026-06",jobs:"2026-07",rates:"2026-08-06"}
 };
 const ECON_RATE_SENSITIVITY = {broad:.65,technology:1.15,semiconductors:1.10,communication:.75,discretionary:.85,retail:.75,staples:.35,energy:.25,financials:.25,banks:.15,healthcare:.45,biotech:.80,industrials:.55,transportation:.55,airlines:.45,materials:.45,realestate:1.35,utilities:1.10,homebuilders:1.40,goldminers:.55};
@@ -1580,20 +1603,31 @@ async function parseJsonResponse(r){
     try{return JSON.parse(text);}catch(e){throw new Error("invalid JSON");}
 }
 async function fetchJson(url){
-    if(responseCache.has(url))return responseCache.get(url);
+    const cached=responseCache.get(url);
+    if(cached&&cached.expires>Date.now())return cached.data;
+    if(cached)responseCache.delete(url);
     const alternate=yahooAlternateUrl(url);
     const read=async(u,t)=>{const data=await parseJsonResponse(await fetchWithTimeout(u,{},t));if(!jsonLooksUsable(data))throw new Error("unusable response");return data;};
     // Fast path: try both Yahoo hosts at the same time instead of waiting for serial timeouts.
     const direct=[read(url,4600)];if(alternate)direct.push(read(alternate,4600));
-    try{const data=await Promise.any(direct);responseCache.set(url,data);return data;}catch(e){}
+    try{const data=await Promise.any(direct);responseCache.set(url,{data,expires:Date.now()+15000});return data;}catch(e){}
     // Backup path: race independent browser proxies. This sharply reduces worst-case wait time.
     const proxyUrls=[
         `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
         `https://corsproxy.io/?${encodeURIComponent(url)}`,
         `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`
     ];
-    try{const data=await Promise.any(proxyUrls.map(u=>read(u,7000)));responseCache.set(url,data);return data;}
+    try{const data=await Promise.any(proxyUrls.map(u=>read(u,7000)));responseCache.set(url,{data,expires:Date.now()+15000});return data;}
     catch(e){console.warn("Halifax market-data failure",url,e);throw new Error("Market data could not be loaded. Yahoo/direct access and the backup browser proxies all failed or timed out. This is a data-source/CORS connection problem, not a trade-score calculation error.");}
+}
+async function fetchJsonFresh(url){
+    const sep=String(url).includes("?")?"&":"?",freshUrl=`${url}${sep}_hx=${Date.now()}`;
+    const alternate=yahooAlternateUrl(freshUrl);
+    const read=async(u,t)=>{const data=await parseJsonResponse(await fetchWithTimeout(u,{},t));if(!jsonLooksUsable(data))throw new Error("unusable response");return data;};
+    const direct=[read(freshUrl,4200)];if(alternate)direct.push(read(alternate,4200));
+    try{return await Promise.any(direct);}catch(e){}
+    const proxyUrls=[`https://api.allorigins.win/raw?url=${encodeURIComponent(freshUrl)}`,`https://corsproxy.io/?${encodeURIComponent(freshUrl)}`,`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(freshUrl)}`];
+    return Promise.any(proxyUrls.map(u=>read(u,6500)));
 }
 
 async function fetchTextWithFallback(url){
@@ -1620,9 +1654,9 @@ function pctChange(a,b){return Number.isFinite(a)&&Number.isFinite(b)&&b!==0?(a/
 function yoyFromSeries(series){if(!series||series.length<13)return null;return pctChange(series.at(-1).value,series.at(-13).value);}
 function momFromSeries(series){if(!series||series.length<2)return null;return pctChange(series.at(-1).value,series.at(-2).value);}
 function buildEconomicDataFromFred(series){
-    const cpi=series.CPIAUCSL||[],coreCpi=series.CPILFESL||[],pce=series.PCEPI||[],corePce=series.PCEPILFE||[],pay=series.PAYEMS||[],un=series.UNRATE||[],fed=series.DFF||[],y2=series.DGS2||[],y10=series.DGS10||[];
-    const latestPay=seriesLatest(pay),prevPay=pay.length>1?pay.at(-2):null,prev2Pay=pay.length>2?pay.at(-3):null,latestUn=seriesLatest(un),prevUn=un.length>1?un.at(-2):null,latestFed=seriesLatest(fed),latest2=seriesLatest(y2),latest10=seriesLatest(y10);
-    const data={source:"FRED / official source series",snapshotDate:[seriesLatest(cpi)?.date,seriesLatest(pce)?.date,latestPay?.date,latest2?.date].filter(Boolean).sort().at(-1)||new Date().toISOString().slice(0,10),cpiYoY:yoyFromSeries(cpi),cpiMoM:momFromSeries(cpi),coreCpiYoY:yoyFromSeries(coreCpi),coreCpiMoM:momFromSeries(coreCpi),pceYoY:yoyFromSeries(pce),pceMoM:momFromSeries(pce),corePceYoY:yoyFromSeries(corePce),corePceMoM:momFromSeries(corePce),nfpChange:latestPay&&prevPay?latestPay.value-prevPay.value:null,prevNfpChange:prevPay&&prev2Pay?prevPay.value-prev2Pay.value:null,unemployment:latestUn?.value??null,prevUnemployment:prevUn?.value??null,fedFunds:latestFed?.value??null,treasury2y:latest2?.value??null,treasury10y:latest10?.value??null,dates:{cpi:seriesLatest(cpi)?.date||"—",pce:seriesLatest(pce)?.date||"—",jobs:latestPay?.date||"—",rates:latest2?.date||"—"}};
+    const cpi=series.CPIAUCSL||[],coreCpi=series.CPILFESL||[],pce=series.PCEPI||[],corePce=series.PCEPILFE||[],pay=series.PAYEMS||[],un=series.UNRATE||[],fed=series.DFF||[],y2=series.DGS2||[],y10=series.DGS10||[],y30=series.DGS30||[],real10=series.DFII10||[],hy=series.BAMLH0A0HYM2||[],ig=series.BAMLC0A0CM||[];
+    const latestPay=seriesLatest(pay),prevPay=pay.length>1?pay.at(-2):null,prev2Pay=pay.length>2?pay.at(-3):null,latestUn=seriesLatest(un),prevUn=un.length>1?un.at(-2):null,latestFed=seriesLatest(fed),latest2=seriesLatest(y2),latest10=seriesLatest(y10),latest30=seriesLatest(y30),latestReal10=seriesLatest(real10),latestHY=seriesLatest(hy),latestIG=seriesLatest(ig);
+    const data={source:"FRED / official source series",snapshotDate:[seriesLatest(cpi)?.date,seriesLatest(pce)?.date,latestPay?.date,latest2?.date,latest30?.date,latestReal10?.date,latestHY?.date].filter(Boolean).sort().at(-1)||new Date().toISOString().slice(0,10),cpiYoY:yoyFromSeries(cpi),cpiMoM:momFromSeries(cpi),coreCpiYoY:yoyFromSeries(coreCpi),coreCpiMoM:momFromSeries(coreCpi),pceYoY:yoyFromSeries(pce),pceMoM:momFromSeries(pce),corePceYoY:yoyFromSeries(corePce),corePceMoM:momFromSeries(corePce),nfpChange:latestPay&&prevPay?latestPay.value-prevPay.value:null,prevNfpChange:prevPay&&prev2Pay?prevPay.value-prev2Pay.value:null,unemployment:latestUn?.value??null,prevUnemployment:prevUn?.value??null,fedFunds:latestFed?.value??null,treasury2y:latest2?.value??null,treasury10y:latest10?.value??null,treasury30y:latest30?.value??null,real10y:latestReal10?.value??null,hyOAS:latestHY?.value??null,igOAS:latestIG?.value??null,dates:{cpi:seriesLatest(cpi)?.date||"—",pce:seriesLatest(pce)?.date||"—",jobs:latestPay?.date||"—",rates:latest2?.date||"—",rates30:latest30?.date||"—",realYield:latestReal10?.date||"—",credit:latestHY?.date||"—"}};
     for(const [k,v] of Object.entries(ECON_FALLBACK))if((data[k]==null||!Number.isFinite(data[k]))&&Number.isFinite(v))data[k]=v;
     return data;
 }
@@ -1667,6 +1701,28 @@ function optionRatioSignal(putValue,callValue,kind){
     if(ratio>=1.10)return {points:-1,ratio,text:`puts/calls ${ratio.toFixed(2)} — mildly put-heavy`};
     return {points:0,ratio,text:`puts/calls ${ratio.toFixed(2)} — balanced`};
 }
+function optionSpreadPct(c){
+    const bid=optionsFinite(c?.bid),ask=optionsFinite(c?.ask),mark=optionMark(c);
+    if(!(mark>0)||bid==null||ask==null||ask<bid)return null;
+    return 100*(ask-bid)/mark;
+}
+function normalPdf(x){return Math.exp(-.5*x*x)/Math.sqrt(2*Math.PI);}
+function normalCdf(x){
+    const sign=x<0?-1:1,z=Math.abs(x)/Math.sqrt(2),t=1/(1+.3275911*z),a1=.254829592,a2=-.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429;
+    const erf=1-(((((a5*t+a4)*t)+a3)*t+a2)*t+a1)*t*Math.exp(-z*z);
+    return .5*(1+sign*erf);
+}
+function optionApproxGreeks({spot,strike,days,iv,rate=0,type='call'}){
+    if(!(spot>0)||!(strike>0)||!(days>0)||!(iv>0)||!Number.isFinite(rate))return null;
+    const t=Math.max(days/365,1/365),sqrtT=Math.sqrt(t),d1=(Math.log(spot/strike)+(rate+.5*iv*iv)*t)/(iv*sqrtT),d2=d1-iv*sqrtT,pdf=normalPdf(d1),isCall=type==='call';
+    const delta=isCall?normalCdf(d1):normalCdf(d1)-1,gamma=pdf/(spot*iv*sqrtT),vega=spot*pdf*sqrtT/100;
+    const thetaAnnual=-(spot*pdf*iv)/(2*sqrtT)-(isCall?rate*strike*Math.exp(-rate*t)*normalCdf(d2):-rate*strike*Math.exp(-rate*t)*normalCdf(-d2));
+    return {delta,gamma,vega,theta:thetaAnnual/365};
+}
+function topOIWall(rows){
+    const best=(rows||[]).filter(x=>optionsFinite(x?.openInterest)>0).sort((a,b)=>(optionsFinite(b.openInterest)||0)-(optionsFinite(a.openInterest)||0))[0];
+    return best?{strike:optionsFinite(best.strike),oi:optionsFinite(best.openInterest)||0}:null;
+}
 async function loadOptionsOutlook(ticker,style="swing",spotHint=null){
     const base=await fetchOptionChain(ticker);
     const expiry=chooseOptionExpiry(base?.expirationDates,style);
@@ -1694,19 +1750,29 @@ async function loadOptionsOutlook(ticker,style="swing",spotHint=null){
     const atm=common[0]||null,callMark=atm?optionMark(atm.call):null,putMark=atm?optionMark(atm.put):null;
     const pricedMove=(callMark!=null&&putMark!=null)?callMark+putMark:null,pricedMovePct=pricedMove!=null?pricedMove/spot*100:null;
     const callIV=optionsMedian(calls.map(x=>x.impliedVolatility)),putIV=optionsMedian(puts.map(x=>x.impliedVolatility)),ivSkew=(callIV!=null&&putIV!=null)?(putIV-callIV)*100:null;
+    const spreads=[...calls,...puts].map(optionSpreadPct).filter(Number.isFinite),medianSpreadPct=optionsMedian(spreads);
+    const liquidityLabel=medianSpreadPct==null?"Unknown":medianSpreadPct<=8?"TIGHT":medianSpreadPct<=18?"NORMAL":medianSpreadPct<=35?"WIDE":"VERY WIDE";
+    const unusual=[...calls.map(x=>({side:"CALL",c:x})),...puts.map(x=>({side:"PUT",c:x}))].map(x=>{const v=optionsFinite(x.c.volume)||0,oi=optionsFinite(x.c.openInterest)||0;return {...x,volume:v,oi,ratio:oi>0?v/oi:(v>0?99:0)};}).filter(x=>x.volume>=50&&x.ratio>=1.5).sort((a,b)=>b.ratio-a.ratio||b.volume-a.volume).slice(0,4).map(x=>({side:x.side,strike:optionsFinite(x.c.strike),volume:x.volume,openInterest:x.oi,volumeOiRatio:x.ratio}));
+    const callWall=topOIWall(calls),putWall=topOIWall(puts);
+    const atmCallIV=optionsFinite(atm?.call?.impliedVolatility),atmPutIV=optionsFinite(atm?.put?.impliedVolatility),rate=(getOptionalNumber("econ2y")??economicState?.treasury2y);
+    const callGreeks=atm&&atmCallIV&&Number.isFinite(rate)?optionApproxGreeks({spot,strike:atm.strike,days,iv:atmCallIV,rate:rate/100,type:'call'}):null;
+    const putGreeks=atm&&atmPutIV&&Number.isFinite(rate)?optionApproxGreeks({spot,strike:atm.strike,days,iv:atmPutIV,rate:rate/100,type:'put'}):null;
     const sentence=direction==="LONG"?`Options activity is leaning bullish through ${expiryText}. Near-money calls are stronger than puts on the available volume/open-interest measures.`:direction==="SHORT"?`Options activity is leaning bearish through ${expiryText}. Near-money puts are stronger than calls on the available volume/open-interest measures.`:`Options activity is mixed through ${expiryText}. Calls and puts do not agree strongly enough for a clean directional read.`;
-    return {available:true,ticker,spot,expiry,expiryText,days,timeframe,direction,cls,arrow,confidence,score,coverage,callVol,putVol,callOI,putOI,volPCR:volSig.ratio??null,oiPCR:oiSig.ratio??null,volText:volSig.text,oiText:oiSig.text,pricedMove,pricedMovePct,atmStrike:atm?.strike??null,callIV,putIV,ivSkew,sentence,source:"Yahoo Finance listed-options chain"};
+    return {available:true,ticker,spot,expiry,expiryText,days,timeframe,direction,cls,arrow,confidence,score,coverage,callVol,putVol,callOI,putOI,volPCR:volSig.ratio??null,oiPCR:oiSig.ratio??null,volText:volSig.text,oiText:oiSig.text,pricedMove,pricedMovePct,atmStrike:atm?.strike??null,callIV,putIV,ivSkew,medianSpreadPct,liquidityLabel,unusual,callWall,putWall,callGreeks,putGreeks,ivRank:null,gexAvailable:false,sentence,source:"Yahoo Finance listed-options chain"};
 }
 function renderOptionsOutlook(outlook){
     const card=document.getElementById("optionsCard"),box=document.getElementById("optionsOutput");if(!card||!box)return;card.style.display="block";
     if(!outlook?.available){box.innerHTML='<div class="loading">Options chain data are unavailable for this ticker right now. Halifax will not guess an options direction.</div>';return;}
     const move=Number.isFinite(outlook.pricedMove)?`${money(outlook.pricedMove)} (${outlook.pricedMovePct.toFixed(1)}%)`:"Unavailable";
     const vol=Number.isFinite(outlook.volPCR)?outlook.volPCR.toFixed(2):"—",oi=Number.isFinite(outlook.oiPCR)?outlook.oiPCR.toFixed(2):"—";
-    box.innerHTML=`<div class="options-hero"><div class="options-callout"><div class="options-eyebrow">What options are saying</div><div class="options-direction ${outlook.cls}">${outlook.arrow} ${escapeHTML(outlook.direction)}</div><div class="options-time">Time frame: ${escapeHTML(outlook.timeframe)} • through ${escapeHTML(outlook.expiryText)}</div><div class="options-sentence">${escapeHTML(outlook.sentence)}</div><div class="options-confidence">Confidence: ${escapeHTML(outlook.confidence)}</div></div><div class="options-stats"><div class="options-stat"><div class="o-label">Options-priced move</div><div class="o-value">± ${move}</div><div class="o-sub">Approximate ATM straddle cost through this expiration.</div></div><div class="options-stat"><div class="o-label">Put / Call Volume</div><div class="o-value ${Number.isFinite(outlook.volPCR)?(outlook.volPCR<.9?'green':outlook.volPCR>1.1?'red':'yellow'):'yellow'}">${vol}</div><div class="o-sub">Below 1 = more call volume; above 1 = more put volume.</div></div><div class="options-stat"><div class="o-label">Put / Call Open Interest</div><div class="o-value ${Number.isFinite(outlook.oiPCR)?(outlook.oiPCR<.9?'green':outlook.oiPCR>1.1?'red':'yellow'):'yellow'}">${oi}</div><div class="o-sub">Existing listed positioning near the current stock price.</div></div><div class="options-stat"><div class="o-label">ATM IV / Put Skew</div><div class="o-value">${outlook.callIV!=null&&outlook.putIV!=null?`${((outlook.callIV+outlook.putIV)/2*100).toFixed(0)}% IV`:"—"}</div><div class="o-sub">${Number.isFinite(outlook.ivSkew)?`Put IV minus call IV: ${outlook.ivSkew>=0?'+':''}${outlook.ivSkew.toFixed(1)} pts.`:"Skew unavailable."}</div></div></div></div><div class="options-source">Source: ${escapeHTML(outlook.source)} when the feed responds. Halifax reads near-money volume and open interest only; it does not claim to know whether a trade was opening, closing, hedging, or part of a spread.</div>`;
+    const unusual=outlook.unusual?.length?outlook.unusual.map(x=>`${x.side} ${money(x.strike)} • vol/OI ${x.volumeOiRatio.toFixed(1)}×`).join("<br>"):"No near-money contract passed the unusual-volume threshold.";
+    const greeks=outlook.callGreeks&&outlook.putGreeks?`C Δ ${outlook.callGreeks.delta.toFixed(2)} / P Δ ${outlook.putGreeks.delta.toFixed(2)} • Γ ${outlook.callGreeks.gamma.toFixed(4)} • Θ ${money(outlook.callGreeks.theta)}/day`:"Unavailable";
+    box.innerHTML=`<div class="options-hero"><div class="options-callout"><div class="options-eyebrow">What options are saying</div><div class="options-direction ${outlook.cls}">${outlook.arrow} ${escapeHTML(outlook.direction)}</div><div class="options-time">Time frame: ${escapeHTML(outlook.timeframe)} • through ${escapeHTML(outlook.expiryText)}</div><div class="options-sentence">${escapeHTML(outlook.sentence)}</div><div class="options-confidence">Confidence: ${escapeHTML(outlook.confidence)}</div></div><div class="options-stats"><div class="options-stat"><div class="o-label">Options-priced move</div><div class="o-value">± ${move}</div><div class="o-sub">Approximate ATM straddle cost through this expiration.</div></div><div class="options-stat"><div class="o-label">Put / Call Volume</div><div class="o-value ${Number.isFinite(outlook.volPCR)?(outlook.volPCR<.9?'green':outlook.volPCR>1.1?'red':'yellow'):'yellow'}">${vol}</div><div class="o-sub">Below 1 = more call volume; above 1 = more put volume.</div></div><div class="options-stat"><div class="o-label">Put / Call Open Interest</div><div class="o-value ${Number.isFinite(outlook.oiPCR)?(outlook.oiPCR<.9?'green':outlook.oiPCR>1.1?'red':'yellow'):'yellow'}">${oi}</div><div class="o-sub">Existing listed positioning near the current stock price.</div></div><div class="options-stat"><div class="o-label">ATM IV / Put Skew</div><div class="o-value">${outlook.callIV!=null&&outlook.putIV!=null?`${((outlook.callIV+outlook.putIV)/2*100).toFixed(0)}% IV`:"—"}</div><div class="o-sub">${Number.isFinite(outlook.ivSkew)?`Put IV minus call IV: ${outlook.ivSkew>=0?'+':''}${outlook.ivSkew.toFixed(1)} pts.`:"Skew unavailable."}</div></div><div class="options-stat"><div class="o-label">Option Spread Quality</div><div class="o-value ${outlook.liquidityLabel==='TIGHT'?'green':outlook.liquidityLabel.includes('WIDE')?'red':'yellow'}">${escapeHTML(outlook.liquidityLabel)}</div><div class="o-sub">${Number.isFinite(outlook.medianSpreadPct)?`Median near-money bid/ask spread ${outlook.medianSpreadPct.toFixed(1)}% of mark.`:"Bid/ask coverage unavailable."}</div></div><div class="options-stat"><div class="o-label">ATM Approx. Greeks</div><div class="o-value" style="font-size:12px">${escapeHTML(greeks)}</div><div class="o-sub">European-model approximation; dividends and early exercise are not modeled.</div></div><div class="options-stat"><div class="o-label">Open-Interest Walls</div><div class="o-value" style="font-size:12px">Call ${outlook.callWall?money(outlook.callWall.strike):"—"} / Put ${outlook.putWall?money(outlook.putWall.strike):"—"}</div><div class="o-sub">Largest near-money listed OI strikes. This is an OI-wall proxy, not dealer gamma exposure.</div></div><div class="options-stat"><div class="o-label">IV Rank / Dealer GEX</div><div class="o-value yellow">NOT CLAIMED</div><div class="o-sub">A single public chain does not provide a verified historical IV-rank series or dealer-position sign needed for true GEX.</div></div></div></div><div class="options-stat" style="margin-top:8px"><div class="o-label">Unusual volume vs open interest</div><div class="o-value" style="font-size:12px">${unusual}</div><div class="o-sub">Flag requires at least 50 contracts and volume/open-interest ≥ 1.5×. It can still represent hedges or spreads.</div></div><div class="options-source">Source: ${escapeHTML(outlook.source)} when the feed responds. Halifax uses listed-chain fields only and does not claim to know whether a trade was opening, closing, hedging, or part of a spread. Options remain confirmation-only.</div>`;
 }
 function optionsInlineHTML(outlook){
     if(!outlook?.available)return '';
-    return `<div class="options-inline"><div><div class="oi-label">Options say</div><div class="oi-main ${outlook.cls}">${outlook.arrow} ${escapeHTML(outlook.direction)} <span class="tiny">• ${escapeHTML(outlook.confidence)} confidence</span></div><div class="oi-note">${escapeHTML(outlook.sentence)}</div></div><div><div class="oi-label">Options time frame</div><div class="oi-main">${escapeHTML(outlook.timeframe)}</div><div class="oi-note">Through ${escapeHTML(outlook.expiryText)}${Number.isFinite(outlook.pricedMove)?` • priced move about ±${money(outlook.pricedMove)}`:""}</div></div></div>`;
+    const spread=Number.isFinite(outlook.medianSpreadPct)?` • spread ${outlook.medianSpreadPct.toFixed(1)}%`:'';
+    return `<div class="options-inline"><div><div class="oi-label">Options say</div><div class="oi-main ${outlook.cls}">${outlook.arrow} ${escapeHTML(outlook.direction)} <span class="tiny">• ${escapeHTML(outlook.confidence)} confidence</span></div><div class="oi-note">${escapeHTML(outlook.sentence)}</div></div><div><div class="oi-label">Options time frame</div><div class="oi-main">${escapeHTML(outlook.timeframe)}</div><div class="oi-note">Through ${escapeHTML(outlook.expiryText)}${Number.isFinite(outlook.pricedMove)?` • priced move about ±${money(outlook.pricedMove)}`:""}${spread}</div></div></div>`;
 }
 // ===================== End Halifax v20.0 Options Outlook =====================
 
@@ -1733,7 +1799,7 @@ async function loadShillerPE(showStatus=false){
     }
 }
 function calculateEconomicProbability(data=null){
-    const d=data||economicState||ECON_FALLBACK,cpi=getOptionalNumber("econCpi")??d.cpiYoY,coreCpi=getOptionalNumber("econCoreCpi")??d.coreCpiYoY,pce=getOptionalNumber("econPce")??d.pceYoY,corePce=getOptionalNumber("econCorePce")??d.corePceYoY,nfp=getOptionalNumber("econNfp")??d.nfpChange,unemp=getOptionalNumber("econUnemp")??d.unemployment,fed=getOptionalNumber("econFed")??d.fedFunds,y2=getOptionalNumber("econ2y")??d.treasury2y,y10=getOptionalNumber("econ10y")??d.treasury10y,cape=getOptionalNumber("econShiller")??shillerState?.value??d.shillerPE;
+    const d=data||economicState||ECON_FALLBACK,cpi=getOptionalNumber("econCpi")??d.cpiYoY,coreCpi=getOptionalNumber("econCoreCpi")??d.coreCpiYoY,pce=getOptionalNumber("econPce")??d.pceYoY,corePce=getOptionalNumber("econCorePce")??d.corePceYoY,nfp=getOptionalNumber("econNfp")??d.nfpChange,unemp=getOptionalNumber("econUnemp")??d.unemployment,fed=getOptionalNumber("econFed")??d.fedFunds,y2=getOptionalNumber("econ2y")??d.treasury2y,y10=getOptionalNumber("econ10y")??d.treasury10y,y30=d.treasury30y??null,real10y=d.real10y??null,hyOAS=d.hyOAS??null,igOAS=d.igOAS??null,cape=getOptionalNumber("econShiller")??shillerState?.value??d.shillerPE;
     const capeContext=shillerBand(cape);
     const cpiCons=getOptionalNumber("econCpiCons"),coreCpiCons=getOptionalNumber("econCoreCpiCons"),pceCons=getOptionalNumber("econPceCons"),corePceCons=getOptionalNumber("econCorePceCons"),nfpCons=getOptionalNumber("econNfpCons"),unempCons=getOptionalNumber("econUnempCons");
     const cpiLevel=((cpi-2.3)/1.4)*.45+((coreCpi-2.3)/1.2)*.55,pceLevel=((pce-2.0)/1.4)*.40+((corePce-2.0)/1.2)*.60;
@@ -1742,7 +1808,7 @@ function calculateEconomicProbability(data=null){
     const cpiPressureScore=clamp(cpiLevel+cpiMomentum*.45+cpiSurprise*.75,-4,4),pcePressureScore=clamp(pceLevel+pceMomentum*.45+pceSurprise*.75,-4,4),inflationSurprise=cpiSurprise*.48+pceSurprise*.52,inflationScore=clamp(cpiPressureScore*.45+pcePressureScore*.55,-4,4),nfpBase=clamp((nfp-100)/160,-3,3),unempTrend=Number.isFinite(d.prevUnemployment)?clamp((d.prevUnemployment-unemp)/.25,-2,2):0;
     const jobsSurprise=consensusSurprise(nfp,nfpCons,75)*.7+(Number.isFinite(unempCons)?clamp((unempCons-unemp)/.15,-3,3):0)*.3,laborScore=clamp(nfpBase*.62+unempTrend*.38+jobsSurprise*.6,-4,4),weakGrowthScore=clamp((-nfpBase)*.65+clamp((unemp-(d.prevUnemployment??unemp))/.20,-2,2)*.35-jobsSurprise*.25,-4,4),yieldGap=Number.isFinite(y2)&&Number.isFinite(fed)?clamp((y2-fed)/1.25,-2.5,2.5):0,curve=Number.isFinite(y10)&&Number.isFinite(y2)?y10-y2:null,rateScore=clamp(inflationScore*.62+laborScore*.22+yieldGap*.55,-4,4);
     const cpiHotProb=probabilityFromScore(cpiPressureScore*1.12),pceHotProb=probabilityFromScore(pcePressureScore*1.12),inflationProb=probabilityFromScore(inflationScore*1.15),laborProb=probabilityFromScore(laborScore*1.10),weakGrowthProb=probabilityFromScore(weakGrowthScore*1.10),hawkishProb=probabilityFromScore(rateScore*1.10),easingProb=100-hawkishProb,goldilocksGrowth=1-Math.min(1,Math.abs(laborScore-.15)/2.4),equityScore=clamp((-inflationScore*.50-rateScore*.38)+(goldilocksGrowth-.5)*1.05-weakGrowthScore*.42,-4,4),equityTailwindProb=probabilityFromScore(equityScore*1.10),surpriseCount=[cpiCons,coreCpiCons,pceCons,corePceCons,nfpCons,unempCons].filter(Number.isFinite).length,surpriseScore=clamp(-inflationSurprise*.65+(inflationScore>0?-jobsSurprise*.20:jobsSurprise*.25),-3,3);
-    return {cpi,coreCpi,pce,corePce,nfp,unemp,fed,y2,y10,curve,cape,capeBand:capeContext.label,capeClass:capeContext.cls,capeAdjustment:capeContext.adjustment,capeDate:shillerState?.date||d.shillerDate||"—",capeSource:shillerState?.source||"Robert Shiller data",cpiPressureScore,pcePressureScore,inflationScore,laborScore,weakGrowthScore,rateScore,equityScore,cpiHotProb,pceHotProb,inflationProb,laborProb,weakGrowthProb,hawkishProb,easingProb,equityTailwindProb,inflationSurprise,jobsSurprise,surpriseScore,surpriseCount,source:d.source||"Manual",snapshotDate:d.snapshotDate||"—",dates:d.dates||{}};
+    return {cpi,coreCpi,pce,corePce,nfp,unemp,fed,y2,y10,y30,real10y,hyOAS,igOAS,curve,cape,capeBand:capeContext.label,capeClass:capeContext.cls,capeAdjustment:capeContext.adjustment,capeDate:shillerState?.date||d.shillerDate||"—",capeSource:shillerState?.source||"Robert Shiller data",cpiPressureScore,pcePressureScore,inflationScore,laborScore,weakGrowthScore,rateScore,equityScore,cpiHotProb,pceHotProb,inflationProb,laborProb,weakGrowthProb,hawkishProb,easingProb,equityTailwindProb,inflationSurprise,jobsSurprise,surpriseScore,surpriseCount,source:d.source||"Manual",snapshotDate:d.snapshotDate||"—",dates:d.dates||{}};
 }
 function economicSectorImpact(profileKey,econ){
     if(document.getElementById("econGuard")?.checked===false||!econ)return {applies:false,adjustment:0,reasons:[],blockLong:false,blockShort:false};
@@ -1765,7 +1831,7 @@ function recalculateEconomicProbability(source="manual"){if(source==="manual"&&e
 async function loadOfficialEconomicData(showStatus=false){
     const btn=document.getElementById("econLoadBtn");if(btn)btn.disabled=true;if(showStatus)setStatus("Refreshing CPI, PCE, jobs and rates…","var(--yellow)");
     try{
-        const ids=["CPIAUCSL","CPILFESL","PCEPI","PCEPILFE","PAYEMS","UNRATE","DFF","DGS2","DGS10"],joined=ids.join(",");
+        const ids=["CPIAUCSL","CPILFESL","PCEPI","PCEPILFE","PAYEMS","UNRATE","DFF","DGS2","DGS10","DGS30","DFII10","BAMLH0A0HYM2","BAMLC0A0CM"],joined=ids.join(",");
         let csv=await fetchTextWithFallback(`https://fred.stlouisfed.org/graph/fredgraph.csv?id=${joined}`),series=parseFredCSV(csv);
         if(ids.some(id=>!series[id]?.length)){
             const parts=await mapLimit(ids,3,async id=>{try{const one=parseFredCSV(await fetchTextWithFallback(`https://fred.stlouisfed.org/graph/fredgraph.csv?id=${id}`));return [id,one[id]||[]];}catch(e){return [id,[]];}});series=Object.fromEntries(parts);
@@ -2122,7 +2188,38 @@ function resolveSectorProfile(ticker,quote=null,{ignoreOverride=false}={}){
     return {...SECTOR_PROFILES[key],key,source,reportedSector:sector,reportedIndustry:industry};
 }
 
-function buildMacroContext(ticker,profile,{sector=null,vix=null,spy=null,drivers={},news=[]}={}){
+function buildBondMarketContext(profile,bonds={},econ=null){
+    const rateSens=ECON_RATE_SENSITIVITY[profile?.key]??ECON_RATE_SENSITIVITY.broad;
+    const tlt=bonds?.TLT||null,ief=bonds?.IEF||null,hyg=bonds?.HYG||null,lqd=bonds?.LQD||null;
+    const curve=Number.isFinite(econ?.curve)?econ.curve:null,curve30=Number.isFinite(econ?.y30)&&Number.isFinite(econ?.y10)?econ.y30-econ.y10:null;
+    const real10=Number.isFinite(econ?.real10y)?econ.real10y:null,hyOAS=Number.isFinite(econ?.hyOAS)?econ.hyOAS:null,igOAS=Number.isFinite(econ?.igOAS)?econ.igOAS:null;
+    const creditRelative=hyg&&lqd?hyg.roc20-lqd.roc20:null;
+    let adjustment=0,riskPoints=0,tailwindPoints=0;const reasons=[];
+    if(tlt){
+        if(tlt.roc20<=-4){const p=Math.max(1,Math.round(4*rateSens));adjustment-=p;riskPoints+=rateSens>=1?2:1;reasons.push(`TLT is down ${Math.abs(tlt.roc20).toFixed(1)}% over 20 bars, a rising-long-rate headwind weighted by ${profile.label} rate sensitivity.`);}
+        else if(tlt.roc20>=4){const p=Math.max(1,Math.round(3*rateSens));adjustment+=p;tailwindPoints+=1;reasons.push(`TLT is up ${tlt.roc20.toFixed(1)}% over 20 bars, signaling easing long-rate pressure for ${profile.label}.`);}
+    }
+    if(ief&&Math.abs(ief.roc20)>=2.5)reasons.push(`IEF 20-bar move is ${signed(ief.roc20,1)}%, confirming the direction of intermediate Treasury prices.`);
+    if(Number.isFinite(creditRelative)){
+        if(creditRelative<=-1.5){adjustment-=4;riskPoints+=2;reasons.push(`High-yield credit is lagging investment-grade by ${Math.abs(creditRelative).toFixed(1)} points over 20 bars, a risk-off credit signal.`);}
+        else if(creditRelative>=1.5){adjustment+=3;tailwindPoints+=1;reasons.push(`High-yield credit is outperforming investment-grade by ${creditRelative.toFixed(1)} points over 20 bars, a risk-on credit signal.`);}
+    }
+    if(Number.isFinite(real10)){
+        if(real10>=2.25){const p=Math.max(1,Math.round(3*rateSens));adjustment-=p;riskPoints+=rateSens>=1?1:0;reasons.push(`10Y real yield is ${real10.toFixed(2)}%, which raises the discount-rate hurdle for rate-sensitive equities.`);}
+        else if(real10<=1.25){const p=Math.max(1,Math.round(2*rateSens));adjustment+=p;tailwindPoints+=1;reasons.push(`10Y real yield is ${real10.toFixed(2)}%, a comparatively easier real-rate backdrop.`);}
+    }
+    if(Number.isFinite(hyOAS)){
+        if(hyOAS>=5.0){adjustment-=4;riskPoints+=2;reasons.push(`High-yield option-adjusted spread is ${hyOAS.toFixed(2)}%, indicating elevated credit stress.`);}
+        else if(hyOAS>=4.0){adjustment-=2;riskPoints+=1;reasons.push(`High-yield option-adjusted spread is ${hyOAS.toFixed(2)}%, above a low-stress range.`);}
+        else if(hyOAS<=3.0){adjustment+=1;tailwindPoints+=1;}
+    }
+    if(Number.isFinite(curve)&&curve<=-.50){adjustment-=1;riskPoints+=1;reasons.push(`10Y-2Y Treasury curve is inverted by ${Math.abs(curve).toFixed(2)} percentage points.`);}
+    adjustment=Math.round(clamp(adjustment,-10,8));
+    const riskLevel=riskPoints>=5?"HIGH":riskPoints>=3?"ELEVATED":"NORMAL";
+    return {applies:!!(tlt||ief||hyg||lqd||Number.isFinite(curve)||Number.isFinite(real10)||Number.isFinite(hyOAS)),adjustment,riskPoints,tailwindPoints,riskLevel,rateSensitivity:rateSens,curve,curve30,real10y:real10,hyOAS,igOAS,creditRelative,tltRoc:tlt?.roc20??null,iefRoc:ief?.roc20??null,hygRoc:hyg?.roc20??null,lqdRoc:lqd?.roc20??null,reasons};
+}
+
+function buildMacroContext(ticker,profile,{sector=null,vix=null,spy=null,drivers={},bonds={},news=[]}={}){
     const sectorApplies=document.getElementById("macroGuard")?.checked!==false,econApplies=document.getElementById("econGuard")?.checked!==false,applies=sectorApplies||econApplies;
     if(!applies)return {applies:false,adjustment:0,blockLong:false,blockShort:false,riskLevel:"N/A",reasons:[],profileKey:profile.key,profileLabel:profile.label};
     let adjustment=0,riskPoints=0,tailwindPoints=0;const reasons=[];
@@ -2166,6 +2263,8 @@ function buildMacroContext(ticker,profile,{sector=null,vix=null,spy=null,drivers
     if(newsRisk.positive.length){tailwindPoints+=1;reasons.push(`Positive headline offsets: ${newsRisk.positive.slice(0,3).join(", ")}.`);}
     const economicProbability=calculateEconomicProbability(economicState||ECON_FALLBACK),economicImpact=economicSectorImpact(profile.key,economicProbability);
     if(economicImpact.applies){adjustment+=economicImpact.adjustment;reasons.push(...economicImpact.reasons);if(economicImpact.adjustment<=-8)riskPoints+=2;else if(economicImpact.adjustment<=-4)riskPoints+=1;if(economicImpact.adjustment>=5)tailwindPoints+=1;}
+    const bondContext=buildBondMarketContext(profile,bonds,economicProbability);
+    if(bondContext.applies){adjustment+=bondContext.adjustment;reasons.push(...bondContext.reasons);riskPoints+=bondContext.riskPoints;tailwindPoints+=bondContext.tailwindPoints;}
     adjustment=Math.max(-55,Math.min(35,adjustment));
     const riskLevel=riskPoints>=6?"HIGH":riskPoints>=3?"ELEVATED":"NORMAL";
     const bias=adjustment<=-18?"HEADWIND":adjustment>=12?"TAILWIND":"MIXED";
@@ -2173,7 +2272,7 @@ function buildMacroContext(ticker,profile,{sector=null,vix=null,spy=null,drivers
     const blockShort=(adjustment>=18&&tailwindPoints>=3&&sectorTrend==="BULLISH")||economicImpact.blockShort;
     if(blockLong)reasons.push(`Sector guardrail blocks a new LONG until the ${profile.label.toLowerCase()} backdrop improves.`);
     if(blockShort)reasons.push(`Sector guardrail blocks a new SHORT because sector and macro conditions are strongly supportive.`);
-    return {applies:true,adjustment,blockLong,blockShort,riskLevel,bias,reasons,profileKey:profile.key,profileLabel:profile.label,profileSource:profile.source,sectorETF:profile.etf,sectorTrend,sectorRelative,sectorRoc:sector?.roc20??null,spyTrend,vixPrice,driverReadings,newsRisk,economicProbability,economicImpact};
+    return {applies:true,adjustment,blockLong,blockShort,riskLevel,bias,reasons,profileKey:profile.key,profileLabel:profile.label,profileSource:profile.source,sectorETF:profile.etf,sectorTrend,sectorRelative,sectorRoc:sector?.roc20??null,spyTrend,vixPrice,driverReadings,newsRisk,economicProbability,economicImpact,bondContext};
 }
 
 function timeframePredictionWeight(tf,style){
@@ -2378,9 +2477,12 @@ function marketRegime(data){
 }
 
 function calculateTrade(data,analysis){
-    const account=Math.max(0,Number(document.getElementById("account").value)||0),riskPct=clamp(Number(document.getElementById("risk").value)||1,.1,5),eventRiskMultiplier=clamp(analysis.fundamentalEventContext?.riskMultiplier??1,.30,1),effectiveRiskPct=riskPct*eventRiskMultiplier,maxPositionPct=clamp(Number(document.getElementById("maxPosition").value)||20,1,100);
+    const account=Math.max(0,Number(document.getElementById("account").value)||0),riskPct=clamp(Number(document.getElementById("risk").value)||1,.1,5);
+    const eventRiskMultiplier=clamp(analysis.fundamentalEventContext?.riskMultiplier??1,.30,1),portfolioRiskMultiplier=clamp(analysis.portfolioRiskContext?.riskMultiplier??1,.50,1),combinedRiskMultiplier=clamp(eventRiskMultiplier*portfolioRiskMultiplier,.20,1),effectiveRiskPct=riskPct*combinedRiskMultiplier,maxPositionPct=clamp(Number(document.getElementById("maxPosition").value)||20,1,100);
     const atrMult=clamp(Number(document.getElementById("atrMultiple").value)||1.7,.5,5),maxStopPct=clamp(Number(document.getElementById("maxStopPct").value)||8,1,25),rewardMult=clamp(Number(document.getElementById("rewardMultiple").value)||2.5,1,10),slippagePct=clamp(Number(document.getElementById("slippage").value)||0,0,3)/100;
-    const isShort=analysis.direction==="SHORT",isTrade=analysis.direction!=="WAIT",marketEntry=isShort?data.price*(1-slippagePct):data.price*(1+slippagePct);
+    const liveCtx=analysis.liveQuoteContext||(lastAnalysis?.primary?.ticker===data.ticker?lastAnalysis.liveQuoteContext:null);
+    const executionPrice=Number.isFinite(liveCtx?.price)&&liveCtx.price>0?liveCtx.price:data.price;
+    const isShort=analysis.direction==="SHORT",isTrade=analysis.direction!=="WAIT",marketEntry=isShort?executionPrice*(1-slippagePct):executionPrice*(1+slippagePct);
     const anchor=isShort?Math.min(marketEntry,data.ema9||marketEntry):Math.max(marketEntry,data.ema9||marketEntry);
 
     // Use ATR plus recent structure, but never allow an old weekly/monthly high or bad data point
@@ -2422,11 +2524,13 @@ function calculateTrade(data,analysis){
     if(isShort&&data.price<data.bbLower)warnings.push("Short entry is extended below the lower volatility band; avoid chasing and wait for a controlled entry.");
     if(Math.abs(data.gapPct)>=4)warnings.push(`Large opening gap detected (${signed(data.gapPct,2)}%); spreads and reversal risk may be elevated.`);
     if(analysis.macroContext?.applies&&(analysis.macroContext.riskLevel!=="NORMAL"||Math.abs(analysis.macroContext.adjustment)>=8))warnings.push(`${analysis.macroContext.profileLabel} sector guardrail: ${analysis.macroContext.riskLevel} risk with a ${analysis.macroContext.adjustment} point score adjustment.`);
-    if(eventRiskMultiplier<.999)warnings.push(`Fundamental/event guardrail reduced planned risk to ${Math.round(eventRiskMultiplier*100)}% of your normal ${riskPct.toFixed(2)}% risk setting (effective ${effectiveRiskPct.toFixed(2)}%).`);
+    if(eventRiskMultiplier<.999)warnings.push(`Fundamental/event guardrail reduced planned risk to ${Math.round(eventRiskMultiplier*100)}% of normal.`);
+    if(portfolioRiskMultiplier<.999)warnings.push(`Portfolio-correlation guardrail reduced planned risk to ${Math.round(portfolioRiskMultiplier*100)}% of normal before combining with event risk.`);
+    if(combinedRiskMultiplier<.999)warnings.push(`Combined event/portfolio sizing is ${Math.round(combinedRiskMultiplier*100)}% of your normal ${riskPct.toFixed(2)}% risk setting (effective ${effectiveRiskPct.toFixed(2)}%).`);
     if(analysis.fundamentalEventContext?.blockNewTrade)warnings.push("New trade blocked by the earnings-event guardrail because the reported earnings date is inside the selected holding window.");
     if(analysis.direction==="WAIT")warnings.push(analysis.macroContext?.blockLong?`No LONG is authorized because ${analysis.macroContext.profileLabel} macro conditions conflict with the technical setup.`:analysis.macroContext?.blockShort?`No SHORT is authorized because ${analysis.macroContext.profileLabel} macro conditions strongly support the stock.`:"No trade is authorized because multi-timeframe confirmation is insufficient.");
     if(shares===0&&isTrade)warnings.push("Position size calculated as zero under the current risk and allocation limits.");
-    return {entry:anchor,entryLow:isShort?anchor:Math.max(0,anchor-data.atr*.15),entryHigh:isShort?anchor+data.atr*.15:anchor,stop,t1,t2,t3,stopDistance,stopPct,t1Pct,t2Pct,t3Pct,rr1,rr2,rr3,shares,positionValue:shares*anchor,estimatedRisk:shares*stopDistance,riskBudget:dollarRisk,baseRiskPct:riskPct,effectiveRiskPct,eventRiskMultiplier,rewardMult,runnerR,maxStopPct,rawStructuralStop,stopWasCapped,warnings,isShort,isTrade};
+    return {entry:anchor,entryLow:isShort?anchor:Math.max(0,anchor-data.atr*.15),entryHigh:isShort?anchor+data.atr*.15:anchor,stop,t1,t2,t3,stopDistance,stopPct,t1Pct,t2Pct,t3Pct,rr1,rr2,rr3,shares,positionValue:shares*anchor,estimatedRisk:shares*stopDistance,riskBudget:dollarRisk,baseRiskPct:riskPct,effectiveRiskPct,eventRiskMultiplier,portfolioRiskMultiplier,combinedRiskMultiplier,executionPrice,rewardMult,runnerR,maxStopPct,rawStructuralStop,stopWasCapped,warnings,isShort,isTrade};
 }
 function renderChart(data,trade){
     try{
@@ -2452,7 +2556,7 @@ function setSeries(series,data,period,type){const values=type==="ema"?emaSeries(
 function clearPriceLines(){if(!candleSeries)return;for(const line of [entryPriceLine,stopPriceLine,target1PriceLine,target2PriceLine])if(line)try{candleSeries.removePriceLine(line)}catch(e){}entryPriceLine=stopPriceLine=target1PriceLine=target2PriceLine=null;}
 
 function renderRegime(analysis,benchmarkData){
-    const p=analysis.primary,regime=marketRegime(benchmarkData),volatility=p.price?100*p.atr/p.price:0,m=analysis.macroContext;
+    const p=analysis.primary,regime=marketRegime(benchmarkData),volatility=p.price?100*p.atr/p.price:0,m=analysis.macroContext,regimeDetail=detailedMarketRegime(benchmarkData,m?.vixPrice??null);
     const e=m?.economicProbability;
     const macroTiles=m?.applies?[
         tile(`${m.profileLabel} Guardrail`,`${m.riskLevel} / ${m.bias}`,m.riskLevel==="HIGH"?"red":m.riskLevel==="ELEVATED"?"yellow":m.bias==="TAILWIND"?"green":"blue"),
@@ -2466,6 +2570,7 @@ function renderRegime(analysis,benchmarkData){
     document.getElementById("regimeCard").style.display="block";
     document.getElementById("regimeOutput").innerHTML=[
         tile(`${benchmarkData?.ticker||"Market"} Regime`,`${directionArrow(regime)} ${regime}`,regime==="RISK-ON"?"green":regime==="RISK-OFF"?"red":"yellow"),
+        tile("Regime Detail",regimeDetail,regimeDetail.includes("RISK-OFF")||regimeDetail.includes("HIGH VOL")?"red":regimeDetail.includes("RISK-ON")?"green":"yellow"),
         tile("Stock Relative Strength",`${signedArrow(analysis.relativeStrength,2)}%`,analysis.relativeStrength>0?"green":analysis.relativeStrength<0?"red":"yellow"),
         tile("ATR Volatility",`${volatility.toFixed(2)}% / bar`,volatility>4?"red":volatility>2?"yellow":"green"),
         tile("Est. Daily Dollar Volume",compactMoney(p.avgDollarVolume),p.avgDollarVolume>=50_000_000?"green":p.avgDollarVolume>=10_000_000?"yellow":"red"),
@@ -2618,9 +2723,11 @@ function buildPlainEnglishExplanation(analysis,trade){
     const rel=analysis.benchmarkRegime?`Relative strength versus the benchmark is ${analysis.relativeStrength>=0?"positive":"negative"} at ${signed(analysis.relativeStrength,2)}% over 20 bars.`:"Benchmark confirmation was unavailable.";
     const a=analysis.analogForecast||{},biasLong=analysis.score>=0,r2=biasLong?a.long2R:a.short2R,r5=biasLong?a.long5R:a.short5R,analogSentence=a.samples>=12&&a.upRate!=null?`5-year point-in-time history: ${a.samples} similar Daily setups. Positive-close rates were ${a.upRate5?.toFixed(0)??"—"}% / ${a.upRate.toFixed(0)}% / ${a.upRate20?.toFixed(0)??"—"}% after 5/10/20 sessions; median 10-day return ${signed(a.medianReturn,1)}%. In the current directional bias, ${Number.isFinite(r2)?r2.toFixed(0):"—"}% reached 2R and ${Number.isFinite(r5)?r5.toFixed(0):"—"}% reached 5R before a 1R stop over 20 sessions. Historical evidence, not a win probability.`:"Point-in-time history: not enough comparable Daily setups to use as evidence.";
     const sm=analysis.smartMoneyContext,smartSentence=sm?.available?`Smart-money filings: ${analysis.smartMoneyContribution>=0?"+":""}${analysis.smartMoneyContribution||0} context points from insider and institutional activity. These delayed filings do not change the execution score or LONG/SHORT direction. Political trades are displayed separately and are not scored.`:"Smart-money filing context was unavailable or skipped, so it did not affect confidence.";
-    const op=analysis.optionsContext,optionsSentence=op?.available?`Options confirmation: ${op.direction} through ${op.expiryText} (${op.confidence.toLowerCase()} confidence). Options remain confirmation-only and are not added to the Halifax score.`:"Options confirmation is unavailable or still loading; Halifax does not invent an options bias.";
+    const op=analysis.optionsContext,optionsSentence=op?.available?`Options confirmation: ${op.direction} through ${op.expiryText} (${op.confidence.toLowerCase()} confidence), with ${op.liquidityLabel||"unknown"} near-money spread quality${Number.isFinite(op.pricedMove)?` and an options-priced move near ±${money(op.pricedMove)}`:""}. Options remain confirmation-only.`:"Options confirmation is unavailable or still loading; Halifax does not invent an options bias.";
+    const bond=analysis.macroContext?.bondContext,bondSentence=bond?.applies?`Bond/rates guardrail: ${bond.adjustment>=0?"+":""}${bond.adjustment} macro points (${bond.riskLevel} risk). TLT ${Number.isFinite(bond.tltRoc)?signed(bond.tltRoc,1)+"%":"N/A"}, HYG-vs-LQD ${Number.isFinite(bond.creditRelative)?signed(bond.creditRelative,1)+" pts":"N/A"}, 10Y real yield ${Number.isFinite(bond.real10y)?bond.real10y.toFixed(2)+"%":"N/A"}.`:"Bond/rates context was unavailable, so Halifax did not guess a rate or credit signal.";
+    const pr=analysis.portfolioRiskContext,portfolioSentence=pr?.available?`Portfolio correlation guardrail: ${pr.riskLevel} risk across ${pr.peers.length} supplied ticker(s); planned size multiplier ${Math.round(pr.riskMultiplier*100)}% of normal. This uses daily-return correlation, not portfolio dollar weights.`:"Portfolio correlation guardrail is not configured.";
     const fe=analysis.fundamentalEventContext,fundSentence=fe?.available?`Fundamental/event context: quality ${Number.isFinite(fe.qualityScore)?`${fe.qualityGrade} (${Math.round(fe.qualityScore)}/100), ${fe.qualityContribution>=0?"+":""}${fe.qualityContribution} context points`:"not scored"}. Quality does not change LONG/SHORT direction; earnings risk is ${fe.earningsRisk}${Number.isFinite(fe.daysToEarnings)&&fe.daysToEarnings>=0?` with the reported date ${fe.daysToEarnings} calendar day${fe.daysToEarnings===1?"":"s"} away`:""} and planned-risk multiplier ${Math.round((fe.riskMultiplier??1)*100)}%.`:"Fundamental/event context is unavailable or still loading; Halifax does not estimate missing earnings dates or financial data.";
-    return {quality,grades,timing,headline,summary,confirm,fail,bullets:[tfText,adxPlain(d.adx),volumePlain(d.volumeRatio),rsiPlain(d.rsi),analogSentence,fundSentence,optionsSentence,smartSentence,macroSentence,rel]};
+    return {quality,grades,timing,headline,summary,confirm,fail,bullets:[tfText,adxPlain(d.adx),volumePlain(d.volumeRatio),rsiPlain(d.rsi),analogSentence,fundSentence,optionsSentence,bondSentence,portfolioSentence,smartSentence,macroSentence,rel]};
 }
 
 
@@ -2653,21 +2760,26 @@ function signedHTML(value,digits=0){
 }
 
 function renderTradeOutput(analysis,trade){
-    const d=analysis.primary,dir=analysis.direction,cls=dir==="LONG"?"green":dir==="SHORT"?"red":"yellow",btn=dir==="LONG"?"btn-buy":dir==="SHORT"?"btn-sell":"btn-neutral";
+    if(!analysis.liveQuoteContext&&lastAnalysis?.primary?.ticker===analysis.primary?.ticker&&lastAnalysis.liveQuoteContext)analysis={...analysis,liveQuoteContext:lastAnalysis.liveQuoteContext};
+    const d=analysis.primary,q=analysis.liveQuoteContext,displayPrice=Number.isFinite(q?.price)&&q.price>0?q.price:d.price,dir=analysis.direction,cls=dir==="LONG"?"green":dir==="SHORT"?"red":"yellow",btn=dir==="LONG"?"btn-buy":dir==="SHORT"?"btn-sell":"btn-neutral";
     const arrow=directionArrow(dir),targetArrow=trade.isShort?"▼":"▲",stopArrow=trade.isShort?"▲":"▼";
     const setup=dir==="LONG"?`${arrow} LONG SETUP`:dir==="SHORT"?`${arrow} SHORT SETUP`:`${arrow} NO-TRADE / WAIT`;
     const plain=buildPlainEnglishExplanation(analysis,trade);
-    const move=d.dayChange||0,movePct=d.dayChangePct||0,moveCls=move>0?"green":move<0?"red":"yellow",moveArrow=move>0?"▲":move<0?"▼":"▶";
+    const move=Number.isFinite(q?.change)?q.change:(d.dayChange||0),movePct=Number.isFinite(q?.changePct)?q.changePct:(d.dayChangePct||0),moveCls=move>0?"green":move<0?"red":"yellow",moveArrow=move>0?"▲":move<0?"▼":"▶";
     const vw=analysis.vwapContext||{available:false},vwCls=vw.state==="ABOVE"?"green":vw.state==="BELOW"?"red":"yellow",vwArrow=vw.state==="ABOVE"?"▲":vw.state==="BELOW"?"▼":"▶";
     const vwapHTML=vw.available?`<div class="vwap-bar"><div class="vwap-name"><span>Session VWAP</span><small>${escapeHTML(TF_LABELS[vw.timeframe]||vw.timeframe)} bars${vw.includesExtended?" • extended hours included":""}</small></div><div class="vwap-price">${money(vw.vwap)}</div><div class="vwap-state ${vwCls}">${vwArrow} ${signedHTML(vw.diffPct,2)}% ${vw.state}<small>${escapeHTML(vw.slope)} • ${vw.scoreReady?`${vw.contribution>=0?"+":""}${vw.contribution} score pts`:"early session • display only"}</small></div></div>`:`<div class="vwap-bar vwap-off"><div><b>Session VWAP</b><small>${escapeHTML(vw.reason||"Intraday price-volume data unavailable.")}</small></div><div class="yellow">N/A</div></div>`;
     document.getElementById("tradeOutput").innerHTML=`
         <div class="current-price-banner">
             <div class="current-price-left"><div class="current-price-label">Current Price</div><div class="current-price-ticker">${escapeHTML(d.ticker)} • ${escapeHTML(d.exchange||"Market data")}</div></div>
-            <div><div class="current-price-value">${money(d.price)}</div></div>
-            <div class="current-price-right"><div class="current-price-move ${moveCls}">${moveArrow} ${signedHTML(move,2)} <span style="font-size:.88em">(${signedHTML(movePct,2)}%)</span></div><div class="current-price-time">Latest loaded bar: ${escapeHTML(formatDateTime(d.dataTime))}</div></div>
+            <div><div class="current-price-value">${money(displayPrice)}</div><div class="tiny" style="text-align:center;margin-top:4px">Model basis ${money(d.price)}</div></div>
+            <div class="current-price-right"><div class="current-price-move ${moveCls}">${moveArrow} ${signedHTML(move,2)} <span style="font-size:.88em">(${signedHTML(movePct,2)}%)</span></div><div class="current-price-time">Quote: ${escapeHTML(q?.timestamp?formatDateTime(q.timestamp):formatDateTime(d.dataTime))}</div></div>
         </div>
+        ${liveFeedHTML(analysis)}
         ${vwapHTML}
         ${optionsInlineHTML(analysis.optionsContext)}
+        ${catalystHTML(analysis)}
+        ${signalChangeHTML(analysis)}
+        ${tradeQualityHTML(analysis,trade)}
         <div class="score-box"><div><div class="panel-title" style="margin-bottom:3px">HALIFAX EXECUTION SCORE</div><div class="${cls}" style="font-weight:900">${setup}</div><div style="font-size:10px;color:#64748b;margin-top:3px">Prediction strength ${analysis.predictionStrength??analysis.confidence}/100 • Technical <span class="${analysis.technicalScore>0?'green signal-inline-positive':analysis.technicalScore<0?'red':''}">${signedHTML(analysis.technicalScore,0)}</span> • Macro contribution <span class="${(analysis.macroContribution||0)>0?'green signal-inline-positive':(analysis.macroContribution||0)<0?'red':''}">${signedHTML(analysis.macroContribution??0,0)}</span> • VWAP <span class="${(analysis.vwapContribution||0)>0?'green signal-inline-positive':(analysis.vwapContribution||0)<0?'red':'yellow'}">${signedHTML(analysis.vwapContribution??0,0)}</span></div></div><div class="score ${cls} ${analysis.score>0?'score-positive':''}">${signedHTML(analysis.score,0)}</div></div>
         ${analysis.dataFallback?.used?`<div class="risk-box" style="margin:0 0 12px;border-left-color:#f59e0b"><div class="panel-title yellow">Limited-data fallback active</div><div style="font-size:11.5px;color:#cbd5e1;line-height:1.5">Halifax completed the analysis instead of failing. ${escapeHTML(analysis.dataFallback.warnings.join(" "))} Prediction strength is automatically reduced, and Halifax will force WAIT when the higher-timeframe anchor needed for the selected trading style is missing.</div></div>`:""}
         <div class="grade-strip">
@@ -2724,22 +2836,25 @@ function renderTradeOutput(analysis,trade){
             <div class="metric"><span>Weak Growth / Equity Tailwind</span><span>${analysis.macroContext?.economicProbability?`${analysis.macroContext.economicProbability.weakGrowthProb}% / ${analysis.macroContext.economicProbability.equityTailwindProb}%`:"N/A"}</span></div>
             <div class="metric"><span>Shiller P/E (CAPE)</span><span class="${analysis.macroContext?.economicProbability?.capeClass||"yellow"}">${analysis.macroContext?.economicProbability&&Number.isFinite(analysis.macroContext.economicProbability.cape)?`${analysis.macroContext.economicProbability.cape.toFixed(2)} • ${escapeHTML(analysis.macroContext.economicProbability.capeBand)}`:"N/A"}</span></div>
             <div class="metric"><span>Direction Control</span><span class="blue">PRICE ACTION / MTF • LOCKED</span></div>
+            <div class="metric"><span>Live Quote / Model Basis</span><span class="${Number.isFinite(q?.price)?"green":"yellow"}">${money(displayPrice)} / ${money(d.price)}</span></div>
+            <div class="metric"><span>Bond / Rates Macro Context</span><span class="${(analysis.macroContext?.bondContext?.adjustment||0)>0?"green":(analysis.macroContext?.bondContext?.adjustment||0)<0?"red":"yellow"}">${analysis.macroContext?.bondContext?.applies?`${signedHTML(analysis.macroContext.bondContext.adjustment,0)} pts • ${escapeHTML(analysis.macroContext.bondContext.riskLevel)}`:"N/A"}</span></div>
             <div class="metric"><span>Options Direction / Time Frame</span><span class="${analysis.optionsContext?.cls||"yellow"}">${analysis.optionsContext?.available?`${analysis.optionsContext.arrow} ${escapeHTML(analysis.optionsContext.direction)} • ${escapeHTML(analysis.optionsContext.timeframe)}`:"N/A"}</span></div>
             <div class="metric"><span>Smart-Money Filing Context</span><span class="${(analysis.smartMoneyContribution||0)>0?"green":(analysis.smartMoneyContribution||0)<0?"red":"yellow"}">${analysis.smartMoneyContribution==null?"N/A":`${signedHTML(analysis.smartMoneyContribution,0)} pts`}</span></div>
             <div class="metric"><span>Fundamental Quality Context</span><span class="${(analysis.fundamentalContribution||0)>0?"green":(analysis.fundamentalContribution||0)<0?"red":"yellow"}">${analysis.fundamentalEventContext?.available?(Number.isFinite(analysis.fundamentalEventContext.qualityScore)?`${escapeHTML(analysis.fundamentalEventContext.qualityGrade)} ${Math.round(analysis.fundamentalEventContext.qualityScore)}/100 • ${signedHTML(analysis.fundamentalContribution||0,0)} pts`:"Not scored"):"Loading / N/A"}</span></div>
             <div class="metric"><span>Earnings Event Risk</span><span class="${analysis.fundamentalEventContext?.earningsRisk==="CRITICAL"||analysis.fundamentalEventContext?.earningsRisk==="HIGH"?"red":analysis.fundamentalEventContext?.earningsRisk==="ELEVATED"||analysis.fundamentalEventContext?.earningsRisk==="WATCH"?"yellow":"green"}">${analysis.fundamentalEventContext?.available?`${escapeHTML(analysis.fundamentalEventContext.earningsRisk)}${Number.isFinite(analysis.fundamentalEventContext.daysToEarnings)&&analysis.fundamentalEventContext.daysToEarnings>=0?` • ${analysis.fundamentalEventContext.daysToEarnings}d`:""}`:"Loading / N/A"}</span></div>
             <div class="metric"><span>Event / Beta Risk Size</span><span class="${(analysis.fundamentalEventContext?.riskMultiplier??1)<.7?"red":(analysis.fundamentalEventContext?.riskMultiplier??1)<1?"yellow":"green"}">${analysis.fundamentalEventContext?.available?`${Math.round((analysis.fundamentalEventContext.riskMultiplier??1)*100)}% of normal risk`:"Loading / N/A"}</span></div>
+            <div class="metric"><span>Portfolio Correlation Risk Size</span><span class="${(analysis.portfolioRiskContext?.riskMultiplier??1)<.8?"red":(analysis.portfolioRiskContext?.riskMultiplier??1)<1?"yellow":"green"}">${analysis.portfolioRiskContext?.available?`${Math.round((analysis.portfolioRiskContext.riskMultiplier??1)*100)}% of normal • ${escapeHTML(analysis.portfolioRiskContext.riskLevel)}`:"Not configured / loading"}</span></div>
             ${analysis.instrumentContext?`<div class="metric"><span>Instrument Guardrail</span><span class="yellow">${escapeHTML(analysis.instrumentContext.positionAction)}</span></div><div class="metric"><span>Underlying Signal</span><span class="${analysis.instrumentContext.underlyingDirection==="LONG"?"green":analysis.instrumentContext.underlyingDirection==="SHORT"?"red":"yellow"}">${directionArrow(analysis.instrumentContext.underlyingDirection)} ${analysis.instrumentContext.underlying} ${analysis.instrumentContext.underlyingDirection}</span></div>`:""}
         </div>
         <button class="${btn}" type="button" ${dir==="WAIT"?"disabled":'onclick="logPaperPlan()"'}>${dir==="WAIT"?setup:`${setup} • PAPER TRADE`}</button>
         <details class="compact-details"><summary><span class="flow-index flow-index-small">03</span> Detailed Decision Evidence &amp; Risk Checks</summary><div class="compact-body"><div class="evidence-section"><div class="panel-title">Decision Evidence</div><ul class="reasoning-list">${analysis.reasons.map(r=>`<li>• ${escapeHTML(r)}</li>`).join("")}</ul></div><div class="evidence-section"><div class="panel-title">Risk Desk Checks</div><ul class="reasoning-list">${(trade.warnings.length?trade.warnings:["Risk, liquidity, and trend-strength checks passed under the selected settings."]).map(r=>`<li>• ${escapeHTML(r)}</li>`).join("")}</ul></div></div></details>
-        <div class="notice">This is a rules-based research tool, not a broker recommendation or guarantee. Prediction Strength and letter grades are Halifax model scores, not win probabilities. The History Grade uses point-in-time Daily analogs from up to five years of loaded history and can still fail out of sample. Smart-money filings and fundamental quality are context-only: they can adjust confidence, but cannot flip LONG/SHORT direction or create a trade from WAIT. Earnings proximity is treated as non-directional gap risk and can reduce size or block a new multi-day trade. Verify prices, earnings release timing, fundamentals, corporate events, borrow availability, and order details with your brokerage before trading.</div>`;
+        <div class="notice">This is a rules-based research tool, not a broker recommendation or guarantee. Prediction Strength, Trade Quality and letter grades are model scores, not win probabilities. Public quote auto-refresh is not certified SIP/OPRA market data; Halifax labels feed freshness and keeps the model basis visible. Bond/rates inputs can affect the macro guardrail; options, smart-money filings and fundamental quality remain confirmation/context and cannot independently reverse LONG/SHORT direction. Earnings proximity and optional portfolio correlation can reduce position size. Verify prices, earnings timing, corporate events, borrow availability and order details with your brokerage before trading.</div>`;
     lastPlanText=buildPlanText(analysis,trade);lastAnalysis=analysis;lastTrade=trade;
 }
 
 function buildPlanText(analysis,trade){
-    const d=analysis.primary,m=analysis.macroContext,plain=buildPlainEnglishExplanation(analysis,trade);
-    return `HALIFAX TRADE ENGINE v20.5 LITE — ${d.ticker} ${analysis.direction} TRADE PLAN
+    const d=analysis.primary,m=analysis.macroContext,plain=buildPlainEnglishExplanation(analysis,trade),tq=tradeQualityData(analysis,trade),lq=analysis.liveQuoteContext;
+    return `HALIFAX TRADE ENGINE v21.0 LITE — ${d.ticker} ${analysis.direction} TRADE PLAN
 Plain-English read: ${plain.headline}
 Action: ${plain.timing.action}
 Why: ${plain.summary}
@@ -2753,7 +2868,11 @@ Earnings event risk: ${analysis.fundamentalEventContext?.available?`${analysis.f
 Sector: ${m?.profileLabel||"Broad Market"} | Macro adjustment: ${m?.adjustment??0} | Risk/Bias: ${m?.riskLevel||"N/A"}/${m?.bias||"N/A"}
 Economic probabilities: Inflation ${m?.economicProbability?.inflationProb??"N/A"}% | Hawkish rates ${m?.economicProbability?.hawkishProb??"N/A"}% | Weak growth ${m?.economicProbability?.weakGrowthProb??"N/A"}% | Equity tailwind ${m?.economicProbability?.equityTailwindProb??"N/A"}%
 Shiller CAPE: ${Number.isFinite(m?.economicProbability?.cape)?m.economicProbability.cape.toFixed(2):"N/A"} | ${m?.economicProbability?.capeBand||"N/A"} | CAPE is a long-horizon valuation input, not a short-term timing signal
-Options outlook: ${analysis.optionsContext?.available?`${analysis.optionsContext.direction} | ${analysis.optionsContext.timeframe} through ${analysis.optionsContext.expiryText} | ${analysis.optionsContext.confidence} confidence${Number.isFinite(analysis.optionsContext.pricedMove)?` | priced move about ±${money(analysis.optionsContext.pricedMove)}`:""}`:"Unavailable / not guessed"}
+Options outlook: ${analysis.optionsContext?.available?`${analysis.optionsContext.direction} | ${analysis.optionsContext.timeframe} through ${analysis.optionsContext.expiryText} | ${analysis.optionsContext.confidence} confidence${Number.isFinite(analysis.optionsContext.pricedMove)?` | priced move about ±${money(analysis.optionsContext.pricedMove)}`:""}${Number.isFinite(analysis.optionsContext.medianSpreadPct)?` | median option spread ${analysis.optionsContext.medianSpreadPct.toFixed(1)}%`:""}`:"Unavailable / not guessed"}
+Bond/rates guardrail: ${m?.bondContext?.applies?`${m.bondContext.adjustment>=0?"+":""}${m.bondContext.adjustment} pts | ${m.bondContext.riskLevel} | TLT 20-bar ${Number.isFinite(m.bondContext.tltRoc)?signed(m.bondContext.tltRoc,1)+"%":"N/A"} | HYG-LQD ${Number.isFinite(m.bondContext.creditRelative)?signed(m.bondContext.creditRelative,1)+" pts":"N/A"} | real 10Y ${Number.isFinite(m.bondContext.real10y)?m.bondContext.real10y.toFixed(2)+"%":"N/A"}`:"Unavailable / not guessed"}
+Trade quality: ${tq.decision} | ${tq.overall}/100 | model score, not a win probability
+Live/public quote: ${Number.isFinite(lq?.price)?money(lq.price):"Unavailable"} | model basis ${money(d.price)} | ${quoteStatus(lq).label}
+Portfolio correlation guardrail: ${analysis.portfolioRiskContext?.available?`${analysis.portfolioRiskContext.riskLevel} | size ${Math.round(analysis.portfolioRiskContext.riskMultiplier*100)}% of normal`:"Not configured"}
 Session VWAP: ${analysis.vwapContext?.available?`${money(analysis.vwapContext.vwap)} | price ${signed(analysis.vwapContext.diffPct,2)}% vs VWAP | ${analysis.vwapContext.state} | ${analysis.vwapContext.slope} | score ${analysis.vwapContribution>=0?"+":""}${analysis.vwapContribution||0}`:"Unavailable"}
 Primary timeframe: ${TF_LABELS[d.timeframe]}
 Entry zone: ${money(trade.entryLow)} - ${money(trade.entryHigh)}
@@ -2800,11 +2919,13 @@ async function fetchTickerNews(query){return (await fetchTickerSnapshot(query)).
 
 async function loadMacroAssets(profile){
     const strongDrivers=(profile.drivers||[]).filter(d=>Math.abs(d.weight)>=.45).slice(0,2);
-    const symbols=[profile.etf,"^VIX","SPY",...strongDrivers.map(d=>d.symbol)];
-    const unique=[...new Set(symbols.filter(Boolean))],values=await mapLimit(unique,4,async symbol=>[symbol,await loadTickerData(symbol,"1d","1y").catch(()=>null)]);
+    const bondSymbols=["TLT","IEF","HYG","LQD"];
+    const symbols=[profile.etf,"^VIX","SPY",...bondSymbols,...strongDrivers.map(d=>d.symbol)];
+    const unique=[...new Set(symbols.filter(Boolean))],values=await mapLimit(unique,5,async symbol=>[symbol,await loadTickerData(symbol,"1d","1y").catch(()=>null)]);
     const map=Object.fromEntries(values),drivers={};
     for(const d of profile.drivers||[])drivers[d.symbol]=map[d.symbol]||null;
-    return {sector:map[profile.etf]||null,vix:map["^VIX"]||null,spy:map.SPY||null,drivers};
+    const bonds=Object.fromEntries(bondSymbols.map(symbol=>[symbol,map[symbol]||null]));
+    return {sector:map[profile.etf]||null,vix:map["^VIX"]||null,spy:map.SPY||null,drivers,bonds};
 }
 
 function parseLooseNumber(v){
@@ -3218,11 +3339,12 @@ async function loadPredictionFrames(ticker,timeframes){
 let halifaxRunId=0;
 async function runEngine(){
     const runId=++halifaxRunId;
+    stopLiveQuoteStream();
     const ticker=document.getElementById("ticker").value.trim().toUpperCase().replace(/[^A-Z0-9.\-^=]/g,"");if(!ticker){document.getElementById("tradeOutput").innerHTML='<div class="red">Enter a valid ticker.</div>';return;}
-    const button=document.getElementById("analyzeBtn");button.disabled=true;setStatus(`Analyzing ${ticker}…`,"var(--yellow)");document.getElementById("tradeOutput").innerHTML=`<div class="loading">Loading multi-timeframe, sector, and instrument-guardrail data for ${escapeHTML(ticker)}…</div>`;document.getElementById("newsOutput").innerHTML='<div class="loading">Loading news catalysts…</div>';document.getElementById("smartMoneyCard").style.display="block";document.getElementById("smartMoneyOutput").innerHTML='<div class="loading">Loading insider, institutional and public-filing context in parallel…</div>';document.getElementById("fundamentalsCard").style.display="block";document.getElementById("fundamentalsOutput").innerHTML='<div class="loading">Loading company profile and fundamental data in parallel…</div>';document.getElementById("optionsCard").style.display="block";document.getElementById("optionsOutput").innerHTML='<div class="loading">Reading listed options for a plain-English LONG / SHORT / MIXED outlook…</div>';
+    const button=document.getElementById("analyzeBtn");button.disabled=true;setStatus(`Analyzing ${ticker}…`,"var(--yellow)");document.getElementById("tradeOutput").innerHTML=`<div class="loading">Loading multi-timeframe, live-quote, bond/rates, sector and instrument-guardrail data for ${escapeHTML(ticker)}…</div>`;document.getElementById("newsOutput").innerHTML='<div class="loading">Loading news catalysts…</div>';document.getElementById("smartMoneyCard").style.display="block";document.getElementById("smartMoneyOutput").innerHTML='<div class="loading">Loading insider, institutional and public-filing context in parallel…</div>';document.getElementById("fundamentalsCard").style.display="block";document.getElementById("fundamentalsOutput").innerHTML='<div class="loading">Loading company profile and fundamental data in parallel…</div>';document.getElementById("optionsCard").style.display="block";document.getElementById("optionsOutput").innerHTML='<div class="loading">Reading listed options for a plain-English LONG / SHORT / MIXED outlook…</div>';
     try{
         if(document.getElementById("econGuard")?.checked!==false&&!economicState)await loadOfficialEconomicData(false);
-        const timeframes=getTimeframes(),benchmark=document.getElementById("benchmark").value,chartTF=document.getElementById("timeframe").value,knownSpecial=getSpecialInstrument(ticker),guardOn=document.getElementById("macroGuard").checked;
+        const timeframes=getTimeframes(),benchmark=document.getElementById("benchmark").value,chartTF=document.getElementById("timeframe").value,knownSpecial=getSpecialInstrument(ticker),guardOn=document.getElementById("macroGuard").checked,marketMacroOn=guardOn||document.getElementById("econGuard")?.checked!==false;
         // Smart-money feeds are useful context but must never be allowed to break the core engine.
         const smartMoneyPromise=loadSmartMoneyContext(knownSpecial?.underlying||ticker).catch(()=>null);
         const [frameResults,benchmarkResult,snapshot]=await Promise.all([
@@ -3247,7 +3369,7 @@ async function runEngine(){
             ]);
             const underRecovery=recoverFrameSet(special.underlying,underTFs,underResults),underFrames=underRecovery.frames;
             if(underFrames.length<2)throw new Error(`Underlying guardrail could not build enough ${special.underlying} timeframes.`);
-            const profile=resolveSectorProfile(special.underlying,underSnapshot.quote),macroAssets=guardOn?await loadMacroAssets(profile):{sector:null,vix:null,spy:null,drivers:{}};
+            const profile=resolveSectorProfile(special.underlying,underSnapshot.quote),macroAssets=marketMacroOn?await loadMacroAssets(profile):{sector:null,vix:null,spy:null,drivers:{},bonds:{}};
             const underlyingMacro=buildMacroContext(special.underlying,profile,{...macroAssets,news:underSnapshot.news});
             underlyingAnalysis=applyDataFallbackCaution(aggregateAnalysis(underFrames,underBenchmark,underlyingMacro,underPrimary),underRecovery,document.getElementById("style").value);
             const baseAnalysis=applyDataFallbackCaution(aggregateAnalysis(frames,benchmarkResult,null),recovery,document.getElementById("style").value);
@@ -3255,19 +3377,28 @@ async function runEngine(){
             analysis.macroContext={...underlyingMacro,profileLabel:`${special.label} via ${special.underlying}`,profileSource:"underlying-aware instrument guardrail"};
             displayNews=[...underSnapshot.news,...snapshot.news].slice(0,8);
         }else{
-            const profile=resolveSectorProfile(ticker,snapshot.quote),macroAssets=guardOn?await loadMacroAssets(profile):{sector:null,vix:null,spy:null,drivers:{}};
+            const profile=resolveSectorProfile(ticker,snapshot.quote),macroAssets=marketMacroOn?await loadMacroAssets(profile):{sector:null,vix:null,spy:null,drivers:{},bonds:{}};
             const macroContext=buildMacroContext(ticker,profile,{...macroAssets,news:snapshot.news});
             analysis=applyDataFallbackCaution(aggregateAnalysis(frames,benchmarkResult,macroContext),recovery,document.getElementById("style").value);
             if(special&&document.getElementById("leverageGuard")?.checked!==false)analysis=applySpecialInstrumentGuardrails(ticker,analysis,special,null);
         }
         if(special&&recovery.used&&!analysis.dataFallback)analysis=applyDataFallbackCaution(analysis,recovery,document.getElementById("style").value);
         // Render the core decision immediately. Filing data updates the result afterward if it arrives.
-        analysis={...analysis,smartMoneyContext:null,smartMoneyContribution:0,optionsContext:null,fundamentalEventContext:null,fundamentalContribution:0,reasons:[...analysis.reasons,"Fundamentals/earnings, options and smart-money/public-filing data load after the core price-action prediction. In v20.5, secondary overlays cannot flip LONG/SHORT direction; only event/guardrail risk may downgrade an active setup to WAIT."]};
+        analysis={...analysis,smartMoneyContext:null,smartMoneyContribution:0,optionsContext:null,fundamentalEventContext:null,fundamentalContribution:0,portfolioRiskContext:null,analysisBasisPrice:analysis.primary.price,liveQuoteContext:buildInitialLiveQuote(snapshot.quote,analysis),reasons:[...analysis.reasons,"Halifax v21 keeps price-action / multi-timeframe direction control. Bonds/rates are part of the macro guardrail; options, fundamentals and delayed filing data are confirmation/context only and cannot independently reverse LONG/SHORT direction. Event risk may downgrade an active setup to WAIT, and portfolio correlation may reduce size."]};
+        analysis=attachSignalChange(analysis);saveSignalSnapshot(analysis);
         let trade=calculateTrade(analysis.primary,analysis);
-        renderChart(analysis.primary,trade);renderRegime(analysis,benchmarkResult);renderMTF(analysis);renderTradeOutput(analysis,trade);renderPositionGuardrails(ticker,analysis.primary,analysis);renderNews(displayNews,ticker);
+        renderChart(analysis.primary,trade);renderRegime(analysis,benchmarkResult);renderMTF(analysis);renderTradeOutput(analysis,trade);renderBondContext(analysis.macroContext?.bondContext);renderPositionGuardrails(ticker,analysis.primary,analysis);renderNews(displayNews,ticker);
         document.getElementById("smartMoneyOutput").innerHTML='<div class="loading">Core prediction is complete. Loading insider, institutional and public-filing context in the background…</div>';
         document.getElementById("decisionCard")?.scrollIntoView({behavior:"smooth",block:"start"});
-        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v20.5 Lite`;
+        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v21.0 Lite`;
+        startLiveQuoteStream(ticker,runId);
+        const portfolioPromise=loadPortfolioRiskContext(ticker,analysis).catch(()=>null);
+        portfolioPromise.then(pr=>{
+            if(runId!==halifaxRunId)return;
+            if(!pr){renderPortfolioRisk(null,ticker);return;}
+            analysis={...analysis,portfolioRiskContext:pr};trade=calculateTrade(analysis.primary,analysis);renderPortfolioRisk(pr,ticker);renderTradeOutput(analysis,trade);renderPositionGuardrails(ticker,analysis.primary,analysis);
+            if(pr.available&&pr.riskMultiplier<1)setStatus(`${ticker} prediction + portfolio risk guardrail complete`);
+        }).catch(()=>{});
         const optionsPromise=loadOptionsOutlook(ticker,document.getElementById("style")?.value||"swing",analysis.primary?.price).catch(()=>null);
         optionsPromise.then(op=>{
             if(runId!==halifaxRunId)return;
@@ -3288,7 +3419,7 @@ async function runEngine(){
             renderTradeOutput(analysis,trade);renderPositionGuardrails(ticker,analysis.primary,analysis);renderSmartMoney(special?.underlying||ticker,sm);
             setStatus(`${ticker} prediction + smart money complete`);
         }).catch(()=>{});
-    }catch(error){console.error(error);document.getElementById("tradeOutput").innerHTML=`<div class="red" style="font-weight:900">Analysis failed</div><div style="font-size:12px;color:#cbd5e1;margin-top:8px;line-height:1.5">${escapeHTML(error.message)}</div><div class="notice">Halifax v20.5 Lite rebuilds a slower confirmation timeframe from any usable loaded candles when a separate interval feed fails. A red failure should now appear only when no valid two-timeframe set can be constructed at all.</div>`;document.getElementById("positionCard").style.display="none";document.getElementById("fundamentalsOutput").innerHTML='<div class="loading">Company fundamentals were not completed because the main analysis failed.</div>';document.getElementById("optionsOutput").innerHTML='<div class="loading">Options analysis was not completed because the main analysis failed.</div>';setStatus("Analysis failed","var(--red)");}
+    }catch(error){console.error(error);document.getElementById("tradeOutput").innerHTML=`<div class="red" style="font-weight:900">Analysis failed</div><div style="font-size:12px;color:#cbd5e1;margin-top:8px;line-height:1.5">${escapeHTML(error.message)}</div><div class="notice">Halifax v21.0 Lite rebuilds a slower confirmation timeframe from any usable loaded candles when a separate interval feed fails. A red failure should now appear only when no valid two-timeframe set can be constructed at all.</div>`;document.getElementById("positionCard").style.display="none";document.getElementById("fundamentalsOutput").innerHTML='<div class="loading">Company fundamentals were not completed because the main analysis failed.</div>';document.getElementById("optionsOutput").innerHTML='<div class="loading">Options analysis was not completed because the main analysis failed.</div>';setStatus("Analysis failed","var(--red)");}
     finally{button.disabled=false;}
 }
 
@@ -3444,6 +3575,151 @@ function safeUrl(url){try{const u=new URL(url);return ["http:","https:"].include
 
 
 
+
+// ================= Halifax v21.0 Live Market Intelligence =================
+let liveQuoteTimer=null,lastLiveQuotePollAt=0,lastMaterialReanalysisAt=0;
+const SIGNAL_HISTORY_KEY="halifaxSignalHistoryV21";
+const PORTFOLIO_KEY="halifaxPortfolioTickersV21";
+function normalizeMarketState(v){
+    const s=String(v||"").toUpperCase();
+    if(["REGULAR","OPEN","RTH"].includes(s))return "REGULAR";
+    if(s.includes("PRE"))return "PRE";
+    if(s.includes("POST")||s.includes("AFTER"))return "POST";
+    if(s.includes("CLOSE"))return "CLOSED";
+    return s||"UNKNOWN";
+}
+function inferChartMarketState(meta={}){
+    if(meta.marketState)return normalizeMarketState(meta.marketState);
+    const now=Date.now()/1000,p=meta.currentTradingPeriod||{};
+    for(const [key,label] of [["pre","PRE"],["regular","REGULAR"],["post","POST"]]){
+        const r=p[key];if(r&&Number.isFinite(r.start)&&Number.isFinite(r.end)&&now>=r.start&&now<=r.end)return label;
+    }
+    return "CLOSED";
+}
+function liveQuoteContextFromQuote(q,source="Yahoo Finance public quote feed"){
+    const price=Number(q?.regularMarketPrice),prev=Number(q?.regularMarketPreviousClose??q?.regularMarketOpen),ts=Number(q?.regularMarketTime),bid=Number(q?.bid),ask=Number(q?.ask);
+    if(!(price>0))return null;
+    const change=Number.isFinite(Number(q?.regularMarketChange))?Number(q.regularMarketChange):(Number.isFinite(prev)?price-prev:null),changePct=Number.isFinite(Number(q?.regularMarketChangePercent))?Number(q.regularMarketChangePercent):(prev?100*(price-prev)/prev:null);
+    return {price,previousClose:Number.isFinite(prev)?prev:null,change,changePct,timestamp:Number.isFinite(ts)?ts:Math.floor(Date.now()/1000),bid:Number.isFinite(bid)&&bid>0?bid:null,ask:Number.isFinite(ask)&&ask>0?ask:null,marketState:normalizeMarketState(q?.marketState),exchange:q?.fullExchangeName||q?.exchange||"",source,feedType:"PUBLIC",certifiedRealtime:false};
+}
+function liveQuoteContextFromChart(result,source="Yahoo Finance public chart feed"){
+    const meta=result?.meta||{},bars=result?.indicators?.quote?.[0]||{},times=result?.timestamp||[];
+    const price=Number(meta.regularMarketPrice),idx=times.length-1,barClose=idx>=0?Number(bars.close?.[idx]):NaN,finalPrice=price>0?price:barClose,prev=Number(meta.chartPreviousClose??meta.previousClose),ts=Number(meta.regularMarketTime??times[idx]);
+    if(!(finalPrice>0))return null;
+    const change=Number.isFinite(prev)?finalPrice-prev:null,changePct=prev?100*(finalPrice-prev)/prev:null;
+    return {price:finalPrice,previousClose:Number.isFinite(prev)?prev:null,change,changePct,timestamp:Number.isFinite(ts)?ts:Math.floor(Date.now()/1000),bid:null,ask:null,marketState:inferChartMarketState(meta),exchange:meta.exchangeName||meta.exchange||"",source,feedType:"PUBLIC",certifiedRealtime:false};
+}
+async function fetchLiveQuote(ticker){
+    try{
+        const raw=await fetchJsonFresh(`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${encodeURIComponent(ticker)}`),q=raw?.quoteResponse?.result?.find(x=>String(x.symbol||"").toUpperCase()===String(ticker).toUpperCase())||raw?.quoteResponse?.result?.[0];
+        const ctx=liveQuoteContextFromQuote(q);if(ctx)return ctx;
+    }catch(e){}
+    const raw=await fetchJsonFresh(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?interval=1m&range=1d&includePrePost=true&events=div%2Csplits`),result=raw?.chart?.result?.[0];
+    const ctx=liveQuoteContextFromChart(result);if(!ctx)throw new Error("Fresh quote unavailable");return ctx;
+}
+function quoteAgeSeconds(q){return Number.isFinite(q?.timestamp)?Math.max(0,Math.round(Date.now()/1000-q.timestamp)):null;}
+function quoteStatus(q){
+    if(!q)return {label:"MODEL BAR",cls:"stale",detail:"No fresh quote loaded"};
+    const state=normalizeMarketState(q.marketState),age=quoteAgeSeconds(q);
+    if(state==="CLOSED")return {label:"MARKET CLOSED",cls:"",detail:age==null?"last trade time unavailable":`last trade ${age<3600?Math.round(age/60)+'m':(age/3600).toFixed(1)+'h'} ago`};
+    if(state==="PRE"||state==="POST")return {label:`${state} • AUTO-REFRESH`,cls:age!=null&&age<=60?"fresh":"",detail:age==null?"public feed":`last trade ${age}s ago`};
+    return {label:age!=null&&age<=30?"PUBLIC FRESH":"PUBLIC AUTO-REFRESH",cls:age!=null&&age<=30?"fresh":age!=null&&age>180?"stale":"",detail:age==null?"timestamp unavailable":`last trade ${age}s ago`};
+}
+function liveFeedHTML(analysis){
+    const q=analysis.liveQuoteContext,s=quoteStatus(q),spread=q&&q.bid>0&&q.ask>=q.bid?100*(q.ask-q.bid)/((q.ask+q.bid)/2):null;
+    const spreadText=Number.isFinite(spread)?`Bid ${money(q.bid)} • Ask ${money(q.ask)} • Spread ${spread.toFixed(2)}%`:"Bid/ask not returned by the public feed";
+    return `<div class="live-feed-strip"><div class="live-feed-main"><span class="feed-chip ${s.cls}"><span class="feed-dot"></span>${escapeHTML(s.label)}</span><span class="feed-detail">${escapeHTML(q?.source||"Loaded chart data")} • ${escapeHTML(s.detail)} • signal score recalculates only after a material price move</span></div><div class="feed-spread">${escapeHTML(spreadText)}</div></div>`;
+}
+function stopLiveQuoteStream(){if(liveQuoteTimer){clearInterval(liveQuoteTimer);liveQuoteTimer=null;}}
+function materialReanalysisThreshold(){const style=document.getElementById("style")?.value||"swing";return style==="scalp"?.20:style==="day"?.35:style==="position"?1.25:.75;}
+async function refreshLiveQuote(ticker,runId){
+    if(runId!==halifaxRunId||!ticker)return;
+    try{
+        const q=await fetchLiveQuote(ticker);if(runId!==halifaxRunId)return;
+        lastLiveQuotePollAt=Date.now();
+        if(lastAnalysis?.primary?.ticker===ticker){
+            lastAnalysis={...lastAnalysis,liveQuoteContext:q};lastTrade=calculateTrade(lastAnalysis.primary,lastAnalysis);renderTradeOutput(lastAnalysis,lastTrade);
+            const basis=lastAnalysis.analysisBasisPrice||lastAnalysis.primary?.price,movePct=basis?Math.abs(q.price/basis-1)*100:0,threshold=materialReanalysisThreshold(),state=normalizeMarketState(q.marketState),button=document.getElementById("analyzeBtn");
+            if(["REGULAR","PRE","POST"].includes(state)&&movePct>=threshold&&Date.now()-lastMaterialReanalysisAt>=90000&&!button?.disabled){lastMaterialReanalysisAt=Date.now();setStatus(`${ticker} moved ${movePct.toFixed(2)}% from model basis — refreshing signal…`,`var(--yellow)`);setTimeout(()=>{if(runId===halifaxRunId)runEngine();},400);}
+        }
+    }catch(e){console.warn("Halifax live quote refresh unavailable",e);}
+}
+function startLiveQuoteStream(ticker,runId){
+    stopLiveQuoteStream();const seconds=Math.max(0,Number(document.getElementById("liveRefresh")?.value)||0);if(!seconds)return;
+    refreshLiveQuote(ticker,runId);liveQuoteTimer=setInterval(()=>refreshLiveQuote(ticker,runId),seconds*1000);
+}
+function buildInitialLiveQuote(snapshotQuote,analysis){
+    const q=liveQuoteContextFromQuote(snapshotQuote);if(q)return q;
+    const d=analysis?.primary;if(!d)return null;return {price:d.price,previousClose:d.previousDayClose,change:d.dayChange,changePct:d.dayChangePct,timestamp:d.quoteTime||d.dataTime,bid:null,ask:null,marketState:"UNKNOWN",exchange:d.exchange||"",source:"Loaded Yahoo chart bar",feedType:"MODEL",certifiedRealtime:false};
+}
+function renderBondContext(ctx){
+    const card=document.getElementById("bondCard"),box=document.getElementById("bondOutput");if(!card||!box)return;card.style.display="block";
+    if(!ctx?.applies){box.innerHTML='<div class="loading">Bond/rates context could not be loaded. Halifax did not invent missing yields or credit spreads.</div>';return;}
+    const val=(v,suffix="%")=>Number.isFinite(v)?`${v.toFixed(2)}${suffix}`:"—",roc=v=>Number.isFinite(v)?`${v>=0?'+':''}${v.toFixed(1)}%`:"—";
+    const cls=ctx.adjustment>1?"green":ctx.adjustment<-1?"red":"yellow",creditCls=ctx.creditRelative>1.5?"green":ctx.creditRelative<-1.5?"red":"yellow";
+    box.innerHTML=`<div class="bond-grid"><div class="bond-tile"><div class="b-label">Bond Macro Impact</div><div class="b-value ${cls}">${ctx.adjustment>=0?'+':''}${ctx.adjustment} pts</div><div class="b-sub">${escapeHTML(ctx.riskLevel)} risk • rate sensitivity ${ctx.rateSensitivity.toFixed(2)}×</div></div><div class="bond-tile"><div class="b-label">2Y / 10Y / 30Y Treasury</div><div class="b-value">${val(analysisYield('y2'))} / ${val(analysisYield('y10'))} / ${val(analysisYield('y30'))}</div><div class="b-sub">10Y−2Y curve ${val(ctx.curve)} • 30Y−10Y ${val(ctx.curve30)}</div></div><div class="bond-tile"><div class="b-label">10Y Real Yield</div><div class="b-value ${Number.isFinite(ctx.real10y)&&ctx.real10y>=2.25?'red':'yellow'}">${val(ctx.real10y)}</div><div class="b-sub">FRED DFII10 when available.</div></div><div class="bond-tile"><div class="b-label">TLT / IEF 20-Bar</div><div class="b-value">${roc(ctx.tltRoc)} / ${roc(ctx.iefRoc)}</div><div class="b-sub">Long and intermediate Treasury price trend.</div></div><div class="bond-tile"><div class="b-label">HYG vs LQD</div><div class="b-value ${creditCls}">${Number.isFinite(ctx.creditRelative)?`${ctx.creditRelative>=0?'+':''}${ctx.creditRelative.toFixed(1)} pts`:"—"}</div><div class="b-sub">High-yield minus investment-grade 20-bar return.</div></div><div class="bond-tile"><div class="b-label">Credit Spreads</div><div class="b-value">HY ${val(ctx.hyOAS)} • IG ${val(ctx.igOAS)}</div><div class="b-sub">Option-adjusted spreads from FRED when returned.</div></div></div><div class="bond-source">Sources used by this build: FRED rate/real-yield/credit-spread series plus Yahoo Finance daily ETF prices for TLT, IEF, HYG and LQD. Missing values stay blank rather than being estimated.</div>`;
+}
+function analysisYield(k){const e=lastAnalysis?.macroContext?.economicProbability;return e?.[k]??null;}
+function detailedMarketRegime(benchmarkData,vixPrice=null){
+    if(!benchmarkData)return "UNAVAILABLE";const base=marketRegime(benchmarkData),adx=benchmarkData.adx??0,vol=benchmarkData.price?100*benchmarkData.atr/benchmarkData.price:0;
+    if(Number.isFinite(vixPrice)&&vixPrice>=30)return base==="RISK-OFF"?"HIGH-VOL RISK-OFF":"HIGH VOLATILITY";
+    if(adx<17)return "CHOPPY / RANGE";
+    if(adx>=25)return base==="RISK-ON"?"TRENDING RISK-ON":base==="RISK-OFF"?"TRENDING RISK-OFF":"TRENDING MIXED";
+    if(vol>=3)return "ELEVATED VOLATILITY";return base;
+}
+function parsePortfolioTickers(){return [...new Set(String(document.getElementById("portfolioTickers")?.value||"").toUpperCase().split(/[\s,;]+/).map(x=>x.replace(/[^A-Z0-9.\-^=]/g,"")).filter(Boolean))].slice(0,8);}
+function savePortfolioSettings(){try{localStorage.setItem(PORTFOLIO_KEY,JSON.stringify(parsePortfolioTickers()));}catch(e){}}
+function loadPortfolioSettings(){try{const a=JSON.parse(localStorage.getItem(PORTFOLIO_KEY)||"[]");if(Array.isArray(a)&&document.getElementById("portfolioTickers"))document.getElementById("portfolioTickers").value=a.join(", ");}catch(e){}}
+function returnMap(data,lookback=90){
+    const c=data?.candles||[],m=new Map();for(let i=Math.max(1,c.length-lookback);i<c.length;i++){const prev=c[i-1]?.close,cur=c[i]?.close;if(prev>0&&cur>0)m.set(c[i].time,cur/prev-1);}return m;
+}
+function pearsonPairs(a,b){
+    const xs=[],ys=[];for(const [t,x] of a){if(b.has(t)){xs.push(x);ys.push(b.get(t));}}if(xs.length<20)return null;const mx=mean(xs),my=mean(ys),num=xs.reduce((z,x,i)=>z+(x-mx)*(ys[i]-my),0),dx=Math.sqrt(xs.reduce((z,x)=>z+(x-mx)**2,0)),dy=Math.sqrt(ys.reduce((z,y)=>z+(y-my)**2,0));return dx&&dy?num/(dx*dy):null;
+}
+async function loadPortfolioRiskContext(ticker,analysis){
+    const peers=parsePortfolioTickers().filter(x=>x!==ticker);if(!peers.length)return {available:false,riskMultiplier:1,peers:[]};
+    let base=analysis?.analyses?.find(x=>x.data.timeframe==="1d")?.data||null;if(!base)base=await loadTickerData(ticker,"1d","6mo");const baseMap=returnMap(base);
+    const rows=await mapLimit(peers,4,async symbol=>{try{const d=await loadTickerData(symbol,"1d","6mo"),corr=pearsonPairs(baseMap,returnMap(d));return {symbol,corr};}catch(e){return {symbol,corr:null};}}),valid=rows.filter(x=>Number.isFinite(x.corr)),high=valid.filter(x=>x.corr>=.75),maxCorr=valid.length?Math.max(...valid.map(x=>x.corr)):null,avgCorr=valid.length?mean(valid.map(x=>x.corr)):null;
+    let riskMultiplier=1,riskLevel="NORMAL";if(high.length>=3||maxCorr>=.90){riskMultiplier=.65;riskLevel="HIGH";}else if(high.length>=2||maxCorr>=.80){riskMultiplier=.80;riskLevel="ELEVATED";}else if(avgCorr>=.60){riskMultiplier=.90;riskLevel="WATCH";}
+    return {available:true,peers:rows,validCount:valid.length,highCount:high.length,maxCorr,avgCorr,riskMultiplier,riskLevel};
+}
+function renderPortfolioRisk(ctx,ticker){
+    const card=document.getElementById("portfolioRiskCard"),box=document.getElementById("portfolioRiskOutput");if(!card||!box)return;if(!ctx?.available){card.style.display="none";return;}card.style.display="block";
+    const cls=ctx.riskLevel==="HIGH"?"red":ctx.riskLevel==="ELEVATED"?"yellow":"green";box.innerHTML=`<div class="guardrail-banner ${ctx.riskLevel==='HIGH'?'red-border':ctx.riskLevel==='NORMAL'?'green-border':''}"><div class="guardrail-action ${cls}">${escapeHTML(ctx.riskLevel)} CORRELATION RISK</div><div class="guardrail-sub">${escapeHTML(ticker)} compared with ${ctx.peers.length} portfolio/watchlist ticker(s). Position-size multiplier ${Math.round(ctx.riskMultiplier*100)}% of normal. Correlation is based on overlapping daily returns and does not measure your dollar weights.</div></div><div class="portfolio-risk-grid">${ctx.peers.map(x=>`<div class="portfolio-peer"><b>${escapeHTML(x.symbol)}</b><br><span class="${Number.isFinite(x.corr)&&x.corr>=.75?'red':Number.isFinite(x.corr)&&x.corr>=.5?'yellow':'green'}">${Number.isFinite(x.corr)?`corr ${x.corr.toFixed(2)}`:'data unavailable'}</span></div>`).join("")}</div>`;
+}
+function readSignalHistory(){try{return JSON.parse(localStorage.getItem(SIGNAL_HISTORY_KEY)||"{}")||{};}catch(e){return{};}}
+function attachSignalChange(analysis){
+    const all=readSignalHistory(),prev=all[analysis.primary.ticker]||null;if(!prev)return {...analysis,signalChangeContext:{available:false,first:true}};
+    return {...analysis,signalChangeContext:{available:true,previous:prev,scoreDelta:analysis.score-prev.score,technicalDelta:(analysis.technicalScore??0)-(prev.technicalScore??0),macroDelta:(analysis.macroContribution??0)-(prev.macroContribution??0)}};
+}
+function saveSignalSnapshot(analysis){try{const all=readSignalHistory();all[analysis.primary.ticker]={timestamp:Date.now(),direction:analysis.direction,score:analysis.score,technicalScore:analysis.technicalScore??0,macroContribution:analysis.macroContribution??0,price:analysis.primary.price};localStorage.setItem(SIGNAL_HISTORY_KEY,JSON.stringify(all));}catch(e){}}
+function signalChangeHTML(analysis){
+    const c=analysis.signalChangeContext;if(!c)return "";if(!c.available)return `<div class="signal-change"><b>Signal change:</b> first saved Halifax analysis for ${escapeHTML(analysis.primary.ticker)} on this browser. Future runs will show what changed.</div>`;
+    const p=c.previous,age=Math.max(0,Math.round((Date.now()-p.timestamp)/60000));return `<div class="signal-change"><b>Signal change since last run:</b> ${escapeHTML(p.direction)} ${p.score>=0?'+':''}${p.score} → <b class="${analysis.direction==='LONG'?'green':analysis.direction==='SHORT'?'red':'yellow'}">${escapeHTML(analysis.direction)} ${analysis.score>=0?'+':''}${analysis.score}</b> • score ${c.scoreDelta>=0?'+':''}${c.scoreDelta} • technical ${c.technicalDelta>=0?'+':''}${c.technicalDelta} • macro ${c.macroDelta>=0?'+':''}${c.macroDelta} • prior run ${age<60?age+'m ago':(age/60).toFixed(1)+'h ago'}.</div>`;
+}
+function liquidityQuality(analysis){
+    const d=analysis.primary,q=analysis.liveQuoteContext,adv=d.avgDollarVolume||0,vr=d.volumeRatio||0;let score=adv>=100e6?95:adv>=50e6?88:adv>=20e6?76:adv>=10e6?62:adv>=5e6?48:30;score+=vr>=1.2?5:vr<.7?-8:0;
+    const spread=q?.bid>0&&q?.ask>=q.bid?100*(q.ask-q.bid)/((q.ask+q.bid)/2):null;if(Number.isFinite(spread)){if(spread<=.08)score+=5;else if(spread>.75)score-=25;else if(spread>.35)score-=15;else if(spread>.15)score-=7;}return {score:Math.round(clamp(score,0,100)),spread};
+}
+function tradeQualityData(analysis,trade){
+    const g=predictionGrades(analysis,trade),dirSign=analysis.direction==="LONG"?1:analysis.direction==="SHORT"?-1:0,liq=liquidityQuality(analysis),macro=clamp(50+(analysis.macroContribution||0)*dirSign*2,0,100),bondAdj=analysis.macroContext?.bondContext?.adjustment||0,bonds=clamp(50+bondAdj*dirSign*5,0,100),op=analysis.optionsContext;
+    let options=50;if(op?.available&&dirSign){if(op.direction===analysis.direction)options=op.confidence==="Strong"?88:op.confidence==="Moderate"?76:64;else if(op.direction==="MIXED")options=50;else options=op.confidence==="Strong"?22:op.confidence==="Moderate"?32:40;if(Number.isFinite(op.medianSpreadPct)&&op.medianSpreadPct>35)options-=10;}options=clamp(options,0,100);
+    const fe=analysis.fundamentalEventContext;let catalyst=75;if(fe?.available){catalyst=fe.earningsRisk==="CRITICAL"?10:fe.earningsRisk==="HIGH"?25:fe.earningsRisk==="ELEVATED"?45:fe.earningsRisk==="WATCH"?65:90;}
+    const rr=trade.rr2>=4?95:trade.rr2>=3?88:trade.rr2>=2?78:trade.rr2>=1.5?62:40,portfolio=Math.round((analysis.portfolioRiskContext?.riskMultiplier??1)*100);
+    const parts={Trend:g.trend.score,Entry:g.entry.score,Macro:Math.round(macro),Options:Math.round(options),"Bonds/Rates":Math.round(bonds),Catalyst:Math.round(catalyst),Liquidity:liq.score,"Risk/Reward":rr,Portfolio:portfolio};
+    const weights={Trend:.19,Entry:.16,Macro:.13,Options:.10,"Bonds/Rates":.10,Catalyst:.08,Liquidity:.10,"Risk/Reward":.09,Portfolio:.05};let overall=0;for(const [k,v] of Object.entries(parts))overall+=v*(weights[k]||0);overall=Math.round(clamp(overall,0,100));
+    let decision="WAIT",cls="yellow",note="Setup needs more confirmation.";if(analysis.direction==="WAIT"){if(analysis.guardrailBlocked&&overall<45){decision="AVOID";cls="red";note="A guardrail is blocking the setup and overall quality is weak.";}else{decision="WAIT";cls="yellow";note="Price-action rules have not authorized a trade.";}}else if(overall>=72&&g.entry.score>=58&&liq.score>=55&&catalyst>=40){decision="TRADE";cls=analysis.direction==="LONG"?"green":"red";note="The active direction passes the current quality, entry, liquidity and event-risk checks.";}else if(overall<48||liq.score<35||catalyst<=25){decision="AVOID";cls="red";note="The direction may exist, but execution quality or event/liquidity risk is too weak.";}return {overall,decision,cls,note,parts,spread:liq.spread};
+}
+function tradeQualityHTML(analysis,trade){
+    const q=tradeQualityData(analysis,trade),tiles=Object.entries(q.parts).map(([k,v])=>`<div class="quality-tile-v21"><span>${escapeHTML(k)}</span><b class="${v>=72?'green':v>=55?'yellow':'red'}">${v}/100</b></div>`).join("");
+    return `<div class="trade-quality"><div class="trade-quality-head"><div><div class="trade-quality-title">Halifax Trade Quality • not a win probability</div><div class="quality-foot">Combines trend, entry timing, macro, options confirmation, bond/rate conditions, earnings risk, liquidity, reward/risk and optional portfolio correlation.</div></div><div class="trade-quality-decision ${q.cls}">${escapeHTML(q.decision)} • ${q.overall}/100</div></div><div class="quality-grid-v21">${tiles}</div><div class="quality-foot">${escapeHTML(q.note)}${Number.isFinite(q.spread)?` Current bid/ask spread ${q.spread.toFixed(2)}%.`:''}</div></div>`;
+}
+function catalystHTML(analysis){
+    const fe=analysis.fundamentalEventContext;if(!fe?.available)return `<div class="catalyst-strip"><span><b>Catalyst countdown:</b> earnings date unavailable / still loading</span><span class="tiny">No future macro release date is guessed.</span></div>`;
+    const days=Number.isFinite(fe.daysToEarnings)&&fe.daysToEarnings>=0?`${fe.daysToEarnings} day${fe.daysToEarnings===1?'':'s'}`:"date not upcoming";return `<div class="catalyst-strip"><span><b>Earnings countdown:</b> ${escapeHTML(days)}</span><span class="${fe.earningsRisk==='CRITICAL'||fe.earningsRisk==='HIGH'?'red':fe.earningsRisk==='ELEVATED'||fe.earningsRisk==='WATCH'?'yellow':'green'}">Risk ${escapeHTML(fe.earningsRisk)} • size ${Math.round((fe.riskMultiplier??1)*100)}%</span></div>`;
+}
+// ================= End Halifax v21.0 Live Market Intelligence ===============
+
 async function resetHalifaxApp(){
   try{
     halifaxRunId++;
@@ -3466,7 +3742,7 @@ async function registerHalifaxPWA(){
   }catch(e){console.warn('Halifax PWA registration failed',e);}
 }
 
-window.addEventListener("load",()=>{const q=new URLSearchParams(location.search).get("ticker");if(q&&document.getElementById("ticker"))document.getElementById("ticker").value=String(q).toUpperCase().replace(/[^A-Z0-9.\-^=]/g,"");loadPositionSettings();renderPaperJournal();economicState={...ECON_FALLBACK};setEconInput("econShiller",shillerState.value,2);recalculateEconomicProbability();const box=document.getElementById("chart");if(box)box.innerHTML='<div class="loading" style="padding:20px">Halifax is ready. Interactive chart loads in the background.</div>';setStatus("Engine ready");loadChartLibrary().catch(()=>{});});
+window.addEventListener("load",()=>{const q=new URLSearchParams(location.search).get("ticker");if(q&&document.getElementById("ticker"))document.getElementById("ticker").value=String(q).toUpperCase().replace(/[^A-Z0-9.\-^=]/g,"");loadPositionSettings();loadPortfolioSettings();renderPaperJournal();economicState={...ECON_FALLBACK};setEconInput("econShiller",shillerState.value,2);recalculateEconomicProbability();const box=document.getElementById("chart");if(box)box.innerHTML='<div class="loading" style="padding:20px">Halifax is ready. Interactive chart loads in the background.</div>';setStatus("Engine ready");loadChartLibrary().catch(()=>{});});
 window.addEventListener("load",registerHalifaxPWA);
 </script>
 </body>
