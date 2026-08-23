@@ -18,7 +18,7 @@
 <meta name="application-name" content="Halifax">
 <meta name="format-detection" content="telephone=no">
 
-<title>Halifax Trade Engine v21.9 Safe Mockup - Exact Dashboard</title>
+<title>Halifax Trade Engine v21.10 Data Fix - Exact Dashboard</title>
 
 <style>
 :root{
@@ -1249,7 +1249,7 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
 @media(max-width:560px){#mockHeaderTools{flex-wrap:wrap}.mock-command-grid,.mock-decision-grid,.mock-research-grid{grid-template-columns:1fr}.mock-dcell:nth-child(n){grid-column:1}.mock-factor-list{grid-template-columns:1fr}.mock-levels{grid-template-columns:1fr 1fr}.mock-guidance-core{grid-template-columns:1fr}.mock-event{grid-template-columns:45px 1fr 55px}.mock-event .mock-event-time{display:none}}
 
 
-/* v21.9 SAFE SHELL: preserve original Halifax DOM/functionality offscreen. */
+/* v21.10 SAFE SHELL: preserve original Halifax DOM/functionality offscreen. Data proxy syntax refreshed Aug 2026. */
 .container > .command-card,
 .container > #decisionCard,
 .container > #fundamentalsCard,
@@ -1290,7 +1290,7 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
     <div class="card header">
         <div class="brand-stack">
             <div class="terminal-kicker"><span class="kicker-dot"></span> HALIFAX QUANT RESEARCH TERMINAL</div>
-            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v21.9 Safe Mockup</span></span></div>
+            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v21.10 Data Fix</span></span></div>
             <div class="subtitle">Predictive swing research • Unified market guidance • Federal contract radar • Options • Bonds • Event guardrails</div>
         </div>
         <div class="header-actions"><div class="badge system-badge"><span class="status-dot"></span><span id="engineStatus">Engine ready</span></div></div>
@@ -1351,7 +1351,7 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
         <details id="mockSmart" class="mock-research"><summary><div class="mock-rtitle">Smart Money Flow</div><div id="mkSmartStatus" class="mock-rstatus yellow">Awaiting</div></summary><div id="mockSmartBody" class="mock-research-body"></div></details>
         <details id="mockFund" class="mock-research"><summary><div class="mock-rtitle">Fundamentals</div><div id="mkFundStatus" class="mock-rstatus yellow">Awaiting</div></summary><div id="mockFundBody" class="mock-research-body"></div></details>
       </section>
-      <div class="mock-footer"><span>This tool is for informational research only and does not constitute financial advice.</span><span><span class="mock-live-dot"></span><span id="mkFooterTime">Data updates with analysis</span> &nbsp; Halifax Trade Engine v21.9</span></div>
+      <div class="mock-footer"><span>This tool is for informational research only and does not constitute financial advice.</span><span><span class="mock-live-dot"></span><span id="mkFooterTime">Data updates with analysis</span> &nbsp; Halifax Trade Engine v21.10</span></div>
     </div>
 
     <div class="card command-card">
@@ -1835,11 +1835,11 @@ async function fetchJson(url){
     // Backup path: race independent browser proxies. This sharply reduces worst-case wait time.
     const proxyUrls=[
         `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-        `https://corsproxy.io/?${encodeURIComponent(url)}`,
-        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`
+        `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
+        `https://proxy.cors.sh/${url}`
     ];
     try{const data=await Promise.any(proxyUrls.map(u=>read(u,7000)));responseCache.set(url,{data,expires:Date.now()+15000});return data;}
-    catch(e){console.warn("Halifax market-data failure",url,e);throw new Error("Market data could not be loaded. Yahoo/direct access and the backup browser proxies all failed or timed out. This is a data-source/CORS connection problem, not a trade-score calculation error.");}
+    catch(e){console.warn("Halifax market-data failure",url,e);throw new Error("Market data could not be loaded. Yahoo/direct access plus CorsProxy.io, AllOrigins, and CORS.SH all failed or timed out. This is a data-source/CORS connection problem, not a trade-score calculation error.");}
 }
 async function fetchJsonFresh(url){
     const sep=String(url).includes("?")?"&":"?",freshUrl=`${url}${sep}_hx=${Date.now()}`;
@@ -1847,7 +1847,7 @@ async function fetchJsonFresh(url){
     const read=async(u,t)=>{const data=await parseJsonResponse(await fetchWithTimeout(u,{},t));if(!jsonLooksUsable(data))throw new Error("unusable response");return data;};
     const direct=[read(freshUrl,4200)];if(alternate)direct.push(read(alternate,4200));
     try{return await Promise.any(direct);}catch(e){}
-    const proxyUrls=[`https://api.allorigins.win/raw?url=${encodeURIComponent(freshUrl)}`,`https://corsproxy.io/?${encodeURIComponent(freshUrl)}`,`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(freshUrl)}`];
+    const proxyUrls=[`https://api.allorigins.win/raw?url=${encodeURIComponent(freshUrl)}`,`https://corsproxy.io/?url=${encodeURIComponent(freshUrl)}`,`https://proxy.cors.sh/${freshUrl}`];
     return Promise.any(proxyUrls.map(u=>read(u,6500)));
 }
 
@@ -1855,8 +1855,8 @@ async function fetchTextWithFallback(url){
     const attempts=[
         {name:"Direct",run:async()=>{const r=await fetchWithTimeout(url,{},7000);if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.text();}},
         {name:"AllOrigins",run:async()=>{const r=await fetchWithTimeout(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,{},9000);if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.text();}},
-        {name:"CorsProxy",run:async()=>{const r=await fetchWithTimeout(`https://corsproxy.io/?${encodeURIComponent(url)}`,{},9000);if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.text();}},
-        {name:"CodeTabs",run:async()=>{const r=await fetchWithTimeout(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,{},9000);if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.text();}}
+        {name:"CorsProxy",run:async()=>{const r=await fetchWithTimeout(`https://corsproxy.io/?url=${encodeURIComponent(url)}`,{},9000);if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.text();}},
+        {name:"CorsSH",run:async()=>{const r=await fetchWithTimeout(`https://proxy.cors.sh/${url}`,{},9000);if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.text();}}
     ];
     for(const attempt of attempts){try{const t=await attempt.run();if(t&&t.length>30)return t;}catch(e){}}
     throw new Error("Economic data service did not respond before the timeout.");
@@ -2458,7 +2458,7 @@ function calendarDayDelta(year,month,day){
 }
 async function fetchTextFast(url,timeoutMs=5200){
     const read=async u=>{const r=await fetchWithTimeout(u,{},timeoutMs);if(!r.ok)throw new Error(`HTTP ${r.status}`);const t=await r.text();if(!t||t.length<50)throw new Error("empty text");return t;};
-    const routes=[url,`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,`https://corsproxy.io/?${encodeURIComponent(url)}`];
+    const routes=[url,`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,`https://corsproxy.io/?url=${encodeURIComponent(url)}`];
     return Promise.any(routes.map(read));
 }
 function pushOfficialEvent(events,evt){
@@ -3275,7 +3275,7 @@ async function fetchExternalJson(url,timeoutMs=5200){
     const routes=[
         ()=>read(url),
         ()=>read(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`),
-        ()=>read(`https://corsproxy.io/?${encodeURIComponent(url)}`)
+        ()=>read(`https://corsproxy.io/?url=${encodeURIComponent(url)}`)
     ];
     try{return await Promise.any(routes.map(fn=>fn()));}catch(e){throw new Error("public filing data route unavailable");}
 }
@@ -3901,7 +3901,7 @@ async function runEngine(){
         renderChart(analysis.primary,trade);renderRegime(analysis,benchmarkResult);renderMTF(analysis);renderTradeOutput(analysis,trade);renderMarketGuidance(analysis.macroContext);renderBondContext(analysis.macroContext?.bondContext);renderPositionGuardrails(ticker,analysis.primary,analysis);renderNews(displayNews,ticker);
         document.getElementById("smartMoneyOutput").innerHTML='<div class="loading">Core prediction is complete. Loading insider, institutional and public-filing context in the background…</div>';
         document.getElementById("decisionCard")?.scrollIntoView({behavior:"smooth",block:"start"});
-        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v21.9 Safe Mockup`;
+        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v21.10 Data Fix`;
         startLiveQuoteStream(ticker,runId);
         const portfolioPromise=loadPortfolioRiskContext(ticker,analysis).catch(()=>null);
         portfolioPromise.then(pr=>{
@@ -4322,7 +4322,16 @@ window.mockAnalyze=async function(){
   set('mkTicker',t?.value||'—');set('mkDirection','ANALYZING','yellow');
   try{await runEngine();}
   catch(e){console.error(e);set('mkDirection','ERROR','red');if($('mkFactors'))$('mkFactors').innerHTML=`<li>${escapeHTML(e?.message||String(e))}</li>`;}
-  finally{setTimeout(()=>{if(lastAnalysis&&lastTrade)updateCore(lastAnalysis,lastTrade);$('mockDecision')?.scrollIntoView({behavior:'smooth',block:'start'});},80)}
+  finally{setTimeout(()=>{
+    if(lastAnalysis&&lastTrade&&lastAnalysis?.primary?.ticker===t?.value){updateCore(lastAnalysis,lastTrade);}
+    else{
+      const coreError=String($('tradeOutput')?.innerText||'').trim();
+      set('mkDirection','DATA ERROR','red');
+      set('mkScore','—','red');set('mkConfidence','—','red');
+      if($('mkFactors'))$('mkFactors').innerHTML=`<li>${escapeHTML(coreError||'Market data did not return a usable analysis.')}</li>`;
+    }
+    $('mockDecision')?.scrollIntoView({behavior:'smooth',block:'start'});
+  },120)}
 };
 window.mockOpenWatchlist=function(){
   const current=String($('portfolioTickers')?.value||'');
@@ -4343,6 +4352,10 @@ function initShell(){
   moveCoreControls();headerTools();
   if(document.body.dataset.halifaxSafeInit==='1')return;document.body.dataset.halifaxSafeInit='1';
   const inp=$('mockTickerInput');if(inp)inp.addEventListener('input',()=>set('mkTicker',inp.value.toUpperCase()||'—'));
+  if(location.protocol==='file:'){
+    set('mkEnvLabel','LOCAL FILE','yellow');
+    const ft=$('mkFooterTime');if(ft)ft.textContent='For live data, publish this file on GitHub Pages / HTTPS';
+  }
 }
 function drawMockChart(d){
   const mount=$('mockChartMount');if(!mount||!d)return;let c=$('mockChartCanvas');if(!c){mount.innerHTML='<canvas id="mockChartCanvas"></canvas>';c=$('mockChartCanvas')}
