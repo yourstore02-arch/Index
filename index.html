@@ -18,7 +18,7 @@
 <meta name="application-name" content="Halifax">
 <meta name="format-detection" content="telephone=no">
 
-<title>Halifax Trade Engine v21.10 Data Fix - Exact Dashboard</title>
+<title>Halifax Trade Engine v21.11 Compact Laptop Layout - Exact Dashboard</title>
 
 <style>
 :root{
@@ -1249,7 +1249,7 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
 @media(max-width:560px){#mockHeaderTools{flex-wrap:wrap}.mock-command-grid,.mock-decision-grid,.mock-research-grid{grid-template-columns:1fr}.mock-dcell:nth-child(n){grid-column:1}.mock-factor-list{grid-template-columns:1fr}.mock-levels{grid-template-columns:1fr 1fr}.mock-guidance-core{grid-template-columns:1fr}.mock-event{grid-template-columns:45px 1fr 55px}.mock-event .mock-event-time{display:none}}
 
 
-/* v21.10 SAFE SHELL: preserve original Halifax DOM/functionality offscreen. Data proxy syntax refreshed Aug 2026. */
+/* v21.11 SAFE SHELL: preserve original Halifax DOM/functionality offscreen. Data proxy syntax refreshed Aug 2026. */
 .container > .command-card,
 .container > #decisionCard,
 .container > #fundamentalsCard,
@@ -1283,6 +1283,45 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
 @media(max-width:1200px){.mock-command-grid{grid-template-columns:1fr 1.4fr 1fr 1fr 1fr!important}.mock-util{display:none!important}}
 @media(max-width:760px){.mock-command-grid{grid-template-columns:1fr 1fr!important}.mock-analyze{grid-column:1/-1}.mock-style-wrap{grid-column:auto}.mock-market-grid{grid-template-columns:repeat(2,1fr)!important}.mock-decision-grid{grid-template-columns:1fr!important}.mock-guidance{grid-template-columns:1fr!important}.mock-lower{grid-template-columns:1fr!important}.mock-research-grid{grid-template-columns:1fr!important}}
 
+
+/* v21.11 compact laptop layout fix: prevent guidance/lower panels from wrapping into tall empty rows */
+@media (min-width:901px){
+  .mock-guidance{
+    grid-template-columns:minmax(245px,1.2fr) minmax(170px,1fr) minmax(260px,1.4fr) minmax(135px,.78fr) minmax(210px,1.2fr)!important;
+    min-height:140px!important;
+    align-items:stretch!important;
+  }
+  .mock-gcell{
+    min-height:140px!important;
+    border-top:0!important;
+    overflow:hidden!important;
+  }
+  #mkEvents{max-height:104px!important;overflow:hidden!important;}
+  #mkEvents .mock-event:nth-child(n+5){display:none!important;}
+  .mock-lower{
+    grid-template-columns:minmax(360px,1.65fr) minmax(180px,.9fr) minmax(210px,1.05fr) minmax(230px,1.25fr)!important;
+    align-items:stretch!important;
+  }
+  .mock-right-stack{
+    grid-column:auto!important;
+    grid-template-columns:1fr!important;
+    grid-template-rows:1fr 1.2fr!important;
+  }
+}
+@media (min-width:901px) and (max-width:1180px){
+  .mock-guidance{
+    grid-template-columns:1.15fr .95fr 1.3fr .72fr 1.08fr!important;
+  }
+  .mock-gcell{padding:10px 9px!important;}
+  .mock-guidance-core{grid-template-columns:92px 1fr!important;gap:7px!important;}
+  .mock-arc{width:84px!important;height:43px!important;border-width:6px!important;}
+  .mock-arc:after{width:84px!important;height:43px!important;border-width:6px!important;left:-6px!important;top:-6px!important;}
+  .mock-guide-score{font-size:20px!important;}
+  .mock-guide-list,.mock-macro-summary{font-size:9.4px!important;}
+  .mock-event{grid-template-columns:40px 48px 1fr 52px!important;gap:4px!important;font-size:8.8px!important;}
+  .mock-lower{grid-template-columns:1.55fr .85fr 1fr 1.15fr!important;gap:7px!important;}
+}
+
 </style>
 </head>
 <body>
@@ -1290,7 +1329,7 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
     <div class="card header">
         <div class="brand-stack">
             <div class="terminal-kicker"><span class="kicker-dot"></span> HALIFAX QUANT RESEARCH TERMINAL</div>
-            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v21.10 Data Fix</span></span></div>
+            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v21.11 Compact Laptop Layout</span></span></div>
             <div class="subtitle">Predictive swing research • Unified market guidance • Federal contract radar • Options • Bonds • Event guardrails</div>
         </div>
         <div class="header-actions"><div class="badge system-badge"><span class="status-dot"></span><span id="engineStatus">Engine ready</span></div></div>
@@ -1351,7 +1390,7 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
         <details id="mockSmart" class="mock-research"><summary><div class="mock-rtitle">Smart Money Flow</div><div id="mkSmartStatus" class="mock-rstatus yellow">Awaiting</div></summary><div id="mockSmartBody" class="mock-research-body"></div></details>
         <details id="mockFund" class="mock-research"><summary><div class="mock-rtitle">Fundamentals</div><div id="mkFundStatus" class="mock-rstatus yellow">Awaiting</div></summary><div id="mockFundBody" class="mock-research-body"></div></details>
       </section>
-      <div class="mock-footer"><span>This tool is for informational research only and does not constitute financial advice.</span><span><span class="mock-live-dot"></span><span id="mkFooterTime">Data updates with analysis</span> &nbsp; Halifax Trade Engine v21.10</span></div>
+      <div class="mock-footer"><span>This tool is for informational research only and does not constitute financial advice.</span><span><span class="mock-live-dot"></span><span id="mkFooterTime">Data updates with analysis</span> &nbsp; Halifax Trade Engine v21.11</span></div>
     </div>
 
     <div class="card command-card">
@@ -3901,7 +3940,7 @@ async function runEngine(){
         renderChart(analysis.primary,trade);renderRegime(analysis,benchmarkResult);renderMTF(analysis);renderTradeOutput(analysis,trade);renderMarketGuidance(analysis.macroContext);renderBondContext(analysis.macroContext?.bondContext);renderPositionGuardrails(ticker,analysis.primary,analysis);renderNews(displayNews,ticker);
         document.getElementById("smartMoneyOutput").innerHTML='<div class="loading">Core prediction is complete. Loading insider, institutional and public-filing context in the background…</div>';
         document.getElementById("decisionCard")?.scrollIntoView({behavior:"smooth",block:"start"});
-        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v21.10 Data Fix`;
+        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v21.11 Compact Laptop Layout`;
         startLiveQuoteStream(ticker,runId);
         const portfolioPromise=loadPortfolioRiskContext(ticker,analysis).catch(()=>null);
         portfolioPromise.then(pr=>{
