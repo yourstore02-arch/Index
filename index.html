@@ -18,7 +18,7 @@
 <meta name="application-name" content="Halifax">
 <meta name="format-detection" content="telephone=no">
 
-<title>Halifax Trade Engine v21.8 Lite - Exact Dashboard</title>
+<title>Halifax Trade Engine v21.9 Safe Mockup - Exact Dashboard</title>
 
 <style>
 :root{
@@ -1248,6 +1248,41 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
 @media(max-width:900px){body{padding:6px}.header{align-items:flex-start;flex-direction:column}.subtitle{font-size:10px}.mock-market-grid{grid-template-columns:repeat(2,1fr)}.mock-market-tile{border-bottom:1px solid #19344f}.mock-command-grid{grid-template-columns:1fr 1fr}.mock-decision-grid{grid-template-columns:1fr 1fr}.mock-dcell{border-bottom:1px solid #19344f}.mock-dcell:nth-child(3),.mock-dcell:nth-child(4),.mock-dcell:nth-child(5){grid-column:1/-1}.mock-guidance{grid-template-columns:1fr}.mock-gcell{border-bottom:1px solid #19344f}.mock-lower{grid-template-columns:1fr}.mock-right-stack{grid-column:auto;grid-template-columns:1fr}.mock-research-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){#mockHeaderTools{flex-wrap:wrap}.mock-command-grid,.mock-decision-grid,.mock-research-grid{grid-template-columns:1fr}.mock-dcell:nth-child(n){grid-column:1}.mock-factor-list{grid-template-columns:1fr}.mock-levels{grid-template-columns:1fr 1fr}.mock-guidance-core{grid-template-columns:1fr}.mock-event{grid-template-columns:45px 1fr 55px}.mock-event .mock-event-time{display:none}}
 
+
+/* v21.9 SAFE SHELL: preserve original Halifax DOM/functionality offscreen. */
+.container > .command-card,
+.container > #decisionCard,
+.container > #fundamentalsCard,
+.container > #governmentInfoPanel,
+.container > #optionsCard,
+.container > #marketGuidanceCard,
+.container > #bondCard,
+.container > #paperJournalPanel,
+.container > #backtestPanel,
+.container > #riskMacroPanel,
+.container > #supportingEvidencePanel,
+.container > #smartMoneyCard,
+.container > .chart-card,
+.container > .evidence-card,
+.container > .card:not(.header):not(#mockDashboard){
+  position:absolute !important; left:-100000px !important; top:0 !important;
+  width:1450px !important; max-width:1450px !important; visibility:visible !important;
+  pointer-events:none !important; opacity:.001 !important;
+}
+#mockDashboard{display:block!important;position:relative!important;left:auto!important;top:auto!important;width:auto!important;opacity:1!important;pointer-events:auto!important}
+.mock-command-grid{grid-template-columns:1.1fr 1.55fr .8fr .8fr .92fr 1.1fr 1fr!important}
+.mock-input,.mock-select{width:100%;height:42px;background:#06111f;border:1px solid #263b54;color:#eef6ff;border-radius:5px;padding:0 11px;font-size:14px;font-weight:750;outline:none}
+.mock-input:focus,.mock-select:focus{border-color:#3d82c8;box-shadow:0 0 0 2px rgba(61,130,200,.12)}
+.mock-style-wrap{display:grid;grid-template-columns:repeat(3,1fr);height:42px;border:1px solid #263b54;border-radius:5px;overflow:hidden;background:#071323}
+.mock-style-btn{border:0!important;border-right:1px solid #263b54!important;background:#071323!important;color:#dbe8f7!important;border-radius:0!important;font-weight:900!important;font-size:12px!important;letter-spacing:.2px!important;padding:0 8px!important;min-width:0!important}
+.mock-style-btn:last-child{border-right:0!important}.mock-style-btn.active{background:#f28b16!important;color:white!important;box-shadow:inset 0 0 0 1px rgba(255,191,99,.5)!important}
+.mock-analyze{height:42px;border:1px solid #ffab48!important;border-radius:5px!important;background:linear-gradient(180deg,#f29322,#d96e0a)!important;color:white!important;font-size:13px!important;font-weight:950!important;letter-spacing:.4px!important;box-shadow:0 5px 16px rgba(242,139,22,.2)!important}
+.mock-util{height:42px!important}
+#mockChartCanvas{width:100%;height:100%;min-height:250px;display:block;background:#06101c;border-radius:4px}
+.mock-command-field label{display:block;color:#a9bed2;font-size:9px;text-transform:uppercase;letter-spacing:.65px;font-weight:900;margin-bottom:5px}
+@media(max-width:1200px){.mock-command-grid{grid-template-columns:1fr 1.4fr 1fr 1fr 1fr!important}.mock-util{display:none!important}}
+@media(max-width:760px){.mock-command-grid{grid-template-columns:1fr 1fr!important}.mock-analyze{grid-column:1/-1}.mock-style-wrap{grid-column:auto}.mock-market-grid{grid-template-columns:repeat(2,1fr)!important}.mock-decision-grid{grid-template-columns:1fr!important}.mock-guidance{grid-template-columns:1fr!important}.mock-lower{grid-template-columns:1fr!important}.mock-research-grid{grid-template-columns:1fr!important}}
+
 </style>
 </head>
 <body>
@@ -1255,7 +1290,7 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
     <div class="card header">
         <div class="brand-stack">
             <div class="terminal-kicker"><span class="kicker-dot"></span> HALIFAX QUANT RESEARCH TERMINAL</div>
-            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v21.8 Lite</span></span></div>
+            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v21.9 Safe Mockup</span></span></div>
             <div class="subtitle">Predictive swing research • Unified market guidance • Federal contract radar • Options • Bonds • Event guardrails</div>
         </div>
         <div class="header-actions"><div class="badge system-badge"><span class="status-dot"></span><span id="engineStatus">Engine ready</span></div></div>
@@ -1316,7 +1351,7 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
         <details id="mockSmart" class="mock-research"><summary><div class="mock-rtitle">Smart Money Flow</div><div id="mkSmartStatus" class="mock-rstatus yellow">Awaiting</div></summary><div id="mockSmartBody" class="mock-research-body"></div></details>
         <details id="mockFund" class="mock-research"><summary><div class="mock-rtitle">Fundamentals</div><div id="mkFundStatus" class="mock-rstatus yellow">Awaiting</div></summary><div id="mockFundBody" class="mock-research-body"></div></details>
       </section>
-      <div class="mock-footer"><span>This tool is for informational research only and does not constitute financial advice.</span><span><span class="mock-live-dot"></span><span id="mkFooterTime">Data updates with analysis</span> &nbsp; Halifax Trade Engine v21.8</span></div>
+      <div class="mock-footer"><span>This tool is for informational research only and does not constitute financial advice.</span><span><span class="mock-live-dot"></span><span id="mkFooterTime">Data updates with analysis</span> &nbsp; Halifax Trade Engine v21.9</span></div>
     </div>
 
     <div class="card command-card">
@@ -3866,7 +3901,7 @@ async function runEngine(){
         renderChart(analysis.primary,trade);renderRegime(analysis,benchmarkResult);renderMTF(analysis);renderTradeOutput(analysis,trade);renderMarketGuidance(analysis.macroContext);renderBondContext(analysis.macroContext?.bondContext);renderPositionGuardrails(ticker,analysis.primary,analysis);renderNews(displayNews,ticker);
         document.getElementById("smartMoneyOutput").innerHTML='<div class="loading">Core prediction is complete. Loading insider, institutional and public-filing context in the background…</div>';
         document.getElementById("decisionCard")?.scrollIntoView({behavior:"smooth",block:"start"});
-        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v21.8 Lite`;
+        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v21.9 Safe Mockup`;
         startLiveQuoteStream(ticker,runId);
         const portfolioPromise=loadPortfolioRiskContext(ticker,analysis).catch(()=>null);
         portfolioPromise.then(pr=>{
@@ -4259,20 +4294,42 @@ function sparkSVG(values,positive=true){
   const c=positive?'#49d85c':'#ef4444';return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><polyline points="${pts}" fill="none" stroke="${c}" stroke-width="1.7" vector-effect="non-scaling-stroke"/></svg>`;
 }
 function moveCoreControls(){
-  const mount=$('mockCommandControls'), old=document.querySelector('.command-card .quick-controls');if(!mount||!old||mount.children.length)return;
-  const kids=[...old.children];kids.forEach(x=>mount.appendChild(x));
-  const styleBox=mount.querySelector('.style-buttons');if(styleBox){const pos=styleBox.querySelector('.mode-position'),sw=styleBox.querySelector('.mode-swing'),day=styleBox.querySelector('.mode-day'),sc=styleBox.querySelector('.mode-scalp'),cu=styleBox.querySelector('.mode-custom');[pos,sw,day,sc,cu].filter(Boolean).forEach(b=>styleBox.appendChild(b));}
-  const utilities=document.createElement('button');utilities.className='mock-util';utilities.type='button';utilities.innerHTML='↻ Clear Entry / Stop / Targets';utilities.onclick=clearMockTradeDisplay;mount.appendChild(utilities);
-  const watch=document.createElement('button');watch.className='mock-util';watch.type='button';watch.innerHTML='☆ Edit Watchlist';watch.onclick=()=>openMockResearch('mockMacro','portfolioTickers');mount.appendChild(watch);
+  const mount=$('mockCommandControls');if(!mount||mount.dataset.ready==='1')return;mount.dataset.ready='1';
+  mount.innerHTML=`
+    <div class="mock-command-field"><label>Ticker</label><input id="mockTickerInput" class="mock-input" autocomplete="off" placeholder="IREN"></div>
+    <div class="mock-command-field"><label>Style</label><div class="mock-style-wrap"><button type="button" class="mock-style-btn" data-mock-style="position" onclick="mockSetStyle('position')">POSITION</button><button type="button" class="mock-style-btn active" data-mock-style="swing" onclick="mockSetStyle('swing')">SWING</button><button type="button" class="mock-style-btn" data-mock-style="day" onclick="mockSetStyle('day')">DAY</button></div></div>
+    <div class="mock-command-field"><label>Account Size ($)</label><input id="mockAccount" class="mock-input" type="number" value="25000" min="0" step="100"></div>
+    <div class="mock-command-field"><label>Risk Per Trade (%)</label><input id="mockRisk" class="mock-input" type="number" value="1" min=".1" max="5" step=".1"></div>
+    <button type="button" class="mock-analyze" onclick="mockAnalyze()">ANALYZE</button>
+    <button type="button" class="mock-util" onclick="clearMockTradeDisplay()">↻ Clear Entry / Stop / Targets</button>
+    <button type="button" class="mock-util" onclick="mockOpenWatchlist()">☆ Edit Watchlist</button>`;
+  const srcTicker=$('ticker'),srcAccount=$('account'),srcRisk=$('risk'),srcStyle=$('style');
+  if(srcTicker&&$('mockTickerInput'))$('mockTickerInput').value=srcTicker.value||'';
+  if(srcAccount&&$('mockAccount'))$('mockAccount').value=srcAccount.value||25000;
+  if(srcRisk&&$('mockRisk'))$('mockRisk').value=srcRisk.value||1;
+  const st=srcStyle?.value||'swing';document.querySelectorAll('[data-mock-style]').forEach(b=>b.classList.toggle('active',b.dataset.mockStyle===st));
+  $('mockTickerInput')?.addEventListener('input',e=>set('mkTicker',String(e.target.value||'').toUpperCase()||'—'));
 }
-function rehouseLegacy(){
-  const chart=document.querySelector('.chart-card');if(chart&&$('mockChartMount')&&!$('mockChartMount').contains(chart))$('mockChartMount').appendChild(chart);
-  const move=(id,dest)=>{const e=$(id),d=$(dest);if(e&&d&&!d.contains(e))d.appendChild(e)};
-  const advanced=document.querySelector('.command-card details.compact-details');if(advanced&&$('mockMacroBody'))$('mockMacroBody').appendChild(advanced);
-  move('decisionCard','mockTechnicalBody');move('supportingEvidencePanel','mockTechnicalBody');move('paperJournalPanel','mockTechnicalBody');move('backtestPanel','mockTechnicalBody');
-  move('marketGuidanceCard','mockMacroBody');move('bondCard','mockMacroBody');move('riskMacroPanel','mockMacroBody');
-  move('governmentInfoPanel','mockGovernmentBody');move('optionsCard','mockOptionsBody');move('smartMoneyCard','mockSmartBody');move('fundamentalsCard','mockFundBody');
-}
+window.mockSetStyle=function(style){
+  const s=$('style');if(s){s.value=style;try{applyStyleDefaults()}catch(e){}}
+  document.querySelectorAll('[data-mock-style]').forEach(b=>b.classList.toggle('active',b.dataset.mockStyle===style));
+};
+window.mockAnalyze=async function(){
+  const t=$('ticker'),a=$('account'),r=$('risk');
+  if(t)t.value=String($('mockTickerInput')?.value||'').trim().toUpperCase();
+  if(a&&$('mockAccount'))a.value=$('mockAccount').value;
+  if(r&&$('mockRisk'))r.value=$('mockRisk').value;
+  set('mkTicker',t?.value||'—');set('mkDirection','ANALYZING','yellow');
+  try{await runEngine();}
+  catch(e){console.error(e);set('mkDirection','ERROR','red');if($('mkFactors'))$('mkFactors').innerHTML=`<li>${escapeHTML(e?.message||String(e))}</li>`;}
+  finally{setTimeout(()=>{if(lastAnalysis&&lastTrade)updateCore(lastAnalysis,lastTrade);$('mockDecision')?.scrollIntoView({behavior:'smooth',block:'start'});},80)}
+};
+window.mockOpenWatchlist=function(){
+  const current=String($('portfolioTickers')?.value||'');
+  const next=prompt('Portfolio / watchlist tickers (comma separated)',current);
+  if(next===null)return;const p=$('portfolioTickers');if(p){p.value=next;try{savePortfolioSettings()}catch(e){}};
+};
+function rehouseLegacy(){ /* v21.9: intentionally do not move core Halifax nodes */ }
 function headerTools(){
   const h=document.querySelector('.header-actions');if(!h||$('mockHeaderTools'))return;
   const sys=h.querySelector('.system-badge'),title=document.querySelector('.title');if(sys&&title)title.appendChild(sys);
@@ -4282,7 +4339,21 @@ function headerTools(){
 window.toggleMockRefresh=function(){const s=$('liveRefresh');if(!s)return;const on=String(s.value)!=='0';s.value=on?'0':'5';set('mkAutoRefresh',on?'OFF':'ON',on?'red':'green');if(lastAnalysis?.primary?.ticker){stopLiveQuoteStream();if(!on)startLiveQuoteStream(lastAnalysis.primary.ticker,halifaxRunId)}};
 window.openMockResearch=function(id,focusId){const d=$(id);if(!d)return;d.open=true;setTimeout(()=>{const target=focusId?$(focusId):d;target?.scrollIntoView({behavior:'smooth',block:'center'});focusId&&target?.focus?.()},30)};
 window.clearMockTradeDisplay=function(){['mkPrice','mkMove','mkScore','mkConfidence','mkEntry','mkStop','mkT1','mkT2','mkRR','mkRange'].forEach(id=>set(id,'—','yellow'));set('mkDirection','WAIT','yellow');$('mkFactors').innerHTML='<li>Display cleared. Run Analyze to restore current guidance.</li>';};
-function initShell(){moveCoreControls();rehouseLegacy();headerTools();const inp=$('ticker');if(inp)inp.addEventListener('input',()=>set('mkTicker',inp.value.toUpperCase()||'—'));}
+function initShell(){
+  moveCoreControls();headerTools();
+  if(document.body.dataset.halifaxSafeInit==='1')return;document.body.dataset.halifaxSafeInit='1';
+  const inp=$('mockTickerInput');if(inp)inp.addEventListener('input',()=>set('mkTicker',inp.value.toUpperCase()||'—'));
+}
+function drawMockChart(d){
+  const mount=$('mockChartMount');if(!mount||!d)return;let c=$('mockChartCanvas');if(!c){mount.innerHTML='<canvas id="mockChartCanvas"></canvas>';c=$('mockChartCanvas')}
+  const rows=(d.candles||[]).slice(-90).filter(x=>Number.isFinite(x?.close)&&Number.isFinite(x?.open)&&Number.isFinite(x?.high)&&Number.isFinite(x?.low));if(rows.length<2)return;
+  const ratio=window.devicePixelRatio||1,w=Math.max(420,mount.clientWidth||620),h=Math.max(250,mount.clientHeight||280);c.width=Math.floor(w*ratio);c.height=Math.floor(h*ratio);c.style.width=w+'px';c.style.height=h+'px';const x=c.getContext('2d');x.setTransform(ratio,0,0,ratio,0,0);x.clearRect(0,0,w,h);
+  const pad={l:12,r:54,t:18,b:24},vals=rows.flatMap(z=>[z.low,z.high]),lo=Math.min(...vals),hi=Math.max(...vals),range=Math.max(.01,hi-lo),cw=(w-pad.l-pad.r)/rows.length;
+  x.strokeStyle='rgba(63,91,124,.34)';x.lineWidth=1;for(let i=0;i<5;i++){const yy=pad.t+i*(h-pad.t-pad.b)/4;x.beginPath();x.moveTo(pad.l,yy);x.lineTo(w-pad.r,yy);x.stroke()}
+  rows.forEach((z,i)=>{const xx=pad.l+(i+.5)*cw,y=v=>pad.t+(hi-v)/range*(h-pad.t-pad.b),up=z.close>=z.open;x.strokeStyle=up?'#45d364':'#ef5350';x.fillStyle=x.strokeStyle;x.beginPath();x.moveTo(xx,y(z.high));x.lineTo(xx,y(z.low));x.stroke();const top=y(Math.max(z.open,z.close)),bot=y(Math.min(z.open,z.close));x.fillRect(xx-Math.max(1,cw*.28),top,Math.max(2,cw*.56),Math.max(1,bot-top));});
+  x.fillStyle='#8ea8c1';x.font='11px system-ui';for(let i=0;i<5;i++){const v=hi-i*range/4,yy=pad.t+i*(h-pad.t-pad.b)/4;x.fillText(v.toFixed(2),w-pad.r+7,yy+4)}
+  const last=rows.at(-1)?.close;if(Number.isFinite(last)){const yy=pad.t+(hi-last)/range*(h-pad.t-pad.b);x.strokeStyle='#ff6b6b';x.setLineDash([3,3]);x.beginPath();x.moveTo(pad.l,yy);x.lineTo(w-pad.r,yy);x.stroke();x.setLineDash([]);x.fillStyle='#ff6b6b';x.fillText(last.toFixed(2),w-pad.r+7,yy-4)}
+}
 function updateCore(a,t){
   if(!a||!t)return;const d=a.primary,q=a.liveQuoteContext||{},price=Number.isFinite(q.price)?q.price:d.price,move=Number.isFinite(q.change)?q.change:(d.dayChange||0),movePct=Number.isFinite(q.changePct)?q.changePct:(d.dayChangePct||0),dir=a.direction||'WAIT',dc=clsDir(dir),m=a.macroContext||{},env=m.marketEnvironment||{},e=m.economicProbability||{};
   set('mkTicker',d.ticker||'—');set('mkPrice',moneyMock(price));set('mkMove',Number.isFinite(move)?`${move>=0?'▲':'▼'} ${signed(move,2)} (${pct(movePct,2)})`:'—',move>0?'green':move<0?'red':'yellow');set('mkQuoteTime',q.timestamp?`Quote ${formatDateTime(q.timestamp)}`:(d.dataTime?`Data ${formatDateTime(d.dataTime)}`:'Latest loaded quote'));
@@ -4292,7 +4363,7 @@ function updateCore(a,t){
   const trends=env.trends||{},bulls=Object.values(trends).filter(x=>x==='BULLISH').length,bears=Object.values(trends).filter(x=>x==='BEARISH').length;
   set('mkTrend',m.sectorTrend||m.spyTrend||'—',clsTrend(m.sectorTrend||m.spyTrend));set('mkMomentum',(d.roc20||0)>2?'Strengthening':(d.roc20||0)<-2?'Weakening':'Mixed',(d.roc20||0)>2?'green':(d.roc20||0)<-2?'red':'yellow');set('mkVolatility',Number.isFinite(m.vixPrice)?(m.vixPrice>=30?'High':m.vixPrice>=22?'Elevated':'Favorable'):'—',Number.isFinite(m.vixPrice)?(m.vixPrice>=30?'red':m.vixPrice>=22?'yellow':'green'):'yellow');set('mkBreadth',bulls>bears?'Positive':bears>bulls?'Negative':'Mixed',bulls>bears?'green':bears>bulls?'red':'yellow');set('mkRiskAppetite',bias,bias==='RISK-ON'?'green':bias==='RISK-OFF'?'red':'yellow');
   if(Number.isFinite(e.y2))set('mk2Y',`${num(e.y2,2)}%`);if(Number.isFinite(e.y10))set('mk10Y',`${num(e.y10,2)}%`);if(Number.isFinite(m.vixPrice))set('mkVIXPrice',num(m.vixPrice,2));
-  updateEvents(env);updateTechnical(a);updateBreakdown(a);updateSector(a);updateMacroSummary(a);updateResearchStatus(a);refreshMarketStrip(a).catch(()=>{});
+  drawMockChart(d);updateEvents(env);updateTechnical(a);updateBreakdown(a);updateSector(a);updateMacroSummary(a);updateResearchStatus(a);refreshMarketStrip(a).catch(()=>{});
   $('mkFooterTime').textContent=`Updated ${new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})}`;
 }
 function updateEvents(env){const er=env?.eventRisk||{},events=env?.calendar?.events||[];const risk=er.risk||'UNAVAILABLE',rcls=risk==='HIGH'?'red':risk==='ELEVATED'||risk==='WATCH'?'yellow':risk==='NORMAL'?'green':'yellow';set('mkEventRisk',risk,rcls);set('mkShield',risk==='HIGH'?'⚠':risk==='UNAVAILABLE'?'◇':'♢',rcls);set('mkEventNote',er.blockNewTrade?'New multi-day trades blocked until the event passes.':er.next?`${er.next.name} ${er.next.daysAway===0?'today':er.next.daysAway===1?'tomorrow':`in ${er.next.daysAway} days`}.`:'Official calendar unavailable.');const out=$('mkEvents');if(!out)return;if(!events.length){out.innerHTML='<div class="tiny">No verified upcoming events loaded.</div>';return}out.innerHTML=events.slice(0,4).map(ev=>{const r=ev.daysAway<=1?'HIGH':ev.daysAway<=3?'MEDIUM':'WATCH';const c=r==='HIGH'?'red':'yellow';return `<div class="mock-event"><span>${escapeHTML(ev.date?new Date(ev.date+'T12:00:00').toLocaleDateString(undefined,{month:'short',day:'numeric'}):'—')}</span><span class="mock-event-time">${escapeHTML(ev.time||'—')}</span><span>${escapeHTML(ev.name||'Major event')}</span><span class="mock-risk-badge ${c}">${r}</span></div>`}).join('');}
@@ -4301,15 +4372,23 @@ function barPct(v){return Math.max(4,Math.min(100,Math.abs(Number(v)||0)));}
 function updateBreakdown(a){const parts=[['Technical',a.technicalScore??0],['Macro / Market',a.macroContribution??0],['Fundamentals',a.fundamentalContribution??0],['Options / Sentiment',a.optionsContext?.direction===a.direction?8:a.optionsContext?.direction&&a.optionsContext.direction!=='MIXED'?-8:0],['Smart Money',a.smartMoneyContribution??0]];$('mkBreakdown').innerHTML=parts.map(([n,v])=>`<div class="mock-break-row"><span>${escapeHTML(n)}</span><div class="mock-bar"><span style="width:${barPct(v*3)}%"></span></div><b class="${v>0?'green':v<0?'red':'yellow'}">${v>=0?'+':''}${Math.round(v)}</b></div>`).join('')+`<div class="mock-break-total"><span>TOTAL SCORE</span><span class="${clsDir(a.direction)}">${a.score>=0?'+':''}${Math.round(a.score)} / 100</span></div>`;}
 function updateSector(a){const m=a.macroContext||{},env=m.marketEnvironment||{},rows=[[m.sectorETF||'Sector ETF',m.sectorTrend||'—',m.sectorRoc],["SPY",env.trends?.SPY||m.spyTrend||'—',null],["QQQ",env.trends?.QQQ||'—',null],["DIA",env.trends?.DIA||'—',null]];$('mkSectorView').innerHTML=rows.map(([s,t,r])=>`<div class="mock-sector-row"><span>${escapeHTML(s)}</span><span>${Number.isFinite(r)?pct(r,1):''}</span><b class="${clsTrend(t)}">${escapeHTML(t)}</b></div>`).join('');}
 function updateMacroSummary(a){const m=a.macroContext||{},e=m.economicProbability||{},bits=[];if(Number.isFinite(e.inflationProb))bits.push(`Inflation pressure ${Math.round(e.inflationProb)}%.`);if(Number.isFinite(e.hawkishProb))bits.push(`Hawkish-rate pressure ${Math.round(e.hawkishProb)}%.`);if(m.profileLabel)bits.push(`${m.profileLabel} sector trend is ${String(m.sectorTrend||'unavailable').toLowerCase()}.`);if(m.marketEnvironment?.eventRisk?.next)bits.push(`Next major event: ${m.marketEnvironment.eventRisk.next.name}.`);$('mkMacroSummary').textContent=bits.join(' ')||'Macro inputs are unavailable.';set('mkRiskLevel',m.riskLevel||'—',m.riskLevel==='HIGH'?'red':m.riskLevel==='ELEVATED'?'yellow':'green');$('mkRiskSummary').textContent=m.eventBlock?'Scheduled macro event is blocking a new trade.':a.guardrailBlocked?'A Halifax guardrail is blocking the active setup.':'No blocking macro guardrail is active.';set('mkMacroStatus',m.bias||m.riskLevel||'Loaded',m.adjustment>0?'green':m.adjustment<0?'red':'yellow');}
-function updateResearchStatus(a){set('mkOptionsStatus',a.optionsContext?.available?(a.optionsContext.direction||'Loaded'):'Loading',a.optionsContext?.direction==='LONG'?'green':a.optionsContext?.direction==='SHORT'?'red':'yellow');set('mkSmartStatus',a.smartMoneyContext?.available?((a.smartMoneyContribution||0)>0?'Positive':(a.smartMoneyContribution||0)<0?'Negative':'Neutral'):'Loading',(a.smartMoneyContribution||0)>0?'green':(a.smartMoneyContribution||0)<0?'red':'yellow');set('mkFundStatus',a.fundamentalEventContext?.available?(a.fundamentalContribution>0?'Improving':a.fundamentalContribution<0?'Weak':'Loaded'):'Loading',a.fundamentalContribution>0?'green':a.fundamentalContribution<0?'red':'yellow');set('mkGovStatus',a.federalContractContext?.available?'New data loaded':'No new alerts',a.federalContractContext?.available?'green':'yellow');}
+function updateResearchBodies(a){
+  const m=a?.macroContext||{}, op=a?.optionsContext, sm=a?.smartMoneyContext, f=a?.fundamentalEventContext, fc=a?.federalContractContext;
+  if($('mockTechnicalBody'))$('mockTechnicalBody').innerHTML=`<div class="tiny">${escapeHTML((a?.reasons||[]).slice(0,8).join(' • ')||'No technical evidence loaded.')}</div>`;
+  if($('mockMacroBody'))$('mockMacroBody').innerHTML=`<div class="tiny">Guidance ${Number.isFinite(m.guidanceScore)?(m.guidanceScore>=0?'+':'')+m.guidanceScore:'—'} • ${escapeHTML(m.bias||m.riskLevel||'Unavailable')} • ${escapeHTML((m.reasons||[]).slice(0,5).join(' • '))}</div>`;
+  if($('mockGovernmentBody'))$('mockGovernmentBody').innerHTML=`<div class="tiny">${fc?.available?escapeHTML((fc.reasons||fc.summary||['Verified federal award context loaded.']).join?.(' • ')||'Verified federal award context loaded.'):'No verified federal award update loaded for this analysis.'}</div>`;
+  if($('mockOptionsBody'))$('mockOptionsBody').innerHTML=`<div class="tiny">${op?.available?`Direction ${escapeHTML(op.direction||'MIXED')} • confidence ${escapeHTML(op.confidence||'—')}`:'Options chain unavailable or still loading.'}</div>`;
+  if($('mockSmartBody'))$('mockSmartBody').innerHTML=`<div class="tiny">${sm?.available?`Filing contribution ${(a.smartMoneyContribution||0)>=0?'+':''}${a.smartMoneyContribution||0}`:'Smart-money filing context unavailable or still loading.'}</div>`;
+  if($('mockFundBody'))$('mockFundBody').innerHTML=`<div class="tiny">${f?.available?`Fundamental contribution ${(a.fundamentalContribution||0)>=0?'+':''}${a.fundamentalContribution||0} • earnings risk ${escapeHTML(f.earningsRisk||'—')}`:'Fundamental / earnings context unavailable or still loading.'}</div>`;
+}
+function updateResearchStatus(a){updateResearchBodies(a);set('mkOptionsStatus',a.optionsContext?.available?(a.optionsContext.direction||'Loaded'):'Loading',a.optionsContext?.direction==='LONG'?'green':a.optionsContext?.direction==='SHORT'?'red':'yellow');set('mkSmartStatus',a.smartMoneyContext?.available?((a.smartMoneyContribution||0)>0?'Positive':(a.smartMoneyContribution||0)<0?'Negative':'Neutral'):'Loading',(a.smartMoneyContribution||0)>0?'green':(a.smartMoneyContribution||0)<0?'red':'yellow');set('mkFundStatus',a.fundamentalEventContext?.available?(a.fundamentalContribution>0?'Improving':a.fundamentalContribution<0?'Weak':'Loaded'):'Loading',a.fundamentalContribution>0?'green':a.fundamentalContribution<0?'red':'yellow');set('mkGovStatus',a.federalContractContext?.available?'New data loaded':'No new alerts',a.federalContractContext?.available?'green':'yellow');}
 async function refreshMarketStrip(a){const syms=[['SPY','mkSPY'],['QQQ','mkQQQ'],['DIA','mkDIA'],['^VIX','mkVIX'],['CL=F','mkWTI'],['BZ=F','mkBrent']];const res=await Promise.allSettled(syms.map(([s])=>loadTickerData(s,'1d','1mo')));res.forEach((r,i)=>{if(r.status!=='fulfilled'||!r.value)return;const d=r.value,p=syms[i][1],cl=(d.close||[]).filter(Number.isFinite),last=Number.isFinite(d.price)?d.price:cl.at(-1),prev=cl.length>1?cl.at(-2):null,ch=Number.isFinite(last)&&Number.isFinite(prev)&&prev?100*(last/prev-1):null;set(p+'Price',p==='mkVIX'?num(last,2):num(last,2));set(p+'Change',pct(ch,2),ch>0?(p==='mkVIX'?'red':'green'):ch<0?(p==='mkVIX'?'green':'red'):'yellow');const s=$(p+'Spark');if(s)s.innerHTML=sparkSVG(cl,ch>=0)});const m=a?.macroContext||{},env=m.marketEnvironment||{};if(!Number.isFinite(Number($('mkWTIPrice')?.textContent))){}if(Number.isFinite(env.wtiRoc))set('mkWTIChange',`${pct(env.wtiRoc,1)} / 20 bars`,env.wtiRoc>0?'green':env.wtiRoc<0?'red':'yellow');if(Number.isFinite(env.brentRoc))set('mkBrentChange',`${pct(env.brentRoc,1)} / 20 bars`,env.brentRoc>0?'green':env.brentRoc<0?'red':'yellow');}
 function updateFundamentalMock(f){if(!f?.available)return;set('mkCompany',f.name||f.ticker||'—');$('mkSector').innerHTML=`Sector: ${escapeHTML(f.sector||'—')}<br>Industry: ${escapeHTML(f.industry||'—')}`;const earnings=f.earningsDate?new Date(f.earningsDate*1000).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}):'—';const rows=[['Market Cap',fundMoney(f.marketCap)],['Next Earnings',earnings],['Forward P/E',fundNum(f.forwardPE,1)],['Revenue Growth',fundPct(f.revenueGrowth)],['Avg Volume',Number.isFinite(lastAnalysis?.primary?.avgVolume)?compactMoney(lastAnalysis.primary.avgVolume).replace('$',''):'—'],['Relative Volume',Number.isFinite(lastAnalysis?.primary?.volumeRatio)?num(lastAnalysis.primary.volumeRatio,2):'—']];$('mkKeyMetrics').innerHTML=rows.map(([k,v])=>`<div class="mock-krow"><span>${escapeHTML(k)}</span><b>${v}</b></div>`).join('');set('mkFundStatus',f.grade?.grade?`${f.grade.grade} / ${f.grade.score}`:'Loaded',f.grade?.score>=65?'green':f.grade?.score<45?'red':'yellow');}
-const oldTrade=renderTradeOutput;renderTradeOutput=function(a,t){oldTrade(a,t);try{updateCore(a,t)}catch(e){console.warn('v21.8 dashboard core',e)}};
-const oldFund=renderCompanyFundamentals;renderCompanyFundamentals=function(f,c){oldFund(f,c);try{updateFundamentalMock(f);if(lastAnalysis)updateResearchStatus(lastAnalysis)}catch(e){console.warn('v21.8 fundamentals',e)}};
+const oldTrade=renderTradeOutput;renderTradeOutput=function(a,t){oldTrade(a,t);try{updateCore(a,t)}catch(e){console.warn('v21.9 dashboard core',e)}};
+const oldFund=renderCompanyFundamentals;renderCompanyFundamentals=function(f,c){oldFund(f,c);try{updateFundamentalMock(f);if(lastAnalysis)updateResearchStatus(lastAnalysis)}catch(e){console.warn('v21.9 fundamentals',e)}};
 const oldOpt=renderOptionsOutlook;renderOptionsOutlook=function(o){oldOpt(o);try{if(o?.available)set('mkOptionsStatus',o.direction||'Loaded',o.direction==='LONG'?'green':o.direction==='SHORT'?'red':'yellow')}catch(e){}};
 const oldSmart=renderSmartMoney;renderSmartMoney=function(t,s){oldSmart(t,s);try{if(s?.available)set('mkSmartStatus',(s.adjustment||0)>0?'Positive':(s.adjustment||0)<0?'Negative':'Neutral',(s.adjustment||0)>0?'green':(s.adjustment||0)<0?'red':'yellow')}catch(e){}};
 const oldFed=renderFederalContractContext;renderFederalContractContext=function(c){oldFed(c);try{set('mkGovStatus',c?.available?'Awards loaded':'No new alerts',c?.available?'green':'yellow')}catch(e){}};
-const oldRun=runEngine;runEngine=async function(){set('mkTicker',$('ticker')?.value?.trim()?.toUpperCase()||'—');set('mkDirection','ANALYZING','yellow');try{return await oldRun.apply(this,arguments)}finally{setTimeout(()=>{if(lastAnalysis&&lastTrade){updateCore(lastAnalysis,lastTrade);$('mockDecision')?.scrollIntoView({behavior:'smooth',block:'start'})}},40)}};
 window.addEventListener('DOMContentLoaded',initShell);window.addEventListener('load',()=>{initShell();setTimeout(()=>{const chart=document.querySelector('#mockChartMount .chart-card');if(chart&&chart!==document.querySelector('.chart-card')){}},100)});
 })();
 </script>
