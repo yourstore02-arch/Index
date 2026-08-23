@@ -18,7 +18,7 @@
 <meta name="application-name" content="Halifax">
 <meta name="format-detection" content="telephone=no">
 
-<title>Halifax Trade Engine v21.0 Lite - Live Market Intelligence Build</title>
+<title>Halifax Trade Engine v21.4 Lite - Collapsed Government Intelligence</title>
 
 <style>
 :root{
@@ -1153,7 +1153,7 @@ td{border-bottom:1px solid #223b52}
 
 
 
-/* ===== Halifax v21.0 live market intelligence layer ===== */
+/* ===== Halifax v21.1 live market intelligence + federal contract radar ===== */
 textarea{width:100%;background:#071827;color:#eff8ff;border:1px solid rgba(32,93,146,.95);border-radius:7px;padding:9px 10px;font:inherit;font-size:12px;font-weight:700;resize:vertical;outline:none}
 textarea:focus{border-color:#4da7ff;box-shadow:0 0 0 2px rgba(59,130,246,.16)}
 .live-feed-strip{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:-4px 0 10px;padding:8px 10px;border:1px solid #28445f;border-left:4px solid #4aa3df;border-radius:5px;background:#081b2b}
@@ -1165,6 +1165,62 @@ textarea:focus{border-color:#4da7ff;box-shadow:0 0 0 2px rgba(59,130,246,.16)}
 .catalyst-strip{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:9px 0;padding:8px 10px;border:1px solid #28445f;border-radius:5px;background:#071827;font-size:10px}
 @media(max-width:760px){.quality-grid-v21{grid-template-columns:1fr 1fr}.trade-quality-decision{font-size:16px}}
 @media(max-width:480px){.quality-grid-v21{grid-template-columns:1fr 1fr}.live-feed-strip{align-items:flex-start}.feed-spread{width:100%}}
+
+/* v21.1 Federal Contract Radar */
+/* v21.4 collapsed government intelligence */
+.gov-info-panel{border-color:rgba(34,211,238,.34);margin-top:12px}
+.gov-info-panel>summary{padding:13px 14px;background:linear-gradient(180deg,rgba(7,29,48,.96),rgba(4,18,33,.96));color:#dff8ff}
+.gov-info-panel>summary .gov-title{font-size:11px;font-weight:950;letter-spacing:.65px;text-transform:uppercase;color:#7ee7f7}
+.gov-info-panel>summary .gov-sub{font-size:9.5px;color:#7898b5;font-weight:700;text-transform:none;letter-spacing:0;margin-left:8px}
+.gov-info-panel>.compact-body{padding:10px}
+.gov-info-panel .federal-contract-card,.gov-info-panel .contract-watch-card{margin-bottom:10px}
+.gov-info-panel .contract-watch-card{margin-bottom:0}
+@media(max-width:620px){.gov-info-panel>summary .gov-sub{display:block;margin:3px 0 0}}
+
+/* v21.3 Automatic contract + options opportunity ranker */
+.contract-watch-card{border-color:rgba(57,229,140,.32)}
+.contract-watch-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.contract-watch-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px}
+.contract-watch-row{background:#061320;border:1px solid #173a56;border-radius:7px;padding:10px;min-height:118px;display:flex;flex-direction:column;gap:6px}
+.contract-watch-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.contract-watch-ticker{font-size:18px;font-weight:950;color:#dff5ff;letter-spacing:.3px}
+.contract-watch-name{font-size:10px;color:#8ea9bf;font-weight:800}
+.contract-watch-award{font-size:11px;color:#d4e8f5;line-height:1.4}
+.contract-watch-meta{font-size:9px;color:#7892a8;line-height:1.35}
+.contract-watch-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+.btn-option-plus{background:linear-gradient(180deg,#12653c,#0b4c2b);border:1px solid #248e59;color:#eafff2;min-height:34px;padding:7px 10px;font-weight:950}
+.btn-option-plus:hover{background:linear-gradient(180deg,#19784a,#0e5a34)}
+.btn-ticker-link{background:#102e4d;border:1px solid #315a7c;color:#e7f4ff;min-height:34px;padding:7px 10px}
+.option-opportunity{margin-top:10px;border:1px solid #2a6a4b;border-left:4px solid #39e58c;background:#061b14;border-radius:8px;padding:11px}
+.option-opportunity.watch{border-color:#78662b;border-left-color:#ffd166;background:#1a1608}
+.option-opportunity.avoid{border-color:#7a3340;border-left-color:#ff667d;background:#1d0b0f}
+.option-opportunity-title{font-size:10px;color:#9dd7ba;text-transform:uppercase;font-weight:950;letter-spacing:.55px}
+.option-opportunity-main{font-size:16px;font-weight:950;margin-top:4px}
+.option-opportunity-note{font-size:10px;color:#b8ccd8;line-height:1.5;margin-top:5px}
+.option-link-inline{display:inline-flex;align-items:center;gap:5px;margin-top:5px}
+@media(max-width:620px){.contract-watch-grid{grid-template-columns:1fr}.contract-watch-actions button{flex:1 1 110px}}
+.federal-contract-card{border-color:rgba(34,211,238,.42)}
+.federal-contract-hero{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:9px;margin-bottom:11px}
+.federal-contract-stat{background:#020b18;border:1px solid var(--line);border-radius:10px;padding:10px;min-height:72px}
+.federal-contract-stat .fc-label{font-size:9px;color:var(--muted);font-weight:900;text-transform:uppercase;letter-spacing:.45px}
+.federal-contract-stat .fc-value{font-size:17px;font-weight:950;margin-top:5px}
+.fc-high{color:var(--green)}.fc-medium{color:var(--yellow)}.fc-low{color:var(--muted)}.fc-ambiguous{color:var(--red)}
+.federal-contract-table{min-width:920px}
+.federal-contract-table td{vertical-align:top;white-space:normal;line-height:1.35}
+.fc-desc{min-width:250px;max-width:420px}.fc-recipient{min-width:180px}.fc-source-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.fc-source-row a{display:inline-flex;text-decoration:none;color:#dbeafe;background:#10243c;border:1px solid #23578e;border-radius:8px;padding:7px 9px;font-size:10px;font-weight:850}
+.fc-warning{margin-top:10px;padding:10px;border-left:3px solid var(--yellow);background:#07111f;border-radius:8px;font-size:10.5px;color:#cbd5e1;line-height:1.45}
+@media(max-width:700px){.federal-contract-hero{grid-template-columns:1fr 1fr}.federal-contract-table{min-width:820px}}
+
+/* v21.3 automatic contract + options ranker */
+.contract-rank-buttons{display:flex;gap:7px;flex-wrap:wrap;align-items:center}.contract-rank-buttons button{min-width:132px}
+.contract-auto-status{display:flex;align-items:center;gap:7px;margin:7px 0 10px;padding:7px 9px;border:1px solid #214b6d;border-radius:6px;background:#061827;color:#9fc5df;font-size:9.5px;font-weight:850;letter-spacing:.2px}
+.contract-auto-status.off .feed-dot{background:#ee6b76}.contract-auto-status.busy .feed-dot{background:#f1c861}.contract-auto-status .feed-dot{background:#36c98f}
+.contract-rank-row{position:relative}.contract-rank-badge{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:27px;border:1px solid #315b7c;border-radius:5px;background:#071a2b;font-size:13px;font-weight:950;color:#dcefff}.contract-rank-score{font-size:24px;font-weight:950;line-height:1}.contract-rank-sub{font-size:8.5px;color:#7896ad;text-transform:uppercase;font-weight:900;letter-spacing:.45px;margin-top:2px}
+.contract-rank-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:9px 0}.contract-rank-metric{background:#061320;border:1px solid #173a56;border-radius:5px;padding:7px}.contract-rank-metric span{display:block;font-size:8px;color:#7896ad;text-transform:uppercase;font-weight:900}.contract-rank-metric b{display:block;font-size:11.5px;margin-top:3px}.contract-change-chip{display:inline-flex;border:1px solid #315b7c;border-radius:999px;padding:3px 6px;font-size:8px;font-weight:950;letter-spacing:.35px}.contract-change-chip.changed{border-color:#1d9b67;color:#4ade80;background:rgba(74,222,128,.07)}.contract-change-chip.base{color:#facc15}.contract-change-chip.same{color:#8aa9bf}
+.rank-bull{color:var(--green)}.rank-bear{color:var(--red)}.rank-watch{color:var(--yellow)}.rank-conflict{color:#fb923c}
+@media(max-width:760px){.contract-rank-grid{grid-template-columns:1fr 1fr}.contract-rank-buttons{width:100%}.contract-rank-buttons button{flex:1 1 130px}}
+
 </style>
 </head>
 <body>
@@ -1172,8 +1228,8 @@ textarea:focus{border-color:#4da7ff;box-shadow:0 0 0 2px rgba(59,130,246,.16)}
     <div class="card header">
         <div class="brand-stack">
             <div class="terminal-kicker"><span class="kicker-dot"></span> HALIFAX QUANT RESEARCH TERMINAL</div>
-            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v21.0 Lite</span></span></div>
-            <div class="subtitle">Predictive swing research • Live quote quality • Bonds + options • Execution planning • Point-in-time validation</div>
+            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v21.4 Lite</span></span></div>
+            <div class="subtitle">Predictive swing research • Federal contract radar + option links • Live quote quality • Bonds + options • Execution planning • Point-in-time validation</div>
         </div>
         <div class="header-actions"><div class="badge system-badge"><span class="status-dot"></span><span id="engineStatus">Engine ready</span></div></div>
     </div>
@@ -1249,6 +1305,10 @@ textarea:focus{border-color:#4da7ff;box-shadow:0 0 0 2px rgba(59,130,246,.16)}
                 <div class="field"><label>Macro Guardrails</label><div class="checkbox-row"><input id="macroGuard" type="checkbox" checked> Sector, VIX &amp; ticker news</div></div>
                 <div class="field"><label>Economic Regime</label><div class="checkbox-row"><input id="econGuard" type="checkbox" checked> CPI, PCE, jobs &amp; rates</div></div>
                 <div class="field"><label>Public Quote Refresh</label><select id="liveRefresh"><option value="5" selected>Every 5 sec</option><option value="10">Every 10 sec</option><option value="30">Every 30 sec</option><option value="0">Off</option></select></div>
+                <div class="field"><label>Federal Contract Radar</label><div class="checkbox-row"><input id="federalContractRadar" type="checkbox" checked> USAspending new awards</div></div>
+                <div class="field"><label>Contract + Options Auto-Rank</label><div class="checkbox-row"><input id="contractAutoRank" type="checkbox" checked> Refresh ranked catalysts every 30 min</div></div>
+                <div class="field"><label>Federal Recipient Alias</label><input id="federalRecipientAlias" placeholder="Optional legal recipient / subsidiary"></div>
+                <div class="field"><label>Federal Award Lookback</label><select id="federalLookback"><option value="30">30 days</option><option value="90">90 days</option><option value="180" selected>180 days</option><option value="365">365 days</option></select></div>
             </div>
         </details>
     </div>
@@ -1262,6 +1322,40 @@ textarea:focus{border-color:#4da7ff;box-shadow:0 0 0 2px rgba(59,130,246,.16)}
         <div class="panel-title blue">Company Intelligence &amp; Fundamentals</div>
         <div id="fundamentalsOutput"><div class="loading">Run an analysis to load company and fundamental data.</div></div>
     </div>
+
+    <details id="governmentInfoPanel" class="card compact-details gov-info-panel">
+        <summary><span><span class="gov-title">Government Contract Intelligence</span><span class="gov-sub">USAspending awards + auto options ranker</span></span></summary>
+        <div class="compact-body">
+
+    <div id="federalContractCard" class="card federal-contract-card" style="display:none">
+        <div class="panel-title cyan">Federal Contract Radar — USAspending New Awards</div>
+        <div class="quick-actions" style="margin:0 0 10px"><button class="btn-dark" onclick="refreshFederalContractRadar()">REFRESH CONTRACTS</button><button class="btn-option-plus" onclick="openContractOptions()">+ UPDATED OPTIONS</button></div>
+        <div id="federalContractOutput"><div class="loading">Run an analysis to scan newly awarded federal prime contracts.</div></div>
+        <div class="clean-note">Public federal-award data is context only. Halifax uses USAspending's <b>new_awards_only</b> date filter and contract award type codes A–D. A federal award does not by itself authorize a LONG/SHORT trade and does not change the execution score.</div>
+    </div>
+
+    <div id="contractWatchCard" class="card contract-watch-card">
+        <div class="contract-watch-head">
+            <div>
+                <div class="panel-title green" style="margin-bottom:3px">Auto Contract + Options Opportunity Ranker</div>
+                <div class="tiny">Checks recent USAspending awards, refreshes current listed options and a lightweight Halifax price-action score, then ranks the tracked public stocks. Rankings are research scores, not probabilities or trade instructions.</div>
+            </div>
+            <div class="contract-rank-buttons"><button class="btn-primary" onclick="scanFederalContractWatchlist(true)">REFRESH + RANK</button><button class="btn-dark" onclick="scanFederalContractWatchlist(false)">CONTRACTS ONLY</button></div>
+        </div>
+        <div id="contractAutoStatus" class="contract-auto-status"><span class="feed-dot"></span> Auto-rank: ON • refresh every 30 minutes while this page is open</div>
+        <div id="contractWatchOutput"><div class="contract-watch-grid">
+            <div class="contract-watch-row"><div class="contract-watch-top"><span class="contract-watch-ticker">RTX</span><button class="btn-option-plus" onclick="openContractOptions('RTX')">+ OPTIONS</button></div><div class="contract-watch-name">RTX / Raytheon</div><div class="contract-watch-meta">Automatic contract + options ranking will populate shortly.</div></div>
+            <div class="contract-watch-row"><div class="contract-watch-top"><span class="contract-watch-ticker">FDX</span><button class="btn-option-plus" onclick="openContractOptions('FDX')">+ OPTIONS</button></div><div class="contract-watch-name">FedEx</div><div class="contract-watch-meta">Automatic contract + options ranking will populate shortly.</div></div>
+            <div class="contract-watch-row"><div class="contract-watch-top"><span class="contract-watch-ticker">UPS</span><button class="btn-option-plus" onclick="openContractOptions('UPS')">+ OPTIONS</button></div><div class="contract-watch-name">United Parcel Service</div><div class="contract-watch-meta">Automatic contract + options ranking will populate shortly.</div></div>
+            <div class="contract-watch-row"><div class="contract-watch-top"><span class="contract-watch-ticker">BA</span><button class="btn-option-plus" onclick="openContractOptions('BA')">+ OPTIONS</button></div><div class="contract-watch-name">Boeing</div><div class="contract-watch-meta">Automatic contract + options ranking will populate shortly.</div></div>
+            <div class="contract-watch-row"><div class="contract-watch-top"><span class="contract-watch-ticker">GD</span><button class="btn-option-plus" onclick="openContractOptions('GD')">+ OPTIONS</button></div><div class="contract-watch-name">General Dynamics</div><div class="contract-watch-meta">Automatic contract + options ranking will populate shortly.</div></div>
+            <div class="contract-watch-row"><div class="contract-watch-top"><span class="contract-watch-ticker">BAH</span><button class="btn-option-plus" onclick="openContractOptions('BAH')">+ OPTIONS</button></div><div class="contract-watch-name">Booz Allen Hamilton</div><div class="contract-watch-meta">Automatic contract + options ranking will populate shortly.</div></div>
+            <div class="contract-watch-row"><div class="contract-watch-top"><span class="contract-watch-ticker">BAESY</span><button class="btn-option-plus" onclick="openContractOptions('BAESY')">+ OPTIONS</button></div><div class="contract-watch-name">BAE Systems ADR</div><div class="contract-watch-meta">OTC options availability may be limited or unavailable.</div></div>
+        </div></div>
+        <div class="clean-note"><b>Rank formula:</b> 45% verified contract materiality (award/revenue + recency + recipient match), 30% current options confirmation, and 25% Halifax core price-action strength, with an alignment bonus/penalty. If annual revenue or a reliable options chain is unavailable, that component is not guessed. Full Halifax analysis is still required before acting.</div>
+    </div>
+        </div>
+    </details>
 
     <div id="optionsCard" class="card options-card" style="display:none">
         <div class="panel-title green">Options Direction — Plain English</div>
@@ -2727,7 +2821,8 @@ function buildPlainEnglishExplanation(analysis,trade){
     const bond=analysis.macroContext?.bondContext,bondSentence=bond?.applies?`Bond/rates guardrail: ${bond.adjustment>=0?"+":""}${bond.adjustment} macro points (${bond.riskLevel} risk). TLT ${Number.isFinite(bond.tltRoc)?signed(bond.tltRoc,1)+"%":"N/A"}, HYG-vs-LQD ${Number.isFinite(bond.creditRelative)?signed(bond.creditRelative,1)+" pts":"N/A"}, 10Y real yield ${Number.isFinite(bond.real10y)?bond.real10y.toFixed(2)+"%":"N/A"}.`:"Bond/rates context was unavailable, so Halifax did not guess a rate or credit signal.";
     const pr=analysis.portfolioRiskContext,portfolioSentence=pr?.available?`Portfolio correlation guardrail: ${pr.riskLevel} risk across ${pr.peers.length} supplied ticker(s); planned size multiplier ${Math.round(pr.riskMultiplier*100)}% of normal. This uses daily-return correlation, not portfolio dollar weights.`:"Portfolio correlation guardrail is not configured.";
     const fe=analysis.fundamentalEventContext,fundSentence=fe?.available?`Fundamental/event context: quality ${Number.isFinite(fe.qualityScore)?`${fe.qualityGrade} (${Math.round(fe.qualityScore)}/100), ${fe.qualityContribution>=0?"+":""}${fe.qualityContribution} context points`:"not scored"}. Quality does not change LONG/SHORT direction; earnings risk is ${fe.earningsRisk}${Number.isFinite(fe.daysToEarnings)&&fe.daysToEarnings>=0?` with the reported date ${fe.daysToEarnings} calendar day${fe.daysToEarnings===1?"":"s"} away`:""} and planned-risk multiplier ${Math.round((fe.riskMultiplier??1)*100)}%.`:"Fundamental/event context is unavailable or still loading; Halifax does not estimate missing earnings dates or financial data.";
-    return {quality,grades,timing,headline,summary,confirm,fail,bullets:[tfText,adxPlain(d.adx),volumePlain(d.volumeRatio),rsiPlain(d.rsi),analogSentence,fundSentence,optionsSentence,bondSentence,portfolioSentence,smartSentence,macroSentence,rel]};
+    const fc=analysis.federalContractContext,federalSentence=fc?.available?(fc.rows?.length?`Federal contract radar: ${fc.rows.length} matched new prime award${fc.rows.length===1?"":"s"} in the last ${fc.lookback} days, totaling ${fcCompactAmount(fc.total)} in USAspending award amounts. Top materiality read: ${fc.top?.impact?.label||"UNSCORED"}. This is public-information context only and does not change the execution score or LONG/SHORT direction.`:`Federal contract radar: no recipient-matched new prime awards found in the selected ${fc.lookback}-day window. Subsidiary/legal-name differences can cause misses.`):"Federal contract radar is unavailable, disabled, or still loading; Halifax does not guess federal awards.";
+    return {quality,grades,timing,headline,summary,confirm,fail,bullets:[tfText,adxPlain(d.adx),volumePlain(d.volumeRatio),rsiPlain(d.rsi),analogSentence,fundSentence,federalSentence,optionsSentence,bondSentence,portfolioSentence,smartSentence,macroSentence,rel]};
 }
 
 
@@ -2841,6 +2936,7 @@ function renderTradeOutput(analysis,trade){
             <div class="metric"><span>Options Direction / Time Frame</span><span class="${analysis.optionsContext?.cls||"yellow"}">${analysis.optionsContext?.available?`${analysis.optionsContext.arrow} ${escapeHTML(analysis.optionsContext.direction)} • ${escapeHTML(analysis.optionsContext.timeframe)}`:"N/A"}</span></div>
             <div class="metric"><span>Smart-Money Filing Context</span><span class="${(analysis.smartMoneyContribution||0)>0?"green":(analysis.smartMoneyContribution||0)<0?"red":"yellow"}">${analysis.smartMoneyContribution==null?"N/A":`${signedHTML(analysis.smartMoneyContribution,0)} pts`}</span></div>
             <div class="metric"><span>Fundamental Quality Context</span><span class="${(analysis.fundamentalContribution||0)>0?"green":(analysis.fundamentalContribution||0)<0?"red":"yellow"}">${analysis.fundamentalEventContext?.available?(Number.isFinite(analysis.fundamentalEventContext.qualityScore)?`${escapeHTML(analysis.fundamentalEventContext.qualityGrade)} ${Math.round(analysis.fundamentalEventContext.qualityScore)}/100 • ${signedHTML(analysis.fundamentalContribution||0,0)} pts`:"Not scored"):"Loading / N/A"}</span></div>
+            <div class="metric"><span>Federal Contract Radar</span><span class="${analysis.federalContractContext?.top?.impact?.cls||"yellow"}">${analysis.federalContractContext?.available?(analysis.federalContractContext.rows?.length?`${analysis.federalContractContext.rows.length} new • ${escapeHTML(analysis.federalContractContext.top?.impact?.label||"UNSCORED")} • ${fcCompactAmount(analysis.federalContractContext.total)}`:`0 matched new awards`):"Loading / N/A"}</span></div>
             <div class="metric"><span>Earnings Event Risk</span><span class="${analysis.fundamentalEventContext?.earningsRisk==="CRITICAL"||analysis.fundamentalEventContext?.earningsRisk==="HIGH"?"red":analysis.fundamentalEventContext?.earningsRisk==="ELEVATED"||analysis.fundamentalEventContext?.earningsRisk==="WATCH"?"yellow":"green"}">${analysis.fundamentalEventContext?.available?`${escapeHTML(analysis.fundamentalEventContext.earningsRisk)}${Number.isFinite(analysis.fundamentalEventContext.daysToEarnings)&&analysis.fundamentalEventContext.daysToEarnings>=0?` • ${analysis.fundamentalEventContext.daysToEarnings}d`:""}`:"Loading / N/A"}</span></div>
             <div class="metric"><span>Event / Beta Risk Size</span><span class="${(analysis.fundamentalEventContext?.riskMultiplier??1)<.7?"red":(analysis.fundamentalEventContext?.riskMultiplier??1)<1?"yellow":"green"}">${analysis.fundamentalEventContext?.available?`${Math.round((analysis.fundamentalEventContext.riskMultiplier??1)*100)}% of normal risk`:"Loading / N/A"}</span></div>
             <div class="metric"><span>Portfolio Correlation Risk Size</span><span class="${(analysis.portfolioRiskContext?.riskMultiplier??1)<.8?"red":(analysis.portfolioRiskContext?.riskMultiplier??1)<1?"yellow":"green"}">${analysis.portfolioRiskContext?.available?`${Math.round((analysis.portfolioRiskContext.riskMultiplier??1)*100)}% of normal • ${escapeHTML(analysis.portfolioRiskContext.riskLevel)}`:"Not configured / loading"}</span></div>
@@ -2848,13 +2944,13 @@ function renderTradeOutput(analysis,trade){
         </div>
         <button class="${btn}" type="button" ${dir==="WAIT"?"disabled":'onclick="logPaperPlan()"'}>${dir==="WAIT"?setup:`${setup} • PAPER TRADE`}</button>
         <details class="compact-details"><summary><span class="flow-index flow-index-small">03</span> Detailed Decision Evidence &amp; Risk Checks</summary><div class="compact-body"><div class="evidence-section"><div class="panel-title">Decision Evidence</div><ul class="reasoning-list">${analysis.reasons.map(r=>`<li>• ${escapeHTML(r)}</li>`).join("")}</ul></div><div class="evidence-section"><div class="panel-title">Risk Desk Checks</div><ul class="reasoning-list">${(trade.warnings.length?trade.warnings:["Risk, liquidity, and trend-strength checks passed under the selected settings."]).map(r=>`<li>• ${escapeHTML(r)}</li>`).join("")}</ul></div></div></details>
-        <div class="notice">This is a rules-based research tool, not a broker recommendation or guarantee. Prediction Strength, Trade Quality and letter grades are model scores, not win probabilities. Public quote auto-refresh is not certified SIP/OPRA market data; Halifax labels feed freshness and keeps the model basis visible. Bond/rates inputs can affect the macro guardrail; options, smart-money filings and fundamental quality remain confirmation/context and cannot independently reverse LONG/SHORT direction. Earnings proximity and optional portfolio correlation can reduce position size. Verify prices, earnings timing, corporate events, borrow availability and order details with your brokerage before trading.</div>`;
+        <div class="notice">This is a rules-based research tool, not a broker recommendation or guarantee. Prediction Strength, Trade Quality and letter grades are model scores, not win probabilities. Public quote auto-refresh is not certified SIP/OPRA market data; Halifax labels feed freshness and keeps the model basis visible. Bond/rates inputs can affect the macro guardrail; options, smart-money filings, fundamental quality and public federal-contract awards remain confirmation/context and cannot independently reverse LONG/SHORT direction. Federal award amounts are not assumed to be immediate revenue. Earnings proximity and optional portfolio correlation can reduce position size. Verify prices, earnings timing, corporate events, borrow availability and order details with your brokerage before trading.</div>`;
     lastPlanText=buildPlanText(analysis,trade);lastAnalysis=analysis;lastTrade=trade;
 }
 
 function buildPlanText(analysis,trade){
     const d=analysis.primary,m=analysis.macroContext,plain=buildPlainEnglishExplanation(analysis,trade),tq=tradeQualityData(analysis,trade),lq=analysis.liveQuoteContext;
-    return `HALIFAX TRADE ENGINE v21.0 LITE — ${d.ticker} ${analysis.direction} TRADE PLAN
+    return `HALIFAX TRADE ENGINE v21.1 LITE — ${d.ticker} ${analysis.direction} TRADE PLAN
 Plain-English read: ${plain.headline}
 Action: ${plain.timing.action}
 Why: ${plain.summary}
@@ -2864,6 +2960,7 @@ Trend grade: ${plain.grades.trend.grade} (${plain.grades.trend.score}/100) | Ent
 Execution score: ${analysis.score} | Technical score: ${analysis.technicalScore} | Direction control: PRICE ACTION / MTF (secondary overlays cannot flip LONG/SHORT) | Prediction strength: ${analysis.predictionStrength??analysis.confidence}/100 (not win probability)
 Historical validation: ${analysis.analogForecast?.samples>=12?`${analysis.analogForecast.samples} similar point-in-time setups | 5D ${analysis.analogForecast.upRate5?.toFixed(0)??"—"}% up | 10D ${analysis.analogForecast.upRate.toFixed(0)}% up | 20D ${analysis.analogForecast.upRate20?.toFixed(0)??"—"}% up | 10D median ${signed(analysis.analogForecast.medianReturn,1)}%`:"Insufficient comparable samples"}\nSmart-money filing context: ${analysis.smartMoneyContribution>=0?"+":""}${analysis.smartMoneyContribution||0} context points | confidence only; no LONG/SHORT direction flip | political trades informational only
 Fundamental quality context: ${analysis.fundamentalContribution>=0?"+":""}${analysis.fundamentalContribution||0} context points | not included in execution score | ${analysis.fundamentalEventContext?.available&&Number.isFinite(analysis.fundamentalEventContext.qualityScore)?`${analysis.fundamentalEventContext.qualityGrade} ${Math.round(analysis.fundamentalEventContext.qualityScore)}/100`:"Unavailable / not scored"}
+Federal contract radar: ${analysis.federalContractContext?.available?(analysis.federalContractContext.rows?.length?`${analysis.federalContractContext.rows.length} matched new prime award(s) | ${fcCompactAmount(analysis.federalContractContext.total)} award amount total | top materiality ${analysis.federalContractContext.top?.impact?.label||"UNSCORED"} | recipient ${analysis.federalContractContext.searchName}`:`0 matched new prime awards in ${analysis.federalContractContext.lookback} days | recipient ${analysis.federalContractContext.searchName}`):"Unavailable / disabled / still loading"} | public-information context only; no execution-score or direction change
 Earnings event risk: ${analysis.fundamentalEventContext?.available?`${analysis.fundamentalEventContext.earningsRisk}${Number.isFinite(analysis.fundamentalEventContext.daysToEarnings)&&analysis.fundamentalEventContext.daysToEarnings>=0?` | ${analysis.fundamentalEventContext.daysToEarnings} calendar days away`:""} | risk size ${Math.round((analysis.fundamentalEventContext.riskMultiplier??1)*100)}% of normal`:"Unavailable / not guessed"}
 Sector: ${m?.profileLabel||"Broad Market"} | Macro adjustment: ${m?.adjustment??0} | Risk/Bias: ${m?.riskLevel||"N/A"}/${m?.bias||"N/A"}
 Economic probabilities: Inflation ${m?.economicProbability?.inflationProb??"N/A"}% | Hawkish rates ${m?.economicProbability?.hawkishProb??"N/A"}% | Weak growth ${m?.economicProbability?.weakGrowthProb??"N/A"}% | Equity tailwind ${m?.economicProbability?.equityTailwindProb??"N/A"}%
@@ -3337,11 +3434,189 @@ async function loadPredictionFrames(ticker,timeframes){
 }
 
 let halifaxRunId=0;
+
+// ================= Halifax v21.1 Federal Contract Radar =================
+const USA_SPENDING_AWARD_SEARCH="https://api.usaspending.gov/api/v2/search/spending_by_award/";
+function fcIsoDate(d){const x=new Date(d);return Number.isFinite(x.getTime())?x.toISOString().slice(0,10):null;}
+function fcDaysAgo(days){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()-Math.max(0,Number(days)||0));return fcIsoDate(d);}
+function fcCompanyName(quote,fundamentals,ticker){return String(fundamentals?.name||quote?.longname||quote?.longName||quote?.shortname||quote?.shortName||ticker||"").trim();}
+function fcNormalizeName(v){return String(v||"").toUpperCase().replace(/&/g," AND ").replace(/[^A-Z0-9 ]+/g," ").replace(/\s+/g," ").trim();}
+const FC_STOP=new Set(["INC","INCORPORATED","CORP","CORPORATION","CO","COMPANY","LLC","LTD","LIMITED","PLC","HOLDING","HOLDINGS","THE","GROUP","SA","NV"]);
+function fcTokens(v){return fcNormalizeName(v).split(" ").filter(x=>x&&x.length>1&&!FC_STOP.has(x));}
+function fcNameMatch(query,recipient){
+    const qn=fcNormalizeName(query),rn=fcNormalizeName(recipient);if(!qn||!rn)return 0;if(qn===rn)return 1;if(rn.includes(qn)||qn.includes(rn))return .92;
+    const q=fcTokens(query),r=fcTokens(recipient);if(!q.length||!r.length)return 0;const rs=new Set(r),hits=q.filter(x=>rs.has(x)).length;
+    const coverage=hits/q.length,jaccard=hits/new Set([...q,...r]).size;return clamp(.7*coverage+.3*jaccard,0,1);
+}
+function fcCompactAmount(v){const n=Number(v);if(!Number.isFinite(n))return"—";return compactMoney(n);}
+function fcImpactFromAward(amount,revenue,ageDays,match){
+    if(!(Number.isFinite(amount)&&amount>0)||!(Number.isFinite(revenue)&&revenue>0)||match<.5)return {score:null,label:"UNSCORED",cls:"fc-low",ratio:null};
+    const ratio=amount/revenue;
+    const ratioPts=ratio>=.20?60:ratio>=.10?54:ratio>=.05?46:ratio>=.02?36:ratio>=.01?27:ratio>=.005?18:ratio>=.001?10:5;
+    const recencyPts=ageDays<=7?25:ageDays<=30?21:ageDays<=90?15:ageDays<=180?10:5;
+    const matchPts=Math.round(15*match),score=Math.round(clamp(ratioPts+recencyPts+matchPts,0,100));
+    return {score,label:score>=82?"VERY HIGH":score>=67?"HIGH":score>=48?"MODERATE":"LOW",cls:score>=67?"fc-high":score>=48?"fc-medium":"fc-low",ratio};
+}
+async function fetchPublicPostJson(url,body,timeoutMs=8500){
+    const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeoutMs);
+    try{const r=await fetch(url,{method:"POST",headers:{"Accept":"application/json","Content-Type":"application/json"},body:JSON.stringify(body),signal:controller.signal,cache:"no-store"});if(!r.ok)throw new Error(`Federal data HTTP ${r.status}`);return await r.json();}finally{clearTimeout(timer);}
+}
+function fcAwardAge(dateText){const t=Date.parse(dateText||"");return Number.isFinite(t)?Math.max(0,Math.floor((Date.now()-t)/86400000)):9999;}
+function fcSearchUrl(){return "https://www.usaspending.gov/search";}
+function samOpportunityUrl(){return "https://sam.gov/search/?index=opp";}
+async function loadFederalContractContext(ticker,quote=null,fundamentals=null){
+    const enabled=document.getElementById("federalContractRadar")?.checked!==false;if(!enabled)return {available:false,disabled:true,rows:[]};
+    const manual=String(document.getElementById("federalRecipientAlias")?.value||"").trim();
+    const autoName=fcCompanyName(quote,fundamentals,ticker),searchName=manual||autoName;
+    if(!searchName||searchName===ticker)return {available:false,error:"Company legal name unavailable. Enter a Federal Recipient Alias in Advanced Trade Settings.",rows:[],searchName};
+    const lookback=Math.max(30,Math.min(365,Number(document.getElementById("federalLookback")?.value)||180));
+    const end=fcIsoDate(new Date()),start=fcDaysAgo(lookback);
+    const body={spending_level:"awards",subawards:false,limit:40,page:1,filters:{award_type_codes:["A","B","C","D"],time_period:[{start_date:start,end_date:end,date_type:"new_awards_only"}],recipient_search_text:[searchName]},fields:["Award ID","Recipient Name","Award Amount","Awarding Agency","Awarding Sub Agency","Description","Base Obligation Date","Last Modified Date","Start Date","End Date","Contract Award Type","NAICS","PSC","generated_internal_id"],sort:"Base Obligation Date",order:"desc"};
+    const raw=await fetchPublicPostJson(USA_SPENDING_AWARD_SEARCH,body,9000),all=Array.isArray(raw?.results)?raw.results:[];
+    const revenue=Number(fundamentals?.revenue);
+    const rows=all.map(r=>{const recipient=String(r?.["Recipient Name"]||""),match=fcNameMatch(searchName,recipient),amount=Number(r?.["Award Amount"]),date=r?.["Base Obligation Date"]||r?.["Start Date"]||null,ageDays=fcAwardAge(date),impact=fcImpactFromAward(amount,revenue,ageDays,match);return {awardId:r?.["Award ID"]||"—",recipient,amount:Number.isFinite(amount)?amount:null,agency:r?.["Awarding Agency"]||"—",subAgency:r?.["Awarding Sub Agency"]||"",description:r?.Description||"",date,startDate:r?.["Start Date"]||null,endDate:r?.["End Date"]||null,lastModified:r?.["Last Modified Date"]||null,contractType:r?.["Contract Award Type"]||"",naics:r?.NAICS||"",psc:r?.PSC||"",internalId:r?.generated_internal_id||"",match,ageDays,impact};}).filter(r=>manual?r.match>=.35:r.match>=.5).sort((a,b)=>(Date.parse(b.date||0)-Date.parse(a.date||0))||(Number(b.amount)||0)-(Number(a.amount)||0));
+    const total=rows.reduce((s,r)=>s+(Number(r.amount)||0),0),scored=rows.filter(r=>Number.isFinite(r.impact?.score)),top=scored.sort((a,b)=>b.impact.score-a.impact.score)[0]||null,newest=rows.slice().sort((a,b)=>Date.parse(b.date||0)-Date.parse(a.date||0))[0]||null;
+    return {available:true,source:"USAspending.gov",ticker,searchName,autoName,manualAlias:!!manual,lookback,start,end,revenue:Number.isFinite(revenue)?revenue:null,rows,total,top,newest,rawCount:all.length,messages:Array.isArray(raw?.messages)?raw.messages:[]};
+}
+function renderFederalContractContext(ctx){
+    const card=document.getElementById("federalContractCard"),box=document.getElementById("federalContractOutput");if(!card||!box)return;card.style.display="block";
+    if(ctx?.disabled){box.innerHTML='<div class="loading">Federal Contract Radar is turned off in Advanced Trade Settings.</div>';return;}
+    if(!ctx?.available){box.innerHTML=`<div class="yellow" style="font-weight:900">Federal contract data unavailable</div><div class="bt-note">${escapeHTML(ctx?.error||"USAspending could not be reached from this browser. No contract signal was guessed.")}</div><div class="fc-source-row"><a href="${fcSearchUrl()}" target="_blank" rel="noopener">OPEN USASPENDING</a><a href="${samOpportunityUrl()}" target="_blank" rel="noopener">OPEN SAM.GOV</a></div>`;return;}
+    if(!ctx.rows.length){box.innerHTML=`<div class="federal-contract-hero"><div class="federal-contract-stat"><div class="fc-label">Recipient Search</div><div class="fc-value">${escapeHTML(ctx.searchName)}</div></div><div class="federal-contract-stat"><div class="fc-label">New Prime Awards</div><div class="fc-value">0</div></div><div class="federal-contract-stat"><div class="fc-label">Window</div><div class="fc-value">${ctx.lookback} days</div></div></div><div class="bt-note">No recipient-matched new prime contract awards were returned in this window. This is not proof the company has no federal business: awards can sit under subsidiaries or legal names. Use the Federal Recipient Alias field when needed.</div><div class="fc-source-row"><a href="${fcSearchUrl()}" target="_blank" rel="noopener">VERIFY ON USASPENDING</a><a href="${samOpportunityUrl()}" target="_blank" rel="noopener">SEARCH SAM.GOV</a></div>`;return;}
+    const top=ctx.top,topLabel=top?.impact?.label||"UNSCORED",topCls=top?.impact?.cls||"fc-low",ratio=Number.isFinite(top?.impact?.ratio)?`${(100*top.impact.ratio).toFixed(top.impact.ratio<.01?2:1)}%`:'—';
+    const rows=ctx.rows.slice(0,20).map(r=>`<tr><td>${escapeHTML(r.date||"—")}</td><td><b>${fcCompactAmount(r.amount)}</b></td><td class="${r.impact?.cls||'fc-low'}"><b>${escapeHTML(r.impact?.label||'UNSCORED')}</b>${Number.isFinite(r.impact?.score)?`<div class="tiny">${r.impact.score}/100 • ${(100*r.match).toFixed(0)}% name match</div>`:`<div class="tiny">Revenue/match not sufficient to score</div>`}</td><td>${escapeHTML(r.agency)}</td><td class="fc-recipient">${escapeHTML(r.recipient)}</td><td>${escapeHTML(r.awardId)}</td><td class="fc-desc">${escapeHTML(String(r.description||"").slice(0,360)||"—")}</td><td>${escapeHTML(r.naics||"—")}</td><td>${escapeHTML(r.psc||"—")}</td><td><button class="btn-option-plus" onclick="openContractOptions('${escapeHTML(ctx.ticker||document.getElementById('ticker')?.value||'')}')">+ OPTIONS</button></td></tr>`).join("");
+    box.innerHTML=`<div class="federal-contract-hero"><div class="federal-contract-stat"><div class="fc-label">Matched New Awards</div><div class="fc-value">${ctx.rows.length}</div></div><div class="federal-contract-stat"><div class="fc-label">USAspending Award Amount</div><div class="fc-value">${fcCompactAmount(ctx.total)}</div></div><div class="federal-contract-stat"><div class="fc-label">Newest Base Award</div><div class="fc-value">${escapeHTML(ctx.newest?.date||"—")}</div></div><div class="federal-contract-stat"><div class="fc-label">Top Materiality Read</div><div class="fc-value ${topCls}">${escapeHTML(topLabel)}</div></div><div class="federal-contract-stat"><div class="fc-label">Top Award / Annual Revenue</div><div class="fc-value">${ratio}</div></div><div class="federal-contract-stat"><div class="fc-label">Recipient Query</div><div class="fc-value" style="font-size:12px">${escapeHTML(ctx.searchName)}</div></div></div><div class="table-wrap"><table class="federal-contract-table"><thead><tr><th>Base Award Date</th><th>Award Amount</th><th>Impact</th><th>Agency</th><th>Recipient</th><th>Award ID</th><th>Description</th><th>NAICS</th><th>PSC</th><th>Options</th></tr></thead><tbody>${rows}</tbody></table></div><div class="fc-source-row"><a href="${fcSearchUrl()}" target="_blank" rel="noopener">VERIFY ON USASPENDING</a><a href="${samOpportunityUrl()}" target="_blank" rel="noopener">SEARCH SAM.GOV OPPORTUNITIES</a></div><div class="fc-warning"><b>How Halifax uses this:</b> contract data is a public-information catalyst/context layer only. The impact grade compares the award amount with the latest annual revenue when available, plus recency and recipient-name match quality. It does <b>not</b> assume the award amount becomes immediate revenue, and it does not alter the execution score or flip LONG/SHORT direction. Verify the legal recipient, award terms, obligations, company disclosures and market reaction before trading.</div>`;
+}
+async function refreshFederalContractRadar(){
+    const ticker=String(document.getElementById("ticker")?.value||lastAnalysis?.primary?.ticker||"").toUpperCase().trim();if(!ticker){alert("Enter a ticker first.");return;}const box=document.getElementById("federalContractOutput"),card=document.getElementById("federalContractCard");if(card)card.style.display="block";if(box)box.innerHTML='<div class="loading">Refreshing USAspending new-award data…</div>';
+    try{const snap=await fetchTickerSnapshot(ticker),f=await loadCompanyFundamentals(ticker,snap.quote).catch(()=>null),ctx=await loadFederalContractContext(ticker,snap.quote,f);renderFederalContractContext(ctx);if(lastAnalysis){lastAnalysis={...lastAnalysis,federalContractContext:ctx};if(lastTrade)renderTradeOutput(lastAnalysis,lastTrade);}setStatus(`${ticker} federal contract radar refreshed`);}catch(e){renderFederalContractContext({available:false,error:e.message||"Federal data source unavailable"});}
+}
+
+// ================= Halifax v21.4 Auto Contract + Options Opportunity Ranker ================
+const FEDERAL_CONTRACT_WATCHLIST=[
+    {ticker:"RTX",name:"RTX / Raytheon",aliases:["RTX CORPORATION","RAYTHEON COMPANY","RAYTHEON TECHNOLOGIES CORPORATION"]},
+    {ticker:"FDX",name:"FedEx",aliases:["FEDERAL EXPRESS CORPORATION","FEDEX CORPORATION"]},
+    {ticker:"UPS",name:"United Parcel Service",aliases:["UNITED PARCEL SERVICE INC","UNITED PARCEL SERVICE"]},
+    {ticker:"BA",name:"Boeing",aliases:["THE BOEING COMPANY","BOEING COMPANY"]},
+    {ticker:"GD",name:"General Dynamics",aliases:["GENERAL DYNAMICS CORPORATION","GENERAL DYNAMICS"]},
+    {ticker:"BAH",name:"Booz Allen Hamilton",aliases:["BOOZ ALLEN HAMILTON INC","BOOZ ALLEN HAMILTON"]},
+    {ticker:"BAESY",name:"BAE Systems ADR",aliases:["BAE SYSTEMS","BAE SYSTEMS INC"]}
+];
+const CONTRACT_RANK_STORAGE="halifax.contractRank.fingerprint.v21.4";
+const CONTRACT_RANK_INTERVAL_MS=30*60*1000;
+let contractRankRunning=false,contractRankTimer=null,lastContractRankAt=0;
+function contractWatchLookback(){return Math.max(7,Math.min(30,Number(document.getElementById("federalLookback")?.value)||30));}
+async function fetchFederalAwardsByRecipient(searchName,lookback=30,limit=12){
+    const end=fcIsoDate(new Date()),start=fcDaysAgo(lookback);
+    const body={spending_level:"awards",subawards:false,limit,page:1,filters:{award_type_codes:["A","B","C","D"],time_period:[{start_date:start,end_date:end,date_type:"new_awards_only"}],recipient_search_text:[searchName]},fields:["Award ID","Recipient Name","Award Amount","Awarding Agency","Awarding Sub Agency","Description","Base Obligation Date","Last Modified Date","Start Date","End Date","Contract Award Type","NAICS","PSC","generated_internal_id"],sort:"Base Obligation Date",order:"desc"};
+    const raw=await fetchPublicPostJson(USA_SPENDING_AWARD_SEARCH,body,9000),rows=Array.isArray(raw?.results)?raw.results:[];
+    return rows.map(r=>({awardId:r?.["Award ID"]||"—",recipient:String(r?.["Recipient Name"]||""),amount:Number.isFinite(Number(r?.["Award Amount"]))?Number(r["Award Amount"]):null,agency:r?.["Awarding Agency"]||"—",subAgency:r?.["Awarding Sub Agency"]||"",description:r?.Description||"",date:r?.["Base Obligation Date"]||r?.["Start Date"]||null,lastModified:r?.["Last Modified Date"]||null,naics:r?.NAICS||"",psc:r?.PSC||""}));
+}
+function dedupeFederalAwards(rows){const seen=new Set();return (rows||[]).filter(r=>{const k=`${r.awardId}|${r.date}|${r.amount}|${r.recipient}`;if(seen.has(k))return false;seen.add(k);return true;});}
+function contractFingerprint(item){const r=item?.latest;return r?`${r.awardId}|${r.date}|${r.lastModified||""}|${r.amount}|${r.recipient}`:"NONE";}
+function readContractFingerprints(){try{return JSON.parse(localStorage.getItem(CONTRACT_RANK_STORAGE)||"{}")||{};}catch(e){return {};}}
+function saveContractFingerprints(results){try{localStorage.setItem(CONTRACT_RANK_STORAGE,JSON.stringify(Object.fromEntries(results.map(x=>[x.ticker,contractFingerprint(x)]))));}catch(e){}}
+function contractChangeState(item,prior){const now=contractFingerprint(item),old=prior?.[item.ticker];if(now==="NONE")return {label:"NO MATCH",cls:"same"};if(!old)return {label:"BASELINE",cls:"base"};if(old!==now)return {label:"NEW / CHANGED",cls:"changed"};return {label:"UNCHANGED",cls:"same"};}
+async function loadContractCoreSignal(ticker){
+    try{
+        const [daily,intra]=await Promise.all([loadTickerData(ticker,"1d","1y").catch(()=>null),loadTickerData(ticker,"60m").catch(()=>null)]);
+        const frames=[];if(intra)frames.push(intra);if(daily){frames.push(daily);try{frames.push(deriveTimeframeData(daily,"1wk"));}catch(e){}}
+        if(frames.length<2)return null;
+        const a=aggregateAnalysis(frames,null,null,daily?"1d":frames.at(-1)?.timeframe);
+        return {direction:a.direction,score:a.score,confidence:a.predictionStrength,technicalScore:a.technicalScore};
+    }catch(e){return null;}
+}
+function contractOptionScore(op){
+    if(!op?.available)return 0;
+    let score=op.direction==="MIXED"?20:50+Math.min(50,Math.abs(Number(op.score)||0)*12.5);
+    const liq=String(op.liquidityLabel||"").toUpperCase();if(liq==="WIDE")score*=.55;if(liq.includes("VERY WIDE"))score*=.25;
+    return Math.round(clamp(score,0,100));
+}
+function contractSetupLabel(core,op){
+    const cd=core?.direction||"WAIT",od=op?.direction||"MIXED";
+    if(cd==="LONG"&&od==="LONG")return {label:"BULLISH ALIGNMENT",cls:"rank-bull",kind:"LONG"};
+    if(cd==="SHORT"&&od==="SHORT")return {label:"BEARISH ALIGNMENT",cls:"rank-bear",kind:"SHORT"};
+    if((cd==="LONG"&&od==="SHORT")||(cd==="SHORT"&&od==="LONG"))return {label:"SIGNAL CONFLICT",cls:"rank-conflict",kind:"CONFLICT"};
+    return {label:"WATCH / WAIT",cls:"rank-watch",kind:"WAIT"};
+}
+function contractCombinedRank(item){
+    const impactScore=Number.isFinite(item?.impact?.score)?item.impact.score:0,optionScore=contractOptionScore(item.options),coreStrength=Number.isFinite(item?.core?.score)?Math.abs(item.core.score):0;
+    const setup=contractSetupLabel(item.core,item.options);let alignment=0;if(setup.kind==="LONG"||setup.kind==="SHORT")alignment=10;else if(setup.kind==="CONFLICT")alignment=-12;
+    const combined=Math.round(clamp(.45*impactScore+.30*optionScore+.25*coreStrength+alignment,0,100));
+    return {combined,impactScore,optionScore,coreStrength,setup};
+}
+async function enrichContractRankItem(item){
+    if(!item.latest)return {...item,options:null,core:null,impact:{score:null,label:"UNSCORED",ratio:null,cls:"fc-low"},rank:0,setup:{label:"NO CURRENT AWARD",cls:"rank-watch",kind:"WAIT"}};
+    try{
+        const snap=await fetchTickerSnapshot(item.ticker).catch(()=>null),spot=Number(snap?.quote?.regularMarketPrice)||Number(snap?.quote?.postMarketPrice)||Number(snap?.quote?.preMarketPrice)||null;
+        const [fund,core,options]=await Promise.all([
+            loadCompanyFundamentals(item.ticker,snap?.quote||null).catch(()=>null),
+            loadContractCoreSignal(item.ticker),
+            loadOptionsOutlook(item.ticker,document.getElementById("style")?.value||"swing",spot).catch(()=>null)
+        ]);
+        const revenue=Number(fund?.revenue),match=Math.max(...item.aliases.map(a=>fcNameMatch(a,item.latest.recipient)),0),impact=fcImpactFromAward(Number(item.latest.amount),revenue,fcAwardAge(item.latest.date),match);
+        const enriched={...item,quote:snap?.quote||null,fundamentals:fund,core,options,impact};const r=contractCombinedRank(enriched);return {...enriched,rank:r.combined,rankParts:r,setup:r.setup};
+    }catch(e){return {...item,options:null,core:null,impact:{score:null,label:"UNSCORED",ratio:null,cls:"fc-low"},rank:0,setup:{label:"DATA INCOMPLETE",cls:"rank-watch",kind:"WAIT"},rankError:e?.message||"Unavailable"};}
+}
+function contractRankRowHTML(item,index){
+    const r=item.latest,total=item.total||0,count=item.rows?.length||0,rank=Number(item.rank)||0,change=item.change||{label:"—",cls:"same"};
+    const award=r?`${fcCompactAmount(r.amount)} • ${escapeHTML(r.date||"—")} • ${escapeHTML(r.agency||"—")}`:"No matched new award in the current 30-day window";
+    const impact=Number.isFinite(item?.impact?.score)?`${escapeHTML(item.impact.label)} ${item.impact.score}/100`:`UNSCORED`;
+    const op=item.options?.available?`${item.options.arrow} ${escapeHTML(item.options.direction)} • ${escapeHTML(item.options.confidence)} • ${escapeHTML(item.options.liquidityLabel)}`:"Unavailable";
+    const core=item.core?`${directionArrow(item.core.direction)} ${escapeHTML(item.core.direction)} • ${item.core.score>=0?"+":""}${item.core.score}`:"Unavailable";
+    const ratio=Number.isFinite(item?.impact?.ratio)?`${(item.impact.ratio*100).toFixed(item.impact.ratio<.01?2:1)}% award/revenue`:"Award/revenue unavailable";
+    const rankLabel=r?`#${index+1}`:"—";
+    return `<div class="contract-watch-row contract-rank-row"><div class="contract-watch-top"><div style="display:flex;align-items:center;gap:9px"><div class="contract-rank-badge">${rankLabel}</div><div><div class="contract-watch-ticker">${escapeHTML(item.ticker)}</div><div class="contract-watch-name">${escapeHTML(item.name)}</div></div></div><div style="text-align:right"><div class="contract-rank-score ${item.setup?.cls||'rank-watch'}">${r?rank:"—"}</div><div class="contract-rank-sub">Rank score</div></div></div><div style="display:flex;justify-content:space-between;gap:7px;align-items:center;margin:7px 0"><b class="${item.setup?.cls||'rank-watch'}" style="font-size:10px">${escapeHTML(item.setup?.label||"WATCH")}</b><span class="contract-change-chip ${change.cls}">${escapeHTML(change.label)}</span></div><div class="contract-watch-award">${award}</div><div class="contract-rank-grid"><div class="contract-rank-metric"><span>Contract Impact</span><b>${impact}</b></div><div class="contract-rank-metric"><span>Options Now</span><b>${op}</b></div><div class="contract-rank-metric"><span>Core Price Action</span><b>${core}</b></div><div class="contract-rank-metric"><span>Materiality Basis</span><b>${escapeHTML(ratio)}</b></div></div><div class="contract-watch-meta">${r?`${count} matched award${count===1?"":"s"} • ${fcCompactAmount(total)} total • ${escapeHTML(String(r.description||"").slice(0,125)||"No description")}`:`Aliases checked: ${item.aliases.map(escapeHTML).join(" / ")}`}</div><div class="contract-watch-actions"><button class="btn-ticker-link" onclick="analyzeContractTicker('${item.ticker}')">FULL ANALYSIS</button><button class="btn-option-plus" onclick="openContractOptions('${item.ticker}')">+ OPTIONS</button></div></div>`;
+}
+function setContractAutoStatus(state,text){const el=document.getElementById("contractAutoStatus");if(!el)return;el.classList.remove("off","busy");if(state)el.classList.add(state);el.innerHTML=`<span class="feed-dot"></span> ${escapeHTML(text)}`;}
+async function scanFederalContractWatchlist(withSignals=true,{silent=false}={}){
+    if(contractRankRunning)return;const box=document.getElementById("contractWatchOutput");if(!box)return;contractRankRunning=true;
+    const lookback=contractWatchLookback(),prior=readContractFingerprints();setContractAutoStatus("busy",`Refreshing contracts${withSignals?", options and price action":""}…`);if(!silent)box.innerHTML=`<div class="loading">Scanning tracked public-company federal awards for the last ${lookback} days${withSignals?", then refreshing options and Halifax core signals":""}…</div>`;
+    try{
+        let results=await mapLimit(FEDERAL_CONTRACT_WATCHLIST,3,async item=>{
+            try{const chunks=await Promise.all(item.aliases.map(a=>fetchFederalAwardsByRecipient(a,lookback,10).catch(()=>[]))),rows=dedupeFederalAwards(chunks.flat()).filter(r=>item.aliases.some(a=>fcNameMatch(a,r.recipient)>=.34)).sort((a,b)=>(Date.parse(b.date||0)-Date.parse(a.date||0))||((b.amount||0)-(a.amount||0)));const base={...item,rows,latest:rows[0]||null,total:rows.reduce((s,r)=>s+(Number(r.amount)||0),0)};return {...base,change:contractChangeState(base,prior)};}catch(e){const base={...item,rows:[],latest:null,total:0,error:e?.message||"Unavailable"};return {...base,change:contractChangeState(base,prior)};}
+        });
+        if(withSignals){
+            const matched=results.filter(x=>x.latest),empty=results.filter(x=>!x.latest);const enriched=await mapLimit(matched,2,enrichContractRankItem);results=[...enriched,...empty.map(x=>({...x,rank:0,setup:{label:"NO CURRENT AWARD",cls:"rank-watch",kind:"WAIT"}}))];
+            results.sort((a,b)=>(b.rank||0)-(a.rank||0)||((Date.parse(b.latest?.date||0)||0)-(Date.parse(a.latest?.date||0)||0))||((b.total||0)-(a.total||0)));
+        }else results.sort((a,b)=>{const ad=Date.parse(a.latest?.date||0)||0,bd=Date.parse(b.latest?.date||0)||0;if(bd!==ad)return bd-ad;return (b.total||0)-(a.total||0);});
+        saveContractFingerprints(results);lastContractRankAt=Date.now();
+        if(withSignals)box.innerHTML=`<div class="contract-watch-grid">${results.map(contractRankRowHTML).join("")}</div><div class="fc-source-row"><a href="${fcSearchUrl()}" target="_blank" rel="noopener">VERIFY ON USASPENDING</a><a href="${samOpportunityUrl()}" target="_blank" rel="noopener">SEARCH SAM.GOV</a></div><div class="fc-warning"><b>Updated ${escapeHTML(new Date().toLocaleString())}:</b> rank score is a research heuristic, not a probability. Contract materiality receives zero points when annual revenue cannot be verified; unavailable options/core data are not estimated. This scanner currently tracks ${FEDERAL_CONTRACT_WATCHLIST.length} public tickers and their listed legal-name aliases, not every federal recipient.</div>`;
+        else box.innerHTML=`<div class="contract-watch-grid">${results.map((x,i)=>contractRankRowHTML({...x,rank:0,setup:{label:x.latest?"CONTRACT FOUND":"NO CURRENT AWARD",cls:x.latest?"rank-bull":"rank-watch"}},i)).join("")}</div><div class="fc-warning">Contracts-only refresh completed ${escapeHTML(new Date().toLocaleString())}. Press <b>REFRESH + RANK</b> to update options and Halifax price-action confirmation.</div>`;
+        const changed=results.filter(x=>x.change?.cls==="changed").map(x=>x.ticker);setContractAutoStatus("",changed.length?`Auto-rank ON • new/changed award detected: ${changed.join(", ")} • next refresh in 30 min`:`Auto-rank ON • ranked ${results.filter(x=>x.latest).length} matched ticker(s) • next refresh in 30 min`);
+    }catch(e){if(!silent)box.innerHTML=`<div class="fc-warning">Automatic contract/options ranking failed: ${escapeHTML(e?.message||"Data services unavailable")}. No ranking was guessed.</div>`;setContractAutoStatus("off","Auto-rank could not complete; manual refresh is available.");}
+    finally{contractRankRunning=false;}
+}
+async function analyzeContractTicker(ticker){const el=document.getElementById("ticker");if(el)el.value=ticker;await runEngine();}
+function contractOptionOpportunity(outlook){
+    if(!outlook?.available)return {cls:"watch",title:"NO VERIFIED OPTIONS SETUP",main:"Chain unavailable",note:"No option trade is suggested when the listed chain cannot be verified."};
+    const liquidity=String(outlook.liquidityLabel||"").toUpperCase();
+    if(liquidity.includes("VERY WIDE")||liquidity==="WIDE")return {cls:"avoid",title:"LIQUIDITY GUARDRAIL",main:"Avoid chasing this chain",note:`Near-money bid/ask quality is ${liquidity}. Wide spreads can overwhelm a contract catalyst.`};
+    if(outlook.direction==="LONG")return {cls:"",title:"DEFINED-RISK BULLISH CANDIDATE",main:"Call debit spread lens",note:`Options lean LONG through ${outlook.expiryText}. Use the ATM area near ${money(outlook.atmStrike)} only as a reference and confirm the full Halifax LONG setup before entering. Do not treat contract news alone as a buy signal.`};
+    if(outlook.direction==="SHORT")return {cls:"avoid",title:"DEFINED-RISK BEARISH CANDIDATE",main:"Put debit spread lens",note:`Options lean SHORT through ${outlook.expiryText}. Use the ATM area near ${money(outlook.atmStrike)} only as a reference and confirm the full Halifax SHORT setup before entering.`};
+    return {cls:"watch",title:"NO CLEAN DIRECTIONAL EDGE",main:"Wait / watch",note:`Calls and puts are mixed through ${outlook.expiryText}. Halifax does not force an options trade when the chain lacks a directional edge.`};
+}
+function appendContractOptionOpportunity(outlook){const box=document.getElementById("optionsOutput");if(!box||!outlook?.available)return;const o=contractOptionOpportunity(outlook),move=Number.isFinite(outlook.pricedMove)?` • priced move ±${money(outlook.pricedMove)}`:"";box.insertAdjacentHTML("beforeend",`<div class="option-opportunity ${o.cls}"><div class="option-opportunity-title">Contract Catalyst Options Link</div><div class="option-opportunity-main">${escapeHTML(o.main)}</div><div class="option-opportunity-note">${escapeHTML(o.note)}${escapeHTML(move)} • Spread quality: ${escapeHTML(outlook.liquidityLabel||"unknown")} • Confidence: ${escapeHTML(outlook.confidence||"unknown")}</div><div class="contract-watch-actions"><button class="btn-ticker-link" onclick="analyzeContractTicker('${escapeHTML(outlook.ticker)}')">FULL HALIFAX ANALYSIS</button></div></div>`);}
+async function openContractOptions(ticker=null){
+    const symbol=String(ticker||document.getElementById("ticker")?.value||lastAnalysis?.primary?.ticker||"").trim().toUpperCase();if(!symbol){alert("Enter or choose a ticker first.");return;}
+    const t=document.getElementById("ticker");if(t)t.value=symbol;const card=document.getElementById("optionsCard"),box=document.getElementById("optionsOutput");if(card)card.style.display="block";if(box)box.innerHTML=`<div class="loading">Refreshing current listed options for ${escapeHTML(symbol)}…</div>`;card?.scrollIntoView({behavior:"smooth",block:"start"});
+    try{const snap=await fetchTickerSnapshot(symbol).catch(()=>null),spot=Number(snap?.quote?.regularMarketPrice)||Number(snap?.quote?.postMarketPrice)||Number(snap?.quote?.preMarketPrice)||null,op=await loadOptionsOutlook(symbol,document.getElementById("style")?.value||"swing",spot);renderOptionsOutlook(op);appendContractOptionOpportunity(op);setStatus(`${symbol} updated options complete`);}catch(e){renderOptionsOutlook(null);if(box)box.insertAdjacentHTML("beforeend",`<div class="fc-warning">${escapeHTML(e?.message||"Updated options are unavailable for this ticker right now.")}</div>`);setStatus(`${symbol} options unavailable`,"var(--yellow)");}
+}
+function scheduleContractAutoRank(){
+    if(contractRankTimer){clearInterval(contractRankTimer);contractRankTimer=null;}const enabled=document.getElementById("contractAutoRank")?.checked!==false;
+    if(!enabled){setContractAutoStatus("off","Auto-rank: OFF • use REFRESH + RANK manually");return;}
+    setContractAutoStatus("","Auto-rank: ON • refresh every 30 minutes while this page is open");contractRankTimer=setInterval(()=>{if(!document.hidden&&!contractRankRunning)scanFederalContractWatchlist(true,{silent:true});},CONTRACT_RANK_INTERVAL_MS);
+}
+window.addEventListener("load",()=>{const cb=document.getElementById("contractAutoRank");cb?.addEventListener("change",scheduleContractAutoRank);scheduleContractAutoRank();setTimeout(()=>{if(document.getElementById("contractAutoRank")?.checked!==false&&!contractRankRunning)scanFederalContractWatchlist(true,{silent:false});},2200);});
+document.addEventListener("visibilitychange",()=>{if(!document.hidden&&document.getElementById("contractAutoRank")?.checked!==false&&Date.now()-lastContractRankAt>CONTRACT_RANK_INTERVAL_MS&&!contractRankRunning)scanFederalContractWatchlist(true,{silent:true});});
+// ================= End Halifax v21.4 Auto Contract + Options Opportunity Ranker ============
+// ================= End Halifax v21.1 Federal Contract Radar ===============
+
 async function runEngine(){
     const runId=++halifaxRunId;
     stopLiveQuoteStream();
     const ticker=document.getElementById("ticker").value.trim().toUpperCase().replace(/[^A-Z0-9.\-^=]/g,"");if(!ticker){document.getElementById("tradeOutput").innerHTML='<div class="red">Enter a valid ticker.</div>';return;}
-    const button=document.getElementById("analyzeBtn");button.disabled=true;setStatus(`Analyzing ${ticker}…`,"var(--yellow)");document.getElementById("tradeOutput").innerHTML=`<div class="loading">Loading multi-timeframe, live-quote, bond/rates, sector and instrument-guardrail data for ${escapeHTML(ticker)}…</div>`;document.getElementById("newsOutput").innerHTML='<div class="loading">Loading news catalysts…</div>';document.getElementById("smartMoneyCard").style.display="block";document.getElementById("smartMoneyOutput").innerHTML='<div class="loading">Loading insider, institutional and public-filing context in parallel…</div>';document.getElementById("fundamentalsCard").style.display="block";document.getElementById("fundamentalsOutput").innerHTML='<div class="loading">Loading company profile and fundamental data in parallel…</div>';document.getElementById("optionsCard").style.display="block";document.getElementById("optionsOutput").innerHTML='<div class="loading">Reading listed options for a plain-English LONG / SHORT / MIXED outlook…</div>';
+    const button=document.getElementById("analyzeBtn");button.disabled=true;setStatus(`Analyzing ${ticker}…`,"var(--yellow)");document.getElementById("tradeOutput").innerHTML=`<div class="loading">Loading multi-timeframe, live-quote, bond/rates, sector and instrument-guardrail data for ${escapeHTML(ticker)}…</div>`;document.getElementById("newsOutput").innerHTML='<div class="loading">Loading news catalysts…</div>';document.getElementById("smartMoneyCard").style.display="block";document.getElementById("smartMoneyOutput").innerHTML='<div class="loading">Loading insider, institutional and public-filing context in parallel…</div>';document.getElementById("fundamentalsCard").style.display="block";document.getElementById("fundamentalsOutput").innerHTML='<div class="loading">Loading company profile and fundamental data in parallel…</div>';document.getElementById("optionsCard").style.display="block";document.getElementById("optionsOutput").innerHTML='<div class="loading">Reading listed options for a plain-English LONG / SHORT / MIXED outlook…</div>';document.getElementById("federalContractCard").style.display="block";document.getElementById("federalContractOutput").innerHTML='<div class="loading">Scanning USAspending for newly awarded federal prime contracts…</div>';
     try{
         if(document.getElementById("econGuard")?.checked!==false&&!economicState)await loadOfficialEconomicData(false);
         const timeframes=getTimeframes(),benchmark=document.getElementById("benchmark").value,chartTF=document.getElementById("timeframe").value,knownSpecial=getSpecialInstrument(ticker),guardOn=document.getElementById("macroGuard").checked,marketMacroOn=guardOn||document.getElementById("econGuard")?.checked!==false;
@@ -3354,6 +3629,7 @@ async function runEngine(){
         ]);
         const special=getSpecialInstrument(ticker,snapshot.quote)||knownSpecial;
         const fundamentalsPromise=loadCompanyFundamentals(ticker,snapshot.quote).catch(()=>null);
+        const federalContractPromise=fundamentalsPromise.then(f=>loadFederalContractContext(ticker,snapshot.quote,f)).catch(()=>loadFederalContractContext(ticker,snapshot.quote,null).catch(()=>null));
         const recovery=recoverFrameSet(ticker,timeframes,frameResults),frames=recovery.frames;
         if(frames.length<2){
             const failed=recovery.failed.join(" | ");
@@ -3384,13 +3660,13 @@ async function runEngine(){
         }
         if(special&&recovery.used&&!analysis.dataFallback)analysis=applyDataFallbackCaution(analysis,recovery,document.getElementById("style").value);
         // Render the core decision immediately. Filing data updates the result afterward if it arrives.
-        analysis={...analysis,smartMoneyContext:null,smartMoneyContribution:0,optionsContext:null,fundamentalEventContext:null,fundamentalContribution:0,portfolioRiskContext:null,analysisBasisPrice:analysis.primary.price,liveQuoteContext:buildInitialLiveQuote(snapshot.quote,analysis),reasons:[...analysis.reasons,"Halifax v21 keeps price-action / multi-timeframe direction control. Bonds/rates are part of the macro guardrail; options, fundamentals and delayed filing data are confirmation/context only and cannot independently reverse LONG/SHORT direction. Event risk may downgrade an active setup to WAIT, and portfolio correlation may reduce size."]};
+        analysis={...analysis,smartMoneyContext:null,smartMoneyContribution:0,optionsContext:null,fundamentalEventContext:null,fundamentalContribution:0,federalContractContext:null,portfolioRiskContext:null,analysisBasisPrice:analysis.primary.price,liveQuoteContext:buildInitialLiveQuote(snapshot.quote,analysis),reasons:[...analysis.reasons,"Halifax v21.1 keeps price-action / multi-timeframe direction control. Bonds/rates are part of the macro guardrail; options, fundamentals, public federal-contract awards and delayed filing data are confirmation/context only and cannot independently reverse LONG/SHORT direction. Event risk may downgrade an active setup to WAIT, and portfolio correlation may reduce size."]};
         analysis=attachSignalChange(analysis);saveSignalSnapshot(analysis);
         let trade=calculateTrade(analysis.primary,analysis);
         renderChart(analysis.primary,trade);renderRegime(analysis,benchmarkResult);renderMTF(analysis);renderTradeOutput(analysis,trade);renderBondContext(analysis.macroContext?.bondContext);renderPositionGuardrails(ticker,analysis.primary,analysis);renderNews(displayNews,ticker);
         document.getElementById("smartMoneyOutput").innerHTML='<div class="loading">Core prediction is complete. Loading insider, institutional and public-filing context in the background…</div>';
         document.getElementById("decisionCard")?.scrollIntoView({behavior:"smooth",block:"start"});
-        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v21.0 Lite`;
+        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v21.4 Lite`;
         startLiveQuoteStream(ticker,runId);
         const portfolioPromise=loadPortfolioRiskContext(ticker,analysis).catch(()=>null);
         portfolioPromise.then(pr=>{
@@ -3412,6 +3688,12 @@ async function runEngine(){
             renderCompanyFundamentals(f,analysis.fundamentalEventContext);renderTradeOutput(analysis,trade);renderPositionGuardrails(ticker,analysis.primary,analysis);
             setStatus(`${ticker} prediction + earnings/fundamentals complete`);
         }).catch(()=>{});
+        federalContractPromise.then(fc=>{
+            if(runId!==halifaxRunId)return;
+            if(!fc){renderFederalContractContext({available:false,error:"USAspending federal-award feed is unavailable right now."});return;}
+            analysis={...analysis,federalContractContext:fc};trade=calculateTrade(analysis.primary,analysis);renderFederalContractContext(fc);renderTradeOutput(analysis,trade);renderPositionGuardrails(ticker,analysis.primary,analysis);
+            setStatus(`${ticker} prediction + federal contract radar complete`);
+        }).catch(e=>renderFederalContractContext({available:false,error:e?.message||"Federal contract radar unavailable"}));
         smartMoneyPromise.then(sm=>{
             if(runId!==halifaxRunId)return;
             if(!sm){document.getElementById("smartMoneyOutput").innerHTML='<div class="loading">Smart-money feeds are unavailable right now. Core Halifax prediction remains valid.</div>';return;}
@@ -3419,7 +3701,7 @@ async function runEngine(){
             renderTradeOutput(analysis,trade);renderPositionGuardrails(ticker,analysis.primary,analysis);renderSmartMoney(special?.underlying||ticker,sm);
             setStatus(`${ticker} prediction + smart money complete`);
         }).catch(()=>{});
-    }catch(error){console.error(error);document.getElementById("tradeOutput").innerHTML=`<div class="red" style="font-weight:900">Analysis failed</div><div style="font-size:12px;color:#cbd5e1;margin-top:8px;line-height:1.5">${escapeHTML(error.message)}</div><div class="notice">Halifax v21.0 Lite rebuilds a slower confirmation timeframe from any usable loaded candles when a separate interval feed fails. A red failure should now appear only when no valid two-timeframe set can be constructed at all.</div>`;document.getElementById("positionCard").style.display="none";document.getElementById("fundamentalsOutput").innerHTML='<div class="loading">Company fundamentals were not completed because the main analysis failed.</div>';document.getElementById("optionsOutput").innerHTML='<div class="loading">Options analysis was not completed because the main analysis failed.</div>';setStatus("Analysis failed","var(--red)");}
+    }catch(error){console.error(error);document.getElementById("tradeOutput").innerHTML=`<div class="red" style="font-weight:900">Analysis failed</div><div style="font-size:12px;color:#cbd5e1;margin-top:8px;line-height:1.5">${escapeHTML(error.message)}</div><div class="notice">Halifax v21.1 Lite rebuilds a slower confirmation timeframe from any usable loaded candles when a separate interval feed fails. A red failure should now appear only when no valid two-timeframe set can be constructed at all.</div>`;document.getElementById("positionCard").style.display="none";document.getElementById("fundamentalsOutput").innerHTML='<div class="loading">Company fundamentals were not completed because the main analysis failed.</div>';document.getElementById("optionsOutput").innerHTML='<div class="loading">Options analysis was not completed because the main analysis failed.</div>';document.getElementById("federalContractOutput").innerHTML='<div class="loading">Federal contract analysis was not completed because the main analysis failed.</div>';setStatus("Analysis failed","var(--red)");}
     finally{button.disabled=false;}
 }
 
@@ -3576,7 +3858,7 @@ function safeUrl(url){try{const u=new URL(url);return ["http:","https:"].include
 
 
 
-// ================= Halifax v21.0 Live Market Intelligence =================
+// ================= Halifax v21.1 Live Market Intelligence =================
 let liveQuoteTimer=null,lastLiveQuotePollAt=0,lastMaterialReanalysisAt=0;
 const SIGNAL_HISTORY_KEY="halifaxSignalHistoryV21";
 const PORTFOLIO_KEY="halifaxPortfolioTickersV21";
@@ -3718,7 +4000,7 @@ function catalystHTML(analysis){
     const fe=analysis.fundamentalEventContext;if(!fe?.available)return `<div class="catalyst-strip"><span><b>Catalyst countdown:</b> earnings date unavailable / still loading</span><span class="tiny">No future macro release date is guessed.</span></div>`;
     const days=Number.isFinite(fe.daysToEarnings)&&fe.daysToEarnings>=0?`${fe.daysToEarnings} day${fe.daysToEarnings===1?'':'s'}`:"date not upcoming";return `<div class="catalyst-strip"><span><b>Earnings countdown:</b> ${escapeHTML(days)}</span><span class="${fe.earningsRisk==='CRITICAL'||fe.earningsRisk==='HIGH'?'red':fe.earningsRisk==='ELEVATED'||fe.earningsRisk==='WATCH'?'yellow':'green'}">Risk ${escapeHTML(fe.earningsRisk)} • size ${Math.round((fe.riskMultiplier??1)*100)}%</span></div>`;
 }
-// ================= End Halifax v21.0 Live Market Intelligence ===============
+// ================= End Halifax v21.1 Live Market Intelligence ===============
 
 async function resetHalifaxApp(){
   try{
