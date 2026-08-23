@@ -18,7 +18,7 @@
 <meta name="application-name" content="Halifax">
 <meta name="format-detection" content="telephone=no">
 
-<title>Halifax Trade Engine v21.4 Lite - Collapsed Government Intelligence</title>
+<title>Halifax Trade Engine v21.5 Lite - Unified Market Guidance</title>
 
 <style>
 :root{
@@ -1228,8 +1228,8 @@ textarea:focus{border-color:#4da7ff;box-shadow:0 0 0 2px rgba(59,130,246,.16)}
     <div class="card header">
         <div class="brand-stack">
             <div class="terminal-kicker"><span class="kicker-dot"></span> HALIFAX QUANT RESEARCH TERMINAL</div>
-            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v21.4 Lite</span></span></div>
-            <div class="subtitle">Predictive swing research • Federal contract radar + option links • Live quote quality • Bonds + options • Execution planning • Point-in-time validation</div>
+            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v21.5 Lite</span></span></div>
+            <div class="subtitle">Predictive swing research • Unified market guidance • Federal contract radar + options • Bonds/rates • Event guardrails • Point-in-time validation</div>
         </div>
         <div class="header-actions"><div class="badge system-badge"><span class="status-dot"></span><span id="engineStatus">Engine ready</span></div></div>
     </div>
@@ -1363,6 +1363,12 @@ textarea:focus{border-color:#4da7ff;box-shadow:0 0 0 2px rgba(59,130,246,.16)}
         <div class="clean-note">Options are used as confirmation only. A LONG or SHORT options lean does not prove trader intent because option volume and open interest can include hedges and multi-leg spreads.</div>
     </div>
 
+    <div id="marketGuidanceCard" class="card bond-card" style="display:none">
+        <div class="panel-title green">Unified Market Guidance</div>
+        <div id="marketGuidanceOutput"><div class="loading">Run an analysis to load SPY, Nasdaq, Dow, volatility, oil, rates and official macro-event guidance.</div></div>
+        <div class="clean-note">The guidance layer uses live/near-live market prices plus official BLS, BEA and Federal Reserve release calendars when reachable. It can confirm, weaken, size down or block a new trade around event risk, but it cannot independently flip Halifax from LONG to SHORT or from SHORT to LONG.</div>
+    </div>
+
     <div id="bondCard" class="card bond-card" style="display:none">
         <div class="panel-title cyan">Bond &amp; Rates Risk Dashboard</div>
         <div id="bondOutput"><div class="loading">Run an analysis to load Treasury, duration and credit-risk context.</div></div>
@@ -1479,6 +1485,7 @@ let lastPlanText = "";
 let lastAnalysis = null, lastTrade = null;
 const responseCache = new Map();
 let economicState = null;
+let officialEventCache = {expires:0,data:null};
 let shillerState = {value:42.56, date:"2026-08-14", source:"Multpl / Robert Shiller data", live:false};
 
 const ECON_FALLBACK = {
@@ -2313,11 +2320,108 @@ function buildBondMarketContext(profile,bonds={},econ=null){
     return {applies:!!(tlt||ief||hyg||lqd||Number.isFinite(curve)||Number.isFinite(real10)||Number.isFinite(hyOAS)),adjustment,riskPoints,tailwindPoints,riskLevel,rateSensitivity:rateSens,curve,curve30,real10y:real10,hyOAS,igOAS,creditRelative,tltRoc:tlt?.roc20??null,iefRoc:ief?.roc20??null,hygRoc:hyg?.roc20??null,lqdRoc:lqd?.roc20??null,reasons};
 }
 
-function buildMacroContext(ticker,profile,{sector=null,vix=null,spy=null,drivers={},bonds={},news=[]}={}){
+function marketTrendLabel(data){
+    if(!data)return "UNAVAILABLE";
+    return classifyTimeframe(data).direction;
+}
+function nextCalendarMonth(year,monthIndex){
+    const d=new Date(year,monthIndex+1,1);
+    return {year:d.getFullYear(),month:d.getMonth()+1};
+}
+function monthNumber(name){
+    const months={january:1,february:2,march:3,april:4,may:5,june:6,july:7,august:8,september:9,october:10,november:11,december:12};
+    return months[String(name||"").toLowerCase()]||null;
+}
+function calendarDayDelta(year,month,day){
+    const now=new Date(),a=new Date(now.getFullYear(),now.getMonth(),now.getDate()),b=new Date(year,month-1,day);
+    return Math.round((b-a)/86400000);
+}
+async function fetchTextFast(url,timeoutMs=5200){
+    const read=async u=>{const r=await fetchWithTimeout(u,{},timeoutMs);if(!r.ok)throw new Error(`HTTP ${r.status}`);const t=await r.text();if(!t||t.length<50)throw new Error("empty text");return t;};
+    const routes=[url,`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,`https://corsproxy.io/?${encodeURIComponent(url)}`];
+    return Promise.any(routes.map(read));
+}
+function pushOfficialEvent(events,evt){
+    if(!evt||!evt.year||!evt.month||!evt.day||!evt.name)return;
+    const key=`${evt.year}-${evt.month}-${evt.day}-${evt.name}`.toLowerCase();
+    if(events.some(x=>x.key===key))return;
+    events.push({...evt,key,daysAway:calendarDayDelta(evt.year,evt.month,evt.day)});
+}
+function parseBlsEvents(html,events){
+    const doc=new DOMParser().parseFromString(html,"text/html");
+    for(const row of [...doc.querySelectorAll("tr")]){
+        const txt=(row.textContent||"").replace(/\s+/g," ").trim();
+        const m=txt.match(/(?:Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday),\s+([A-Za-z]+)\s+(\d{1,2}),\s+(\d{4})\s+(\d{1,2}:\d{2}\s+[AP]M)\s+(.+)/i);
+        if(!m)continue;
+        const name=m[5].trim();
+        if(!/(Consumer Price Index|Employment Situation|Producer Price Index)/i.test(name))continue;
+        pushOfficialEvent(events,{source:"BLS",year:+m[3],month:monthNumber(m[1]),day:+m[2],time:m[4].toUpperCase()+" ET",name,importance:/Consumer Price Index|Employment Situation/i.test(name)?"HIGH":"MEDIUM"});
+    }
+}
+function parseBeaEvents(html,events,year){
+    const doc=new DOMParser().parseFromString(html,"text/html");
+    for(const row of [...doc.querySelectorAll("tr")]){
+        const txt=(row.textContent||"").replace(/\s+/g," ").trim();
+        const m=txt.match(/^([A-Za-z]+)\s+(\d{1,2})\s+(\d{1,2}:\d{2}\s+[AP]M)\s+(?:News|Data)\s+(.+)/i);
+        if(!m)continue;
+        const name=m[4].replace(/\s+View\s*$/i,"").trim();
+        if(!/(Personal Income and Outlays|GDP \()/i.test(name))continue;
+        pushOfficialEvent(events,{source:"BEA",year,month:monthNumber(m[1]),day:+m[2],time:m[3].toUpperCase()+" ET",name,importance:"HIGH"});
+    }
+}
+function parseFedEvents(html,events,year){
+    const doc=new DOMParser().parseFromString(html,"text/html"),txt=(doc.body?.textContent||"").replace(/\s+/g," ");
+    const marker=`${year} FOMC Meetings`,idx=txt.indexOf(marker);if(idx<0)return;
+    const section=txt.slice(idx,idx+9000),re=/(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2})\s*-\s*(\d{1,2})\*?/gi;
+    let m;while((m=re.exec(section))){pushOfficialEvent(events,{source:"Federal Reserve",year,month:monthNumber(m[1]),day:+m[3],time:"Decision day",name:"FOMC policy decision",importance:"HIGH"});}
+}
+async function loadOfficialMajorEvents(force=false){
+    if(!force&&officialEventCache.data&&officialEventCache.expires>Date.now())return officialEventCache.data;
+    const now=new Date(),year=now.getFullYear(),month=now.getMonth()+1,next=nextCalendarMonth(year,now.getMonth());
+    const bls1=`https://www.bls.gov/schedule/${year}/${String(month).padStart(2,"0")}_sched_list.htm`,bls2=`https://www.bls.gov/schedule/${next.year}/${String(next.month).padStart(2,"0")}_sched_list.htm`;
+    const [a,b,c,d]=await Promise.allSettled([fetchTextFast(bls1),fetchTextFast(bls2),fetchTextFast("https://www.bea.gov/news/schedule/full"),fetchTextFast("https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm")]);
+    const events=[];if(a.status==="fulfilled")parseBlsEvents(a.value,events);if(b.status==="fulfilled")parseBlsEvents(b.value,events);if(c.status==="fulfilled")parseBeaEvents(c.value,events,year);if(d.status==="fulfilled")parseFedEvents(d.value,events,year);
+    const usable=events.filter(x=>x.daysAway>=0&&x.daysAway<=45).sort((x,y)=>x.daysAway-y.daysAway||String(x.name).localeCompare(String(y.name)));
+    const sources=[a.status==="fulfilled"||b.status==="fulfilled"?"BLS":null,c.status==="fulfilled"?"BEA":null,d.status==="fulfilled"?"Federal Reserve":null].filter(Boolean);
+    const data={available:usable.length>0,events:usable,sources,sourceCount:sources.length,loadedAt:Date.now()};officialEventCache={data,expires:Date.now()+6*3600000};return data;
+}
+function buildMajorEventRisk(calendar,style="swing"){
+    const list=calendar?.events||[],next=list[0]||null;if(!next)return {available:false,risk:"UNAVAILABLE",riskMultiplier:1,blockNewTrade:false,next:null,reasons:["Official macro calendars were unavailable or returned no major event in the next 45 days; Halifax did not invent a release date."]};
+    const d=next.daysAway;let risk="NORMAL",riskMultiplier=1,blockNewTrade=false;
+    if(d===0){risk="HIGH";riskMultiplier=.55;blockNewTrade=["day","swing","position","custom"].includes(style);}
+    else if(d===1){risk="ELEVATED";riskMultiplier=.70;blockNewTrade=["swing","position","custom"].includes(style);}
+    else if(d<=3){risk="WATCH";riskMultiplier=.85;}
+    const when=d===0?"today":d===1?"tomorrow":`in ${d} days`;
+    const reasons=[`Next verified major macro event: ${next.name} (${next.source}) ${when}${next.time?` • ${next.time}`:""}.`];
+    if(blockNewTrade)reasons.push(`Major-event guardrail blocks a new ${style} trade because the holding window can cross a high-impact scheduled release.`);
+    else if(riskMultiplier<1)reasons.push(`Major-event guardrail reduces planned risk to ${Math.round(riskMultiplier*100)}% of normal until the event passes.`);
+    return {available:true,risk,riskMultiplier,blockNewTrade,next,reasons,calendarSources:calendar.sources||[]};
+}
+function buildMarketEnvironmentContext(profile,market={},calendar=null){
+    const style=document.getElementById("style")?.value||"swing",spy=market.SPY||null,qqq=market.QQQ||null,dia=market.DIA||null,wti=market.WTI||null,brent=market.BRENT||null;
+    const trends={SPY:marketTrendLabel(spy),QQQ:marketTrendLabel(qqq),DIA:marketTrendLabel(dia)},vals=Object.values(trends).filter(x=>x!=="UNAVAILABLE"),bulls=vals.filter(x=>x==="BULLISH").length,bears=vals.filter(x=>x==="BEARISH").length;
+    let adjustment=0;const reasons=[];
+    if(vals.length>=2){
+        if(bulls===vals.length){adjustment+=4;reasons.push(`Broad-market confirmation: ${vals.length}/${vals.length} of SPY, QQQ and DIA loaded trends are bullish.`);}
+        else if(bears===vals.length){adjustment-=6;reasons.push(`Broad-market risk-off confirmation: ${vals.length}/${vals.length} of SPY, QQQ and DIA loaded trends are bearish.`);}
+        else if(bulls>=2){adjustment+=2;reasons.push("Broad-market breadth is mostly bullish, but the major indexes are not fully aligned.");}
+        else if(bears>=2){adjustment-=3;reasons.push("Broad-market breadth is mostly bearish, but the major indexes are not fully aligned.");}
+        else reasons.push("SPY, QQQ and DIA are mixed; broad-index breadth adds no directional points.");
+    }
+    const wtiRoc=wti?.roc20??null,brentRoc=brent?.roc20??null,oilMoves=[wtiRoc,brentRoc].filter(Number.isFinite),oilAvg=oilMoves.length?oilMoves.reduce((a,b)=>a+b,0)/oilMoves.length:null,hasCrudeDriver=(profile.drivers||[]).some(d=>d.symbol==="CL=F");
+    if(Number.isFinite(oilAvg)){
+        reasons.push(`Oil confirmation: WTI ${Number.isFinite(wtiRoc)?signed(wtiRoc,1)+"%":"N/A"}, Brent ${Number.isFinite(brentRoc)?signed(brentRoc,1)+"%":"N/A"} over 20 bars.`);
+        if(!hasCrudeDriver&&profile.key==="broad"&&oilAvg>=12){adjustment-=2;reasons.push("A double-digit 20-bar oil surge is treated as a small broad-market inflation/rate headwind; sector-specific crude effects are scored separately.");}
+    }
+    const eventRisk=buildMajorEventRisk(calendar,style);reasons.push(...eventRisk.reasons);
+    adjustment=Math.round(clamp(adjustment,-8,6));
+    return {applies:!!(vals.length||oilMoves.length||eventRisk.available),adjustment,trends,bulls,bears,wtiRoc,brentRoc,oilAvg,eventRisk,reasons,calendar};
+}
+function buildMacroContext(ticker,profile,{sector=null,vix=null,spy=null,drivers={},bonds={},news=[],market={},majorEvents=null}={}){
     const sectorApplies=document.getElementById("macroGuard")?.checked!==false,econApplies=document.getElementById("econGuard")?.checked!==false,applies=sectorApplies||econApplies;
     if(!applies)return {applies:false,adjustment:0,blockLong:false,blockShort:false,riskLevel:"N/A",reasons:[],profileKey:profile.key,profileLabel:profile.label};
     let adjustment=0,riskPoints=0,tailwindPoints=0;const reasons=[];
-    if(!sectorApplies){sector=null;vix=null;spy=null;drivers={};news=[];}
+    if(!sectorApplies){sector=null;vix=null;spy=null;drivers={};news=[];market={};}
     const sectorTrend=sector?classifyTimeframe(sector).direction:"UNAVAILABLE",spyTrend=spy?classifyTimeframe(spy).direction:"UNAVAILABLE";
     const sectorRelative=sector&&spy?sector.roc20-spy.roc20:null;
     if(sectorTrend==="BEARISH"){adjustment-=12;riskPoints+=2;reasons.push(`${profile.etf} ${profile.label} trend is bearish on the daily chart.`);}
@@ -2359,14 +2463,20 @@ function buildMacroContext(ticker,profile,{sector=null,vix=null,spy=null,drivers
     if(economicImpact.applies){adjustment+=economicImpact.adjustment;reasons.push(...economicImpact.reasons);if(economicImpact.adjustment<=-8)riskPoints+=2;else if(economicImpact.adjustment<=-4)riskPoints+=1;if(economicImpact.adjustment>=5)tailwindPoints+=1;}
     const bondContext=buildBondMarketContext(profile,bonds,economicProbability);
     if(bondContext.applies){adjustment+=bondContext.adjustment;reasons.push(...bondContext.reasons);riskPoints+=bondContext.riskPoints;tailwindPoints+=bondContext.tailwindPoints;}
+    const marketEnvironment=buildMarketEnvironmentContext(profile,{SPY:market.SPY||spy,QQQ:market.QQQ,DIA:market.DIA,WTI:market.WTI,BRENT:market.BRENT},majorEvents);
+    if(marketEnvironment.applies){adjustment+=marketEnvironment.adjustment;reasons.push(...marketEnvironment.reasons);if(marketEnvironment.adjustment<=-4)riskPoints+=1;if(marketEnvironment.adjustment>=3)tailwindPoints+=1;}
     adjustment=Math.max(-55,Math.min(35,adjustment));
     const riskLevel=riskPoints>=6?"HIGH":riskPoints>=3?"ELEVATED":"NORMAL";
-    const bias=adjustment<=-18?"HEADWIND":adjustment>=12?"TAILWIND":"MIXED";
-    const blockLong=riskLevel==="HIGH"||adjustment<=-24||economicImpact.blockLong;
-    const blockShort=(adjustment>=18&&tailwindPoints>=3&&sectorTrend==="BULLISH")||economicImpact.blockShort;
-    if(blockLong)reasons.push(`Sector guardrail blocks a new LONG until the ${profile.label.toLowerCase()} backdrop improves.`);
-    if(blockShort)reasons.push(`Sector guardrail blocks a new SHORT because sector and macro conditions are strongly supportive.`);
-    return {applies:true,adjustment,blockLong,blockShort,riskLevel,bias,reasons,profileKey:profile.key,profileLabel:profile.label,profileSource:profile.source,sectorETF:profile.etf,sectorTrend,sectorRelative,sectorRoc:sector?.roc20??null,spyTrend,vixPrice,driverReadings,newsRisk,economicProbability,economicImpact,bondContext};
+    const bias=adjustment<=-18?"HEADWIND":adjustment>=12?"TAILWIND":"MIXED",eventBlock=marketEnvironment.eventRisk?.blockNewTrade===true;
+    const blockLong=eventBlock||riskLevel==="HIGH"||adjustment<=-24||economicImpact.blockLong;
+    const blockShort=eventBlock||((adjustment>=18&&tailwindPoints>=3&&sectorTrend==="BULLISH")||economicImpact.blockShort);
+    if(eventBlock)reasons.push("Major scheduled macro-event guardrail blocks a new trade in either direction until the high-impact event passes.");
+    else{
+        if(blockLong)reasons.push(`Sector/macro guardrail blocks a new LONG until the ${profile.label.toLowerCase()} backdrop improves.`);
+        if(blockShort)reasons.push("Sector/macro guardrail blocks a new SHORT because the verified backdrop is strongly supportive.");
+    }
+    const guidanceScore=Math.round(clamp(adjustment*.55,-20,20));
+    return {applies:true,adjustment,guidanceScore,blockLong,blockShort,eventBlock,riskLevel,bias,reasons,profileKey:profile.key,profileLabel:profile.label,profileSource:profile.source,sectorETF:profile.etf,sectorTrend,sectorRelative,sectorRoc:sector?.roc20??null,spyTrend,vixPrice,driverReadings,newsRisk,economicProbability,economicImpact,bondContext,marketEnvironment};
 }
 
 function timeframePredictionWeight(tf,style){
@@ -2572,7 +2682,7 @@ function marketRegime(data){
 
 function calculateTrade(data,analysis){
     const account=Math.max(0,Number(document.getElementById("account").value)||0),riskPct=clamp(Number(document.getElementById("risk").value)||1,.1,5);
-    const eventRiskMultiplier=clamp(analysis.fundamentalEventContext?.riskMultiplier??1,.30,1),portfolioRiskMultiplier=clamp(analysis.portfolioRiskContext?.riskMultiplier??1,.50,1),combinedRiskMultiplier=clamp(eventRiskMultiplier*portfolioRiskMultiplier,.20,1),effectiveRiskPct=riskPct*combinedRiskMultiplier,maxPositionPct=clamp(Number(document.getElementById("maxPosition").value)||20,1,100);
+    const earningsRiskMultiplier=clamp(analysis.fundamentalEventContext?.riskMultiplier??1,.30,1),macroEventRiskMultiplier=clamp(analysis.macroContext?.marketEnvironment?.eventRisk?.riskMultiplier??1,.40,1),eventRiskMultiplier=clamp(earningsRiskMultiplier*macroEventRiskMultiplier,.25,1),portfolioRiskMultiplier=clamp(analysis.portfolioRiskContext?.riskMultiplier??1,.50,1),combinedRiskMultiplier=clamp(eventRiskMultiplier*portfolioRiskMultiplier,.20,1),effectiveRiskPct=riskPct*combinedRiskMultiplier,maxPositionPct=clamp(Number(document.getElementById("maxPosition").value)||20,1,100);
     const atrMult=clamp(Number(document.getElementById("atrMultiple").value)||1.7,.5,5),maxStopPct=clamp(Number(document.getElementById("maxStopPct").value)||8,1,25),rewardMult=clamp(Number(document.getElementById("rewardMultiple").value)||2.5,1,10),slippagePct=clamp(Number(document.getElementById("slippage").value)||0,0,3)/100;
     const liveCtx=analysis.liveQuoteContext||(lastAnalysis?.primary?.ticker===data.ticker?lastAnalysis.liveQuoteContext:null);
     const executionPrice=Number.isFinite(liveCtx?.price)&&liveCtx.price>0?liveCtx.price:data.price;
@@ -2618,13 +2728,14 @@ function calculateTrade(data,analysis){
     if(isShort&&data.price<data.bbLower)warnings.push("Short entry is extended below the lower volatility band; avoid chasing and wait for a controlled entry.");
     if(Math.abs(data.gapPct)>=4)warnings.push(`Large opening gap detected (${signed(data.gapPct,2)}%); spreads and reversal risk may be elevated.`);
     if(analysis.macroContext?.applies&&(analysis.macroContext.riskLevel!=="NORMAL"||Math.abs(analysis.macroContext.adjustment)>=8))warnings.push(`${analysis.macroContext.profileLabel} sector guardrail: ${analysis.macroContext.riskLevel} risk with a ${analysis.macroContext.adjustment} point score adjustment.`);
-    if(eventRiskMultiplier<.999)warnings.push(`Fundamental/event guardrail reduced planned risk to ${Math.round(eventRiskMultiplier*100)}% of normal.`);
+    if(eventRiskMultiplier<.999)warnings.push(`Earnings/macro-event guardrails reduced planned risk to ${Math.round(eventRiskMultiplier*100)}% of normal.`);
     if(portfolioRiskMultiplier<.999)warnings.push(`Portfolio-correlation guardrail reduced planned risk to ${Math.round(portfolioRiskMultiplier*100)}% of normal before combining with event risk.`);
     if(combinedRiskMultiplier<.999)warnings.push(`Combined event/portfolio sizing is ${Math.round(combinedRiskMultiplier*100)}% of your normal ${riskPct.toFixed(2)}% risk setting (effective ${effectiveRiskPct.toFixed(2)}%).`);
     if(analysis.fundamentalEventContext?.blockNewTrade)warnings.push("New trade blocked by the earnings-event guardrail because the reported earnings date is inside the selected holding window.");
-    if(analysis.direction==="WAIT")warnings.push(analysis.macroContext?.blockLong?`No LONG is authorized because ${analysis.macroContext.profileLabel} macro conditions conflict with the technical setup.`:analysis.macroContext?.blockShort?`No SHORT is authorized because ${analysis.macroContext.profileLabel} macro conditions strongly support the stock.`:"No trade is authorized because multi-timeframe confirmation is insufficient.");
+    if(analysis.macroContext?.eventBlock)warnings.push("New trade blocked by the verified major-macro-event guardrail.");
+    if(analysis.direction==="WAIT")warnings.push(analysis.macroContext?.eventBlock?"No new trade is authorized because a verified high-impact macro event is inside the selected holding window.":analysis.macroContext?.blockLong?`No LONG is authorized because ${analysis.macroContext.profileLabel} macro conditions conflict with the technical setup.`:analysis.macroContext?.blockShort?`No SHORT is authorized because ${analysis.macroContext.profileLabel} macro conditions strongly support the stock.`:"No trade is authorized because multi-timeframe confirmation is insufficient.");
     if(shares===0&&isTrade)warnings.push("Position size calculated as zero under the current risk and allocation limits.");
-    return {entry:anchor,entryLow:isShort?anchor:Math.max(0,anchor-data.atr*.15),entryHigh:isShort?anchor+data.atr*.15:anchor,stop,t1,t2,t3,stopDistance,stopPct,t1Pct,t2Pct,t3Pct,rr1,rr2,rr3,shares,positionValue:shares*anchor,estimatedRisk:shares*stopDistance,riskBudget:dollarRisk,baseRiskPct:riskPct,effectiveRiskPct,eventRiskMultiplier,portfolioRiskMultiplier,combinedRiskMultiplier,executionPrice,rewardMult,runnerR,maxStopPct,rawStructuralStop,stopWasCapped,warnings,isShort,isTrade};
+    return {entry:anchor,entryLow:isShort?anchor:Math.max(0,anchor-data.atr*.15),entryHigh:isShort?anchor+data.atr*.15:anchor,stop,t1,t2,t3,stopDistance,stopPct,t1Pct,t2Pct,t3Pct,rr1,rr2,rr3,shares,positionValue:shares*anchor,estimatedRisk:shares*stopDistance,riskBudget:dollarRisk,baseRiskPct:riskPct,effectiveRiskPct,earningsRiskMultiplier,macroEventRiskMultiplier,eventRiskMultiplier,portfolioRiskMultiplier,combinedRiskMultiplier,executionPrice,rewardMult,runnerR,maxStopPct,rawStructuralStop,stopWasCapped,warnings,isShort,isTrade};
 }
 function renderChart(data,trade){
     try{
@@ -2657,6 +2768,7 @@ function renderRegime(analysis,benchmarkData){
         tile("Macro Score Impact",`${m.adjustment>0?"+":""}${m.adjustment} points`,m.adjustment<0?"red":m.adjustment>0?"green":"yellow"),
         tile(`${m.sectorETF} Daily Trend`,`${directionArrow(m.sectorTrend)} ${m.sectorTrend}`,m.sectorTrend==="BEARISH"?"red":m.sectorTrend==="BULLISH"?"green":"yellow"),
         tile("Sector vs SPY",m.sectorRelative==null?"Unavailable":`${signedArrow(m.sectorRelative,1)} pts`,m.sectorRelative>2?"green":m.sectorRelative<-2?"red":"yellow"),
+        tile("Market Guidance",Number.isFinite(m.guidanceScore)?`${m.guidanceScore>=0?"+":""}${m.guidanceScore}`:"Unavailable",m.guidanceScore>2?"green":m.guidanceScore<-2?"red":"yellow"),
         tile("VIX",m.vixPrice==null?"Unavailable":m.vixPrice.toFixed(1),m.vixPrice>=30?"red":m.vixPrice>=22?"yellow":"green"),
         ...(e?[tile("Inflation Pressure",`${e.inflationProb}%`,e.inflationProb>=65?"red":e.inflationProb<=40?"green":"yellow"),tile("Hawkish Rate Pressure",`${e.hawkishProb}%`,e.hawkishProb>=65?"red":e.hawkishProb<=40?"green":"yellow"),tile("Weak-Growth Risk",`${e.weakGrowthProb}%`,e.weakGrowthProb>=65?"red":e.weakGrowthProb<=40?"green":"yellow"),tile("Equity Macro Tailwind",`${e.equityTailwindProb}%`,e.equityTailwindProb>=60?"green":e.equityTailwindProb<=40?"red":"yellow"),tile("Shiller P/E (CAPE)",Number.isFinite(e.cape)?`${e.cape.toFixed(2)} • ${e.capeBand}`:"Unavailable",e.capeClass||"yellow")]:[]),
         ...m.driverReadings.slice(0,4).map(d=>tile(`${d.label} — 20 Bars`,d.roc==null?"Unavailable":`${signedArrow(d.roc,1)}%`,d.impact<0?"red":d.impact>0?"green":"yellow"))
@@ -3015,14 +3127,17 @@ async function fetchTickerSnapshot(query){
 async function fetchTickerNews(query){return (await fetchTickerSnapshot(query)).news;}
 
 async function loadMacroAssets(profile){
-    const strongDrivers=(profile.drivers||[]).filter(d=>Math.abs(d.weight)>=.45).slice(0,2);
-    const bondSymbols=["TLT","IEF","HYG","LQD"];
-    const symbols=[profile.etf,"^VIX","SPY",...bondSymbols,...strongDrivers.map(d=>d.symbol)];
-    const unique=[...new Set(symbols.filter(Boolean))],values=await mapLimit(unique,5,async symbol=>[symbol,await loadTickerData(symbol,"1d","1y").catch(()=>null)]);
+    const strongDrivers=(profile.drivers||[]).filter(d=>Math.abs(d.weight)>=.45).slice(0,2),bondSymbols=["TLT","IEF","HYG","LQD"],marketSymbols=["SPY","QQQ","DIA","CL=F","BZ=F"];
+    const symbols=[profile.etf,"^VIX",...marketSymbols,...bondSymbols,...strongDrivers.map(d=>d.symbol)],unique=[...new Set(symbols.filter(Boolean))];
+    const [values,majorEvents]=await Promise.all([
+        mapLimit(unique,5,async symbol=>[symbol,await loadTickerData(symbol,"1d","1y").catch(()=>null)]),
+        loadOfficialMajorEvents(false).catch(()=>({available:false,events:[],sources:[],sourceCount:0}))
+    ]);
     const map=Object.fromEntries(values),drivers={};
     for(const d of profile.drivers||[])drivers[d.symbol]=map[d.symbol]||null;
     const bonds=Object.fromEntries(bondSymbols.map(symbol=>[symbol,map[symbol]||null]));
-    return {sector:map[profile.etf]||null,vix:map["^VIX"]||null,spy:map.SPY||null,drivers,bonds};
+    const market={SPY:map.SPY||null,QQQ:map.QQQ||null,DIA:map.DIA||null,WTI:map["CL=F"]||null,BRENT:map["BZ=F"]||null};
+    return {sector:map[profile.etf]||null,vix:map["^VIX"]||null,spy:map.SPY||null,drivers,bonds,market,majorEvents};
 }
 
 function parseLooseNumber(v){
@@ -3492,7 +3607,7 @@ async function refreshFederalContractRadar(){
     try{const snap=await fetchTickerSnapshot(ticker),f=await loadCompanyFundamentals(ticker,snap.quote).catch(()=>null),ctx=await loadFederalContractContext(ticker,snap.quote,f);renderFederalContractContext(ctx);if(lastAnalysis){lastAnalysis={...lastAnalysis,federalContractContext:ctx};if(lastTrade)renderTradeOutput(lastAnalysis,lastTrade);}setStatus(`${ticker} federal contract radar refreshed`);}catch(e){renderFederalContractContext({available:false,error:e.message||"Federal data source unavailable"});}
 }
 
-// ================= Halifax v21.4 Auto Contract + Options Opportunity Ranker ================
+// ================= Halifax v21.5 Auto Contract + Options Opportunity Ranker ================
 const FEDERAL_CONTRACT_WATCHLIST=[
     {ticker:"RTX",name:"RTX / Raytheon",aliases:["RTX CORPORATION","RAYTHEON COMPANY","RAYTHEON TECHNOLOGIES CORPORATION"]},
     {ticker:"FDX",name:"FedEx",aliases:["FEDERAL EXPRESS CORPORATION","FEDEX CORPORATION"]},
@@ -3609,7 +3724,7 @@ function scheduleContractAutoRank(){
 }
 window.addEventListener("load",()=>{const cb=document.getElementById("contractAutoRank");cb?.addEventListener("change",scheduleContractAutoRank);scheduleContractAutoRank();setTimeout(()=>{if(document.getElementById("contractAutoRank")?.checked!==false&&!contractRankRunning)scanFederalContractWatchlist(true,{silent:false});},2200);});
 document.addEventListener("visibilitychange",()=>{if(!document.hidden&&document.getElementById("contractAutoRank")?.checked!==false&&Date.now()-lastContractRankAt>CONTRACT_RANK_INTERVAL_MS&&!contractRankRunning)scanFederalContractWatchlist(true,{silent:true});});
-// ================= End Halifax v21.4 Auto Contract + Options Opportunity Ranker ============
+// ================= End Halifax v21.5 Auto Contract + Options Opportunity Ranker ============
 // ================= End Halifax v21.1 Federal Contract Radar ===============
 
 async function runEngine(){
@@ -3645,7 +3760,7 @@ async function runEngine(){
             ]);
             const underRecovery=recoverFrameSet(special.underlying,underTFs,underResults),underFrames=underRecovery.frames;
             if(underFrames.length<2)throw new Error(`Underlying guardrail could not build enough ${special.underlying} timeframes.`);
-            const profile=resolveSectorProfile(special.underlying,underSnapshot.quote),macroAssets=marketMacroOn?await loadMacroAssets(profile):{sector:null,vix:null,spy:null,drivers:{},bonds:{}};
+            const profile=resolveSectorProfile(special.underlying,underSnapshot.quote),macroAssets=marketMacroOn?await loadMacroAssets(profile):{sector:null,vix:null,spy:null,drivers:{},bonds:{},market:{},majorEvents:null};
             const underlyingMacro=buildMacroContext(special.underlying,profile,{...macroAssets,news:underSnapshot.news});
             underlyingAnalysis=applyDataFallbackCaution(aggregateAnalysis(underFrames,underBenchmark,underlyingMacro,underPrimary),underRecovery,document.getElementById("style").value);
             const baseAnalysis=applyDataFallbackCaution(aggregateAnalysis(frames,benchmarkResult,null),recovery,document.getElementById("style").value);
@@ -3653,20 +3768,20 @@ async function runEngine(){
             analysis.macroContext={...underlyingMacro,profileLabel:`${special.label} via ${special.underlying}`,profileSource:"underlying-aware instrument guardrail"};
             displayNews=[...underSnapshot.news,...snapshot.news].slice(0,8);
         }else{
-            const profile=resolveSectorProfile(ticker,snapshot.quote),macroAssets=marketMacroOn?await loadMacroAssets(profile):{sector:null,vix:null,spy:null,drivers:{},bonds:{}};
+            const profile=resolveSectorProfile(ticker,snapshot.quote),macroAssets=marketMacroOn?await loadMacroAssets(profile):{sector:null,vix:null,spy:null,drivers:{},bonds:{},market:{},majorEvents:null};
             const macroContext=buildMacroContext(ticker,profile,{...macroAssets,news:snapshot.news});
             analysis=applyDataFallbackCaution(aggregateAnalysis(frames,benchmarkResult,macroContext),recovery,document.getElementById("style").value);
             if(special&&document.getElementById("leverageGuard")?.checked!==false)analysis=applySpecialInstrumentGuardrails(ticker,analysis,special,null);
         }
         if(special&&recovery.used&&!analysis.dataFallback)analysis=applyDataFallbackCaution(analysis,recovery,document.getElementById("style").value);
         // Render the core decision immediately. Filing data updates the result afterward if it arrives.
-        analysis={...analysis,smartMoneyContext:null,smartMoneyContribution:0,optionsContext:null,fundamentalEventContext:null,fundamentalContribution:0,federalContractContext:null,portfolioRiskContext:null,analysisBasisPrice:analysis.primary.price,liveQuoteContext:buildInitialLiveQuote(snapshot.quote,analysis),reasons:[...analysis.reasons,"Halifax v21.1 keeps price-action / multi-timeframe direction control. Bonds/rates are part of the macro guardrail; options, fundamentals, public federal-contract awards and delayed filing data are confirmation/context only and cannot independently reverse LONG/SHORT direction. Event risk may downgrade an active setup to WAIT, and portfolio correlation may reduce size."]};
+        analysis={...analysis,smartMoneyContext:null,smartMoneyContribution:0,optionsContext:null,fundamentalEventContext:null,fundamentalContribution:0,federalContractContext:null,portfolioRiskContext:null,analysisBasisPrice:analysis.primary.price,liveQuoteContext:buildInitialLiveQuote(snapshot.quote,analysis),reasons:[...analysis.reasons,"Halifax v21.5 keeps price-action / multi-timeframe direction control. The unified guidance layer adds SPY, QQQ, DIA, VIX, WTI/Brent, Treasury/rate conditions, CPI/PCE/jobs and verified BLS/BEA/Federal Reserve event calendars. Options, fundamentals, public federal-contract awards and delayed filing data remain confirmation/context only and cannot independently reverse LONG/SHORT direction. Earnings or scheduled macro-event risk may downgrade an active setup to WAIT, and portfolio correlation may reduce size."]};
         analysis=attachSignalChange(analysis);saveSignalSnapshot(analysis);
         let trade=calculateTrade(analysis.primary,analysis);
-        renderChart(analysis.primary,trade);renderRegime(analysis,benchmarkResult);renderMTF(analysis);renderTradeOutput(analysis,trade);renderBondContext(analysis.macroContext?.bondContext);renderPositionGuardrails(ticker,analysis.primary,analysis);renderNews(displayNews,ticker);
+        renderChart(analysis.primary,trade);renderRegime(analysis,benchmarkResult);renderMTF(analysis);renderTradeOutput(analysis,trade);renderMarketGuidance(analysis.macroContext);renderBondContext(analysis.macroContext?.bondContext);renderPositionGuardrails(ticker,analysis.primary,analysis);renderNews(displayNews,ticker);
         document.getElementById("smartMoneyOutput").innerHTML='<div class="loading">Core prediction is complete. Loading insider, institutional and public-filing context in the background…</div>';
         document.getElementById("decisionCard")?.scrollIntoView({behavior:"smooth",block:"start"});
-        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v21.4 Lite`;
+        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v21.5 Lite`;
         startLiveQuoteStream(ticker,runId);
         const portfolioPromise=loadPortfolioRiskContext(ticker,analysis).catch(()=>null);
         portfolioPromise.then(pr=>{
@@ -3941,6 +4056,14 @@ function renderBondContext(ctx){
     const cls=ctx.adjustment>1?"green":ctx.adjustment<-1?"red":"yellow",creditCls=ctx.creditRelative>1.5?"green":ctx.creditRelative<-1.5?"red":"yellow";
     box.innerHTML=`<div class="bond-grid"><div class="bond-tile"><div class="b-label">Bond Macro Impact</div><div class="b-value ${cls}">${ctx.adjustment>=0?'+':''}${ctx.adjustment} pts</div><div class="b-sub">${escapeHTML(ctx.riskLevel)} risk • rate sensitivity ${ctx.rateSensitivity.toFixed(2)}×</div></div><div class="bond-tile"><div class="b-label">2Y / 10Y / 30Y Treasury</div><div class="b-value">${val(analysisYield('y2'))} / ${val(analysisYield('y10'))} / ${val(analysisYield('y30'))}</div><div class="b-sub">10Y−2Y curve ${val(ctx.curve)} • 30Y−10Y ${val(ctx.curve30)}</div></div><div class="bond-tile"><div class="b-label">10Y Real Yield</div><div class="b-value ${Number.isFinite(ctx.real10y)&&ctx.real10y>=2.25?'red':'yellow'}">${val(ctx.real10y)}</div><div class="b-sub">FRED DFII10 when available.</div></div><div class="bond-tile"><div class="b-label">TLT / IEF 20-Bar</div><div class="b-value">${roc(ctx.tltRoc)} / ${roc(ctx.iefRoc)}</div><div class="b-sub">Long and intermediate Treasury price trend.</div></div><div class="bond-tile"><div class="b-label">HYG vs LQD</div><div class="b-value ${creditCls}">${Number.isFinite(ctx.creditRelative)?`${ctx.creditRelative>=0?'+':''}${ctx.creditRelative.toFixed(1)} pts`:"—"}</div><div class="b-sub">High-yield minus investment-grade 20-bar return.</div></div><div class="bond-tile"><div class="b-label">Credit Spreads</div><div class="b-value">HY ${val(ctx.hyOAS)} • IG ${val(ctx.igOAS)}</div><div class="b-sub">Option-adjusted spreads from FRED when returned.</div></div></div><div class="bond-source">Sources used by this build: FRED rate/real-yield/credit-spread series plus Yahoo Finance daily ETF prices for TLT, IEF, HYG and LQD. Missing values stay blank rather than being estimated.</div>`;
 }
+function renderMarketGuidance(m){
+    const card=document.getElementById("marketGuidanceCard"),box=document.getElementById("marketGuidanceOutput");if(!card||!box)return;card.style.display="block";
+    if(!m?.applies){box.innerHTML='<div class="loading">Market guidance is unavailable because macro guardrails are disabled or the feeds did not return usable data.</div>';return;}
+    const env=m.marketEnvironment||{},e=m.economicProbability||{},er=env.eventRisk||{},trend=(k)=>env.trends?.[k]||"UNAVAILABLE",cls=t=>t==="BULLISH"?"green":t==="BEARISH"?"red":"yellow",roc=v=>Number.isFinite(v)?`${v>=0?"+":""}${v.toFixed(1)}%`:"—";
+    const next=er.next,nextText=next?`${next.name} • ${next.daysAway===0?"today":next.daysAway===1?"tomorrow":`in ${next.daysAway} days`} • ${next.source}`:"Official calendar unavailable";
+    const sourceText=er.calendarSources?.length?er.calendarSources.join(" + "):"No verified calendar source loaded";
+    box.innerHTML=`<div class="bond-grid"><div class="bond-tile"><div class="b-label">Market Guidance Score</div><div class="b-value ${m.guidanceScore>2?'green':m.guidanceScore<-2?'red':'yellow'}">${m.guidanceScore>=0?'+':''}${m.guidanceScore}</div><div class="b-sub">Unified macro/sector score on a capped −20 to +20 guidance scale.</div></div><div class="bond-tile"><div class="b-label">SPY / QQQ / DIA</div><div class="b-value"><span class="${cls(trend('SPY'))}">${trend('SPY')}</span> / <span class="${cls(trend('QQQ'))}">${trend('QQQ')}</span> / <span class="${cls(trend('DIA'))}">${trend('DIA')}</span></div><div class="b-sub">Daily broad-market trend confirmation.</div></div><div class="bond-tile"><div class="b-label">VIX</div><div class="b-value ${!Number.isFinite(m.vixPrice)?'yellow':m.vixPrice>=30?'red':m.vixPrice>=22?'yellow':'green'}">${Number.isFinite(m.vixPrice)?m.vixPrice.toFixed(1):'—'}</div><div class="b-sub">Volatility guardrail.</div></div><div class="bond-tile"><div class="b-label">WTI / Brent • 20 bars</div><div class="b-value">${roc(env.wtiRoc)} / ${roc(env.brentRoc)}</div><div class="b-sub">Oil is sector-aware; it is not assumed bullish or bearish for every stock.</div></div><div class="bond-tile"><div class="b-label">2Y / 10Y Treasury</div><div class="b-value">${Number.isFinite(e.y2)?e.y2.toFixed(2)+'%':'—'} / ${Number.isFinite(e.y10)?e.y10.toFixed(2)+'%':'—'}</div><div class="b-sub">Hawkish-rate pressure ${Number.isFinite(e.hawkishProb)?e.hawkishProb+'%':'—'}.</div></div><div class="bond-tile"><div class="b-label">Next Major Macro Event</div><div class="b-value ${er.risk==='HIGH'?'red':er.risk==='ELEVATED'||er.risk==='WATCH'?'yellow':'green'}">${escapeHTML(er.risk||'UNAVAILABLE')}</div><div class="b-sub">${escapeHTML(nextText)}</div></div></div><div class="bond-source">Official event sources loaded: ${escapeHTML(sourceText)}. Release dates are never fabricated; if the calendars cannot be reached, Halifax leaves the event layer unavailable.</div>`;
+}
 function analysisYield(k){const e=lastAnalysis?.macroContext?.economicProbability;return e?.[k]??null;}
 function detailedMarketRegime(benchmarkData,vixPrice=null){
     if(!benchmarkData)return "UNAVAILABLE";const base=marketRegime(benchmarkData),adx=benchmarkData.adx??0,vol=benchmarkData.price?100*benchmarkData.atr/benchmarkData.price:0;
@@ -3986,7 +4109,7 @@ function liquidityQuality(analysis){
 function tradeQualityData(analysis,trade){
     const g=predictionGrades(analysis,trade),dirSign=analysis.direction==="LONG"?1:analysis.direction==="SHORT"?-1:0,liq=liquidityQuality(analysis),macro=clamp(50+(analysis.macroContribution||0)*dirSign*2,0,100),bondAdj=analysis.macroContext?.bondContext?.adjustment||0,bonds=clamp(50+bondAdj*dirSign*5,0,100),op=analysis.optionsContext;
     let options=50;if(op?.available&&dirSign){if(op.direction===analysis.direction)options=op.confidence==="Strong"?88:op.confidence==="Moderate"?76:64;else if(op.direction==="MIXED")options=50;else options=op.confidence==="Strong"?22:op.confidence==="Moderate"?32:40;if(Number.isFinite(op.medianSpreadPct)&&op.medianSpreadPct>35)options-=10;}options=clamp(options,0,100);
-    const fe=analysis.fundamentalEventContext;let catalyst=75;if(fe?.available){catalyst=fe.earningsRisk==="CRITICAL"?10:fe.earningsRisk==="HIGH"?25:fe.earningsRisk==="ELEVATED"?45:fe.earningsRisk==="WATCH"?65:90;}
+    const fe=analysis.fundamentalEventContext,me=analysis.macroContext?.marketEnvironment?.eventRisk;let catalyst=75;if(fe?.available){catalyst=fe.earningsRisk==="CRITICAL"?10:fe.earningsRisk==="HIGH"?25:fe.earningsRisk==="ELEVATED"?45:fe.earningsRisk==="WATCH"?65:90;}if(me?.available){const macroCatalyst=me.risk==="HIGH"?15:me.risk==="ELEVATED"?30:me.risk==="WATCH"?60:90;catalyst=Math.min(catalyst,macroCatalyst);}
     const rr=trade.rr2>=4?95:trade.rr2>=3?88:trade.rr2>=2?78:trade.rr2>=1.5?62:40,portfolio=Math.round((analysis.portfolioRiskContext?.riskMultiplier??1)*100);
     const parts={Trend:g.trend.score,Entry:g.entry.score,Macro:Math.round(macro),Options:Math.round(options),"Bonds/Rates":Math.round(bonds),Catalyst:Math.round(catalyst),Liquidity:liq.score,"Risk/Reward":rr,Portfolio:portfolio};
     const weights={Trend:.19,Entry:.16,Macro:.13,Options:.10,"Bonds/Rates":.10,Catalyst:.08,Liquidity:.10,"Risk/Reward":.09,Portfolio:.05};let overall=0;for(const [k,v] of Object.entries(parts))overall+=v*(weights[k]||0);overall=Math.round(clamp(overall,0,100));
@@ -3994,11 +4117,14 @@ function tradeQualityData(analysis,trade){
 }
 function tradeQualityHTML(analysis,trade){
     const q=tradeQualityData(analysis,trade),tiles=Object.entries(q.parts).map(([k,v])=>`<div class="quality-tile-v21"><span>${escapeHTML(k)}</span><b class="${v>=72?'green':v>=55?'yellow':'red'}">${v}/100</b></div>`).join("");
-    return `<div class="trade-quality"><div class="trade-quality-head"><div><div class="trade-quality-title">Halifax Trade Quality • not a win probability</div><div class="quality-foot">Combines trend, entry timing, macro, options confirmation, bond/rate conditions, earnings risk, liquidity, reward/risk and optional portfolio correlation.</div></div><div class="trade-quality-decision ${q.cls}">${escapeHTML(q.decision)} • ${q.overall}/100</div></div><div class="quality-grid-v21">${tiles}</div><div class="quality-foot">${escapeHTML(q.note)}${Number.isFinite(q.spread)?` Current bid/ask spread ${q.spread.toFixed(2)}%.`:''}</div></div>`;
+    return `<div class="trade-quality"><div class="trade-quality-head"><div><div class="trade-quality-title">Halifax Trade Quality • not a win probability</div><div class="quality-foot">Combines trend, entry timing, macro, options confirmation, bond/rate conditions, earnings + scheduled macro-event risk, liquidity, reward/risk and optional portfolio correlation.</div></div><div class="trade-quality-decision ${q.cls}">${escapeHTML(q.decision)} • ${q.overall}/100</div></div><div class="quality-grid-v21">${tiles}</div><div class="quality-foot">${escapeHTML(q.note)}${Number.isFinite(q.spread)?` Current bid/ask spread ${q.spread.toFixed(2)}%.`:''}</div></div>`;
 }
 function catalystHTML(analysis){
-    const fe=analysis.fundamentalEventContext;if(!fe?.available)return `<div class="catalyst-strip"><span><b>Catalyst countdown:</b> earnings date unavailable / still loading</span><span class="tiny">No future macro release date is guessed.</span></div>`;
-    const days=Number.isFinite(fe.daysToEarnings)&&fe.daysToEarnings>=0?`${fe.daysToEarnings} day${fe.daysToEarnings===1?'':'s'}`:"date not upcoming";return `<div class="catalyst-strip"><span><b>Earnings countdown:</b> ${escapeHTML(days)}</span><span class="${fe.earningsRisk==='CRITICAL'||fe.earningsRisk==='HIGH'?'red':fe.earningsRisk==='ELEVATED'||fe.earningsRisk==='WATCH'?'yellow':'green'}">Risk ${escapeHTML(fe.earningsRisk)} • size ${Math.round((fe.riskMultiplier??1)*100)}%</span></div>`;
+    const fe=analysis.fundamentalEventContext,me=analysis.macroContext?.marketEnvironment?.eventRisk;
+    const earningsDays=fe?.available&&Number.isFinite(fe.daysToEarnings)&&fe.daysToEarnings>=0?`${fe.daysToEarnings} day${fe.daysToEarnings===1?'':'s'}`:fe?.available?"date not upcoming":"unavailable / loading";
+    const macro=me?.next?`${me.next.name} • ${me.next.daysAway===0?"today":me.next.daysAway===1?"tomorrow":`in ${me.next.daysAway} days`} • ${me.next.source}`:"official calendar unavailable";
+    const riskOrder={HIGH:4,CRITICAL:4,ELEVATED:3,WATCH:2,NORMAL:1,NONE:1,UNAVAILABLE:0},earnRisk=fe?.earningsRisk||"UNAVAILABLE",macroRisk=me?.risk||"UNAVAILABLE",worst=(riskOrder[earnRisk]||0)>=(riskOrder[macroRisk]||0)?earnRisk:macroRisk,cls=worst==="UNAVAILABLE"?"yellow":worst==="HIGH"||worst==="CRITICAL"?"red":worst==="ELEVATED"||worst==="WATCH"?"yellow":"green";
+    return `<div class="catalyst-strip"><span><b>Earnings:</b> ${escapeHTML(earningsDays)} • <b>Macro:</b> ${escapeHTML(macro)}</span><span class="${cls}">Event risk ${escapeHTML(worst)} • size ${Math.round((analysis.macroContext?.marketEnvironment?.eventRisk?.riskMultiplier??1)*(fe?.riskMultiplier??1)*100)}%</span></div>`;
 }
 // ================= End Halifax v21.1 Live Market Intelligence ===============
 
