@@ -21,7 +21,7 @@
 <meta name="application-name" content="Halifax">
 <meta name="format-detection" content="telephone=no">
 
-<title>Halifax Trade Engine v21.19 Session Desk - Exact Dashboard</title>
+<title>Halifax Trade Engine v22.0 Consolidated Desk</title>
 
 <style>
 :root{
@@ -1451,6 +1451,19 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
   opacity:1!important;
   pointer-events:auto!important;
 }
+
+
+/* ================= Halifax v22.0 Consolidated Desk ================= */
+.hx-consolidated-market{padding-bottom:10px}.hx-market-headline,.hx-active-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:2px 10px 5px}.hx-market-subtitle,.hx-active-sub{font-size:9.5px;color:#7f98af;line-height:1.4;margin-top:3px}.hx-market-actions,.hx-active-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.hx-mini-btn{border:1px solid #294b68;background:#071b2c;color:#dbe8f4;border-radius:5px;padding:6px 9px;font-size:9px;font-weight:900;cursor:pointer}.hx-mini-btn:hover{border-color:#4b789d;background:#0b263d}
+.hx-consolidated-market .market-tape24{margin:5px 10px 8px}.hx-consolidated-market .market-tape24-head{height:28px}.hx-tape-crypto{box-shadow:inset 0 2px 0 rgba(244,182,63,.45)}.hx-tape-equity{box-shadow:inset 0 2px 0 rgba(74,163,223,.38)}.hx-tape-future{box-shadow:inset 0 2px 0 rgba(142,167,255,.38)}.hx-tape-index{box-shadow:inset 0 2px 0 rgba(241,200,97,.42)}
+.hx-env-strip{margin:0 10px;border:1px solid #1b3b58;border-radius:7px;background:#061522;display:grid;grid-template-columns:1.15fr 1.55fr repeat(5,minmax(100px,1fr));overflow:hidden}.hx-env-title,.hx-env-metric{min-height:74px;padding:9px 11px;border-right:1px solid #19344f;display:flex;flex-direction:column;justify-content:center}.hx-env-title span{font-size:11px;font-weight:950;color:#e9f0f6;text-transform:uppercase;letter-spacing:.06em}.hx-env-title small{font-size:8px;color:#708aa2;margin-top:4px}.hx-env-k{font-size:8.5px;color:#7690a8;text-transform:uppercase;font-weight:900;letter-spacing:.05em}.hx-env-metric b{font-size:13px;margin-top:6px}.hx-env-primary{position:relative;padding-right:78px}.hx-env-primary-row{display:flex;align-items:baseline;gap:9px;margin-top:4px}.hx-env-primary-row b{font-size:15px;margin:0}.hx-env-primary-row strong{font-size:19px}.hx-env-note{font-size:8.5px;font-weight:900;margin-top:4px}.hx-env-gauge{position:absolute;right:10px;bottom:15px;transform:scale(.78);transform-origin:right bottom}.hx-env-strip>*:last-child{border-right:0}
+.hx-active-panel{padding:8px 0 0}.hx-active-status{font-size:9px;color:#8ea8c0}.hx-active-table-wrap{overflow:auto;border-top:1px solid #173650;margin-top:6px}.hx-active-table{min-width:880px}.hx-active-table th{font-size:8.5px;background:#071827;color:#7fa5c4;padding:7px 10px}.hx-active-table td{padding:8px 10px;font-size:10.5px}.hx-active-row{cursor:pointer}.hx-active-row:hover td{background:#0a2033}.hx-active-symbol{font-weight:950;color:#edf6ff}.hx-active-subrow{font-size:8px;color:#67849e;margin-top:2px}.hx-session-chip{display:inline-flex;border:1px solid #294966;border-radius:999px;padding:2px 6px;font-size:8px;font-weight:900}.hx-bidask{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9px}.hx-relvol-hot{color:#4ade80;font-weight:900}.hx-relvol-low{color:#facc15}.hx-data-unavailable{color:#6e879d}
+/* No more + / − disclosure icons. Use subtle chevrons; research categories are accessed from the wheel. */
+.compact-details>summary::after,.mock-research>summary:after,.trade-plan-dock>summary:after,.trade-plan-sub>summary:after{content:'⌄'!important;font-size:14px!important;color:#7191aa!important;font-weight:800!important;text-shadow:none!important}.compact-details[open]>summary::after,.mock-research[open]>summary:after,.trade-plan-dock[open]>summary:after,.trade-plan-sub[open]>summary:after{content:'⌃'!important}
+.hx-wheel-section{padding:10px 12px 12px}.hx-wheel-copy{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}.hx-wheel-sub{font-size:9.5px;color:#8099af;padding:0 3px 2px}.hx-wheel-layout{display:grid;grid-template-columns:390px minmax(0,1fr);gap:18px;align-items:center;margin-top:8px}.hx-wheel{width:360px;height:360px;border-radius:50%;position:relative;margin:auto;background:radial-gradient(circle at center,#0a243b 0 24%,#071725 25% 47%,#102c45 48% 49%,#06121e 50% 100%);border:1px solid #2b5272;box-shadow:inset 0 0 35px rgba(33,111,170,.18),0 14px 30px rgba(0,0,0,.26)}.hx-wheel:before,.hx-wheel:after{content:'';position:absolute;inset:14px;border-radius:50%;border:1px solid rgba(85,153,203,.15);pointer-events:none}.hx-wheel:after{inset:92px;border-color:#2d5777}.hx-wheel-btn{position:absolute;width:88px;height:58px;border:1px solid #315a78;border-radius:9px;background:linear-gradient(180deg,#0c2a42,#07192a);color:#eaf4fd;padding:5px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;z-index:2}.hx-wheel-btn span{font-size:9.5px;font-weight:950;letter-spacing:.04em}.hx-wheel-btn small{font-size:7.5px;color:#83a0b8}.hx-wheel-btn:hover,.hx-wheel-btn.active{border-color:#59b6f2;background:linear-gradient(180deg,#114066,#092540);box-shadow:0 0 18px rgba(65,160,224,.22)}.hx-wheel-b1{left:136px;top:14px}.hx-wheel-b2{right:37px;top:60px}.hx-wheel-b3{right:9px;top:151px}.hx-wheel-b4{right:40px;bottom:54px}.hx-wheel-b5{left:136px;bottom:11px}.hx-wheel-b6{left:38px;bottom:54px}.hx-wheel-b7{left:9px;top:151px}.hx-wheel-b8{left:38px;top:60px}.hx-wheel-center{position:absolute;left:50%;top:50%;width:104px;height:104px;transform:translate(-50%,-50%);border-radius:50%;border:2px solid #43799d;background:radial-gradient(circle at 35% 30%,#16466a,#081827 68%);color:#eef8ff;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:4;box-shadow:0 0 30px rgba(56,149,213,.20)}.hx-wheel-center strong{font-size:36px;font-style:italic}.hx-wheel-center small{font-size:7px;letter-spacing:.15em;color:#89abc4}.hx-wheel-drawer{min-height:250px;border:1px solid #1d3d59;border-radius:7px;background:#06131f;overflow:hidden}.hx-wheel-drawer-head{height:38px;display:flex;align-items:center;justify-content:space-between;padding:0 10px;border-bottom:1px solid #1b3b58;background:#081a2a;font-size:10px;font-weight:950;text-transform:uppercase;color:#e9f2f9}.hx-wheel-close{width:29px;height:27px;padding:0;border:1px solid #31516c;background:#0a2134;color:#a9bfd2;font-size:17px;border-radius:4px}.hx-wheel-drawer-body{padding:10px}.hx-wheel-pane{display:none!important;border:0!important;background:transparent!important;margin:0!important}.hx-wheel-pane[open]{display:block!important}.hx-wheel-pane>summary{display:none!important}.hx-wheel-pane .mock-research-body{border:0!important;padding:2px!important}.hx-menu-quick{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-bottom:10px}.hx-menu-quick>div{border:1px solid #1c3b56;border-radius:5px;background:#071927;padding:8px}.hx-menu-quick span{display:block;font-size:8px;color:#718ca4;text-transform:uppercase;font-weight:900}.hx-menu-quick b{display:block;font-size:13px;margin-top:4px}.mock-research-grid{display:none!important}
+@media(max-width:1180px){.hx-env-strip{grid-template-columns:repeat(4,1fr)}.hx-env-title,.hx-env-metric{border-bottom:1px solid #19344f}.hx-wheel-layout{grid-template-columns:1fr}.hx-wheel-drawer{min-height:180px}}
+@media(max-width:720px){.hx-market-headline,.hx-active-head{align-items:flex-start;flex-direction:column}.hx-env-strip{grid-template-columns:1fr 1fr}.hx-env-primary{padding-right:70px}.hx-wheel{width:310px;height:310px}.hx-wheel-btn{width:76px;height:52px}.hx-wheel-b1{left:117px;top:10px}.hx-wheel-b2{right:29px;top:48px}.hx-wheel-b3{right:4px;top:129px}.hx-wheel-b4{right:31px;bottom:46px}.hx-wheel-b5{left:117px;bottom:8px}.hx-wheel-b6{left:31px;bottom:46px}.hx-wheel-b7{left:4px;top:129px}.hx-wheel-b8{left:31px;top:48px}.hx-wheel-center{width:90px;height:90px}.hx-wheel-center strong{font-size:31px}.hx-menu-quick{grid-template-columns:1fr 1fr}}
+
 </style>
 </head>
 <body>
@@ -1458,7 +1471,7 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
     <div class="card header">
         <div class="brand-stack">
             <div class="terminal-kicker"><span class="kicker-dot"></span> HALIFAX QUANT RESEARCH TERMINAL</div>
-            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v21.19 Session Desk</span></span></div>
+            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v22.0 Consolidated Desk</span></span></div>
             <div class="subtitle">Predictive swing research • Unified market guidance • Federal contract radar • Options • Bonds • Event guardrails</div>
         </div>
         <div class="header-actions"><div class="badge system-badge"><span class="status-dot"></span><span id="engineStatus">Engine ready</span></div></div>
@@ -1466,54 +1479,47 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
 
 
     <div id="mockDashboard">
-      <section class="mock-panel mock-market">
-        <div class="mock-panel-title">Market Overview</div>
+      <section class="mock-panel mock-market hx-consolidated-market">
+        <div class="hx-market-headline">
+          <div>
+            <div class="mock-panel-title">24-Hour Market Tape</div>
+            <div class="hx-market-subtitle">Crypto 24/7 • SPY / Nasdaq / Dow • volatility • index futures • gold • crude</div>
+          </div>
+          <div class="hx-market-actions"><button type="button" class="hx-mini-btn" onclick="window.refresh24HourTape?.(true)">↻ Refresh Tape</button></div>
+        </div>
         <div class="market-tape24" id="marketTape24">
           <div class="market-tape24-head">
-            <div class="market-tape24-title"><span class="market-tape24-dot"></span>24-Hour Market Tape</div>
-            <div class="market-tape24-meta"><span id="marketTape24Status">Crypto 24/7 • futures nearly 24h</span><button type="button" class="market-tape24-refresh" onclick="window.refresh24HourTape?.(true)">↻ Refresh</button></div>
+            <div class="market-tape24-title"><span class="market-tape24-dot"></span>Unified Live Tape</div>
+            <div class="market-tape24-meta"><span id="marketTape24Status">Public quotes loading…</span></div>
           </div>
           <div class="market-tape24-view"><div class="market-tape24-track" id="marketTape24Track"></div></div>
         </div>
-        <div class="crypto24-panel" id="crypto24Panel">
-          <div class="crypto24-head">
-            <div><div class="crypto24-title"><b>₿</b> Crypto 24/7</div><div class="crypto24-sub" id="crypto24Status">Bitcoin and major crypto • loading public quotes…</div></div>
-            <button type="button" class="crypto24-refresh" onclick="window.refreshCrypto24?.(true)">↻ Refresh Crypto</button>
+        <div class="hx-env-strip" aria-label="Market environment">
+          <div class="hx-env-title"><span>Market Environment</span><small>Updates with Halifax analysis</small></div>
+          <div class="hx-env-metric hx-env-primary">
+            <span class="hx-env-k">Risk Mode</span>
+            <div class="hx-env-primary-row"><b id="mkEnvLabel" class="yellow">AWAITING</b><strong id="mkEnvScore" class="yellow">—</strong></div>
+            <span id="mkEnvAction" class="hx-env-note yellow">WAITING FOR DATA</span>
+            <div id="mkEnvGauge" class="mock-gauge hx-env-gauge"></div>
           </div>
-          <div class="crypto24-grid">
-            <div class="crypto24-card" data-crypto-id="BTC"><div class="crypto24-top"><span class="crypto24-symbol">BTC</span><span class="crypto24-name">Bitcoin</span></div><div><span class="crypto24-price" data-role="price">—</span><span class="crypto24-change yellow" data-role="change">—</span></div><div class="crypto24-foot"><span class="crypto24-badge">24/7</span><span data-role="time">Waiting for quote…</span></div></div>
-            <div class="crypto24-card" data-crypto-id="ETH"><div class="crypto24-top"><span class="crypto24-symbol">ETH</span><span class="crypto24-name">Ethereum</span></div><div><span class="crypto24-price" data-role="price">—</span><span class="crypto24-change yellow" data-role="change">—</span></div><div class="crypto24-foot"><span class="crypto24-badge">24/7</span><span data-role="time">Waiting for quote…</span></div></div>
-            <div class="crypto24-card" data-crypto-id="SOL"><div class="crypto24-top"><span class="crypto24-symbol">SOL</span><span class="crypto24-name">Solana</span></div><div><span class="crypto24-price" data-role="price">—</span><span class="crypto24-change yellow" data-role="change">—</span></div><div class="crypto24-foot"><span class="crypto24-badge">24/7</span><span data-role="time">Waiting for quote…</span></div></div>
-            <div class="crypto24-card" data-crypto-id="XRP"><div class="crypto24-top"><span class="crypto24-symbol">XRP</span><span class="crypto24-name">XRP</span></div><div><span class="crypto24-price" data-role="price">—</span><span class="crypto24-change yellow" data-role="change">—</span></div><div class="crypto24-foot"><span class="crypto24-badge">24/7</span><span data-role="time">Waiting for quote…</span></div></div>
-          </div>
+          <div class="hx-env-metric"><span class="hx-env-k">Trend</span><b id="mkTrend">—</b></div>
+          <div class="hx-env-metric"><span class="hx-env-k">Momentum</span><b id="mkMomentum">—</b></div>
+          <div class="hx-env-metric"><span class="hx-env-k">Volatility</span><b id="mkVolatility">—</b></div>
+          <div class="hx-env-metric"><span class="hx-env-k">Breadth</span><b id="mkBreadth">—</b></div>
+          <div class="hx-env-metric"><span class="hx-env-k">Risk Appetite</span><b id="mkRiskAppetite">—</b></div>
         </div>
-        <div class="mock-market-grid">
-          <div class="mock-market-tile"><div class="mock-m-label">SPY (S&amp;P 500)</div><div class="mock-m-main"><span id="mkSPYPrice" class="mock-m-value">—</span><span id="mkSPYChange" class="mock-m-change">—</span></div><div id="mkSPYSpark" class="mock-spark"></div></div>
-          <div class="mock-market-tile"><div class="mock-m-label">QQQ (Nasdaq 100)</div><div class="mock-m-main"><span id="mkQQQPrice" class="mock-m-value">—</span><span id="mkQQQChange" class="mock-m-change">—</span></div><div id="mkQQQSpark" class="mock-spark"></div></div>
-          <div class="mock-market-tile"><div class="mock-m-label">DIA (Dow Jones)</div><div class="mock-m-main"><span id="mkDIAPrice" class="mock-m-value">—</span><span id="mkDIAChange" class="mock-m-change">—</span></div><div id="mkDIASpark" class="mock-spark"></div></div>
-          <div class="mock-market-tile"><div class="mock-m-label">VIX</div><div class="mock-m-main"><span id="mkVIXPrice" class="mock-m-value">—</span><span id="mkVIXChange" class="mock-m-change">—</span></div><div id="mkVIXSpark" class="mock-spark"></div></div>
-          <div class="mock-market-tile"><div class="mock-m-label">2Y Yield</div><div class="mock-m-main"><span id="mk2Y" class="mock-m-value">—</span></div><div class="mock-spark"><span class="tiny">Treasury</span></div></div>
-          <div class="mock-market-tile"><div class="mock-m-label">10Y Yield</div><div class="mock-m-main"><span id="mk10Y" class="mock-m-value">—</span></div><div class="mock-spark"><span class="tiny">Treasury</span></div></div>
-          <div class="mock-market-tile"><div class="mock-m-label">WTI Crude</div><div class="mock-m-main"><span id="mkWTIPrice" class="mock-m-value">—</span><span id="mkWTIChange" class="mock-m-change">—</span></div><div class="mock-spark"><span class="tiny">20-bar trend</span></div></div>
-          <div class="mock-market-tile"><div class="mock-m-label">Brent Crude</div><div class="mock-m-main"><span id="mkBrentPrice" class="mock-m-value">—</span><span id="mkBrentChange" class="mock-m-change">—</span></div><div class="mock-spark"><span class="tiny">20-bar trend</span></div></div>
-          <div class="mock-market-tile"><div class="mock-m-label">Market Environment / Risk Mode</div><div class="mock-env"><div><div id="mkEnvScore" class="mock-env-score yellow">—</div><div id="mkEnvLabel" class="mock-env-label yellow">AWAITING</div><div id="mkEnvAction" class="mock-env-action yellow">WAITING FOR DATA</div></div><div id="mkEnvGauge" class="mock-gauge"></div></div></div>
+      </section>
+
+      <section class="mock-panel hx-active-panel" id="hxActiveStocksPanel">
+        <div class="hx-active-head">
+          <div><div class="mock-panel-title">Active Stocks</div><div class="hx-active-sub">Your watchlist with active quote, trend, volume and session information. Public data may be delayed and is not broker-certified.</div></div>
+          <div class="hx-active-actions"><span id="hxActiveStatus" class="hx-active-status">Loading…</span><button type="button" class="hx-mini-btn" onclick="window.editActiveStocks?.()">Edit List</button><button type="button" class="hx-mini-btn" onclick="window.refreshActiveStocks?.(true)">↻ Refresh</button></div>
         </div>
-        <div class="futures-strip" id="futuresStrip">
-          <div class="futures-head">
-            <div><div class="futures-title">Overnight Futures Tape</div><div class="futures-meta" id="futuresStatus">Loading CME futures…</div></div>
-            <button type="button" class="future-refresh" onclick="refreshFuturesTape(true)">↻ Refresh Futures</button>
-          </div>
-          <div class="futures-grid">
-            <div class="future-tile"><div class="future-label">ES</div><div class="future-name">S&amp;P 500 E-mini</div><div class="future-main"><span id="futESPrice" class="future-price">—</span><span id="futESChange" class="future-change">—</span></div><div class="future-foot"><span id="futESBias" class="future-bias yellow">AWAITING</span><span id="futESTime" class="future-time">—</span></div></div>
-            <div class="future-tile"><div class="future-label">NQ</div><div class="future-name">Nasdaq-100 E-mini</div><div class="future-main"><span id="futNQPrice" class="future-price">—</span><span id="futNQChange" class="future-change">—</span></div><div class="future-foot"><span id="futNQBias" class="future-bias yellow">AWAITING</span><span id="futNQTime" class="future-time">—</span></div></div>
-            <div class="future-tile"><div class="future-label">YM</div><div class="future-name">Dow E-mini</div><div class="future-main"><span id="futYMPrice" class="future-price">—</span><span id="futYMChange" class="future-change">—</span></div><div class="future-foot"><span id="futYMBias" class="future-bias yellow">AWAITING</span><span id="futYMTime" class="future-time">—</span></div></div>
-            <div class="future-tile"><div class="future-label">RTY</div><div class="future-name">Russell 2000 E-mini</div><div class="future-main"><span id="futRTYPrice" class="future-price">—</span><span id="futRTYChange" class="future-change">—</span></div><div class="future-foot"><span id="futRTYBias" class="future-bias yellow">AWAITING</span><span id="futRTYTime" class="future-time">—</span></div></div>
-            <div class="future-tile"><div class="future-label">CL</div><div class="future-name">WTI Crude</div><div class="future-main"><span id="futCLPrice" class="future-price">—</span><span id="futCLChange" class="future-change">—</span></div><div class="future-foot"><span id="futCLBias" class="future-bias yellow">AWAITING</span><span id="futCLTime" class="future-time">—</span></div></div>
-            <div class="future-tile"><div class="future-label">GC</div><div class="future-name">Gold</div><div class="future-main"><span id="futGCPrice" class="future-price">—</span><span id="futGCChange" class="future-change">—</span></div><div class="future-foot"><span id="futGCBias" class="future-bias yellow">AWAITING</span><span id="futGCTime" class="future-time">—</span></div></div>
-            <div class="future-tile"><div class="future-label">ZN</div><div class="future-name">10Y Treasury Note</div><div class="future-main"><span id="futZNPrice" class="future-price">—</span><span id="futZNChange" class="future-change">—</span></div><div class="future-foot"><span id="futZNBias" class="future-bias yellow">AWAITING</span><span id="futZNTime" class="future-time">—</span></div></div>
-            <div class="future-tile"><div class="future-label">ZB</div><div class="future-name">30Y Treasury Bond</div><div class="future-main"><span id="futZBPrice" class="future-price">—</span><span id="futZBChange" class="future-change">—</span></div><div class="future-foot"><span id="futZBBias" class="future-bias yellow">AWAITING</span><span id="futZBTime" class="future-time">—</span></div></div>
-          </div>
-          <div class="futures-note">Move is versus the prior Yahoo chart close. Futures trade nearly around the clock on trading days, with exchange maintenance breaks; values remain blank when the public feed is unavailable.</div>
+        <div class="hx-active-table-wrap">
+          <table class="hx-active-table">
+            <thead><tr><th>Symbol</th><th>Price</th><th>Chg %</th><th>Trend</th><th>Rel Vol</th><th>Bid / Ask</th><th>Session</th><th>Updated</th></tr></thead>
+            <tbody id="hxActiveStockRows"><tr><td colspan="8" class="tiny">Loading watchlist quotes…</td></tr></tbody>
+          </table>
         </div>
       </section>
 
@@ -1602,15 +1608,6 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
       </details>
       </div>
 
-      <section class="mock-panel"><div class="mock-guidance">
-        <div class="mock-gcell"><div class="mock-gtitle">Market Guidance</div><div class="mock-guidance-core"><div class="mock-big-gauge"><div id="mkArc" class="mock-arc"></div><div id="mkGuideScore" class="mock-guide-score yellow">—</div><div id="mkGuideBias" class="mock-guide-bias yellow">AWAITING</div></div><div class="mock-guide-list"><div class="mock-guide-row"><span>Trend</span><span id="mkTrend">—</span></div><div class="mock-guide-row"><span>Momentum</span><span id="mkMomentum">—</span></div><div class="mock-guide-row"><span>Volatility</span><span id="mkVolatility">—</span></div><div class="mock-guide-row"><span>Breadth</span><span id="mkBreadth">—</span></div><div class="mock-guide-row"><span>Risk Appetite</span><span id="mkRiskAppetite">—</span></div></div></div>
-        <div class="mock-gcell"><div class="mock-gtitle">Upcoming High-Impact Events</div><div id="mkEvents" class="mock-events"><div class="tiny">Official BLS/BEA/Fed calendar loads with analysis.</div></div></div>
-        <div class="mock-gcell"><div class="mock-gtitle">Event Risk</div><div class="mock-event-risk"><div id="mkEventRisk" class="big yellow">—</div><div id="mkEventNote" class="small">No verified event data loaded yet.</div><div id="mkShield" class="mock-shield">◇</div></div></div>
-        <div class="mock-gcell"><div class="mock-gtitle">Macro Summary</div><div id="mkMacroSummary" class="mock-macro-summary">Run Analyze to load the sector-aware macro backdrop.</div><button class="mock-calendar-btn" onclick="openMockResearch('mockMacro')">View Calendar →</button></div>
-        <div class="mock-gcell"><div class="mock-gtitle">Risk Desk</div><div class="mock-macro-summary"><b id="mkRiskLevel">—</b><br><span id="mkRiskSummary">Macro, earnings and portfolio guardrails will appear here.</span></div></div>
-      </div></section>
-
-
       <details id="sectorInversePanel" class="mock-panel inverse-radar-panel" open>
         <summary>
           <div class="inverse-radar-title">Sector Bear ETF Radar</div>
@@ -1633,15 +1630,37 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
         <div class="mock-right-stack"><div class="mock-lower-card"><div class="mock-lower-title">Market Sector View</div><div id="mkSectorView" class="mock-sector-list"><div class="tiny">Run Analyze.</div></div></div><div class="mock-lower-card"><div class="mock-lower-title">Key Metrics</div><div id="mkKeyMetrics" class="mock-keymetrics"><div class="tiny">Company data loads after analysis.</div></div></div></div>
       </section>
 
-      <section class="mock-research-grid">
-        <details id="mockTechnical" class="mock-research"><summary><div class="mock-rtitle">Technical Evidence</div><div id="mkTechStatus" class="mock-rstatus yellow">Awaiting</div></summary><div id="mockTechnicalBody" class="mock-research-body"></div></details>
-        <details id="mockMacro" class="mock-research"><summary><div class="mock-rtitle">Macro &amp; Market Data</div><div id="mkMacroStatus" class="mock-rstatus yellow">Awaiting</div></summary><div id="mockMacroBody" class="mock-research-body"></div></details>
-        <details id="mockGovernment" class="mock-research"><summary><div class="mock-rtitle">Government Intelligence</div><div id="mkGovStatus" class="mock-rstatus yellow">Awaiting</div></summary><div id="mockGovernmentBody" class="mock-research-body"></div></details>
-        <details id="mockOptions" class="mock-research"><summary><div class="mock-rtitle">Options &amp; Derivatives</div><div id="mkOptionsStatus" class="mock-rstatus yellow">Awaiting</div></summary><div id="mockOptionsBody" class="mock-research-body"></div></details>
-        <details id="mockSmart" class="mock-research"><summary><div class="mock-rtitle">Smart Money Flow</div><div id="mkSmartStatus" class="mock-rstatus yellow">Awaiting</div></summary><div id="mockSmartBody" class="mock-research-body"></div></details>
-        <details id="mockFund" class="mock-research"><summary><div class="mock-rtitle">Fundamentals</div><div id="mkFundStatus" class="mock-rstatus yellow">Awaiting</div></summary><div id="mockFundBody" class="mock-research-body"></div></details>
+      <section class="mock-panel hx-wheel-section" id="hxMenuWheelSection">
+        <div class="hx-wheel-copy">
+          <div class="mock-panel-title">Research Menu Wheel</div>
+          <div class="hx-wheel-sub">Use the wheel instead of + boxes. Tap a category to open the corresponding working Halifax panel.</div>
+        </div>
+        <div class="hx-wheel-layout">
+          <div class="hx-wheel" role="navigation" aria-label="Halifax research menu">
+            <button class="hx-wheel-btn hx-wheel-b1" data-wheel-target="mockTechnical" onclick="openWheelMenu('mockTechnical',this)"><span>TECH</span><small>Evidence</small></button>
+            <button class="hx-wheel-btn hx-wheel-b2" data-wheel-target="mockMacro" onclick="openWheelMenu('mockMacro',this)"><span>MACRO</span><small>Events</small></button>
+            <button class="hx-wheel-btn hx-wheel-b3" data-wheel-target="mockGovernment" onclick="openWheelMenu('mockGovernment',this)"><span>GOV</span><small>Contracts</small></button>
+            <button class="hx-wheel-btn hx-wheel-b4" data-wheel-target="mockOptions" onclick="openWheelMenu('mockOptions',this)"><span>OPTIONS</span><small>Derivatives</small></button>
+            <button class="hx-wheel-btn hx-wheel-b5" data-wheel-target="mockSmart" onclick="openWheelMenu('mockSmart',this)"><span>FLOW</span><small>Smart Money</small></button>
+            <button class="hx-wheel-btn hx-wheel-b6" data-wheel-target="mockFund" onclick="openWheelMenu('mockFund',this)"><span>FUND</span><small>Company</small></button>
+            <button class="hx-wheel-btn hx-wheel-b7" onclick="document.getElementById('sectorInversePanel')?.scrollIntoView({behavior:'smooth',block:'start'})"><span>BEAR</span><small>ETF Radar</small></button>
+            <button class="hx-wheel-btn hx-wheel-b8" onclick="window.editActiveStocks?.()"><span>LIST</span><small>Active Stocks</small></button>
+            <button class="hx-wheel-center" onclick="closeWheelMenus()" title="Close menu panel"><strong>H</strong><small>HALIFAX</small></button>
+          </div>
+          <div class="hx-wheel-drawer" id="hxWheelDrawer">
+            <div class="hx-wheel-drawer-head"><span id="hxWheelTitle">Select a menu</span><button type="button" class="hx-wheel-close" onclick="closeWheelMenus()">×</button></div>
+            <div class="hx-wheel-drawer-body">
+              <details id="mockTechnical" class="mock-research hx-wheel-pane"><summary><div class="mock-rtitle">Technical Evidence</div><div id="mkTechStatus" class="mock-rstatus yellow">Awaiting</div></summary><div id="mockTechnicalBody" class="mock-research-body"></div></details>
+              <details id="mockMacro" class="mock-research hx-wheel-pane"><summary><div class="mock-rtitle">Macro &amp; Market Data</div><div id="mkMacroStatus" class="mock-rstatus yellow">Awaiting</div></summary><div class="mock-research-body"><div id="hxMacroQuick" class="hx-menu-quick"><div><span>Market Guidance</span><b id="mkGuideScore" class="yellow">—</b></div><div><span>Bias</span><b id="mkGuideBias" class="yellow">AWAITING</b></div><div><span>Event Risk</span><b id="mkEventRisk" class="yellow">—</b></div><div><span>Risk Desk</span><b id="mkRiskLevel">—</b></div></div><div id="mkMacroSummary" class="mock-macro-summary">Run Analyze to load the sector-aware macro backdrop.</div><div id="mkEvents" class="mock-events"><div class="tiny">Official event calendar loads with analysis.</div></div><div id="mkEventNote" class="tiny">No verified event data loaded yet.</div><div id="mkShield" style="display:none">◇</div><div id="mkArc" style="display:none"></div><div id="mockMacroBody"></div><div id="mkRiskSummary" class="tiny">Macro, earnings and portfolio guardrails will appear here.</div></div></details>
+              <details id="mockGovernment" class="mock-research hx-wheel-pane"><summary><div class="mock-rtitle">Government Intelligence</div><div id="mkGovStatus" class="mock-rstatus yellow">Awaiting</div></summary><div id="mockGovernmentBody" class="mock-research-body"></div></details>
+              <details id="mockOptions" class="mock-research hx-wheel-pane"><summary><div class="mock-rtitle">Options &amp; Derivatives</div><div id="mkOptionsStatus" class="mock-rstatus yellow">Awaiting</div></summary><div id="mockOptionsBody" class="mock-research-body"></div></details>
+              <details id="mockSmart" class="mock-research hx-wheel-pane"><summary><div class="mock-rtitle">Smart Money Flow</div><div id="mkSmartStatus" class="mock-rstatus yellow">Awaiting</div></summary><div id="mockSmartBody" class="mock-research-body"></div></details>
+              <details id="mockFund" class="mock-research hx-wheel-pane"><summary><div class="mock-rtitle">Fundamentals</div><div id="mkFundStatus" class="mock-rstatus yellow">Awaiting</div></summary><div id="mockFundBody" class="mock-research-body"></div></details>
+            </div>
+          </div>
+        </div>
       </section>
-      <div class="mock-footer"><span>This tool is for informational research only and does not constitute financial advice.</span><span><span class="mock-live-dot"></span><span id="mkFooterTime">Data updates with analysis</span> &nbsp; Halifax Trade Engine v21.19</span></div>
+      <div class="mock-footer"><span>This tool is for informational research only and does not constitute financial advice.</span><span><span class="mock-live-dot"></span><span id="mkFooterTime">Data updates with analysis</span> &nbsp; Halifax Trade Engine v22.0</span></div>
     </div>
 
     <div class="card command-card">
@@ -4569,7 +4588,7 @@ async function registerHalifaxPWA(){
 
 window.addEventListener("load",()=>{const q=new URLSearchParams(location.search).get("ticker");if(q&&document.getElementById("ticker"))document.getElementById("ticker").value=String(q).toUpperCase().replace(/[^A-Z0-9.\-^=]/g,"");loadPositionSettings();loadPortfolioSettings();renderPaperJournal();economicState={...ECON_FALLBACK};setEconInput("econShiller",shillerState.value,2);recalculateEconomicProbability();const box=document.getElementById("chart");if(box)box.innerHTML='<div class="loading" style="padding:20px">Halifax is ready. Interactive chart loads in the background.</div>';setStatus("Engine ready");loadChartLibrary().catch(()=>{});});
 window.addEventListener("load",registerHalifaxPWA);
-window.addEventListener("load",()=>{setTimeout(()=>window.refreshFuturesTape?.(false),450);setInterval(()=>window.refreshFuturesTape?.(false),60000);});
+window.addEventListener("load",()=>{/* v22 unified tape owns market polling */});
 </script>
 
 <script>
@@ -4883,40 +4902,36 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now(
 
 
 <script>
-// ================= Halifax v21.16 24-Hour Market Tape =================
+// ================= Halifax v22.0 Unified 24-Hour Market Tape =================
 (() => {
   'use strict';
   const ITEMS=[
-    {id:'BTC',symbol:'BTC-USD',label:'BTC',name:'Bitcoin',crypto:true},
-    {id:'ETH',symbol:'ETH-USD',label:'ETH',name:'Ethereum',crypto:true},
-    {id:'SOL',symbol:'SOL-USD',label:'SOL',name:'Solana',crypto:true},
-    {id:'XRP',symbol:'XRP-USD',label:'XRP',name:'XRP',crypto:true},
-    {id:'ES',label:'S&P FUT',name:'E-mini 500',mirror:true},
-    {id:'NQ',label:'NASDAQ FUT',name:'E-mini NQ',mirror:true},
-    {id:'YM',label:'DOW FUT',name:'E-mini Dow',mirror:true},
-    {id:'RTY',label:'RUSSELL FUT',name:'E-mini RTY',mirror:true},
-    {id:'GC',label:'GOLD',name:'COMEX',mirror:true},
-    {id:'CL',label:'CRUDE',name:'WTI',mirror:true}
+    {id:'BTC',symbol:'BTC-USD',label:'BTC/USD',name:'Bitcoin',kind:'crypto'},
+    {id:'ETH',symbol:'ETH-USD',label:'ETH/USD',name:'Ethereum',kind:'crypto'},
+    {id:'SOL',symbol:'SOL-USD',label:'SOL/USD',name:'Solana',kind:'crypto'},
+    {id:'SPY',symbol:'SPY',label:'SPY',name:'S&P 500 ETF',kind:'equity'},
+    {id:'QQQ',symbol:'QQQ',label:'QQQ',name:'Nasdaq 100 ETF',kind:'equity'},
+    {id:'DIA',symbol:'DIA',label:'DOW / DIA',name:'Dow ETF',kind:'equity'},
+    {id:'VIX',symbol:'^VIX',label:'VIX',name:'Volatility',kind:'index'},
+    {id:'ES',symbol:'ES=F',label:'S&P FUT',name:'E-mini 500',kind:'future'},
+    {id:'NQ',symbol:'NQ=F',label:'NASDAQ FUT',name:'E-mini NQ',kind:'future'},
+    {id:'YM',symbol:'YM=F',label:'DOW FUT',name:'E-mini Dow',kind:'future'},
+    {id:'GC',symbol:'GC=F',label:'GOLD',name:'COMEX',kind:'future'},
+    {id:'CL',symbol:'CL=F',label:'OIL / WTI',name:'Crude',kind:'future'}
   ];
   const $=id=>document.getElementById(id);
   const clean=x=>String(x??'—').trim()||'—';
-  function card(x){return `<div class="market-tape24-item" data-tape-id="${x.id}"><div class="market-tape24-top"><span class="market-tape24-symbol">${x.label}</span><span class="market-tape24-name">${x.name}</span></div><div class="market-tape24-main"><span class="market-tape24-price" data-role="price">—</span><span class="market-tape24-change yellow" data-role="change">—</span></div><div class="market-tape24-time" data-role="time">Waiting for public quote…</div></div>`;}
+  const fmtPct=v=>Number.isFinite(v)?`${v>=0?'+':''}${v.toFixed(2)}%`:'—';
+  function fmtPrice(v,id){if(!Number.isFinite(v))return '—';if(id==='BTC')return '$'+v.toLocaleString(undefined,{maximumFractionDigits:0});if(['ETH','SOL'].includes(id))return '$'+v.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});if(id==='VIX')return v.toFixed(2);return v.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function kindText(x,ts){let lead=x.kind==='crypto'?'24/7 crypto':x.kind==='future'?'Futures':x.kind==='index'?'Index':'US equity';let t='';try{if(Number.isFinite(ts))t=' • '+new Date(ts*1000).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});}catch(e){}return lead+t;}
+  function card(x){return `<div class="market-tape24-item hx-tape-${x.kind}" data-tape-id="${x.id}"><div class="market-tape24-top"><span class="market-tape24-symbol">${x.label}</span><span class="market-tape24-name">${x.name}</span></div><div class="market-tape24-main"><span class="market-tape24-price" data-role="price">—</span><span class="market-tape24-change yellow" data-role="change">—</span></div><div class="market-tape24-time" data-role="time">Waiting for public quote…</div></div>`;}
   function ensureShell(){const tr=$('marketTape24Track');if(!tr||tr.dataset.ready==='1')return;const group=`<div class="market-tape24-group">${ITEMS.map(card).join('')}</div>`;tr.innerHTML=group+group;tr.dataset.ready='1';}
-  function setAll(id,price,change,time,cls='yellow'){document.querySelectorAll(`[data-tape-id="${id}"],[data-crypto-id="${id}"]`).forEach(el=>{const p=el.querySelector('[data-role="price"]'),c=el.querySelector('[data-role="change"]'),t=el.querySelector('[data-role="time"]');if(p)p.textContent=clean(price);if(c){c.textContent=clean(change);c.classList.remove('green','red','yellow');c.classList.add(cls);}if(t)t.textContent=clean(time);});}
-  function mirrorOne(id){const p=$('fut'+id+'Price'),c=$('fut'+id+'Change'),t=$('fut'+id+'Time');if(!p||!c)return;const cls=c.classList.contains('green')?'green':c.classList.contains('red')?'red':'yellow';setAll(id,p.textContent,c.textContent,`Futures • ${t?.textContent||'—'}`,cls);}
-  function mirrorFutures(){['ES','NQ','YM','RTY','GC','CL'].forEach(mirrorOne);}
-  function fmtPrice(v,id){if(!Number.isFinite(v))return '—';if(id==='BTC')return '$'+v.toLocaleString(undefined,{maximumFractionDigits:0});if(id==='XRP')return '$'+v.toLocaleString(undefined,{minimumFractionDigits:3,maximumFractionDigits:4});return '$'+v.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
-  function fmtPct(v){return Number.isFinite(v)?`${v>=0?'+':''}${v.toFixed(2)}%`:'—';}
-  function clock(ts){if(!Number.isFinite(ts))return 'Public quote';try{return `24/7 crypto • ${new Date(ts*1000).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})}`;}catch(e){return '24/7 crypto';}}
-  let busy=false,lastCryptoAt=0;
-  async function refreshCrypto(force=false){if(busy)return;if(!force&&Date.now()-lastCryptoAt<45000)return;busy=true;const st=$('crypto24Status');if(st)st.textContent=force?'Refreshing Bitcoin + crypto…':'Loading Bitcoin + crypto…';try{const crypto=ITEMS.filter(x=>x.crypto);const res=await Promise.allSettled(crypto.map(x=>loadTickerData(x.symbol,'5m','5d')));let ok=0;res.forEach((r,i)=>{const cfg=crypto[i];if(r.status!=='fulfilled'||!r.value){setAll(cfg.id,'—','NO DATA','Public crypto feed unavailable','yellow');return;}ok++;const d=r.value,move=Number(d.dayChangePct),price=Number(d.price);setAll(cfg.id,fmtPrice(price,cfg.id),fmtPct(move),clock(d.quoteTime||d.dataTime),move>0?'green':move<0?'red':'yellow');});lastCryptoAt=Date.now();if(st){const tm=new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});st.textContent=`${ok}/${crypto.length} public crypto feeds • updated ${tm}`;}}catch(e){if(st)st.textContent='Crypto feed unavailable — tap Refresh Crypto';}finally{busy=false;}}
-  window.refreshCrypto24=async function(force=true){ensureShell();await refreshCrypto(force);};
-  window.refresh24HourTape=async function(manual=false){ensureShell();mirrorFutures();if(manual&&window.refreshFuturesTape)await window.refreshFuturesTape(true);await refreshCrypto(manual);mirrorFutures();const st=$('marketTape24Status');if(st){const tm=new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});st.textContent=`Crypto 24/7 • futures nearly 24h • ${tm}`;}};
+  function setAll(id,price,change,time,cls='yellow'){document.querySelectorAll(`[data-tape-id="${id}"]`).forEach(el=>{const p=el.querySelector('[data-role="price"]'),c=el.querySelector('[data-role="change"]'),t=el.querySelector('[data-role="time"]');if(p)p.textContent=clean(price);if(c){c.textContent=clean(change);c.classList.remove('green','red','yellow');c.classList.add(cls);}if(t)t.textContent=clean(time);});}
+  let busy=false,lastAt=0;
+  window.refresh24HourTape=async function(force=false){ensureShell();if(busy)return;if(!force&&Date.now()-lastAt<45000)return;busy=true;const st=$('marketTape24Status');if(st)st.textContent=force?'Refreshing unified market tape…':'Loading unified market tape…';try{const results=await Promise.allSettled(ITEMS.map(x=>loadTickerData(x.symbol,x.kind==='equity'?'1d':'5m',x.kind==='equity'?'1mo':'5d')));let ok=0;results.forEach((r,i)=>{const cfg=ITEMS[i];if(r.status!=='fulfilled'||!r.value){setAll(cfg.id,'—','NO DATA','Public feed unavailable','yellow');return;}ok++;const d=r.value,move=Number(d.dayChangePct),price=Number(d.price),normalMove=cfg.id==='VIX'?-move:move;setAll(cfg.id,fmtPrice(price,cfg.id),fmtPct(move),kindText(cfg,d.quoteTime||d.dataTime),normalMove>0?'green':normalMove<0?'red':'yellow');});lastAt=Date.now();if(st){const tm=new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});st.textContent=`${ok}/${ITEMS.length} public feeds • updated ${tm} • auto 60s`;}}catch(e){if(st)st.textContent='Public tape feed unavailable — tap Refresh Tape';}finally{busy=false;}};
   ensureShell();
-  // Wrap the existing futures refresh so the scrolling tape always receives the same futures quotes without duplicate futures requests.
-  const base=window.refreshFuturesTape;
-  if(typeof base==='function'){window.refreshFuturesTape=async function(manual=false){const out=await base(manual);mirrorFutures();await refreshCrypto(false);const st=$('marketTape24Status');if(st){const tm=new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});st.textContent=`Crypto 24/7 • futures nearly 24h • ${tm}`;}return out;};}
-  window.addEventListener('load',()=>{ensureShell();setTimeout(()=>window.refresh24HourTape?.(false),400);});
+  window.addEventListener('load',()=>{setTimeout(()=>window.refresh24HourTape?.(false),450);setInterval(()=>{if(!document.hidden)window.refresh24HourTape?.(false)},60000);});
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)window.refresh24HourTape?.(false)});
 })();
 </script>
 
@@ -4952,6 +4967,39 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now(
   };
   window.refreshMarketSessionDesk=async function(){const ticker=(byId('mockTickerInput')?.value||lastAnalysis?.primary?.ticker||'').trim().toUpperCase();if(!ticker){const ae=byId('sessionExecutionAlert');if(ae)ae.textContent='Enter a ticker first.';return;}setText('sessionStateChip','REFRESHING','yellow');try{const q=await fetchLiveQuote(ticker);if(lastAnalysis?.primary?.ticker===ticker){lastAnalysis={...lastAnalysis,liveQuoteContext:q};lastTrade=calculateTrade(lastAnalysis.primary,lastAnalysis);renderTradeOutput(lastAnalysis,lastTrade);}else updateMarketSessionDesk({primary:{ticker},liveQuoteContext:q});}catch(e){setText('sessionStateChip','NO DATA','red');const ae=byId('sessionExecutionAlert');if(ae){ae.className='session-alert red-border';ae.textContent='Public session quote could not be refreshed. No price, bid/ask or session state was guessed.';}}};
   window.addEventListener('DOMContentLoaded',()=>{const inp=byId('mockTickerInput');if(inp)inp.addEventListener('change',()=>{if(inp.value.trim())refreshMarketSessionDesk();});});
+})();
+</script>
+
+
+<script>
+// ================= Halifax v22.0 Menu Wheel + Active Stocks =================
+(() => {
+  'use strict';
+  const $=id=>document.getElementById(id);
+  const ACTIVE_KEY='halifax_active_stocks_v22';
+  const DEFAULTS=['SPY','QQQ','NVDA','AMD','IREN','HIMS','SOFI','PLTR'];
+  const PANEL_TITLES={mockTechnical:'Technical Evidence',mockMacro:'Macro & Market Data',mockGovernment:'Government Intelligence',mockOptions:'Options & Derivatives',mockSmart:'Smart Money Flow',mockFund:'Fundamentals'};
+  const clsMove=v=>v>0?'green':v<0?'red':'yellow';
+  const fmtPrice=v=>Number.isFinite(v)?'$'+Number(v).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}):'—';
+  const fmtPct=v=>Number.isFinite(v)?`${v>=0?'+':''}${v.toFixed(2)}%`:'—';
+  const fmtCompact=v=>Number.isFinite(v)?new Intl.NumberFormat(undefined,{notation:'compact',maximumFractionDigits:1}).format(v):'—';
+  const fmtTime=ts=>{try{return Number.isFinite(ts)?new Date(ts*1000).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'}):'—'}catch(e){return '—'}};
+  const html=s=>typeof escapeHTML==='function'?escapeHTML(String(s??'')):String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  function sanitizeList(raw){return [...new Set(String(raw||'').toUpperCase().split(/[\s,;]+/).map(x=>x.replace(/[^A-Z0-9.\-^=]/g,'')).filter(Boolean))].slice(0,12);}
+  function getList(){try{const saved=JSON.parse(localStorage.getItem(ACTIVE_KEY)||'[]');if(Array.isArray(saved)&&saved.length)return sanitizeList(saved.join(','));}catch(e){}try{const legacy=typeof parsePortfolioTickers==='function'?parsePortfolioTickers():[];if(legacy.length)return legacy;}catch(e){}return DEFAULTS.slice();}
+  function saveList(list){try{localStorage.setItem(ACTIVE_KEY,JSON.stringify(list));}catch(e){}const legacy=$('portfolioTickers');if(legacy){legacy.value=list.join(', ');try{savePortfolioSettings()}catch(e){}}}
+  window.editActiveStocks=function(){const current=getList().join(', '),next=prompt('Active stock/watchlist tickers (comma separated, up to 12)',current);if(next===null)return;const list=sanitizeList(next);if(!list.length)return;saveList(list);window.refreshActiveStocks?.(true);};
+  function sessionChip(state){const s=typeof normalizeMarketState==='function'?normalizeMarketState(state):String(state||'').toUpperCase();if(s==='REGULAR')return ['OPEN','green'];if(s==='PRE')return ['PRE','blue'];if(s==='POST')return ['AFTER','yellow'];if(s==='OVERNIGHT')return ['OVERNIGHT','yellow'];if(s==='CLOSED')return ['CLOSED','red'];return [s||'—','yellow'];}
+  async function one(symbol){let d=null,q=null;const res=await Promise.allSettled([loadTickerData(symbol,'1d','6mo'),typeof fetchLiveQuote==='function'?fetchLiveQuote(symbol):Promise.resolve(null)]);if(res[0].status==='fulfilled')d=res[0].value;if(res[1].status==='fulfilled')q=res[1].value;if(!d&&!q)throw new Error('No public data');const price=Number.isFinite(q?.price)?q.price:d?.price,chg=Number.isFinite(q?.changePct)?q.changePct:d?.dayChangePct,trend=d&&typeof classifyTimeframe==='function'?classifyTimeframe(d):null,rv=Number.isFinite(d?.volumeRatio)?d.volumeRatio:null,[session,sessionCls]=sessionChip(q?.marketState),bid=Number.isFinite(q?.bid)?q.bid:null,ask=Number.isFinite(q?.ask)?q.ask:null,stamp=Number.isFinite(q?.timestamp)?q.timestamp:d?.quoteTime||d?.dataTime;return {symbol,price,chg,trend,rv,session,sessionCls,bid,ask,stamp,volume:d?.volume,avgVolume:d?.avgVolume};}
+  let busy=false,lastAt=0;
+  window.refreshActiveStocks=async function(force=false){if(busy)return;if(!force&&Date.now()-lastAt<45000)return;busy=true;const status=$('hxActiveStatus'),body=$('hxActiveStockRows'),list=getList();if(status)status.textContent=`Refreshing ${list.length} symbols…`;if(body&&!body.children.length)body.innerHTML='<tr><td colspan="8" class="tiny">Loading active quotes…</td></tr>';try{const rows=await Promise.allSettled(list.map(one));const good=[];rows.forEach((r,i)=>{if(r.status==='fulfilled')good.push(r.value);else good.push({symbol:list[i],error:true});});if(body)body.innerHTML=good.map(x=>{if(x.error)return `<tr class="hx-active-row" data-symbol="${html(x.symbol)}"><td><div class="hx-active-symbol">${html(x.symbol)}</div></td><td colspan="7" class="hx-data-unavailable">Public quote unavailable; no value guessed.</td></tr>`;const tc=x.trend?.direction||'NEUTRAL',tcls=tc==='BULLISH'?'green':tc==='BEARISH'?'red':'yellow',rvcls=Number.isFinite(x.rv)&&x.rv>=1.2?'hx-relvol-hot':Number.isFinite(x.rv)&&x.rv<.7?'hx-relvol-low':'',ba=Number.isFinite(x.bid)&&Number.isFinite(x.ask)?`${x.bid.toFixed(2)} / ${x.ask.toFixed(2)}`:'—';return `<tr class="hx-active-row" data-symbol="${html(x.symbol)}" title="Analyze ${html(x.symbol)}"><td><div class="hx-active-symbol">${html(x.symbol)}</div><div class="hx-active-subrow">click to analyze</div></td><td>${fmtPrice(x.price)}</td><td class="${clsMove(x.chg)}"><b>${fmtPct(x.chg)}</b></td><td class="${tcls}"><b>${html(tc)}</b><div class="hx-active-subrow">${x.trend?Math.round(x.trend.confidence||0)+'% strength':'—'}</div></td><td class="${rvcls}">${Number.isFinite(x.rv)?x.rv.toFixed(2)+'×':'—'}</td><td class="hx-bidask">${ba}</td><td><span class="hx-session-chip ${x.sessionCls}">${html(x.session)}</span></td><td>${fmtTime(x.stamp)}</td></tr>`;}).join('');lastAt=Date.now();if(status){const ok=rows.filter(r=>r.status==='fulfilled').length;status.textContent=`${ok}/${list.length} loaded • ${new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})}`;}body?.querySelectorAll('.hx-active-row').forEach(tr=>tr.addEventListener('click',()=>{const sym=tr.dataset.symbol;if(!sym)return;const m=$('mockTickerInput'),legacy=$('ticker');if(m)m.value=sym;if(legacy)legacy.value=sym;if(typeof mockAnalyze==='function')mockAnalyze();}));}catch(e){if(status)status.textContent='Active quote refresh unavailable';if(body)body.innerHTML='<tr><td colspan="8" class="hx-data-unavailable">Public watchlist data could not be loaded. No values were guessed.</td></tr>';}finally{busy=false;}};
+  window.openWheelMenu=function(id,btn){const drawer=$('hxWheelDrawer'),title=$('hxWheelTitle');document.querySelectorAll('.hx-wheel-pane').forEach(p=>p.open=false);document.querySelectorAll('.hx-wheel-btn').forEach(b=>b.classList.remove('active'));const pane=$(id);if(pane)pane.open=true;if(btn)btn.classList.add('active');if(title)title.textContent=PANEL_TITLES[id]||'Halifax Menu';if(drawer)drawer.classList.add('active');};
+  window.closeWheelMenus=function(){document.querySelectorAll('.hx-wheel-pane').forEach(p=>p.open=false);document.querySelectorAll('.hx-wheel-btn').forEach(b=>b.classList.remove('active'));const title=$('hxWheelTitle');if(title)title.textContent='Select a menu';};
+  // Preserve calls from existing dashboard buttons while routing them into the wheel drawer.
+  const oldOpen=window.openMockResearch;
+  window.openMockResearch=function(id,focusId){const btn=document.querySelector(`[data-wheel-target="${id}"]`);window.openWheelMenu(id,btn);setTimeout(()=>{const target=focusId?$(focusId):$('hxMenuWheelSection');target?.scrollIntoView({behavior:'smooth',block:'center'});target?.focus?.();},30);};
+  window.addEventListener('load',()=>{setTimeout(()=>window.refreshActiveStocks?.(false),1100);setInterval(()=>{if(!document.hidden)window.refreshActiveStocks?.(false)},60000);});
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)window.refreshActiveStocks?.(false)});
 })();
 </script>
 
