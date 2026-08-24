@@ -18,7 +18,7 @@
 <meta name="application-name" content="Halifax">
 <meta name="format-detection" content="telephone=no">
 
-<title>Halifax Trade Engine v21.12 Compact Laptop Layout - Exact Dashboard</title>
+<title>Halifax Trade Engine v21.10 Data Fix - Exact Dashboard</title>
 
 <style>
 :root{
@@ -1249,7 +1249,7 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
 @media(max-width:560px){#mockHeaderTools{flex-wrap:wrap}.mock-command-grid,.mock-decision-grid,.mock-research-grid{grid-template-columns:1fr}.mock-dcell:nth-child(n){grid-column:1}.mock-factor-list{grid-template-columns:1fr}.mock-levels{grid-template-columns:1fr 1fr}.mock-guidance-core{grid-template-columns:1fr}.mock-event{grid-template-columns:45px 1fr 55px}.mock-event .mock-event-time{display:none}}
 
 
-/* v21.12 SAFE SHELL: preserve original Halifax DOM/functionality offscreen. Data proxy syntax refreshed Aug 2026. */
+/* v21.10 SAFE SHELL: preserve original Halifax DOM/functionality offscreen. Data proxy syntax refreshed Aug 2026. */
 .container > .command-card,
 .container > #decisionCard,
 .container > #fundamentalsCard,
@@ -1283,49 +1283,6 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
 @media(max-width:1200px){.mock-command-grid{grid-template-columns:1fr 1.4fr 1fr 1fr 1fr!important}.mock-util{display:none!important}}
 @media(max-width:760px){.mock-command-grid{grid-template-columns:1fr 1fr!important}.mock-analyze{grid-column:1/-1}.mock-style-wrap{grid-column:auto}.mock-market-grid{grid-template-columns:repeat(2,1fr)!important}.mock-decision-grid{grid-template-columns:1fr!important}.mock-guidance{grid-template-columns:1fr!important}.mock-lower{grid-template-columns:1fr!important}.mock-research-grid{grid-template-columns:1fr!important}}
 
-
-/* v21.12 compact laptop layout fix: prevent guidance/lower panels from wrapping into tall empty rows */
-@media (min-width:901px){
-  .mock-guidance{
-    grid-template-columns:minmax(245px,1.2fr) minmax(170px,1fr) minmax(260px,1.4fr) minmax(135px,.78fr) minmax(210px,1.2fr)!important;
-    min-height:140px!important;
-    align-items:stretch!important;
-  }
-  .mock-gcell{
-    min-height:140px!important;
-    border-top:0!important;
-    overflow:hidden!important;
-  }
-  #mkEvents{max-height:104px!important;overflow:hidden!important;}
-  #mkEvents .mock-event:nth-child(n+5){display:none!important;}
-  .mock-lower{
-    grid-template-columns:minmax(360px,1.65fr) minmax(180px,.9fr) minmax(210px,1.05fr) minmax(230px,1.25fr)!important;
-    align-items:stretch!important;
-  }
-  .mock-right-stack{
-    grid-column:auto!important;
-    grid-template-columns:1fr!important;
-    grid-template-rows:1fr 1.2fr!important;
-  }
-}
-@media (min-width:901px) and (max-width:1180px){
-  .mock-guidance{
-    grid-template-columns:1.15fr .95fr 1.3fr .72fr 1.08fr!important;
-  }
-  .mock-gcell{padding:10px 9px!important;}
-  .mock-guidance-core{grid-template-columns:92px 1fr!important;gap:7px!important;}
-  .mock-arc{width:84px!important;height:43px!important;border-width:6px!important;}
-  .mock-arc:after{width:84px!important;height:43px!important;border-width:6px!important;left:-6px!important;top:-6px!important;}
-  .mock-guide-score{font-size:20px!important;}
-  .mock-guide-list,.mock-macro-summary{font-size:9.4px!important;}
-  .mock-event{grid-template-columns:40px 48px 1fr 52px!important;gap:4px!important;font-size:8.8px!important;}
-  .mock-lower{grid-template-columns:1.55fr .85fr 1fr 1.15fr!important;gap:7px!important;}
-}
-
-
-/* Halifax v21.12 — Sector Bear ETF Radar */
-.inverse-radar-panel{margin-top:10px;overflow:hidden}.inverse-radar-panel>summary{list-style:none;cursor:pointer;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid transparent}.inverse-radar-panel[open]>summary{border-bottom-color:#173650}.inverse-radar-panel>summary::-webkit-details-marker{display:none}.inverse-radar-title{display:flex;align-items:center;gap:9px;font-size:10.5px;font-weight:950;text-transform:uppercase;color:#edf4fb}.inverse-radar-title:before{content:"↘";display:grid;place-items:center;width:22px;height:22px;border:1px solid #294966;border-radius:5px;color:#ff8c8c;background:#07182a;font-size:13px}.inverse-radar-summary{display:flex;align-items:center;gap:10px;font-size:10px;color:#aebdca}.inverse-radar-count{font-weight:950;padding:3px 7px;border-radius:4px;border:1px solid #31465b}.inverse-radar-body{padding:11px 12px 12px}.inverse-radar-toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}.inverse-radar-note{font-size:9.5px;line-height:1.45;color:#9fb0c0;max-width:900px}.inverse-radar-actions{display:flex;gap:7px;align-items:center}.inverse-radar-btn{border:1px solid #2b4b67;background:#07192a;color:#e7eef5;border-radius:4px;padding:6px 9px;font-size:9.5px;font-weight:850;cursor:pointer}.inverse-radar-btn:hover{border-color:#4f789a}.inverse-radar-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.inverse-sector-card{border:1px solid #173650;border-radius:6px;background:#061321;padding:9px 10px;min-width:0}.inverse-sector-card.active{border-color:#6a3338;box-shadow:inset 0 0 0 1px rgba(239,83,80,.08)}.inverse-sector-card.proxy{border-color:#625222}.inverse-sector-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.inverse-sector-name{font-size:10px;font-weight:900;color:#edf3f8}.inverse-sector-etf{font-size:9px;color:#8195a8;margin-top:2px}.inverse-sector-state{font-size:8.5px;font-weight:950;border:1px solid currentColor;border-radius:3px;padding:2px 5px;white-space:nowrap}.inverse-sector-metrics{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin:8px 0}.inverse-sector-metric{background:#081a2b;border:1px solid #14314a;border-radius:4px;padding:5px 6px}.inverse-sector-metric .k{font-size:7.8px;color:#8195a8;text-transform:uppercase}.inverse-sector-metric .v{font-size:9.5px;font-weight:900;margin-top:2px}.inverse-picks{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}.inverse-pick{border:1px solid #294a66;background:#07192a;color:#dfe9f2;border-radius:4px;padding:4px 6px;font-size:8.8px;font-weight:850;cursor:pointer}.inverse-pick.preferred{border-color:#bf4a50;color:#ffb0b3}.inverse-pick.proxy{border-color:#7b681e;color:#e7d570}.inverse-pick:hover{background:#0b2237}.inverse-pick-note{font-size:8.4px;color:#8fa2b4;line-height:1.35;margin-top:6px}.inverse-current-hint{font-size:9px;color:#c5d0da}.inverse-current-hint b{font-weight:950}.inverse-source-row{font-size:8.5px;color:#71869a;margin-top:9px;line-height:1.4}.inverse-source-row a{color:#82b7e8;text-decoration:none}.inverse-source-row a:hover{text-decoration:underline}
-@media(max-width:1250px){.inverse-radar-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:900px){.inverse-radar-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:600px){.inverse-radar-grid{grid-template-columns:1fr}.inverse-radar-summary{align-items:flex-end;flex-direction:column;gap:3px}.inverse-radar-toolbar{align-items:flex-start}.inverse-sector-metrics{grid-template-columns:repeat(3,1fr)}}
 </style>
 </head>
 <body>
@@ -1333,7 +1290,7 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
     <div class="card header">
         <div class="brand-stack">
             <div class="terminal-kicker"><span class="kicker-dot"></span> HALIFAX QUANT RESEARCH TERMINAL</div>
-            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v21.12 Compact Laptop Layout</span></span></div>
+            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v21.10 Data Fix</span></span></div>
             <div class="subtitle">Predictive swing research • Unified market guidance • Federal contract radar • Options • Bonds • Event guardrails</div>
         </div>
         <div class="header-actions"><div class="badge system-badge"><span class="status-dot"></span><span id="engineStatus">Engine ready</span></div></div>
@@ -1379,22 +1336,6 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
         <div class="mock-gcell"><div class="mock-gtitle">Risk Desk</div><div class="mock-macro-summary"><b id="mkRiskLevel">—</b><br><span id="mkRiskSummary">Macro, earnings and portfolio guardrails will appear here.</span></div></div>
       </div></section>
 
-
-      <details id="sectorInversePanel" class="mock-panel inverse-radar-panel" open>
-        <summary>
-          <div class="inverse-radar-title">Sector Bear ETF Radar</div>
-          <div class="inverse-radar-summary"><span id="sectorInverseCurrentHint" class="inverse-current-hint">Checks all 11 GICS sectors</span><span id="sectorInverseCount" class="inverse-radar-count yellow">AWAITING</span></div>
-        </summary>
-        <div class="inverse-radar-body">
-          <div class="inverse-radar-toolbar">
-            <div id="sectorInverseNote" class="inverse-radar-note">Halifax scans each liquid sector ETF on the daily chart. A bearish sector can surface an inverse ETF as a tactical alternative. Inverse and leveraged inverse ETFs reset daily and are not treated as ordinary long-term holdings.</div>
-            <div class="inverse-radar-actions"><button class="inverse-radar-btn" type="button" onclick="refreshSectorBearRadar()">↻ REFRESH 11 SECTORS</button></div>
-          </div>
-          <div id="sectorInverseRadar" class="inverse-radar-grid"><div class="tiny">Loading sector trend radar…</div></div>
-          <div class="inverse-source-row">Universe checked 2026-08-24 against the ProShares leveraged/inverse ETF list. Communication Services has no exact inverse fund in that list; WEBS is displayed only as an internet-heavy proxy and is never labeled an exact XLC hedge.</div>
-        </div>
-      </details>
-
       <section class="mock-lower">
         <div class="mock-lower-card"><div class="mock-lower-title">Price Chart</div><div id="mockChartMount" class="mock-chart-wrap"></div></div>
         <div class="mock-lower-card"><div class="mock-lower-title">Technical Summary</div><div id="mkTech" class="mock-tech-list"><div class="tiny">Run Analyze.</div></div></div>
@@ -1410,7 +1351,7 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
         <details id="mockSmart" class="mock-research"><summary><div class="mock-rtitle">Smart Money Flow</div><div id="mkSmartStatus" class="mock-rstatus yellow">Awaiting</div></summary><div id="mockSmartBody" class="mock-research-body"></div></details>
         <details id="mockFund" class="mock-research"><summary><div class="mock-rtitle">Fundamentals</div><div id="mkFundStatus" class="mock-rstatus yellow">Awaiting</div></summary><div id="mockFundBody" class="mock-research-body"></div></details>
       </section>
-      <div class="mock-footer"><span>This tool is for informational research only and does not constitute financial advice.</span><span><span class="mock-live-dot"></span><span id="mkFooterTime">Data updates with analysis</span> &nbsp; Halifax Trade Engine v21.12</span></div>
+      <div class="mock-footer"><span>This tool is for informational research only and does not constitute financial advice.</span><span><span class="mock-live-dot"></span><span id="mkFooterTime">Data updates with analysis</span> &nbsp; Halifax Trade Engine v21.10</span></div>
     </div>
 
     <div class="card command-card">
@@ -3960,7 +3901,7 @@ async function runEngine(){
         renderChart(analysis.primary,trade);renderRegime(analysis,benchmarkResult);renderMTF(analysis);renderTradeOutput(analysis,trade);renderMarketGuidance(analysis.macroContext);renderBondContext(analysis.macroContext?.bondContext);renderPositionGuardrails(ticker,analysis.primary,analysis);renderNews(displayNews,ticker);
         document.getElementById("smartMoneyOutput").innerHTML='<div class="loading">Core prediction is complete. Loading insider, institutional and public-filing context in the background…</div>';
         document.getElementById("decisionCard")?.scrollIntoView({behavior:"smooth",block:"start"});
-        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v21.12 Compact Laptop Layout`;
+        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v21.10 Data Fix`;
         startLiveQuoteStream(ticker,runId);
         const portfolioPromise=loadPortfolioRiskContext(ticker,analysis).catch(()=>null);
         portfolioPromise.then(pr=>{
@@ -4463,122 +4404,6 @@ const oldSmart=renderSmartMoney;renderSmartMoney=function(t,s){oldSmart(t,s);try
 const oldFed=renderFederalContractContext;renderFederalContractContext=function(c){oldFed(c);try{set('mkGovStatus',c?.available?'Awards loaded':'No new alerts',c?.available?'green':'yellow')}catch(e){}};
 window.addEventListener('DOMContentLoaded',initShell);window.addEventListener('load',()=>{initShell();setTimeout(()=>{const chart=document.querySelector('#mockChartMount .chart-card');if(chart&&chart!==document.querySelector('.chart-card')){}},100)});
 })();
-</script>
-
-
-<script>
-// ================= Halifax v21.12 Sector Bear ETF Radar =================
-(() => {
-'use strict';
-const SECTOR_INVERSE_UNIVERSE = {
-  technology:{label:'Technology',long:'XLK',exact:true,picks:[{ticker:'REW',multiple:-2,label:'ProShares UltraShort Technology'},{ticker:'TECS',multiple:-3,label:'Direxion Daily Technology Bear 3X'}]},
-  financials:{label:'Financials',long:'XLF',exact:true,picks:[{ticker:'SEF',multiple:-1,label:'ProShares Short Financials'},{ticker:'SKF',multiple:-2,label:'ProShares UltraShort Financials'},{ticker:'FAZ',multiple:-3,label:'Direxion Daily Financial Bear 3X'}]},
-  realestate:{label:'Real Estate',long:'XLRE',exact:true,picks:[{ticker:'REK',multiple:-1,label:'ProShares Short Real Estate'},{ticker:'SRS',multiple:-2,label:'ProShares UltraShort Real Estate'},{ticker:'DRV',multiple:-3,label:'Direxion Daily Real Estate Bear 3X'}]},
-  healthcare:{label:'Health Care',long:'XLV',exact:true,picks:[{ticker:'RXD',multiple:-2,label:'ProShares UltraShort Health Care'}]},
-  industrials:{label:'Industrials',long:'XLI',exact:true,picks:[{ticker:'SIJ',multiple:-2,label:'ProShares UltraShort Industrials'}]},
-  materials:{label:'Materials',long:'XLB',exact:true,picks:[{ticker:'SMN',multiple:-2,label:'ProShares UltraShort Materials'}]},
-  discretionary:{label:'Consumer Discretionary',long:'XLY',exact:true,picks:[{ticker:'SCC',multiple:-2,label:'ProShares UltraShort Consumer Discretionary'}]},
-  staples:{label:'Consumer Staples',long:'XLP',exact:true,picks:[{ticker:'SZK',multiple:-2,label:'ProShares UltraShort Consumer Staples'}]},
-  energy:{label:'Energy',long:'XLE',exact:true,picks:[{ticker:'DUG',multiple:-2,label:'ProShares UltraShort Energy'},{ticker:'ERY',multiple:-2,label:'Direxion Daily Energy Bear 2X'}]},
-  utilities:{label:'Utilities',long:'XLU',exact:true,picks:[{ticker:'SDP',multiple:-2,label:'ProShares UltraShort Utilities'}]},
-  communication:{label:'Communication Services',long:'XLC',exact:false,picks:[{ticker:'WEBS',multiple:-3,label:'Direxion Daily Dow Jones Internet Bear 3X',proxy:true}]}
-};
-
-// Expand the existing inverse-ETF guardrail universe. The XL* entries are liquid
-// execution proxies for the funds' sector indexes; they are not claimed to be the exact benchmark.
-if (typeof SPECIAL_INSTRUMENTS !== 'undefined') Object.assign(SPECIAL_INSTRUMENTS, {
-  REW:{label:'ProShares UltraShort Technology',underlying:'XLK',dailyMultiple:-2,dailyReset:true,allowedStyles:['scalp','day']},
-  SEF:{label:'ProShares Short Financials',underlying:'XLF',dailyMultiple:-1,dailyReset:true,allowedStyles:['scalp','day']},
-  SKF:{label:'ProShares UltraShort Financials',underlying:'XLF',dailyMultiple:-2,dailyReset:true,allowedStyles:['scalp','day']},
-  REK:{label:'ProShares Short Real Estate',underlying:'XLRE',dailyMultiple:-1,dailyReset:true,allowedStyles:['scalp','day']},
-  SRS:{label:'ProShares UltraShort Real Estate',underlying:'XLRE',dailyMultiple:-2,dailyReset:true,allowedStyles:['scalp','day']},
-  RXD:{label:'ProShares UltraShort Health Care',underlying:'XLV',dailyMultiple:-2,dailyReset:true,allowedStyles:['scalp','day']},
-  SIJ:{label:'ProShares UltraShort Industrials',underlying:'XLI',dailyMultiple:-2,dailyReset:true,allowedStyles:['scalp','day']},
-  SMN:{label:'ProShares UltraShort Materials',underlying:'XLB',dailyMultiple:-2,dailyReset:true,allowedStyles:['scalp','day']},
-  SCC:{label:'ProShares UltraShort Consumer Discretionary',underlying:'XLY',dailyMultiple:-2,dailyReset:true,allowedStyles:['scalp','day']},
-  SZK:{label:'ProShares UltraShort Consumer Staples',underlying:'XLP',dailyMultiple:-2,dailyReset:true,allowedStyles:['scalp','day']},
-  DUG:{label:'ProShares UltraShort Energy',underlying:'XLE',dailyMultiple:-2,dailyReset:true,allowedStyles:['scalp','day']},
-  SDP:{label:'ProShares UltraShort Utilities',underlying:'XLU',dailyMultiple:-2,dailyReset:true,allowedStyles:['scalp','day']},
-  WEBS:{label:'Direxion Daily Dow Jones Internet Bear 3X ETF — Communication Services proxy only',underlying:null,dailyMultiple:-3,dailyReset:true,allowedStyles:['scalp','day'],metadataDetected:true}
-});
-
-let sectorInverseRows=[];
-let sectorInverseRunning=false;
-let sectorInverseLastRefresh=0;
-
-function hesc(v){try{return typeof escapeHTML==='function'?escapeHTML(String(v??'')):String(v??'').replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]));}catch(_){return String(v??'')}}
-function nfmt(v,d=1){return Number.isFinite(v)?Number(v).toFixed(d):'—'}
-function preferredPick(cfg){return [...(cfg.picks||[])].sort((a,b)=>Math.abs(a.multiple)-Math.abs(b.multiple))[0]||null}
-function stateClass(dir,exact=true){if(!exact)return 'yellow';return dir==='BEARISH'?'red':dir==='BULLISH'?'green':'yellow'}
-function stateLabel(row){if(row.error)return 'DATA N/A';if(!row.cfg.exact)return row.direction==='BEARISH'?'PROXY WATCH':'NO EXACT INVERSE';if(row.direction==='BEARISH')return 'BEAR ETF ACTIVE';if(row.direction==='BULLISH')return 'NO INVERSE';return 'WAIT'}
-
-function renderSectorBearRadar(){
-  const mount=document.getElementById('sectorInverseRadar'),count=document.getElementById('sectorInverseCount');
-  if(!mount)return;
-  if(!sectorInverseRows.length){mount.innerHTML='<div class="tiny">No sector data loaded yet.</div>';if(count){count.textContent='AWAITING';count.className='inverse-radar-count yellow';}return;}
-  const sorted=[...sectorInverseRows].sort((a,b)=>Number(b.direction==='BEARISH'&&b.cfg.exact)-Number(a.direction==='BEARISH'&&a.cfg.exact)||a.cfg.label.localeCompare(b.cfg.label));
-  const active=sorted.filter(r=>r.direction==='BEARISH'&&r.cfg.exact&&!r.error).length;
-  if(count){count.textContent=`${active} ACTIVE`;count.className=`inverse-radar-count ${active?'red':'green'}`;}
-  mount.innerHTML=sorted.map(row=>{
-    const cfg=row.cfg,preferred=preferredPick(cfg),activeExact=row.direction==='BEARISH'&&cfg.exact&&!row.error,proxy=!cfg.exact;
-    const cardCls=`inverse-sector-card${activeExact?' active':''}${proxy?' proxy':''}`;
-    const st=stateLabel(row),stc=stateClass(row.direction,cfg.exact);
-    const picks=(cfg.picks||[]).map(p=>`<button type="button" class="inverse-pick ${preferred?.ticker===p.ticker?'preferred':''} ${p.proxy?'proxy':''}" onclick="analyzeInverseTicker('${hesc(p.ticker)}')" title="${hesc(p.label)}">${hesc(p.ticker)} ${p.multiple}×${p.proxy?' PROXY':''}</button>`).join('');
-    const note=row.error?row.error:(proxy?'No exact XLC inverse is confirmed. WEBS tracks an internet index and may diverge materially from Communication Services.':activeExact?`Sector trend is bearish. Lower absolute leverage is highlighted when multiple choices exist.`:`Inverse choices are parked until ${cfg.long} turns bearish.`);
-    return `<div class="${cardCls}"><div class="inverse-sector-top"><div><div class="inverse-sector-name">${hesc(cfg.label)}</div><div class="inverse-sector-etf">Sector ETF: ${hesc(cfg.long)}</div></div><span class="inverse-sector-state ${stc}">${hesc(st)}</span></div><div class="inverse-sector-metrics"><div class="inverse-sector-metric"><div class="k">Trend</div><div class="v ${stateClass(row.direction,true)}">${hesc(row.direction||'—')}</div></div><div class="inverse-sector-metric"><div class="k">20-bar</div><div class="v ${row.roc20>0?'green':row.roc20<0?'red':'yellow'}">${Number.isFinite(row.roc20)?`${row.roc20>=0?'+':''}${nfmt(row.roc20,1)}%`:'—'}</div></div><div class="inverse-sector-metric"><div class="k">Strength</div><div class="v">${Number.isFinite(row.confidence)?`${Math.round(row.confidence)}%`:'—'}</div></div></div><div class="inverse-picks">${picks||'<span class="tiny">No inverse candidate mapped.</span>'}</div><div class="inverse-pick-note">${hesc(note)}</div></div>`;
-  }).join('');
-}
-
-window.refreshSectorBearRadar=async function({silent=false}={}){
-  if(sectorInverseRunning)return;
-  sectorInverseRunning=true;
-  const note=document.getElementById('sectorInverseNote');
-  if(note&&!silent)note.textContent='Refreshing 11 sector ETFs on the daily chart…';
-  const items=Object.entries(SECTOR_INVERSE_UNIVERSE);
-  try{
-    const results=await Promise.all(items.map(async([key,cfg])=>{
-      try{
-        const d=await loadTickerData(cfg.long,'1d','3mo');
-        const c=classifyTimeframe(d);
-        return {key,cfg,direction:c.direction,confidence:c.confidence,score:c.score,roc20:Number(d.roc20),price:Number(d.price),error:null};
-      }catch(e){return {key,cfg,direction:'UNAVAILABLE',confidence:null,score:null,roc20:null,price:null,error:String(e?.message||'Sector data unavailable.')};}
-    }));
-    sectorInverseRows=results;sectorInverseLastRefresh=Date.now();renderSectorBearRadar();
-    if(note){const failures=results.filter(r=>r.error).length;note.textContent=`11-sector scan complete${failures?` • ${failures} feed failure${failures===1?'':'s'}`:''}. Bear ETF status requires a bearish daily sector trend. Daily-reset inverse ETFs remain restricted by Halifax day/scalp guardrails.`;}
-  }finally{sectorInverseRunning=false;}
-};
-
-window.analyzeInverseTicker=function(symbol){
-  const ticker=String(symbol||'').toUpperCase();if(!ticker)return;
-  const main=document.getElementById('ticker'),mock=document.getElementById('mockTickerInput');if(main)main.value=ticker;if(mock)mock.value=ticker;
-  const panel=document.getElementById('sectorInversePanel');if(panel)panel.open=true;
-  const style=document.getElementById('style');
-  if(style&&!['day','scalp'].includes(style.value)){
-    const note=document.getElementById('sectorInverseNote');if(note)note.textContent=`${ticker} selected. Your current ${String(style.value).toUpperCase()} style is intentionally preserved; Halifax may return WAIT because inverse ETFs reset daily and are restricted to day/scalp guardrails.`;
-  }
-  try{runEngine();}catch(e){console.error('Inverse ETF analysis',e)}
-};
-
-function updateCurrentSectorInverseHint(a){
-  const hint=document.getElementById('sectorInverseCurrentHint');if(!hint||!a)return;
-  const m=a.macroContext||{},key=m.profileKey,cfg=SECTOR_INVERSE_UNIVERSE[key];
-  if(!cfg){hint.textContent='Current ticker: no mapped GICS sector inverse';return;}
-  const bearish=String(m.sectorTrend||'').toUpperCase()==='BEARISH';
-  if(!cfg.exact){hint.innerHTML=`Current: <b>${hesc(cfg.label)}</b> • no exact inverse`;return;}
-  const picks=cfg.picks.map(p=>p.ticker).join(' / ');
-  hint.innerHTML=bearish?`Current: <b>${hesc(cfg.label)} BEARISH → ${hesc(picks)}</b>`:`Current: ${hesc(cfg.label)} ${hesc(m.sectorTrend||'—')} • inverse parked`;
-}
-
-// Chain after the existing dashboard wrapper without changing core signal calculations.
-if(typeof renderTradeOutput==='function'){
-  const prev=renderTradeOutput;
-  renderTradeOutput=function(a,t){prev(a,t);try{updateCurrentSectorInverseHint(a)}catch(e){console.warn('sector inverse hint',e)}};
-}
-
-window.addEventListener('load',()=>{setTimeout(()=>refreshSectorBearRadar().catch?.(()=>{}),4200);setInterval(()=>{if(!document.hidden&&Date.now()-sectorInverseLastRefresh>15*60*1000)refreshSectorBearRadar({silent:true});},15*60*1000)});
-document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-sectorInverseLastRefresh>15*60*1000)refreshSectorBearRadar({silent:true})});
-})();
-// ================= End Halifax v21.12 Sector Bear ETF Radar =============
 </script>
 
 </body>
