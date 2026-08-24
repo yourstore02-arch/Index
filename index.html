@@ -18,7 +18,7 @@
 <meta name="application-name" content="Halifax">
 <meta name="format-detection" content="telephone=no">
 
-<title>Halifax Trade Engine v21.13 Futures Tape - Exact Dashboard</title>
+<title>Halifax Trade Engine v21.14 Collapsible Trade Plan - Exact Dashboard</title>
 
 <style>
 :root{
@@ -1329,6 +1329,31 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
 /* Halifax v21.12 — Sector Bear ETF Radar */
 .inverse-radar-panel{margin-top:10px;overflow:hidden}.inverse-radar-panel>summary{list-style:none;cursor:pointer;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid transparent}.inverse-radar-panel[open]>summary{border-bottom-color:#173650}.inverse-radar-panel>summary::-webkit-details-marker{display:none}.inverse-radar-title{display:flex;align-items:center;gap:9px;font-size:10.5px;font-weight:950;text-transform:uppercase;color:#edf4fb}.inverse-radar-title:before{content:"↘";display:grid;place-items:center;width:22px;height:22px;border:1px solid #294966;border-radius:5px;color:#ff8c8c;background:#07182a;font-size:13px}.inverse-radar-summary{display:flex;align-items:center;gap:10px;font-size:10px;color:#aebdca}.inverse-radar-count{font-weight:950;padding:3px 7px;border-radius:4px;border:1px solid #31465b}.inverse-radar-body{padding:11px 12px 12px}.inverse-radar-toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}.inverse-radar-note{font-size:9.5px;line-height:1.45;color:#9fb0c0;max-width:900px}.inverse-radar-actions{display:flex;gap:7px;align-items:center}.inverse-radar-btn{border:1px solid #2b4b67;background:#07192a;color:#e7eef5;border-radius:4px;padding:6px 9px;font-size:9.5px;font-weight:850;cursor:pointer}.inverse-radar-btn:hover{border-color:#4f789a}.inverse-radar-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.inverse-sector-card{border:1px solid #173650;border-radius:6px;background:#061321;padding:9px 10px;min-width:0}.inverse-sector-card.active{border-color:#6a3338;box-shadow:inset 0 0 0 1px rgba(239,83,80,.08)}.inverse-sector-card.proxy{border-color:#625222}.inverse-sector-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.inverse-sector-name{font-size:10px;font-weight:900;color:#edf3f8}.inverse-sector-etf{font-size:9px;color:#8195a8;margin-top:2px}.inverse-sector-state{font-size:8.5px;font-weight:950;border:1px solid currentColor;border-radius:3px;padding:2px 5px;white-space:nowrap}.inverse-sector-metrics{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin:8px 0}.inverse-sector-metric{background:#081a2b;border:1px solid #14314a;border-radius:4px;padding:5px 6px}.inverse-sector-metric .k{font-size:7.8px;color:#8195a8;text-transform:uppercase}.inverse-sector-metric .v{font-size:9.5px;font-weight:900;margin-top:2px}.inverse-picks{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}.inverse-pick{border:1px solid #294a66;background:#07192a;color:#dfe9f2;border-radius:4px;padding:4px 6px;font-size:8.8px;font-weight:850;cursor:pointer}.inverse-pick.preferred{border-color:#bf4a50;color:#ffb0b3}.inverse-pick.proxy{border-color:#7b681e;color:#e7d570}.inverse-pick:hover{background:#0b2237}.inverse-pick-note{font-size:8.4px;color:#8fa2b4;line-height:1.35;margin-top:6px}.inverse-current-hint{font-size:9px;color:#c5d0da}.inverse-current-hint b{font-weight:950}.inverse-source-row{font-size:8.5px;color:#71869a;margin-top:9px;line-height:1.4}.inverse-source-row a{color:#82b7e8;text-decoration:none}.inverse-source-row a:hover{text-decoration:underline}
 @media(max-width:1250px){.inverse-radar-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:900px){.inverse-radar-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:600px){.inverse-radar-grid{grid-template-columns:1fr}.inverse-radar-summary{align-items:flex-end;flex-direction:column;gap:3px}.inverse-radar-toolbar{align-items:flex-start}.inverse-sector-metrics{grid-template-columns:repeat(3,1fr)}}
+
+/* v21.14 right-side collapsible trade entry / stop / exit workspace */
+.mock-decision-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,430px);gap:12px;align-items:start;margin-top:12px}
+.mock-decision-row>#mockDecision{min-width:0}
+.trade-plan-dock{min-width:0;border-color:#284b68;background:linear-gradient(180deg,#061727,#04101d);box-shadow:0 10px 30px rgba(0,0,0,.22);overflow:hidden}
+.trade-plan-dock>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;background:linear-gradient(180deg,#0a2236,#071725);border-bottom:1px solid transparent}
+.trade-plan-dock[open]>summary{border-bottom-color:#21415e}
+.trade-plan-dock>summary::-webkit-details-marker{display:none}
+.trade-plan-dock>summary:after{content:'+';font-size:22px;line-height:1;color:#8eabc3;font-weight:400}
+.trade-plan-dock[open]>summary:after{content:'−'}
+.trade-plan-title{font-size:11px;font-weight:950;letter-spacing:.55px;text-transform:uppercase;color:#f1f7fc}
+.trade-plan-title small{display:block;margin-top:4px;font-size:8.5px;letter-spacing:.2px;text-transform:none;color:#7893aa;font-weight:750}
+.trade-plan-body{padding:10px;display:grid;gap:8px}
+.trade-plan-status{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:9px 10px;border:1px solid #173853;border-radius:6px;background:#061421}
+.trade-plan-symbol{font-size:18px;font-weight:950;color:#f5f8fb}.trade-plan-decision{font-size:13px;font-weight:950;text-align:right}
+.trade-plan-sub{border:1px solid #183b57;border-radius:6px;background:#061522;overflow:hidden}
+.trade-plan-sub>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 10px;font-size:9.5px;font-weight:950;letter-spacing:.45px;text-transform:uppercase;color:#cbd8e5;background:#071a2a}
+.trade-plan-sub>summary::-webkit-details-marker{display:none}.trade-plan-sub>summary:after{content:'+';font-size:17px;color:#7896ad}.trade-plan-sub[open]>summary:after{content:'−'}
+.trade-plan-sub[open]>summary{border-bottom:1px solid #183b57}
+.trade-plan-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.trade-plan-metric{padding:9px 10px;min-height:58px;border-right:1px solid #173650;border-bottom:1px solid #173650}.trade-plan-metric:nth-child(2n){border-right:0}.trade-plan-metric:nth-last-child(-n+2){border-bottom:0}
+.trade-plan-k{font-size:8px;color:#8098ad;text-transform:uppercase;font-weight:900;letter-spacing:.35px}.trade-plan-v{font-size:15px;font-weight:950;margin-top:5px;white-space:nowrap}.trade-plan-note{padding:8px 10px;font-size:8.7px;line-height:1.45;color:#8ea4b8;border-top:1px solid #15344e}
+.trade-plan-dock .green{color:#49dc68}.trade-plan-dock .red{color:#ff6f75}.trade-plan-dock .yellow{color:#f5c84f}.trade-plan-dock .blue{color:#63b3ff}
+@media(max-width:1180px){.mock-decision-row{grid-template-columns:1fr}.trade-plan-dock{width:100%}}
+@media(max-width:620px){.mock-decision-row{margin-top:8px}.trade-plan-grid{grid-template-columns:1fr 1fr}.trade-plan-v{font-size:14px}.trade-plan-dock>summary{padding:11px 12px}}
 </style>
 </head>
 <body>
@@ -1336,7 +1361,7 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
     <div class="card header">
         <div class="brand-stack">
             <div class="terminal-kicker"><span class="kicker-dot"></span> HALIFAX QUANT RESEARCH TERMINAL</div>
-            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v21.13 Futures Tape</span></span></div>
+            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v21.14 Trade Plan</span></span></div>
             <div class="subtitle">Predictive swing research • Unified market guidance • Federal contract radar • Options • Bonds • Event guardrails</div>
         </div>
         <div class="header-actions"><div class="badge system-badge"><span class="status-dot"></span><span id="engineStatus">Engine ready</span></div></div>
@@ -1381,6 +1406,7 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
         <div id="mockCommandControls" class="mock-command-grid"></div>
       </section>
 
+      <div class="mock-decision-row">
       <section id="mockDecision" class="mock-panel mock-decision">
         <div class="mock-decision-grid">
           <div class="mock-dcell"><div id="mkTicker" class="mock-ticker">—</div><div id="mkCompany" class="mock-company">Enter a ticker</div><div id="mkSector" class="mock-meta">Sector: —<br>Industry: —</div></div>
@@ -1390,6 +1416,57 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
           <div class="mock-dcell"><div class="mock-factor-title">Key Factors</div><ul id="mkFactors" class="mock-factor-list"><li>Run Analyze to load verified factors.</li></ul><button class="mock-full-btn" onclick="openMockResearch('mockTechnical')">View Full Analysis →</button></div>
         </div>
       </section>
+
+      <details id="mockTradePlanDock" class="mock-panel trade-plan-dock" open>
+        <summary><div class="trade-plan-title">Trade Entry • Exit • Stop<small>Right-side execution plan • every section collapses</small></div></summary>
+        <div class="trade-plan-body">
+          <div class="trade-plan-status"><div><div id="dockTicker" class="trade-plan-symbol">—</div><div id="dockPlanState" class="tiny">Run Analyze to build a trade plan.</div></div><div id="dockDirection" class="trade-plan-decision yellow">WAIT</div></div>
+
+          <details class="trade-plan-sub" open>
+            <summary>Entry</summary>
+            <div class="trade-plan-grid">
+              <div class="trade-plan-metric"><div class="trade-plan-k">Entry Zone</div><div id="dockEntryZone" class="trade-plan-v blue">—</div></div>
+              <div class="trade-plan-metric"><div class="trade-plan-k">Execution Entry</div><div id="dockEntry" class="trade-plan-v blue">—</div></div>
+              <div class="trade-plan-metric"><div class="trade-plan-k">Current Price</div><div id="dockCurrent" class="trade-plan-v">—</div></div>
+              <div class="trade-plan-metric"><div class="trade-plan-k">Entry Grade</div><div id="dockEntryGrade" class="trade-plan-v yellow">—</div></div>
+            </div>
+            <div id="dockEntryNote" class="trade-plan-note">The entry zone is populated from the same Halifax plan used by the main decision engine.</div>
+          </details>
+
+          <details class="trade-plan-sub" open>
+            <summary>Protective Stop</summary>
+            <div class="trade-plan-grid">
+              <div class="trade-plan-metric"><div class="trade-plan-k">Stop Loss</div><div id="dockStop" class="trade-plan-v red">—</div></div>
+              <div class="trade-plan-metric"><div class="trade-plan-k">Risk / Share</div><div id="dockRiskShare" class="trade-plan-v red">—</div></div>
+              <div class="trade-plan-metric"><div class="trade-plan-k">Stop Distance</div><div id="dockStopPct" class="trade-plan-v yellow">—</div></div>
+              <div class="trade-plan-metric"><div class="trade-plan-k">Planned Risk</div><div id="dockPlannedRisk" class="trade-plan-v">—</div></div>
+            </div>
+            <div id="dockStopNote" class="trade-plan-note">Do not move the protective stop farther away after entry unless a new analysis explicitly rebuilds the plan.</div>
+          </details>
+
+          <details class="trade-plan-sub" open>
+            <summary>Exit Targets</summary>
+            <div class="trade-plan-grid">
+              <div class="trade-plan-metric"><div class="trade-plan-k">Target 1</div><div id="dockT1" class="trade-plan-v green">—</div></div>
+              <div class="trade-plan-metric"><div class="trade-plan-k">Target 2</div><div id="dockT2" class="trade-plan-v green">—</div></div>
+              <div class="trade-plan-metric"><div class="trade-plan-k">Target 3</div><div id="dockT3" class="trade-plan-v green">—</div></div>
+              <div class="trade-plan-metric"><div class="trade-plan-k">Risk / Reward</div><div id="dockRR" class="trade-plan-v">—</div></div>
+            </div>
+            <div class="trade-plan-note">Targets are reference exits from the engine's current risk model; Halifax does not assume fills.</div>
+          </details>
+
+          <details class="trade-plan-sub">
+            <summary>Position Size &amp; Risk</summary>
+            <div class="trade-plan-grid">
+              <div class="trade-plan-metric"><div class="trade-plan-k">Maximum Shares</div><div id="dockShares" class="trade-plan-v">—</div></div>
+              <div class="trade-plan-metric"><div class="trade-plan-k">Position Value</div><div id="dockPositionValue" class="trade-plan-v">—</div></div>
+              <div class="trade-plan-metric"><div class="trade-plan-k">Risk Budget</div><div id="dockRiskBudget" class="trade-plan-v">—</div></div>
+              <div class="trade-plan-metric"><div class="trade-plan-k">Plan Range</div><div id="dockPlanRange" class="trade-plan-v">—</div></div>
+            </div>
+          </details>
+        </div>
+      </details>
+      </div>
 
       <section class="mock-panel"><div class="mock-guidance">
         <div class="mock-gcell"><div class="mock-gtitle">Market Guidance</div><div class="mock-guidance-core"><div class="mock-big-gauge"><div id="mkArc" class="mock-arc"></div><div id="mkGuideScore" class="mock-guide-score yellow">—</div><div id="mkGuideBias" class="mock-guide-bias yellow">AWAITING</div></div><div class="mock-guide-list"><div class="mock-guide-row"><span>Trend</span><span id="mkTrend">—</span></div><div class="mock-guide-row"><span>Momentum</span><span id="mkMomentum">—</span></div><div class="mock-guide-row"><span>Volatility</span><span id="mkVolatility">—</span></div><div class="mock-guide-row"><span>Breadth</span><span id="mkBreadth">—</span></div><div class="mock-guide-row"><span>Risk Appetite</span><span id="mkRiskAppetite">—</span></div></div></div>
@@ -1430,7 +1507,7 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
         <details id="mockSmart" class="mock-research"><summary><div class="mock-rtitle">Smart Money Flow</div><div id="mkSmartStatus" class="mock-rstatus yellow">Awaiting</div></summary><div id="mockSmartBody" class="mock-research-body"></div></details>
         <details id="mockFund" class="mock-research"><summary><div class="mock-rtitle">Fundamentals</div><div id="mkFundStatus" class="mock-rstatus yellow">Awaiting</div></summary><div id="mockFundBody" class="mock-research-body"></div></details>
       </section>
-      <div class="mock-footer"><span>This tool is for informational research only and does not constitute financial advice.</span><span><span class="mock-live-dot"></span><span id="mkFooterTime">Data updates with analysis</span> &nbsp; Halifax Trade Engine v21.12</span></div>
+      <div class="mock-footer"><span>This tool is for informational research only and does not constitute financial advice.</span><span><span class="mock-live-dot"></span><span id="mkFooterTime">Data updates with analysis</span> &nbsp; Halifax Trade Engine v21.14</span></div>
     </div>
 
     <div class="card command-card">
@@ -4427,7 +4504,7 @@ function headerTools(){
 }
 window.toggleMockRefresh=function(){const s=$('liveRefresh');if(!s)return;const on=String(s.value)!=='0';s.value=on?'0':'5';set('mkAutoRefresh',on?'OFF':'ON',on?'red':'green');if(lastAnalysis?.primary?.ticker){stopLiveQuoteStream();if(!on)startLiveQuoteStream(lastAnalysis.primary.ticker,halifaxRunId)}};
 window.openMockResearch=function(id,focusId){const d=$(id);if(!d)return;d.open=true;setTimeout(()=>{const target=focusId?$(focusId):d;target?.scrollIntoView({behavior:'smooth',block:'center'});focusId&&target?.focus?.()},30)};
-window.clearMockTradeDisplay=function(){['mkPrice','mkMove','mkScore','mkConfidence','mkEntry','mkStop','mkT1','mkT2','mkRR','mkRange'].forEach(id=>set(id,'—','yellow'));set('mkDirection','WAIT','yellow');$('mkFactors').innerHTML='<li>Display cleared. Run Analyze to restore current guidance.</li>';};
+window.clearMockTradeDisplay=function(){['mkPrice','mkMove','mkScore','mkConfidence','mkEntry','mkStop','mkT1','mkT2','mkRR','mkRange','dockEntryZone','dockEntry','dockCurrent','dockEntryGrade','dockStop','dockRiskShare','dockStopPct','dockPlannedRisk','dockT1','dockT2','dockT3','dockRR','dockShares','dockPositionValue','dockRiskBudget','dockPlanRange'].forEach(id=>set(id,'—','yellow'));set('mkDirection','WAIT','yellow');set('dockDirection','WAIT','yellow');set('dockTicker','—');set('dockPlanState','Display cleared. Run Analyze to restore the current plan.');$('mkFactors').innerHTML='<li>Display cleared. Run Analyze to restore current guidance.</li>';};
 function initShell(){
   moveCoreControls();headerTools();
   if(document.body.dataset.halifaxSafeInit==='1')return;document.body.dataset.halifaxSafeInit='1';
@@ -4447,10 +4524,27 @@ function drawMockChart(d){
   x.fillStyle='#8ea8c1';x.font='11px system-ui';for(let i=0;i<5;i++){const v=hi-i*range/4,yy=pad.t+i*(h-pad.t-pad.b)/4;x.fillText(v.toFixed(2),w-pad.r+7,yy+4)}
   const last=rows.at(-1)?.close;if(Number.isFinite(last)){const yy=pad.t+(hi-last)/range*(h-pad.t-pad.b);x.strokeStyle='#ff6b6b';x.setLineDash([3,3]);x.beginPath();x.moveTo(pad.l,yy);x.lineTo(w-pad.r,yy);x.stroke();x.setLineDash([]);x.fillStyle='#ff6b6b';x.fillText(last.toFixed(2),w-pad.r+7,yy-4)}
 }
+function updateTradePlanDock(a,t){
+  if(!a||!t)return;
+  const d=a.primary||{},q=a.liveQuoteContext||{},dir=a.direction||'WAIT',dc=clsDir(dir);
+  const current=Number.isFinite(q.price)?q.price:d.price;
+  const grade=(typeof predictionGrades==='function')?predictionGrades(a,t):null;
+  set('dockTicker',d.ticker||'—');set('dockDirection',dir,dc);
+  set('dockPlanState',dir==='WAIT'?'No trade authorized yet — levels remain reference-only.':`${dir} plan active • use the levels below as the current Halifax execution map.`);
+  set('dockEntryZone',`${moneyMock(t.entryLow)} - ${moneyMock(t.entryHigh)}`,'blue');set('dockEntry',moneyMock(t.entry),'blue');set('dockCurrent',moneyMock(current));
+  set('dockEntryGrade',grade?.entry?`${grade.entry.grade} • ${Math.round(grade.entry.score)}/100`:'—',grade?.entry?.score>=72?'green':grade?.entry?.score>=55?'yellow':'red');
+  set('dockStop',moneyMock(t.stop),'red');set('dockRiskShare',moneyMock(t.stopDistance),'red');set('dockStopPct',Number.isFinite(t.stopPct)?`${Number(t.stopPct).toFixed(2)}%`:'—','yellow');set('dockPlannedRisk',moneyMock(t.estimatedRisk));
+  set('dockT1',moneyMock(t.t1),'green');set('dockT2',moneyMock(t.t2),'green');set('dockT3',moneyMock(t.t3),'green');set('dockRR',Number.isFinite(t.rr2)?`1 : ${Number(t.rr2).toFixed(2)}`:'—');
+  set('dockShares',Number.isFinite(t.shares)?Number(t.shares).toLocaleString():'—');set('dockPositionValue',moneyMock(t.positionValue));set('dockRiskBudget',moneyMock(t.riskBudget));set('dockPlanRange',`${moneyMock(d.support)} - ${moneyMock(t.t3)}`);
+  const timing=(typeof entryTimingRead==='function')?entryTimingRead(a,t):null;
+  set('dockEntryNote',timing?.note||'The entry zone is populated from the same Halifax plan used by the main decision engine.');
+  set('dockStopNote',dir==='SHORT'?'For a short, the protective stop sits above the planned entry and defines invalidation risk.':'For a long, the protective stop sits below the planned entry and defines invalidation risk.');
+}
 function updateCore(a,t){
   if(!a||!t)return;const d=a.primary,q=a.liveQuoteContext||{},price=Number.isFinite(q.price)?q.price:d.price,move=Number.isFinite(q.change)?q.change:(d.dayChange||0),movePct=Number.isFinite(q.changePct)?q.changePct:(d.dayChangePct||0),dir=a.direction||'WAIT',dc=clsDir(dir),m=a.macroContext||{},env=m.marketEnvironment||{},e=m.economicProbability||{};
   set('mkTicker',d.ticker||'—');set('mkPrice',moneyMock(price));set('mkMove',Number.isFinite(move)?`${move>=0?'▲':'▼'} ${signed(move,2)} (${pct(movePct,2)})`:'—',move>0?'green':move<0?'red':'yellow');set('mkQuoteTime',q.timestamp?`Quote ${formatDateTime(q.timestamp)}`:(d.dataTime?`Data ${formatDateTime(d.dataTime)}`:'Latest loaded quote'));
   set('mkDirection',dir,dc);set('mkScore',`${a.score>=0?'+':''}${Math.round(a.score)} / 100`,dc);set('mkConfidence',`${Math.round(a.predictionStrength??a.confidence??0)}%`,dc);set('mkEntry',`${moneyMock(t.entryLow)} - ${moneyMock(t.entryHigh)}`,'blue');set('mkStop',moneyMock(t.stop),'red');set('mkT1',moneyMock(t.t1),'green');set('mkT2',moneyMock(t.t2),'green');set('mkRR',`1 : ${num(t.rr2,2)}`);set('mkRange',`${moneyMock(d.support)} - ${moneyMock(t.t3)}`);
+  updateTradePlanDock(a,t);
   const reasons=(a.reasons||[]).filter(x=>x&&!String(x).includes('v21.')).slice(0,5);$('mkFactors').innerHTML=(reasons.length?reasons:['No verified key factors returned.']).map(x=>`<li>${escapeHTML(shortReason(x))}</li>`).join('');
   const gs=Number.isFinite(m.guidanceScore)?m.guidanceScore:0,bias=marketLabel(m),gcls=gs>2?'green':gs<-2?'red':'yellow';set('mkGuideScore',`${gs>=0?'+':''}${gs}`,gcls);set('mkGuideBias',bias,gcls);set('mkEnvScore',`${gs>=0?'+':''}${gs}`,gcls);set('mkEnvLabel',bias,gcls);$('mkEnvGauge')?.style.setProperty('--gauge',gs>2?'#48d45d':gs<-2?'#ef5350':'#f6c344');$('mkArc')?.style.setProperty('--arc',gs>2?'#48d45d':gs<-2?'#ef5350':'#f6c344');
   const trends=env.trends||{},bulls=Object.values(trends).filter(x=>x==='BULLISH').length,bears=Object.values(trends).filter(x=>x==='BEARISH').length;
