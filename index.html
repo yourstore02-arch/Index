@@ -18,7 +18,7 @@
 <meta name="application-name" content="Halifax">
 <meta name="format-detection" content="telephone=no">
 
-<title>Halifax Trade Engine v21.12 Compact Laptop Layout - Calendar Fix</title>
+<title>Halifax Trade Engine v21.13 24-Hour Market</title>
 
 <style>
 :root{
@@ -1235,6 +1235,16 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
 #mockHeaderTools{display:flex;gap:8px;align-items:center}.mock-tool{height:38px;border:1px solid #1c3854;border-radius:5px;background:#061524;color:#d8e1eb;padding:0 12px;display:flex;align-items:center;gap:7px;font-size:11px;white-space:nowrap}.mock-tool b{color:#48e273}.mock-tool.clickable{cursor:pointer}.mock-tool.clickable:hover{border-color:#3d6c98}
 #mockDashboard{display:grid;gap:12px}.mock-panel{border:1px solid #1c3854;border-radius:8px;background:linear-gradient(180deg,rgba(6,19,34,.98),rgba(4,14,26,.98));overflow:hidden}.mock-panel-title{font-size:11px;font-weight:900;letter-spacing:.45px;color:#e8edf4;text-transform:uppercase;padding:9px 10px 0}
 .mock-market{padding:0 10px 8px}.mock-market-grid{display:grid;grid-template-columns:repeat(8,minmax(100px,1fr)) minmax(170px,1.3fr);margin-top:7px}.mock-market-tile{min-height:74px;padding:8px 12px;border-right:1px solid #19344f;display:flex;flex-direction:column;justify-content:center}.mock-market-tile:last-child{border-right:none}.mock-m-label{font-size:10.5px;color:#eef3f8;font-weight:700}.mock-m-main{display:flex;align-items:baseline;gap:8px;margin-top:7px}.mock-m-value{font-size:17px;font-weight:900;color:#f4f7fb}.mock-m-change{font-size:11px;font-weight:800}.mock-spark{height:18px;margin-top:4px;display:flex;align-items:center}.mock-spark svg{width:100%;height:18px;overflow:visible}.mock-env{display:grid;grid-template-columns:1fr 74px;align-items:center;gap:4px}.mock-env-score{font-size:27px;font-weight:950;line-height:1}.mock-env-label{font-size:14px;font-weight:900;margin-top:3px}.mock-gauge{width:72px;height:38px;border-radius:72px 72px 0 0;border:6px solid #2a3b50;border-bottom:0;position:relative;overflow:hidden}.mock-gauge:before{content:"";position:absolute;inset:-6px -6px auto -6px;height:38px;border-radius:72px 72px 0 0;border:6px solid var(--gauge,#48d45d);border-bottom:0;clip-path:polygon(0 0,75% 0,75% 100%,0 100%)}
+/* v21.13 near-24-hour futures + crypto strip */
+.hx24-panel{border-color:#27516f!important;background:linear-gradient(180deg,#071a2c,#051421)!important}
+.hx24-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 10px 0;flex-wrap:wrap}
+.hx24-title{font-size:11px;font-weight:950;letter-spacing:.55px;color:#f5f8fb;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.hx24-live-dot{width:7px;height:7px;border-radius:50%;background:#43d66d;box-shadow:0 0 8px rgba(67,214,109,.55)}
+.hx24-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.hx24-meta{font-size:9.5px;color:#9fb1c1}.hx24-refresh{height:30px;min-height:30px;padding:0 10px;border-radius:4px;background:#0a2135;border:1px solid #285473;color:#dce8f1;font-size:9.5px;box-shadow:none}.hx24-refresh:hover{background:#0d2a43;border-color:#3b7398}.hx24-refresh:disabled{opacity:.55}
+.hx24-grid{display:grid;grid-template-columns:repeat(7,minmax(115px,1fr)) minmax(160px,1.15fr);padding:7px 10px 9px}.hx24-tile{min-height:78px;padding:8px 11px;border-right:1px solid #19384f;display:flex;flex-direction:column;justify-content:center}.hx24-tile:last-child{border-right:0}.hx24-label{font-size:9.8px;color:#dce6ee;font-weight:850}.hx24-symbol{font-size:8.5px;color:#7895aa;margin-left:5px}.hx24-main{display:flex;align-items:baseline;gap:8px;margin-top:7px}.hx24-price{font-size:18px;font-weight:950;color:#f5f8fb}.hx24-change{font-size:10.5px;font-weight:900}.hx24-state{font-size:8.8px;color:#839caf;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hx24-bias{display:flex;flex-direction:column;align-items:flex-start}.hx24-bias-label{font-size:9px;color:#9fb0bd;text-transform:uppercase;font-weight:900}.hx24-bias-value{font-size:19px;font-weight:950;margin-top:7px}.hx24-bias-sub{font-size:9px;color:#8ba2b3;margin-top:5px;line-height:1.35}.hx24-disclaimer{padding:0 10px 8px;color:#708a9e;font-size:8.8px;line-height:1.35}
+@media(max-width:1420px){.hx24-grid{grid-template-columns:repeat(4,1fr)}.hx24-tile{border-bottom:1px solid #19384f}}
+@media(max-width:760px){.hx24-grid{grid-template-columns:repeat(2,1fr)}.hx24-head{align-items:flex-start}.hx24-tools{width:100%;justify-content:space-between}}
+
 .mock-command{padding:0 10px 10px}.mock-command-grid{display:grid;grid-template-columns:minmax(170px,1.05fr) minmax(280px,1.6fr) minmax(145px,.75fr) minmax(145px,.75fr) minmax(180px,.95fr) minmax(190px,1fr) minmax(150px,.8fr);gap:12px;align-items:end;margin-top:8px}.mock-command .field{margin:0}.mock-command .field label{font-size:9px;margin-bottom:6px;color:#c9d3de}.mock-command input,.mock-command select{height:38px;background:#07182a;border-color:#1d405f;border-radius:5px;font-size:13px}.mock-command .style-buttons{height:38px;gap:0}.mock-command .style-btn{height:38px;border-radius:0;background:#07182a;border-color:#1d405f}.mock-command .style-btn:first-child{border-radius:5px 0 0 5px}.mock-command .style-btn:last-child{border-radius:0 5px 5px 0}.mock-command .mode-scalp,.mock-command .mode-custom{display:none}.mock-command .style-btn.active{background:#f58a18;color:white;border-color:#f58a18;box-shadow:none}.mock-command .btn-analyze{height:48px;min-height:48px;border-radius:5px;background:#f58a18!important;border-color:#ffa13b!important;color:#fff;font-size:14px;box-shadow:none}.mock-command .analyze-kicker{display:none}.mock-command .analyze-text{font-size:14px}.mock-util{height:38px;border:1px solid #1d405f;border-radius:5px;background:#07182a;color:#dce5ee;font-size:10.5px;font-weight:700;cursor:pointer;padding:0 10px}.mock-util:hover{border-color:#3e739e;background:#0a2036}
 .mock-decision{padding:0}.mock-decision-grid{display:grid;grid-template-columns:1.12fr .82fr 1.42fr 1.88fr 1.42fr;min-height:174px}.mock-dcell{padding:14px 16px;border-right:1px solid #19344f;display:flex;flex-direction:column;justify-content:center}.mock-dcell:last-child{border-right:0}.mock-ticker{font-size:31px;font-weight:950;line-height:1}.mock-company{font-size:12px;font-weight:750;margin-top:8px}.mock-meta{font-size:10.5px;color:#c3ccd6;margin-top:7px;line-height:1.6}.mock-current-label,.mock-small-label{font-size:9.5px;text-transform:uppercase;color:#b6c3d1;font-weight:850;letter-spacing:.25px}.mock-current-price{font-size:36px;font-weight:950;line-height:1.05;margin-top:8px}.mock-current-move{font-size:14px;font-weight:900;margin-top:10px}.mock-current-time{font-size:10px;color:#aab7c5;margin-top:12px}.mock-call{text-align:center}.mock-call-title{font-size:11px;text-transform:uppercase;color:#c2ccd7;font-weight:850;letter-spacing:.45px}.mock-direction{font-size:46px;line-height:1;font-weight:950;margin-top:10px}.mock-scorepair{display:grid;grid-template-columns:1fr 1fr;margin-top:13px}.mock-scorepair>div:first-child{border-right:1px solid #1f3a54}.mock-scorepair .label{font-size:9.5px;color:#b6c3d1;text-transform:uppercase}.mock-scorepair .value{font-size:24px;font-weight:950;margin-top:5px}.mock-levels{display:grid;grid-template-columns:repeat(4,1fr);gap:0}.mock-level{padding:6px 9px;text-align:center;border-right:1px solid #1f3a54}.mock-level:last-child{border-right:0}.mock-level .l{font-size:9px;text-transform:uppercase;color:#b8c3cf;font-weight:800}.mock-level .v{font-size:15px;font-weight:900;margin-top:8px;white-space:nowrap}.mock-level-bottom{display:grid;grid-template-columns:1fr 1fr;margin-top:12px;padding-top:12px;border-top:1px solid #1f3a54;text-align:center}.mock-level-bottom>div:first-child{border-right:1px solid #1f3a54}.mock-level-bottom .v{font-size:18px;font-weight:850;margin-top:7px}.mock-factor-title{font-size:10px;text-transform:uppercase;color:#dce5ee;font-weight:900}.mock-factor-list{list-style:none;margin:10px 0 0;padding:0;font-size:10.5px;color:#ced7e0;line-height:1.65}.mock-factor-list li{position:relative;padding-left:13px}.mock-factor-list li:before{content:"•";position:absolute;left:0;color:#46d55a}.mock-full-btn{margin-top:8px;align-self:flex-start;background:#07182a;border:1px solid #1d405f;color:#dfe7ef;border-radius:4px;padding:7px 11px;font-size:10px;cursor:pointer}
 .mock-guidance{display:grid;grid-template-columns:1.2fr 1.1fr 1.55fr .85fr 1.35fr;min-height:140px}.mock-gcell{padding:12px 14px;border-right:1px solid #19344f}.mock-gcell:last-child{border-right:0}.mock-gtitle{font-size:10px;text-transform:uppercase;color:#dce4ec;font-weight:900;margin-bottom:8px}.mock-guidance-core{display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:center}.mock-big-gauge{text-align:center}.mock-arc{width:110px;height:56px;border-radius:110px 110px 0 0;border:8px solid #273b4f;border-bottom:0;margin:auto;position:relative;overflow:hidden}.mock-arc:after{content:"";position:absolute;left:-8px;top:-8px;width:110px;height:56px;border-radius:110px 110px 0 0;border:8px solid var(--arc,#48d45d);border-bottom:0;clip-path:polygon(0 0,70% 0,70% 100%,0 100%)}.mock-guide-score{font-size:23px;font-weight:950;margin-top:-15px}.mock-guide-bias{font-size:12px;font-weight:900;margin-top:3px}.mock-guide-list{display:grid;gap:6px;font-size:10.5px}.mock-guide-row{display:flex;justify-content:space-between;gap:10px}.mock-guide-row span:last-child{font-weight:800}.mock-events{display:grid;gap:5px}.mock-event{display:grid;grid-template-columns:48px 60px 1fr 60px;gap:6px;align-items:center;font-size:9.5px;color:#d2d9e1}.mock-risk-badge{font-size:9px;text-align:center;border:1px solid currentColor;border-radius:3px;padding:2px 4px;font-weight:850}.mock-event-risk{text-align:center;padding-top:10px}.mock-event-risk .big{font-size:23px;font-weight:950}.mock-event-risk .small{font-size:10px;color:#bdc8d3;line-height:1.5;margin-top:12px}.mock-shield{font-size:34px;margin-top:7px}.mock-macro-summary{font-size:10.5px;line-height:1.55;color:#d0d9e2}.mock-calendar-btn{margin-top:10px;background:#07182a;border:1px solid #1d405f;color:#dfe7ef;border-radius:4px;padding:7px 10px;font-size:10px;cursor:pointer}
@@ -1398,14 +1408,32 @@ body.hx-calendar-open{overflow:hidden}
     <div class="card header">
         <div class="brand-stack">
             <div class="terminal-kicker"><span class="kicker-dot"></span> HALIFAX QUANT RESEARCH TERMINAL</div>
-            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v21.12 Calendar Fix</span></span></div>
-            <div class="subtitle">Predictive swing research • Unified market guidance • Federal contract radar • Options • Bonds • Event guardrails</div>
+            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v21.13 24H Market</span></span></div>
+            <div class="subtitle">Predictive swing research • 24-hour futures dashboard • Unified market guidance • Federal contract radar • Options • Bonds • Event guardrails</div>
         </div>
         <div class="header-actions"><div class="badge system-badge"><span class="status-dot"></span><span id="engineStatus">Engine ready</span></div></div>
     </div>
 
 
     <div id="mockDashboard">
+      <section class="mock-panel hx24-panel">
+        <div class="hx24-head">
+          <div class="hx24-title"><span class="hx24-live-dot"></span>24-Hour Market • Futures + Crypto</div>
+          <div class="hx24-tools"><span id="hx24Updated" class="hx24-meta">Loading public market feed…</span><button id="hx24RefreshBtn" class="hx24-refresh" type="button" onclick="refresh24HourMarket(true)">Refresh</button></div>
+        </div>
+        <div class="hx24-grid">
+          <div class="hx24-tile"><div class="hx24-label">S&amp;P Futures <span class="hx24-symbol">ES</span></div><div class="hx24-main"><span id="hx24ESPrice" class="hx24-price">—</span><span id="hx24ESChange" class="hx24-change">—</span></div><div id="hx24ESState" class="hx24-state">Loading…</div></div>
+          <div class="hx24-tile"><div class="hx24-label">Nasdaq Futures <span class="hx24-symbol">NQ</span></div><div class="hx24-main"><span id="hx24NQPrice" class="hx24-price">—</span><span id="hx24NQChange" class="hx24-change">—</span></div><div id="hx24NQState" class="hx24-state">Loading…</div></div>
+          <div class="hx24-tile"><div class="hx24-label">Dow Futures <span class="hx24-symbol">YM</span></div><div class="hx24-main"><span id="hx24YMPrice" class="hx24-price">—</span><span id="hx24YMChange" class="hx24-change">—</span></div><div id="hx24YMState" class="hx24-state">Loading…</div></div>
+          <div class="hx24-tile"><div class="hx24-label">Russell Futures <span class="hx24-symbol">RTY</span></div><div class="hx24-main"><span id="hx24RTYPrice" class="hx24-price">—</span><span id="hx24RTYChange" class="hx24-change">—</span></div><div id="hx24RTYState" class="hx24-state">Loading…</div></div>
+          <div class="hx24-tile"><div class="hx24-label">WTI Oil <span class="hx24-symbol">CL</span></div><div class="hx24-main"><span id="hx24CLPrice" class="hx24-price">—</span><span id="hx24CLChange" class="hx24-change">—</span></div><div id="hx24CLState" class="hx24-state">Loading…</div></div>
+          <div class="hx24-tile"><div class="hx24-label">Gold <span class="hx24-symbol">GC</span></div><div class="hx24-main"><span id="hx24GCPrice" class="hx24-price">—</span><span id="hx24GCChange" class="hx24-change">—</span></div><div id="hx24GCState" class="hx24-state">Loading…</div></div>
+          <div class="hx24-tile"><div class="hx24-label">Bitcoin <span class="hx24-symbol">BTC</span></div><div class="hx24-main"><span id="hx24BTCPrice" class="hx24-price">—</span><span id="hx24BTCChange" class="hx24-change">—</span></div><div id="hx24BTCState" class="hx24-state">24/7 market</div></div>
+          <div class="hx24-tile hx24-bias"><div class="hx24-bias-label">Equity Futures Bias</div><div id="hx24Bias" class="hx24-bias-value yellow">LOADING</div><div id="hx24BiasSub" class="hx24-bias-sub">Uses direction of ES, NQ, YM and RTY.</div></div>
+        </div>
+        <div class="hx24-disclaimer">Public-feed prices may be delayed. Equity, energy and metals futures trade nearly around the clock on trading days but have exchange maintenance breaks; Bitcoin trades 24/7. Halifax does not fill missing quotes with estimates.</div>
+      </section>
+
       <section class="mock-panel mock-market">
         <div class="mock-panel-title">Market Overview</div>
         <div class="mock-market-grid">
@@ -4547,8 +4575,33 @@ window.closeMockCalendar=function(){const modal=$('hxCalendarModal');if(modal)mo
 document.addEventListener('keydown',e=>{if(e.key==='Escape')window.closeMockCalendar?.()});
 window.openMockResearch=function(id,focusId){const d=$(id);if(!d)return;d.open=true;setTimeout(()=>{const target=focusId?$(focusId):d;target?.scrollIntoView({behavior:'smooth',block:'center'});focusId&&target?.focus?.()},30)};
 window.clearMockTradeDisplay=function(){['mkPrice','mkMove','mkScore','mkConfidence','mkEntry','mkStop','mkT1','mkT2','mkRR','mkRange'].forEach(id=>set(id,'—','yellow'));set('mkDirection','WAIT','yellow');$('mkFactors').innerHTML='<li>Display cleared. Run Analyze to restore current guidance.</li>';};
+
+const HX24_SYMBOLS=[
+  {symbol:'ES=F',prefix:'hx24ES',kind:'futures'},
+  {symbol:'NQ=F',prefix:'hx24NQ',kind:'futures'},
+  {symbol:'YM=F',prefix:'hx24YM',kind:'futures'},
+  {symbol:'RTY=F',prefix:'hx24RTY',kind:'futures'},
+  {symbol:'CL=F',prefix:'hx24CL',kind:'futures'},
+  {symbol:'GC=F',prefix:'hx24GC',kind:'futures'},
+  {symbol:'BTC-USD',prefix:'hx24BTC',kind:'crypto'}
+];
+let hx24Timer=null,hx24Busy=false;
+function hx24Class(change){return change>0?'green':change<0?'red':'yellow'}
+function hx24Price(v,symbol){if(!Number.isFinite(v))return '—';if(symbol==='BTC-USD')return '$'+v.toLocaleString(undefined,{maximumFractionDigits:0});if(symbol==='CL=F'||symbol==='GC=F')return '$'+v.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});return v.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
+function hx24State(q,kind){if(kind==='crypto')return '24/7 market • '+(q?.source||'public feed');const state=normalizeMarketState(q?.marketState);return `${state==='REGULAR'?'FUTURES OPEN':state==='CLOSED'?'FUTURES PAUSED / CLOSED':state||'PUBLIC FEED'} • ${q?.source||'public feed'}`;}
+function hx24RenderBias(rows){const equity=rows.slice(0,4).filter(x=>Number.isFinite(x?.quote?.changePct));const up=equity.filter(x=>x.quote.changePct>0).length,down=equity.filter(x=>x.quote.changePct<0).length;let label='MIXED',cls='yellow';if(equity.length>=3&&up>=3){label='RISK-ON';cls='green'}else if(equity.length>=3&&down>=3){label='RISK-OFF';cls='red'}set('hx24Bias',label,cls);const sub=$('hx24BiasSub');if(sub)sub.textContent=equity.length?`${up} of ${equity.length} equity futures higher • ${down} lower`:'Verified equity-futures quotes unavailable.';}
+window.refresh24HourMarket=async function(manual=false){
+  if(hx24Busy)return;hx24Busy=true;const btn=$('hx24RefreshBtn');if(btn){btn.disabled=true;btn.textContent='Refreshing…'}
+  const results=await Promise.allSettled(HX24_SYMBOLS.map(async item=>({item,quote:await fetchLiveQuote(item.symbol)})));
+  const rows=[];let success=0;
+  results.forEach((r,i)=>{const item=HX24_SYMBOLS[i],p=item.prefix;if(r.status==='fulfilled'&&r.value?.quote){const q=r.value.quote,chg=Number(q.changePct);success++;rows.push(r.value);set(p+'Price',hx24Price(Number(q.price),item.symbol));set(p+'Change',Number.isFinite(chg)?`${chg>=0?'▲':'▼'} ${Math.abs(chg).toFixed(2)}%`:'—',hx24Class(chg));const st=$(p+'State');if(st)st.textContent=hx24State(q,item.kind);}else{rows.push({item,quote:null});set(p+'Price','—');set(p+'Change','N/A','yellow');const st=$(p+'State');if(st)st.textContent='Verified quote unavailable';}});
+  hx24RenderBias(rows);const u=$('hx24Updated');if(u)u.textContent=success?`Updated ${new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit',second:'2-digit'})} • ${success}/${HX24_SYMBOLS.length} feeds`:'Public market feeds unavailable';
+  if(btn){btn.disabled=false;btn.textContent='Refresh'}hx24Busy=false;
+};
+function start24HourMarket(){if(hx24Timer)return;setTimeout(()=>window.refresh24HourMarket?.(),120);hx24Timer=setInterval(()=>{if(!document.hidden)window.refresh24HourMarket?.()},60000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)window.refresh24HourMarket?.()},{passive:true});}
+
 function initShell(){
-  moveCoreControls();headerTools();
+  moveCoreControls();headerTools();start24HourMarket();
   if(document.body.dataset.halifaxSafeInit==='1')return;document.body.dataset.halifaxSafeInit='1';
   const inp=$('mockTickerInput');if(inp)inp.addEventListener('input',()=>set('mkTicker',inp.value.toUpperCase()||'—'));
   if(location.protocol==='file:'){
