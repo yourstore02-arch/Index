@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#020617">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta name="msapplication-TileColor" content="#020617">
 <link rel="manifest" href="manifest.webmanifest">
 
@@ -18,7 +21,7 @@
 <meta name="application-name" content="Halifax">
 <meta name="format-detection" content="telephone=no">
 
-<title>Halifax Trade Engine v21.14 Collapsible Trade Plan - Exact Dashboard</title>
+<title>Halifax Trade Engine v21.15 Fixed Execution Rail - Exact Dashboard</title>
 
 <style>
 :root{
@@ -1238,6 +1241,23 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
 .futures-strip{margin:9px 0 2px;border-top:1px solid #19344f;padding-top:8px}.futures-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 4px 6px}.futures-title{font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#dce8f4}.futures-meta{font-size:9.5px;color:#8098b2;text-align:right}.futures-grid{display:grid;grid-template-columns:repeat(8,minmax(105px,1fr));border:1px solid #19344f;border-radius:8px;overflow:hidden;background:#071521}.future-tile{min-height:78px;padding:8px 10px;border-right:1px solid #19344f;display:flex;flex-direction:column;justify-content:center}.future-tile:last-child{border-right:0}.future-label{font-size:10px;color:#eef3f8;font-weight:850}.future-name{font-size:8.5px;color:#7f96ad;margin-top:1px}.future-main{display:flex;align-items:baseline;gap:6px;margin-top:5px}.future-price{font-size:16px;font-weight:900;color:#f4f7fb}.future-change{font-size:10px;font-weight:850}.future-foot{display:flex;align-items:center;justify-content:space-between;gap:4px;margin-top:5px}.future-bias{font-size:8px;font-weight:950;letter-spacing:.04em}.future-time{font-size:8px;color:#6f879e}.futures-note{font-size:8.5px;color:#6f879e;margin-top:5px;padding:0 4px}.future-refresh{border:1px solid #294968;background:#0b2031;color:#b8cbe0;border-radius:5px;padding:3px 7px;font-size:9px;font-weight:800;cursor:pointer}.future-refresh:hover{background:#12304a}
 @media(max-width:1420px){.futures-grid{grid-template-columns:repeat(4,1fr)}.future-tile:nth-child(4n){border-right:0}.future-tile:nth-child(n+5){border-top:1px solid #19344f}}
 @media(max-width:900px){.futures-grid{grid-template-columns:repeat(2,1fr)}.future-tile:nth-child(odd){border-right:1px solid #19344f}.future-tile:nth-child(even){border-right:0}.future-tile:nth-child(n+3){border-top:1px solid #19344f}.futures-head{align-items:flex-start;flex-direction:column}.futures-meta{text-align:left}}
+
+/* Halifax v21.16 24-hour scrolling market tape */
+.market-tape24{margin:8px 10px 4px;border:1px solid #1b3b58;border-radius:8px;background:linear-gradient(180deg,#071827,#06131f);overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,.025)}
+.market-tape24-head{height:31px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 10px;border-bottom:1px solid #19344f;background:#081a2a}
+.market-tape24-title{font-size:10px;font-weight:950;letter-spacing:.09em;text-transform:uppercase;color:#eaf3fb;display:flex;align-items:center;gap:7px;white-space:nowrap}
+.market-tape24-dot{width:7px;height:7px;border-radius:50%;background:#35db6f;box-shadow:0 0 10px rgba(53,219,111,.65);animation:hxTapePulse 1.8s ease-in-out infinite}
+.market-tape24-meta{font-size:8.5px;color:#819ab2;text-align:right;white-space:nowrap}
+.market-tape24-refresh{border:0;background:transparent;color:#9ab1c7;font-size:9px;font-weight:850;cursor:pointer;padding:4px 2px;margin-left:6px}.market-tape24-refresh:hover{color:#e8f4ff}
+.market-tape24-view{overflow:hidden;position:relative;mask-image:linear-gradient(to right,transparent,#000 3%,#000 97%,transparent);-webkit-mask-image:linear-gradient(to right,transparent,#000 3%,#000 97%,transparent)}
+.market-tape24-track{display:flex;width:max-content;will-change:transform;animation:hxTapeScroll 46s linear infinite}.market-tape24:hover .market-tape24-track{animation-play-state:paused}
+.market-tape24-group{display:flex;flex:none}.market-tape24-item{min-width:178px;height:62px;padding:8px 13px;border-right:1px solid #17344e;display:flex;flex-direction:column;justify-content:center}
+.market-tape24-top{display:flex;align-items:center;justify-content:space-between;gap:8px}.market-tape24-symbol{font-size:10px;font-weight:950;color:#f2f7fb;letter-spacing:.035em}.market-tape24-name{font-size:8px;color:#7890a6;white-space:nowrap}
+.market-tape24-main{display:flex;align-items:baseline;gap:8px;margin-top:5px}.market-tape24-price{font-size:15px;font-weight:950;color:#f6f9fc}.market-tape24-change{font-size:10px;font-weight:950}.market-tape24-time{font-size:7.5px;color:#607b94;margin-top:3px}
+@keyframes hxTapeScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes hxTapePulse{0%,100%{opacity:.55;transform:scale(.85)}50%{opacity:1;transform:scale(1.1)}}
+@media(max-width:700px){.market-tape24{margin:7px 5px 3px}.market-tape24-item{min-width:145px;height:58px;padding:7px 10px}.market-tape24-price{font-size:14px}.market-tape24-meta{font-size:7.5px}.market-tape24-track{animation-duration:34s}}
+@media(prefers-reduced-motion:reduce){.market-tape24-track,.market-tape24-dot{animation:none}.market-tape24-view{overflow-x:auto;mask-image:none;-webkit-mask-image:none}}
 .mock-command{padding:0 10px 10px}.mock-command-grid{display:grid;grid-template-columns:minmax(170px,1.05fr) minmax(280px,1.6fr) minmax(145px,.75fr) minmax(145px,.75fr) minmax(180px,.95fr) minmax(190px,1fr) minmax(150px,.8fr);gap:12px;align-items:end;margin-top:8px}.mock-command .field{margin:0}.mock-command .field label{font-size:9px;margin-bottom:6px;color:#c9d3de}.mock-command input,.mock-command select{height:38px;background:#07182a;border-color:#1d405f;border-radius:5px;font-size:13px}.mock-command .style-buttons{height:38px;gap:0}.mock-command .style-btn{height:38px;border-radius:0;background:#07182a;border-color:#1d405f}.mock-command .style-btn:first-child{border-radius:5px 0 0 5px}.mock-command .style-btn:last-child{border-radius:0 5px 5px 0}.mock-command .mode-scalp,.mock-command .mode-custom{display:none}.mock-command .style-btn.active{background:#f58a18;color:white;border-color:#f58a18;box-shadow:none}.mock-command .btn-analyze{height:48px;min-height:48px;border-radius:5px;background:#f58a18!important;border-color:#ffa13b!important;color:#fff;font-size:14px;box-shadow:none}.mock-command .analyze-kicker{display:none}.mock-command .analyze-text{font-size:14px}.mock-util{height:38px;border:1px solid #1d405f;border-radius:5px;background:#07182a;color:#dce5ee;font-size:10.5px;font-weight:700;cursor:pointer;padding:0 10px}.mock-util:hover{border-color:#3e739e;background:#0a2036}
 .mock-decision{padding:0}.mock-decision-grid{display:grid;grid-template-columns:1.12fr .82fr 1.42fr 1.88fr 1.42fr;min-height:174px}.mock-dcell{padding:14px 16px;border-right:1px solid #19344f;display:flex;flex-direction:column;justify-content:center}.mock-dcell:last-child{border-right:0}.mock-ticker{font-size:31px;font-weight:950;line-height:1}.mock-company{font-size:12px;font-weight:750;margin-top:8px}.mock-meta{font-size:10.5px;color:#c3ccd6;margin-top:7px;line-height:1.6}.mock-current-label,.mock-small-label{font-size:9.5px;text-transform:uppercase;color:#b6c3d1;font-weight:850;letter-spacing:.25px}.mock-current-price{font-size:36px;font-weight:950;line-height:1.05;margin-top:8px}.mock-current-move{font-size:14px;font-weight:900;margin-top:10px}.mock-current-time{font-size:10px;color:#aab7c5;margin-top:12px}.mock-call{text-align:center}.mock-call-title{font-size:11px;text-transform:uppercase;color:#c2ccd7;font-weight:850;letter-spacing:.45px}.mock-direction{font-size:46px;line-height:1;font-weight:950;margin-top:10px}.mock-scorepair{display:grid;grid-template-columns:1fr 1fr;margin-top:13px}.mock-scorepair>div:first-child{border-right:1px solid #1f3a54}.mock-scorepair .label{font-size:9.5px;color:#b6c3d1;text-transform:uppercase}.mock-scorepair .value{font-size:24px;font-weight:950;margin-top:5px}.mock-levels{display:grid;grid-template-columns:repeat(4,1fr);gap:0}.mock-level{padding:6px 9px;text-align:center;border-right:1px solid #1f3a54}.mock-level:last-child{border-right:0}.mock-level .l{font-size:9px;text-transform:uppercase;color:#b8c3cf;font-weight:800}.mock-level .v{font-size:15px;font-weight:900;margin-top:8px;white-space:nowrap}.mock-level-bottom{display:grid;grid-template-columns:1fr 1fr;margin-top:12px;padding-top:12px;border-top:1px solid #1f3a54;text-align:center}.mock-level-bottom>div:first-child{border-right:1px solid #1f3a54}.mock-level-bottom .v{font-size:18px;font-weight:850;margin-top:7px}.mock-factor-title{font-size:10px;text-transform:uppercase;color:#dce5ee;font-weight:900}.mock-factor-list{list-style:none;margin:10px 0 0;padding:0;font-size:10.5px;color:#ced7e0;line-height:1.65}.mock-factor-list li{position:relative;padding-left:13px}.mock-factor-list li:before{content:"•";position:absolute;left:0;color:#46d55a}.mock-full-btn{margin-top:8px;align-self:flex-start;background:#07182a;border:1px solid #1d405f;color:#dfe7ef;border-radius:4px;padding:7px 11px;font-size:10px;cursor:pointer}
 .mock-guidance{display:grid;grid-template-columns:1.2fr 1.1fr 1.55fr .85fr 1.35fr;min-height:140px}.mock-gcell{padding:12px 14px;border-right:1px solid #19344f}.mock-gcell:last-child{border-right:0}.mock-gtitle{font-size:10px;text-transform:uppercase;color:#dce4ec;font-weight:900;margin-bottom:8px}.mock-guidance-core{display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:center}.mock-big-gauge{text-align:center}.mock-arc{width:110px;height:56px;border-radius:110px 110px 0 0;border:8px solid #273b4f;border-bottom:0;margin:auto;position:relative;overflow:hidden}.mock-arc:after{content:"";position:absolute;left:-8px;top:-8px;width:110px;height:56px;border-radius:110px 110px 0 0;border:8px solid var(--arc,#48d45d);border-bottom:0;clip-path:polygon(0 0,70% 0,70% 100%,0 100%)}.mock-guide-score{font-size:23px;font-weight:950;margin-top:-15px}.mock-guide-bias{font-size:12px;font-weight:900;margin-top:3px}.mock-guide-list{display:grid;gap:6px;font-size:10.5px}.mock-guide-row{display:flex;justify-content:space-between;gap:10px}.mock-guide-row span:last-child{font-weight:800}.mock-events{display:grid;gap:5px}.mock-event{display:grid;grid-template-columns:48px 60px 1fr 60px;gap:6px;align-items:center;font-size:9.5px;color:#d2d9e1}.mock-risk-badge{font-size:9px;text-align:center;border:1px solid currentColor;border-radius:3px;padding:2px 4px;font-weight:850}.mock-event-risk{text-align:center;padding-top:10px}.mock-event-risk .big{font-size:23px;font-weight:950}.mock-event-risk .small{font-size:10px;color:#bdc8d3;line-height:1.5;margin-top:12px}.mock-shield{font-size:34px;margin-top:7px}.mock-macro-summary{font-size:10.5px;line-height:1.55;color:#d0d9e2}.mock-calendar-btn{margin-top:10px;background:#07182a;border:1px solid #1d405f;color:#dfe7ef;border-radius:4px;padding:7px 10px;font-size:10px;cursor:pointer}
@@ -1354,6 +1374,69 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
 .trade-plan-dock .green{color:#49dc68}.trade-plan-dock .red{color:#ff6f75}.trade-plan-dock .yellow{color:#f5c84f}.trade-plan-dock .blue{color:#63b3ff}
 @media(max-width:1180px){.mock-decision-row{grid-template-columns:1fr}.trade-plan-dock{width:100%}}
 @media(max-width:620px){.mock-decision-row{margin-top:8px}.trade-plan-grid{grid-template-columns:1fr 1fr}.trade-plan-v{font-size:14px}.trade-plan-dock>summary{padding:11px 12px}}
+
+
+/* ================= v21.15 DESKTOP EXECUTION RAIL FIX =================
+   Keeps Entry / Stop / Exit visible in the unused right side on desktop.
+   On tablets/phones it returns to normal document flow under Trade Decision. */
+@media (min-width:1181px){
+  #mockDashboard{
+    padding-right:414px!important;
+    width:100%!important;
+    max-width:none!important;
+  }
+  .mock-decision-row{
+    display:block!important;
+    margin-top:12px!important;
+  }
+  .mock-decision-row>#mockDecision{
+    width:100%!important;
+    min-width:0!important;
+  }
+  #mockTradePlanDock.trade-plan-dock{
+    position:fixed!important;
+    right:16px!important;
+    top:82px!important;
+    width:382px!important;
+    max-width:calc(100vw - 32px)!important;
+    max-height:calc(100vh - 98px)!important;
+    overflow:auto!important;
+    z-index:2147483000!important;
+    margin:0!important;
+    border:1px solid #3b6b8f!important;
+    box-shadow:0 16px 46px rgba(0,0,0,.55),0 0 0 1px rgba(78,164,220,.08)!important;
+    scrollbar-width:thin;
+  }
+  #mockTradePlanDock.trade-plan-dock>summary{
+    position:sticky;
+    top:0;
+    z-index:3;
+    background:linear-gradient(180deg,#123653,#092036)!important;
+    border-bottom:1px solid #315a79!important;
+  }
+  #mockTradePlanDock.trade-plan-dock:not([open]){
+    max-height:none!important;
+    overflow:hidden!important;
+  }
+}
+@media (max-width:1180px){
+  #mockDashboard{padding-right:0!important;}
+  .mock-decision-row{display:block!important;}
+  #mockTradePlanDock.trade-plan-dock{
+    position:static!important;
+    width:100%!important;
+    max-width:none!important;
+    max-height:none!important;
+    overflow:hidden!important;
+    margin-top:10px!important;
+  }
+}
+/* Explicit visibility guardrail in case an older shell rule tries to hide cards. */
+#mockTradePlanDock{
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+}
 </style>
 </head>
 <body>
@@ -1361,7 +1444,7 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
     <div class="card header">
         <div class="brand-stack">
             <div class="terminal-kicker"><span class="kicker-dot"></span> HALIFAX QUANT RESEARCH TERMINAL</div>
-            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v21.14 Trade Plan</span></span></div>
+            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v21.16 24H Tape</span></span></div>
             <div class="subtitle">Predictive swing research • Unified market guidance • Federal contract radar • Options • Bonds • Event guardrails</div>
         </div>
         <div class="header-actions"><div class="badge system-badge"><span class="status-dot"></span><span id="engineStatus">Engine ready</span></div></div>
@@ -1371,6 +1454,13 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
     <div id="mockDashboard">
       <section class="mock-panel mock-market">
         <div class="mock-panel-title">Market Overview</div>
+        <div class="market-tape24" id="marketTape24">
+          <div class="market-tape24-head">
+            <div class="market-tape24-title"><span class="market-tape24-dot"></span>24-Hour Market Tape</div>
+            <div class="market-tape24-meta"><span id="marketTape24Status">Crypto 24/7 • futures nearly 24h</span><button type="button" class="market-tape24-refresh" onclick="window.refresh24HourTape?.(true)">↻ Refresh</button></div>
+          </div>
+          <div class="market-tape24-view"><div class="market-tape24-track" id="marketTape24Track"></div></div>
+        </div>
         <div class="mock-market-grid">
           <div class="mock-market-tile"><div class="mock-m-label">SPY (S&amp;P 500)</div><div class="mock-m-main"><span id="mkSPYPrice" class="mock-m-value">—</span><span id="mkSPYChange" class="mock-m-change">—</span></div><div id="mkSPYSpark" class="mock-spark"></div></div>
           <div class="mock-market-tile"><div class="mock-m-label">QQQ (Nasdaq 100)</div><div class="mock-m-main"><span id="mkQQQPrice" class="mock-m-value">—</span><span id="mkQQQChange" class="mock-m-change">—</span></div><div id="mkQQQSpark" class="mock-spark"></div></div>
@@ -1507,7 +1597,7 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
         <details id="mockSmart" class="mock-research"><summary><div class="mock-rtitle">Smart Money Flow</div><div id="mkSmartStatus" class="mock-rstatus yellow">Awaiting</div></summary><div id="mockSmartBody" class="mock-research-body"></div></details>
         <details id="mockFund" class="mock-research"><summary><div class="mock-rtitle">Fundamentals</div><div id="mkFundStatus" class="mock-rstatus yellow">Awaiting</div></summary><div id="mockFundBody" class="mock-research-body"></div></details>
       </section>
-      <div class="mock-footer"><span>This tool is for informational research only and does not constitute financial advice.</span><span><span class="mock-live-dot"></span><span id="mkFooterTime">Data updates with analysis</span> &nbsp; Halifax Trade Engine v21.14</span></div>
+      <div class="mock-footer"><span>This tool is for informational research only and does not constitute financial advice.</span><span><span class="mock-live-dot"></span><span id="mkFooterTime">Data updates with analysis</span> &nbsp; Halifax Trade Engine v21.15</span></div>
     </div>
 
     <div class="card command-card">
@@ -4467,6 +4557,15 @@ function moveCoreControls(){
   const st=srcStyle?.value||'swing';document.querySelectorAll('[data-mock-style]').forEach(b=>b.classList.toggle('active',b.dataset.mockStyle===st));
   $('mockTickerInput')?.addEventListener('input',e=>set('mkTicker',String(e.target.value||'').toUpperCase()||'—'));
 }
+window.toggleExecutionRail=function(){
+  const d=document.getElementById('mockTradePlanDock');
+  if(!d)return;
+  d.open=!d.open;
+  if(d.open){
+    const first=d.querySelector('.trade-plan-sub');
+    if(first)first.open=true;
+  }
+};
 window.mockSetStyle=function(style){
   const s=$('style');if(s){s.value=style;try{applyStyleDefaults()}catch(e){}}
   document.querySelectorAll('[data-mock-style]').forEach(b=>b.classList.toggle('active',b.dataset.mockStyle===style));
@@ -4499,7 +4598,7 @@ function rehouseLegacy(){ /* v21.9: intentionally do not move core Halifax nodes
 function headerTools(){
   const h=document.querySelector('.header-actions');if(!h||$('mockHeaderTools'))return;
   const sys=h.querySelector('.system-badge'),title=document.querySelector('.title');if(sys&&title)title.appendChild(sys);
-  const tools=document.createElement('div');tools.id='mockHeaderTools';tools.innerHTML=`<div class="mock-tool clickable" onclick="toggleMockRefresh()">↻ Auto Refresh: <b id="mkAutoRefresh">ON</b></div><div class="mock-tool">◷ <span id="mkClock">—</span></div><div class="mock-tool">☾ Dark</div>`;h.insertBefore(tools,h.firstChild);
+  const tools=document.createElement('div');tools.id='mockHeaderTools';tools.innerHTML=`<div class="mock-tool clickable" onclick="toggleExecutionRail()">▤ <b>TRADE PLAN</b></div><div class="mock-tool clickable" onclick="toggleMockRefresh()">↻ Auto Refresh: <b id="mkAutoRefresh">ON</b></div><div class="mock-tool">◷ <span id="mkClock">—</span></div><div class="mock-tool">☾ Dark</div>`;h.insertBefore(tools,h.firstChild);
   const tick=()=>{const e=$('mkClock');if(e)e.textContent=new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit',second:'2-digit'})};tick();setInterval(tick,1000);
 }
 window.toggleMockRefresh=function(){const s=$('liveRefresh');if(!s)return;const on=String(s.value)!=='0';s.value=on?'0':'5';set('mkAutoRefresh',on?'OFF':'ON',on?'red':'green');if(lastAnalysis?.primary?.ticker){stopLiveQuoteStream();if(!on)startLiveQuoteStream(lastAnalysis.primary.ticker,halifaxRunId)}};
@@ -4507,6 +4606,7 @@ window.openMockResearch=function(id,focusId){const d=$(id);if(!d)return;d.open=t
 window.clearMockTradeDisplay=function(){['mkPrice','mkMove','mkScore','mkConfidence','mkEntry','mkStop','mkT1','mkT2','mkRR','mkRange','dockEntryZone','dockEntry','dockCurrent','dockEntryGrade','dockStop','dockRiskShare','dockStopPct','dockPlannedRisk','dockT1','dockT2','dockT3','dockRR','dockShares','dockPositionValue','dockRiskBudget','dockPlanRange'].forEach(id=>set(id,'—','yellow'));set('mkDirection','WAIT','yellow');set('dockDirection','WAIT','yellow');set('dockTicker','—');set('dockPlanState','Display cleared. Run Analyze to restore the current plan.');$('mkFactors').innerHTML='<li>Display cleared. Run Analyze to restore current guidance.</li>';};
 function initShell(){
   moveCoreControls();headerTools();
+  const rail=$('mockTradePlanDock');if(rail)rail.open=true;
   if(document.body.dataset.halifaxSafeInit==='1')return;document.body.dataset.halifaxSafeInit='1';
   const inp=$('mockTickerInput');if(inp)inp.addEventListener('input',()=>set('mkTicker',inp.value.toUpperCase()||'—'));
   if(location.protocol==='file:'){
@@ -4729,5 +4829,40 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now(
 // ================= End Halifax v21.12 Sector Bear ETF Radar =============
 </script>
 
+
+<script>
+// ================= Halifax v21.16 24-Hour Market Tape =================
+(() => {
+  'use strict';
+  const ITEMS=[
+    {id:'BTC',symbol:'BTC-USD',label:'BTC',name:'Bitcoin',crypto:true},
+    {id:'ETH',symbol:'ETH-USD',label:'ETH',name:'Ethereum',crypto:true},
+    {id:'ES',label:'S&P FUT',name:'E-mini 500',mirror:true},
+    {id:'NQ',label:'NASDAQ FUT',name:'E-mini NQ',mirror:true},
+    {id:'YM',label:'DOW FUT',name:'E-mini Dow',mirror:true},
+    {id:'RTY',label:'RUSSELL FUT',name:'E-mini RTY',mirror:true},
+    {id:'GC',label:'GOLD',name:'COMEX',mirror:true},
+    {id:'CL',label:'CRUDE',name:'WTI',mirror:true}
+  ];
+  const $=id=>document.getElementById(id);
+  const clean=x=>String(x??'—').trim()||'—';
+  function card(x){return `<div class="market-tape24-item" data-tape-id="${x.id}"><div class="market-tape24-top"><span class="market-tape24-symbol">${x.label}</span><span class="market-tape24-name">${x.name}</span></div><div class="market-tape24-main"><span class="market-tape24-price" data-role="price">—</span><span class="market-tape24-change yellow" data-role="change">—</span></div><div class="market-tape24-time" data-role="time">Waiting for public quote…</div></div>`;}
+  function ensureShell(){const tr=$('marketTape24Track');if(!tr||tr.dataset.ready==='1')return;const group=`<div class="market-tape24-group">${ITEMS.map(card).join('')}</div>`;tr.innerHTML=group+group;tr.dataset.ready='1';}
+  function setAll(id,price,change,time,cls='yellow'){document.querySelectorAll(`[data-tape-id="${id}"]`).forEach(el=>{const p=el.querySelector('[data-role="price"]'),c=el.querySelector('[data-role="change"]'),t=el.querySelector('[data-role="time"]');if(p)p.textContent=clean(price);if(c){c.textContent=clean(change);c.classList.remove('green','red','yellow');c.classList.add(cls);}if(t)t.textContent=clean(time);});}
+  function mirrorOne(id){const p=$('fut'+id+'Price'),c=$('fut'+id+'Change'),t=$('fut'+id+'Time');if(!p||!c)return;const cls=c.classList.contains('green')?'green':c.classList.contains('red')?'red':'yellow';setAll(id,p.textContent,c.textContent,`Futures • ${t?.textContent||'—'}`,cls);}
+  function mirrorFutures(){['ES','NQ','YM','RTY','GC','CL'].forEach(mirrorOne);}
+  function fmtPrice(v,id){if(!Number.isFinite(v))return '—';if(id==='BTC')return '$'+v.toLocaleString(undefined,{maximumFractionDigits:0});if(id==='ETH')return '$'+v.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});return v.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function fmtPct(v){return Number.isFinite(v)?`${v>=0?'+':''}${v.toFixed(2)}%`:'—';}
+  function clock(ts){if(!Number.isFinite(ts))return 'Public quote';try{return `24/7 crypto • ${new Date(ts*1000).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})}`;}catch(e){return '24/7 crypto';}}
+  let busy=false,lastCryptoAt=0;
+  async function refreshCrypto(force=false){if(busy)return;if(!force&&Date.now()-lastCryptoAt<45000)return;busy=true;try{const crypto=ITEMS.filter(x=>x.crypto);const res=await Promise.allSettled(crypto.map(x=>loadTickerData(x.symbol,'5m','5d')));res.forEach((r,i)=>{const cfg=crypto[i];if(r.status!=='fulfilled'||!r.value){setAll(cfg.id,'—','NO DATA','Public crypto feed unavailable','yellow');return;}const d=r.value,move=Number(d.dayChangePct),price=Number(d.price);setAll(cfg.id,fmtPrice(price,cfg.id),fmtPct(move),clock(d.quoteTime||d.dataTime),move>0?'green':move<0?'red':'yellow');});lastCryptoAt=Date.now();}catch(e){}finally{busy=false;}}
+  window.refresh24HourTape=async function(manual=false){ensureShell();mirrorFutures();if(manual&&window.refreshFuturesTape)await window.refreshFuturesTape(true);await refreshCrypto(manual);mirrorFutures();const st=$('marketTape24Status');if(st){const tm=new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});st.textContent=`Crypto 24/7 • futures nearly 24h • ${tm}`;}};
+  ensureShell();
+  // Wrap the existing futures refresh so the scrolling tape always receives the same futures quotes without duplicate futures requests.
+  const base=window.refreshFuturesTape;
+  if(typeof base==='function'){window.refreshFuturesTape=async function(manual=false){const out=await base(manual);mirrorFutures();await refreshCrypto(false);const st=$('marketTape24Status');if(st){const tm=new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});st.textContent=`Crypto 24/7 • futures nearly 24h • ${tm}`;}return out;};}
+  window.addEventListener('load',()=>{ensureShell();setTimeout(()=>window.refresh24HourTape?.(false),700);});
+})();
+</script>
 </body>
 </html>
