@@ -1464,10 +1464,238 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
 @media(max-width:1180px){.hx-env-strip{grid-template-columns:repeat(4,1fr)}.hx-env-title,.hx-env-metric{border-bottom:1px solid #19344f}.hx-wheel-layout{grid-template-columns:1fr}.hx-wheel-drawer{min-height:180px}}
 @media(max-width:720px){.hx-market-headline,.hx-active-head{align-items:flex-start;flex-direction:column}.hx-env-strip{grid-template-columns:1fr 1fr}.hx-env-primary{padding-right:70px}.hx-wheel{width:310px;height:310px}.hx-wheel-btn{width:76px;height:52px}.hx-wheel-b1{left:117px;top:10px}.hx-wheel-b2{right:29px;top:48px}.hx-wheel-b3{right:4px;top:129px}.hx-wheel-b4{right:31px;bottom:46px}.hx-wheel-b5{left:117px;bottom:8px}.hx-wheel-b6{left:31px;bottom:46px}.hx-wheel-b7{left:4px;top:129px}.hx-wheel-b8{left:31px;top:48px}.hx-wheel-center{width:90px;height:90px}.hx-wheel-center strong{font-size:31px}.hx-menu-quick{grid-template-columns:1fr 1fr}}
 
+
+/* ================= Halifax v23.0 MOCKUP DESK — visible shell ================= */
+:root{
+  --hx23-bg:#020a12;--hx23-panel:#06111c;--hx23-panel2:#081722;--hx23-line:#183247;
+  --hx23-line2:#294a62;--hx23-text:#edf5fb;--hx23-muted:#8399aa;--hx23-green:#16d75f;
+  --hx23-red:#ff3b43;--hx23-yellow:#f6c344;--hx23-blue:#36a8ff;
+}
+body{background:#020a12!important;padding:0!important;overflow-x:hidden}
+.container{max-width:none!important;width:100%!important;padding:0!important}
+.container>.header{display:none!important}
+#mockDashboard{display:none!important}
+#hx23Dashboard{display:block!important;min-height:100vh;background:
+  radial-gradient(circle at 45% -15%,rgba(21,75,111,.11),transparent 28%),
+  linear-gradient(180deg,#020910 0%,#020a12 100%);color:var(--hx23-text);
+  font-family:Arial,Helvetica,sans-serif;font-variant-numeric:tabular-nums}
+#hx23Dashboard *{box-sizing:border-box}
+.hx23-topbar{height:58px;border-bottom:1px solid #1a2d3d;display:grid;grid-template-columns:300px 1fr 360px;align-items:center;padding:0 16px;background:#02080e;position:relative;z-index:20}
+.hx23-brand{display:flex;align-items:center;gap:10px}
+.hx23-logo{width:31px;height:38px;position:relative;display:grid;place-items:center;font-weight:1000;font-style:italic;font-size:23px;color:#9dd5ff;filter:drop-shadow(0 0 8px rgba(54,168,255,.28))}
+.hx23-logo:before,.hx23-logo:after{content:"";position:absolute;width:8px;height:33px;background:linear-gradient(180deg,#8bd2ff,#198ae6);transform:skew(-24deg)}
+.hx23-logo:before{left:5px}.hx23-logo:after{right:5px;top:5px;background:linear-gradient(180deg,#1f8be0,#76c9ff)}
+.hx23-logo span{position:relative;z-index:2;color:#fff}
+.hx23-brand-title{font-size:20px;font-weight:950;letter-spacing:.01em;line-height:1}
+.hx23-brand-sub{font-size:9px;font-weight:850;letter-spacing:.13em;margin-top:3px;color:#c8d3dc}
+.hx23-version{font-size:10px;color:#8398a9;margin-left:8px;font-weight:500}
+.hx23-top-center{text-align:center;font-size:18px;font-weight:900;letter-spacing:.02em}.hx23-live{font-size:10px;color:var(--hx23-green);margin-left:6px}
+.hx23-top-tools{display:flex;justify-content:flex-end;align-items:center;gap:13px;color:#b8c7d2}
+.hx23-clock{font-size:12px;white-space:nowrap}.hx23-icon{width:31px;height:31px;border-radius:50%;display:grid;place-items:center;border:1px solid transparent;color:#ccd7df;font-size:16px}
+.hx23-icon:hover{border-color:#29465d;background:#07141f}.hx23-avatar{width:38px;height:38px;border:1px solid #36536a;border-radius:50%;display:grid;place-items:center;font-size:12px;background:#07121b}
+.hx23-tape-shell{margin:5px 14px 0;border:1px solid #173044;border-radius:11px;overflow:hidden;background:linear-gradient(180deg,#06131d,#04101a)}
+.hx23-tape{height:82px;display:flex;overflow-x:auto;scrollbar-width:none}.hx23-tape::-webkit-scrollbar{display:none}
+.hx23-tape-cell{flex:1 0 145px;min-width:145px;padding:10px 12px;border-right:1px solid #1a3142;position:relative}
+.hx23-tape-cell:last-child{border-right:0}.hx23-tape-label{display:flex;align-items:center;gap:6px;font-size:10px;color:#dfe8ee;font-weight:800;white-space:nowrap}
+.hx23-coin{width:17px;height:17px;border-radius:50%;display:grid;place-items:center;background:#0c2435;color:#f2c552;font-size:9px}
+.hx23-tape-price{font-size:15px;font-weight:900;margin-top:4px;color:#f4f8fb}.hx23-tape-change{font-size:10px;font-weight:900;margin-top:5px}
+.hx23-tape-time{position:absolute;right:8px;bottom:7px;font-size:7px;color:#537083;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hx23-mini-trend{position:absolute;right:8px;top:29px;width:42px;height:16px;display:flex;align-items:flex-end;gap:2px;opacity:.85}
+.hx23-mini-trend i{width:3px;background:currentColor;border-radius:2px;display:block}
+.hx23-env{margin:10px 14px 0;height:104px;border:1px solid #173044;border-radius:10px;background:#06121c;display:grid;grid-template-columns:180px repeat(6,minmax(110px,1fr)) 185px 180px;overflow:hidden}
+.hx23-env>div{border-right:1px solid #173044;padding:10px 12px;min-width:0;display:flex;flex-direction:column;justify-content:center}.hx23-env>div:last-child{border-right:0}
+.hx23-env-title{justify-content:flex-start!important;padding-top:12px!important}.hx23-env-title b{font-size:11px;text-transform:uppercase}.hx23-env-title small{font-size:8px;color:#647c8f;margin-top:5px;line-height:1.45}
+.hx23-ek{font-size:8px;color:#8da1b0;text-transform:uppercase;font-weight:850;text-align:center;white-space:nowrap}
+.hx23-ev{font-size:13px;font-weight:950;text-align:center;margin-top:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hx23-ring{width:48px;height:48px;border-radius:50%;border:5px solid #263846;margin:5px auto 0;display:grid;place-items:center;position:relative;font-size:12px;font-weight:950}
+.hx23-ring:before{content:"";position:absolute;inset:-5px;border-radius:50%;border:5px solid currentColor;border-left-color:transparent;transform:rotate(25deg)}
+.hx23-session{align-items:flex-start!important}.hx23-session .hx23-ek{text-align:left}.hx23-session .hx23-ev{text-align:left;font-size:11px}.hx23-session small{font-size:8px;color:#7e95a6;margin-top:5px;line-height:1.35}
+.hx23-main{display:grid;grid-template-columns:minmax(310px,26.5%) minmax(560px,1fr) minmax(300px,24%);gap:10px;margin:10px 14px 0;min-height:670px}
+.hx23-panel{border:1px solid #183247;border-radius:9px;background:linear-gradient(180deg,#06131e,#04101a);overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.16)}
+.hx23-panel-head{height:42px;border-bottom:1px solid #183247;display:flex;align-items:center;justify-content:space-between;padding:0 12px}
+.hx23-panel-head b{font-size:11px;text-transform:uppercase;letter-spacing:.02em}.hx23-panel-head span{font-size:9px;color:#7891a4}
+.hx23-left{min-height:670px;display:flex;flex-direction:column}.hx23-stock-tools{display:flex;gap:6px}.hx23-small-btn{height:26px;border:1px solid #27445a!important;background:#091d2c!important;padding:0 8px!important;border-radius:4px!important;color:#9bc5e1!important;font-size:8px!important;box-shadow:none!important}
+.hx23-stock-table{width:100%;table-layout:fixed}.hx23-stock-table th{font-size:8px!important;padding:7px 8px!important;background:#06131e!important;color:#7891a4!important;border-bottom:1px solid #183247!important}
+.hx23-stock-table td{font-size:10px!important;padding:8px 8px!important;border-bottom:1px solid #132a3c!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hx23-stock-table tr{cursor:pointer}.hx23-stock-table tbody tr:hover td{background:#092033!important}.hx23-symbol{font-weight:950;font-size:11px}.hx23-arrow{font-size:13px;font-weight:950}
+.hx23-left-foot{margin-top:auto;border-top:1px solid #183247;padding:10px 12px;color:#35aef4;font-size:9px;display:flex;justify-content:space-between;align-items:center}
+.hx23-center{display:grid;grid-template-rows:360px 300px;gap:10px;min-width:0}
+.hx23-chart-panel{position:relative}.hx23-chart-head{height:54px;border-bottom:1px solid #183247;display:flex;align-items:center;justify-content:space-between;padding:0 12px}
+.hx23-chart-title{font-size:12px;font-weight:950}.hx23-chart-title small{font-size:9px;color:#8097a8;margin-left:6px;font-weight:500}
+.hx23-chart-price{font-size:20px;font-weight:950}.hx23-chart-move{font-size:12px;font-weight:900;margin-left:8px}
+.hx23-tf-row{height:33px;display:flex;align-items:center;gap:8px;padding:0 12px;border-bottom:1px solid #102638}
+.hx23-tf{border:0!important;background:transparent!important;color:#8aa0b2!important;font-size:9px!important;padding:4px 8px!important;box-shadow:none!important;min-height:0!important}.hx23-tf.active{border:1px solid #1764a3!important;background:#09223a!important;color:#dfefff!important;border-radius:4px!important}
+#hx23ChartCanvas{display:block;width:100%;height:270px;background:linear-gradient(180deg,#05121d,#04101a)}
+.hx23-chart-empty{position:absolute;inset:88px 0 0;display:grid;place-items:center;color:#577184;font-size:10px;pointer-events:none}
+.hx23-lower{display:grid;grid-template-columns:1fr 1fr;gap:10px;position:relative;min-width:0}.hx23-lower-card{min-width:0}
+.hx23-feed{padding:8px 10px;font-size:9px;line-height:1.45}.hx23-feed-item{display:grid;grid-template-columns:45px 44px 1fr;gap:5px;padding:6px 0;border-bottom:1px solid #132a3c}.hx23-feed-time{color:#6d8799}.hx23-feed-symbol{font-weight:950}.hx23-feed-text{color:#aebdc8}
+.hx23-mover-tabs{display:flex;gap:18px;padding:8px 12px 4px;font-size:9px;border-bottom:1px solid #132a3c}.hx23-mover-tabs b{color:#f4f8fb;border-bottom:2px solid #1e9cf4;padding-bottom:6px}.hx23-mover-list{padding:6px 12px}
+.hx23-mover{display:grid;grid-template-columns:1fr 60px 55px;gap:5px;padding:6px 0;font-size:10px;border-bottom:1px solid #102638}.hx23-mover span:nth-child(2){font-weight:900;text-align:right}.hx23-mover span:last-child{text-align:right;color:#91a4b2}
+.hx23-wheel-float{position:absolute;width:326px;height:326px;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-47%);z-index:8;background:radial-gradient(circle,#0c2436 0 24%,#071521 25% 45%,#132c3d 46% 46.5%,#06121b 47% 100%);border:1px solid #345873;box-shadow:0 0 0 7px rgba(27,58,79,.42),0 16px 35px rgba(0,0,0,.55),inset 0 0 28px rgba(38,119,174,.14)}
+.hx23-wheel-float:before{content:"";position:absolute;inset:13px;border:1px solid rgba(76,132,168,.24);border-radius:50%}.hx23-wheel-btn{position:absolute;width:88px;height:58px;border:0!important;background:transparent!important;color:#dceaf4!important;box-shadow:none!important;padding:0!important;display:flex!important;flex-direction:column;justify-content:center;align-items:center;gap:4px;font-size:9px!important}
+.hx23-wheel-btn:hover{color:#56bdff!important;text-shadow:0 0 12px #1777b5}.hx23-wheel-btn em{font-style:normal;font-size:20px;line-height:1}.hx23-wheel-btn span{font-size:8px;font-weight:900;text-transform:uppercase}
+.hx23-w1{left:119px;top:9px}.hx23-w2{right:20px;top:49px}.hx23-w3{right:1px;top:137px}.hx23-w4{right:26px;bottom:45px}.hx23-w5{left:119px;bottom:7px}.hx23-w6{left:26px;bottom:45px}.hx23-w7{left:1px;top:137px}.hx23-w8{left:20px;top:49px}
+.hx23-wheel-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:92px;height:92px;border-radius:50%;border:1px solid #507694;background:radial-gradient(circle at 40% 30%,#123d5a,#07131d 72%);display:grid;place-items:center;color:#e8f4fc;font-size:38px;font-style:italic;font-weight:950;box-shadow:0 0 24px rgba(55,167,242,.18)}
+.hx23-right{display:grid;grid-template-rows:1fr 176px;gap:10px}.hx23-ai{min-height:0}.hx23-command{padding:9px 10px;border-bottom:1px solid #183247;display:grid;grid-template-columns:1fr 78px;gap:6px}
+.hx23-command input{min-height:34px!important;height:34px!important;padding:7px 9px!important;border-radius:4px!important;font-size:12px!important;background:#04111c!important;border:1px solid #29465d!important}
+.hx23-analyze{height:34px!important;min-height:0!important;border-radius:4px!important;padding:0 8px!important;background:#146fae!important;border:1px solid #3198d4!important;font-size:9px!important;box-shadow:none!important}
+.hx23-ai-body{padding:12px}.hx23-ai-symbol{font-size:17px;font-weight:950}.hx23-ai-company{font-size:10px;color:#849bac;margin-left:6px;font-weight:500}.hx23-ai-price{font-size:19px;font-weight:950;margin-top:5px}.hx23-ai-move{font-size:11px;margin-left:7px}
+.hx23-ai-grid{display:grid;grid-template-columns:118px 1fr;gap:9px;margin-top:12px}.hx23-score-card{border:1px solid #1c384d;border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:126px}
+.hx23-score-ring{width:76px;height:76px;border-radius:50%;display:grid;place-items:center;border:6px solid #24404f;position:relative;font-size:24px;font-weight:950;color:#fff}
+.hx23-score-ring:before{content:"";position:absolute;inset:-6px;border:6px solid var(--ring,#16d75f);border-left-color:transparent;border-radius:50%;transform:rotate(30deg)}.hx23-score-label{font-size:10px;font-weight:950;margin-top:7px}
+.hx23-ai-facts{border:1px solid #1c384d;border-radius:7px;padding:9px 10px}.hx23-fact{display:flex;justify-content:space-between;gap:10px;padding:6px 0;font-size:9px}.hx23-fact span:first-child{color:#a7b4be}.hx23-fact b{font-size:10px}
+.hx23-levels{display:grid;grid-template-columns:1fr 1fr 1fr;border:1px solid #1c384d;border-radius:7px;margin-top:10px;overflow:hidden}.hx23-level{padding:9px 6px;text-align:center;border-right:1px solid #1c384d}.hx23-level:last-child{border-right:0}.hx23-level span{display:block;font-size:8px;color:#9babb7;text-transform:uppercase}.hx23-level b{display:block;margin-top:5px;font-size:11px}
+.hx23-summary{border-top:1px solid #183247;margin-top:11px;padding-top:10px}.hx23-summary h4{font-size:10px;text-transform:uppercase;margin:0 0 7px}.hx23-summary p{font-size:9.5px;color:#b1c0cb;line-height:1.5;margin:0}
+.hx23-plan-btn{width:100%;height:35px!important;min-height:0!important;border:1px solid #29465d!important;background:#0a1a26!important;border-radius:4px!important;color:#b6c8d5!important;font-size:9px!important;margin-top:11px;box-shadow:none!important}
+.hx23-events{padding:7px 12px}.hx23-event{display:grid;grid-template-columns:58px 1fr;gap:7px;padding:7px 0;border-bottom:1px solid #102638;font-size:9px}.hx23-event-time{color:#829bad}.hx23-event-name{color:#dbe5ec}
+.hx23-footer{height:48px;border-top:1px solid #152c3e;margin-top:10px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;color:#879dad;font-size:9px;background:#020910}
+.hx23-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#14ce55;margin-left:5px;box-shadow:0 0 8px rgba(20,206,85,.45)}
+.green{color:var(--hx23-green)!important}.red{color:var(--hx23-red)!important}.yellow{color:var(--hx23-yellow)!important}.blue,.cyan{color:var(--hx23-blue)!important}
+
+/* slide-out radial menu content */
+#hx23Drawer{position:fixed;right:-520px;top:64px;width:min(500px,92vw);height:calc(100vh - 78px);z-index:100;border:1px solid #29516d;border-radius:10px 0 0 10px;background:#06121d;box-shadow:-20px 0 50px rgba(0,0,0,.55);transition:right .22s ease;overflow:hidden}
+#hx23Drawer.open{right:0}.hx23-drawer-head{height:48px;border-bottom:1px solid #1b3549;display:flex;align-items:center;justify-content:space-between;padding:0 13px}.hx23-drawer-head b{font-size:11px;text-transform:uppercase}.hx23-drawer-close{width:30px;height:30px!important;min-height:0!important;padding:0!important;border:1px solid #2d4d63!important;background:#0b1e2d!important;border-radius:4px!important;box-shadow:none!important}
+.hx23-drawer-body{height:calc(100% - 48px);overflow:auto;padding:12px}.hx23-drawer-card{border:1px solid #183247;border-radius:7px;background:#071722;padding:10px;margin-bottom:9px}.hx23-drawer-title{font-size:9px;color:#6c8ca3;text-transform:uppercase;font-weight:900;margin-bottom:6px}.hx23-drawer-copy{font-size:10px;line-height:1.55;color:#cad5dd}.hx23-drawer-copy table{font-size:9px}.hx23-drawer-action{margin-top:9px!important;background:#0f5685!important;border:1px solid #2f84b6!important;padding:7px 9px!important;font-size:9px!important;border-radius:4px!important;box-shadow:none!important}
+
+/* keep legacy functional engine present but visually out of the desk */
+.container>.card:not(.header),.container>details.card{display:none!important}
+#mockDashboard{position:absolute!important;left:-10000px!important;top:0!important;width:1600px!important;display:block!important;visibility:hidden!important;pointer-events:none!important}
+#mockDashboard #hxActiveStocksPanel,#mockDashboard #marketTape24,#mockDashboard .hx-env-strip{display:block!important}
+@media(max-width:1250px){
+  .hx23-topbar{grid-template-columns:260px 1fr 280px}.hx23-main{grid-template-columns:310px minmax(480px,1fr) 300px}
+  .hx23-env{grid-template-columns:150px repeat(6,minmax(95px,1fr)) 160px 155px}
+}
+@media(max-width:1050px){
+  .hx23-topbar{grid-template-columns:1fr auto}.hx23-top-center{display:none}.hx23-main{grid-template-columns:300px 1fr}.hx23-right{grid-column:1/-1;grid-template-columns:1fr 1fr;grid-template-rows:auto}.hx23-ai-grid{grid-template-columns:118px 1fr}
+  .hx23-env{overflow-x:auto;display:flex;height:98px}.hx23-env>div{min-width:130px}.hx23-env-title{min-width:160px!important}
+}
+@media(max-width:760px){
+  .hx23-topbar{height:auto;min-height:58px;padding:8px 10px}.hx23-top-tools .hx23-icon:nth-of-type(-n+2){display:none}.hx23-clock{display:none}.hx23-brand-title{font-size:17px}
+  .hx23-main{display:block;margin:8px}.hx23-left,.hx23-center,.hx23-right{margin-bottom:8px}.hx23-center{display:block}.hx23-chart-panel{height:360px;margin-bottom:8px}.hx23-lower{height:300px}
+  .hx23-right{display:block}.hx23-ai{margin-bottom:8px}.hx23-wheel-float{width:285px;height:285px}.hx23-w1{left:99px}.hx23-w5{left:99px}.hx23-w2{right:12px}.hx23-w8{left:12px}.hx23-w3{top:118px}.hx23-w7{top:118px}
+  .hx23-w4{right:18px;bottom:36px}.hx23-w6{left:18px;bottom:36px}.hx23-tape-shell,.hx23-env{margin-left:8px;margin-right:8px}.hx23-footer{padding:0 10px}
+}
+
 </style>
 </head>
 <body>
 <div class="container">
+
+<div id="hx23Dashboard">
+  <header class="hx23-topbar">
+    <div class="hx23-brand">
+      <div class="hx23-logo"><span>H</span></div>
+      <div><div class="hx23-brand-title">HALIFAX <span class="hx23-version">v23.0</span></div><div class="hx23-brand-sub">TRADE ENGINE</div></div>
+    </div>
+    <div class="hx23-top-center">24 HOUR MARKET TAPE <span class="hx23-live">LIVE</span></div>
+    <div class="hx23-top-tools">
+      <div class="hx23-clock" id="hx23Clock">—</div>
+      <div class="hx23-icon" title="Connection">⌁</div><div class="hx23-icon" title="Alerts">♧</div><div class="hx23-icon" title="Settings">⚙</div>
+      <div class="hx23-avatar">BJ</div>
+    </div>
+  </header>
+
+  <section class="hx23-tape-shell"><div class="hx23-tape" id="hx23Tape"></div></section>
+
+  <section class="hx23-env">
+    <div class="hx23-env-title"><b>Market Environment</b><small>Halifax market context updates after analysis. Unavailable inputs remain blank rather than guessed.</small></div>
+    <div><div class="hx23-ek">Market Bias</div><div class="hx23-ring yellow" id="hx23EnvRing"><span id="hx23EnvScore">—</span></div><div class="hx23-ev yellow" id="hx23EnvLabel">AWAITING</div></div>
+    <div><div class="hx23-ek">Trend Strength</div><div class="hx23-ring yellow"><span id="hx23TrendScore">—</span></div><div class="hx23-ev" id="hx23Trend">—</div></div>
+    <div><div class="hx23-ek">Volatility</div><div class="hx23-ring yellow"><span id="hx23Vix">—</span></div><div class="hx23-ev" id="hx23Vol">—</div></div>
+    <div><div class="hx23-ek">Market Breadth</div><div class="hx23-ring yellow"><span id="hx23BreadthScore">—</span></div><div class="hx23-ev" id="hx23Breadth">—</div></div>
+    <div><div class="hx23-ek">Momentum</div><div class="hx23-ring yellow"><span id="hx23MomentumScore">—</span></div><div class="hx23-ev" id="hx23Momentum">—</div></div>
+    <div><div class="hx23-ek">Risk Appetite</div><div class="hx23-ring yellow"><span id="hx23RiskScore">—</span></div><div class="hx23-ev" id="hx23Risk">—</div></div>
+    <div class="hx23-session"><div class="hx23-ek">US Session</div><div class="hx23-ev" id="hx23SessionState">9:30 AM – 4:00 PM ET</div><small id="hx23SessionNote">Session state loads with a public quote.</small></div>
+    <div class="hx23-session"><div class="hx23-ek">Next Event</div><div class="hx23-ev" id="hx23NextEvent">—</div><small id="hx23NextEventNote">Run Analyze for verified event data.</small></div>
+  </section>
+
+  <main class="hx23-main">
+    <section class="hx23-panel hx23-left">
+      <div class="hx23-panel-head"><b>Active Stocks</b><div class="hx23-stock-tools"><span id="hx23StockStatus">Loading…</span><button class="hx23-small-btn" onclick="editActiveStocks()">EDIT</button><button class="hx23-small-btn" onclick="refreshActiveStocks(true)">↻</button></div></div>
+      <div style="overflow:auto">
+        <table class="hx23-stock-table">
+          <thead><tr><th style="width:20%">Symbol</th><th style="width:19%">Price</th><th style="width:18%">Chg %</th><th style="width:17%">Strength</th><th style="width:14%">Trend</th><th style="width:12%">RVol</th></tr></thead>
+          <tbody id="hx23StockRows"><tr><td colspan="6" class="tiny">Waiting for public watchlist quotes…</td></tr></tbody>
+        </table>
+      </div>
+      <div class="hx23-left-foot"><span onclick="editActiveStocks()" style="cursor:pointer">＋ ADD / EDIT SYMBOLS</span><span>click a row to analyze</span></div>
+    </section>
+
+    <section class="hx23-center">
+      <div class="hx23-panel hx23-chart-panel">
+        <div class="hx23-chart-head">
+          <div class="hx23-chart-title"><span id="hx23ChartTicker">SPY</span> <small id="hx23ChartName">SPDR S&amp;P 500 ETF TRUST</small></div>
+          <div><span class="hx23-chart-price" id="hx23ChartPrice">—</span><span class="hx23-chart-move yellow" id="hx23ChartMove">—</span></div>
+        </div>
+        <div class="hx23-tf-row"><button class="hx23-tf active">1D</button><button class="hx23-tf">5D</button><button class="hx23-tf">1M</button><button class="hx23-tf">3M</button><button class="hx23-tf">YTD</button><button class="hx23-tf">1Y</button><button class="hx23-tf">5Y</button><button class="hx23-tf">MAX</button></div>
+        <canvas id="hx23ChartCanvas"></canvas><div class="hx23-chart-empty" id="hx23ChartEmpty">Loading public SPY chart…</div>
+      </div>
+
+      <div class="hx23-lower">
+        <div class="hx23-panel hx23-lower-card">
+          <div class="hx23-panel-head"><b>News &amp; Insiders</b><span>verified items after analysis</span></div>
+          <div class="hx23-feed" id="hx23News"><div class="hx23-feed-item"><span class="hx23-feed-time">—</span><span class="hx23-feed-symbol">—</span><span class="hx23-feed-text">Run Analyze to load ticker news and filing context.</span></div></div>
+        </div>
+        <div class="hx23-panel hx23-lower-card">
+          <div class="hx23-panel-head"><b>Market Movers</b><span>from Active Stocks</span></div>
+          <div class="hx23-mover-tabs"><b>Top Gainers</b><span>Top Losers</span></div>
+          <div class="hx23-mover-list" id="hx23Movers"><div class="tiny">Waiting for Active Stocks.</div></div>
+        </div>
+
+        <nav class="hx23-wheel-float" aria-label="Halifax menu wheel">
+          <button class="hx23-wheel-btn hx23-w1" onclick="hx23OpenMenu('technical')"><em>⌾</em><span>Technical</span></button>
+          <button class="hx23-wheel-btn hx23-w2" onclick="hx23OpenMenu('macro')"><em>⌕</em><span>Macro</span></button>
+          <button class="hx23-wheel-btn hx23-w3" onclick="hx23OpenMenu('government')"><em>▦</em><span>Government</span></button>
+          <button class="hx23-wheel-btn hx23-w4" onclick="hx23OpenMenu('options')"><em>⚙</em><span>Options</span></button>
+          <button class="hx23-wheel-btn hx23-w5" onclick="hx23OpenMenu('flow')"><em>☆</em><span>Smart Money</span></button>
+          <button class="hx23-wheel-btn hx23-w6" onclick="hx23OpenMenu('fund')"><em>▤</em><span>Fundamental</span></button>
+          <button class="hx23-wheel-btn hx23-w7" onclick="hx23OpenMenu('bear')"><em>☷</em><span>Bear Radar</span></button>
+          <button class="hx23-wheel-btn hx23-w8" onclick="hx23OpenMenu('list')"><em>◎</em><span>Watchlist</span></button>
+          <button class="hx23-wheel-center" onclick="hx23CloseMenu()" title="Close menu">H</button>
+        </nav>
+      </div>
+    </section>
+
+    <aside class="hx23-right">
+      <section class="hx23-panel hx23-ai" id="hx23AiPanel">
+        <div class="hx23-panel-head"><b>AI Stock Analysis</b><span id="hx23QuoteTime">not analyzed</span></div>
+        <div class="hx23-command"><input id="hx23TickerInput" autocomplete="off" placeholder="Ticker e.g. NVDA" style="text-transform:uppercase"><button class="hx23-analyze" onclick="hx23Analyze()">ANALYZE</button></div>
+        <div class="hx23-ai-body">
+          <div><span class="hx23-ai-symbol" id="hx23AiTicker">—</span><span class="hx23-ai-company" id="hx23AiCompany">Enter a ticker</span></div>
+          <div><span class="hx23-ai-price" id="hx23AiPrice">—</span><span class="hx23-ai-move yellow" id="hx23AiMove">—</span></div>
+          <div class="hx23-ai-grid">
+            <div class="hx23-score-card"><div class="hx23-ek">Halifax Rating</div><div class="hx23-score-ring yellow" id="hx23ScoreRing"><span id="hx23AiScore">—</span></div><div class="hx23-score-label yellow" id="hx23AiDirection">WAIT</div></div>
+            <div class="hx23-ai-facts">
+              <div class="hx23-fact"><span>Trend</span><b id="hx23AiTrend">—</b></div>
+              <div class="hx23-fact"><span>Confidence</span><b id="hx23AiConfidence">—</b></div>
+              <div class="hx23-fact"><span>Risk Level</span><b id="hx23AiRisk">—</b></div>
+              <div class="hx23-fact"><span>Timeframe</span><b id="hx23AiTimeframe">Swing</b></div>
+            </div>
+          </div>
+          <div class="hx23-levels">
+            <div class="hx23-level"><span>Entry Zone</span><b class="green" id="hx23Entry">—</b></div>
+            <div class="hx23-level"><span>Target</span><b class="green" id="hx23Target">—</b></div>
+            <div class="hx23-level"><span>Stop Level</span><b class="red" id="hx23Stop">—</b></div>
+          </div>
+          <div class="hx23-summary"><h4>AI Summary</h4><p id="hx23Summary">Run Analyze. Halifax will show verified price/technical/macro context when the required public data loads; missing data is not guessed.</p></div>
+          <button class="hx23-plan-btn" onclick="hx23OpenMenu('technical')">VIEW FULL ANALYSIS →</button>
+        </div>
+      </section>
+      <section class="hx23-panel">
+        <div class="hx23-panel-head"><b>Upcoming Events</b><span>from Halifax macro calendar</span></div>
+        <div class="hx23-events" id="hx23Events"><div class="hx23-event"><span class="hx23-event-time">—</span><span class="hx23-event-name">Run Analyze to load verified events.</span></div></div>
+      </section>
+    </aside>
+  </main>
+
+  <footer class="hx23-footer"><span>Data: public feeds <i class="hx23-dot"></i> &nbsp; Values may be delayed; broker execution data is not assumed.</span><span>Connected <i class="hx23-dot"></i> &nbsp; Auto-refresh: ON <i class="hx23-dot"></i></span></footer>
+</div>
+
+<div id="hx23Drawer" aria-hidden="true">
+  <div class="hx23-drawer-head"><b id="hx23DrawerTitle">Halifax Menu</b><button class="hx23-drawer-close" onclick="hx23CloseMenu()">×</button></div>
+  <div class="hx23-drawer-body" id="hx23DrawerBody"></div>
+</div>
+
     <div class="card header">
         <div class="brand-stack">
             <div class="terminal-kicker"><span class="kicker-dot"></span> HALIFAX QUANT RESEARCH TERMINAL</div>
@@ -5000,6 +5228,126 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now(
   window.openMockResearch=function(id,focusId){const btn=document.querySelector(`[data-wheel-target="${id}"]`);window.openWheelMenu(id,btn);setTimeout(()=>{const target=focusId?$(focusId):$('hxMenuWheelSection');target?.scrollIntoView({behavior:'smooth',block:'center'});target?.focus?.();},30);};
   window.addEventListener('load',()=>{setTimeout(()=>window.refreshActiveStocks?.(false),1100);setInterval(()=>{if(!document.hidden)window.refreshActiveStocks?.(false)},60000);});
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)window.refreshActiveStocks?.(false)});
+})();
+</script>
+
+
+<script>
+// ================= Halifax v23 visible mockup bridge =================
+(() => {
+  'use strict';
+  const $=id=>document.getElementById(id);
+  const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const clsFrom=(el)=>el?.classList.contains('green')?'green':el?.classList.contains('red')?'red':el?.classList.contains('blue')?'blue':'yellow';
+  const set=(id,text,cls)=>{const e=$(id);if(!e)return;e.textContent=text??'—';if(cls){e.classList.remove('green','red','yellow','blue','cyan');e.classList.add(cls);}};
+  const copy=(src,dst)=>{const a=$(src),b=$(dst);if(!a||!b)return;b.textContent=a.textContent||'—';b.classList.remove('green','red','yellow','blue','cyan');b.classList.add(clsFrom(a));};
+  const tapeIds=['BTC','ETH','SOL','DIA','SPY','QQQ','CL','GC','VIX','ES','NQ','YM'];
+  const tapeLabels={BTC:'BTC/USD',ETH:'ETH/USD',SOL:'SOL/USD',DIA:'DOW',SPY:'S&P 500 (SPY)',QQQ:'NASDAQ (QQQ)',CL:'OIL (WTI)',GC:'GOLD',VIX:'VIX',ES:'S&P FUT',NQ:'NASDAQ FUT',YM:'DOW FUT'};
+  function tapeSkeleton(){
+    const out=$('hx23Tape');if(!out||out.dataset.ready)return;out.dataset.ready='1';
+    out.innerHTML=tapeIds.map((id,i)=>`<div class="hx23-tape-cell" data-hx23-tape="${id}">
+      <div class="hx23-tape-label"><span class="hx23-coin">${['BTC','ETH','SOL'].includes(id)?'◆':'•'}</span>${tapeLabels[id]}</div>
+      <div class="hx23-tape-price">—</div><div class="hx23-tape-change yellow">—</div>
+      <div class="hx23-mini-trend yellow">${[7,11,6,14,10,15,9,13].map((h,j)=>`<i style="height:${h}px"></i>`).join('')}</div>
+      <div class="hx23-tape-time">waiting</div></div>`).join('');
+  }
+  function syncTape(){
+    tapeSkeleton();
+    tapeIds.forEach(id=>{
+      const src=document.querySelector(`#marketTape24Track [data-tape-id="${id}"]`);
+      const dst=document.querySelector(`[data-hx23-tape="${id}"]`);if(!src||!dst)return;
+      const p=src.querySelector('[data-role="price"]')?.textContent||'—',c=src.querySelector('[data-role="change"]'),tm=src.querySelector('[data-role="time"]')?.textContent||'';
+      dst.querySelector('.hx23-tape-price').textContent=p;
+      const ce=dst.querySelector('.hx23-tape-change');ce.textContent=c?.textContent||'—';ce.className='hx23-tape-change '+clsFrom(c);
+      const tr=dst.querySelector('.hx23-mini-trend');tr.className='hx23-mini-trend '+clsFrom(c);
+      dst.querySelector('.hx23-tape-time').textContent=tm.replace(/.*•\s*/,'');
+    });
+  }
+  function scoreNum(text){const m=String(text||'').match(/-?\d+(?:\.\d+)?/);return m?Number(m[0]):null;}
+  function syncEnv(){
+    copy('mkEnvScore','hx23EnvScore');copy('mkEnvLabel','hx23EnvLabel');copy('mkTrend','hx23Trend');copy('mkVolatility','hx23Vol');copy('mkBreadth','hx23Breadth');copy('mkMomentum','hx23Momentum');copy('mkRiskAppetite','hx23Risk');
+    const env=scoreNum($('mkEnvScore')?.textContent), ring=$('hx23EnvRing'); if(ring){ring.classList.remove('green','red','yellow');ring.classList.add(env>2?'green':env<-2?'red':'yellow');}
+    const trendText=$('mkTrend')?.textContent||'—';set('hx23TrendScore',trendText==='—'?'—':clsFrom($('mkTrend'))==='green'?'↑':clsFrom($('mkTrend'))==='red'?'↓':'↔',clsFrom($('mkTrend')));
+    const volTxt=$('mkVolatility')?.textContent||'—';set('hx23Vix',volTxt==='—'?'—':volTxt==='High'?'HI':volTxt==='Elevated'?'MID':'LOW',clsFrom($('mkVolatility')));
+    set('hx23BreadthScore',$('mkBreadth')?.textContent==='—'?'—':clsFrom($('mkBreadth'))==='green'?'↑':clsFrom($('mkBreadth'))==='red'?'↓':'↔',clsFrom($('mkBreadth')));
+    set('hx23MomentumScore',$('mkMomentum')?.textContent==='—'?'—':clsFrom($('mkMomentum'))==='green'?'↑':clsFrom($('mkMomentum'))==='red'?'↓':'↔',clsFrom($('mkMomentum')));
+    set('hx23RiskScore',$('mkRiskAppetite')?.textContent==='—'?'—':clsFrom($('mkRiskAppetite'))==='green'?'ON':clsFrom($('mkRiskAppetite'))==='red'?'OFF':'MID',clsFrom($('mkRiskAppetite')));
+    const ss=$('sessionState')?.textContent;if(ss&&ss!=='AWAITING')set('hx23SessionState',ss,clsFrom($('sessionState')));
+    const sn=$('sessionLastTrade')?.textContent;if(sn)set('hx23SessionNote',sn.replace(/\s+/g,' ').trim());
+    const evt=$('mkEvents')?.querySelector('.mock-event'); if(evt){const parts=[...evt.children].map(x=>x.textContent.trim());set('hx23NextEvent',parts[2]||'—',parts[3]?.includes('HIGH')?'red':'yellow');set('hx23NextEventNote',[parts[0],parts[1]].filter(Boolean).join(' • '));}
+  }
+  function parseHiddenStocks(){
+    const rows=[...document.querySelectorAll('#hxActiveStockRows tr.hx-active-row')], data=[];
+    rows.forEach(r=>{
+      const t=[...r.children].map(x=>x.innerText.replace(/\s+/g,' ').trim());
+      if(t.length<5)return;
+      const symbol=(r.dataset.symbol||t[0].split(' ')[0]).trim(),price=t[1],chg=t[2],trendCell=t[3],rv=t[4];
+      const mm=trendCell.match(/(BULLISH|BEARISH|NEUTRAL)/i), sm=trendCell.match(/(\d+)%/);
+      data.push({symbol,price,chg,trend:mm?.[1]?.toUpperCase()||'—',strength:sm?.[1]?sm[1]+'%':'—',rv,cls:r.children[2]?.classList.contains('green')?'green':r.children[2]?.classList.contains('red')?'red':'yellow'});
+    });
+    return data;
+  }
+  function syncStocks(){
+    const data=parseHiddenStocks(),out=$('hx23StockRows'); if(!out)return;
+    const st=$('hxActiveStatus')?.textContent;if(st)set('hx23StockStatus',st);
+    if(!data.length){out.innerHTML='<tr><td colspan="6" class="tiny">Waiting for public watchlist quotes…</td></tr>';return;}
+    out.innerHTML=data.map(x=>`<tr data-symbol="${esc(x.symbol)}"><td><span class="hx23-symbol">${esc(x.symbol)}</span></td><td>${esc(x.price)}</td><td class="${x.cls}"><b>${esc(x.chg)}</b></td><td>${esc(x.strength)}</td><td class="${x.trend==='BULLISH'?'green':x.trend==='BEARISH'?'red':'yellow'}"><span class="hx23-arrow">${x.trend==='BULLISH'?'↗':x.trend==='BEARISH'?'↘':'→'}</span></td><td>${esc(x.rv)}</td></tr>`).join('');
+    out.querySelectorAll('tr[data-symbol]').forEach(tr=>tr.onclick=()=>{const sym=tr.dataset.symbol;const inp=$('hx23TickerInput');if(inp)inp.value=sym;window.hx23Analyze(sym);});
+    const movers=[...data].map(x=>({...x,n:Number(String(x.chg).replace(/[^\d.-]/g,''))})).filter(x=>Number.isFinite(x.n)).sort((a,b)=>b.n-a.n).slice(0,6);
+    const mv=$('hx23Movers');if(mv)mv.innerHTML=movers.map(x=>`<div class="hx23-mover"><span>${esc(x.symbol)}</span><span class="${x.n>=0?'green':'red'}">${esc(x.chg)}</span><span>${esc(x.price)}</span></div>`).join('')||'<div class="tiny">No active changes loaded.</div>';
+  }
+  function drawChart(d){
+    const c=$('hx23ChartCanvas');if(!c)return;const rect=c.getBoundingClientRect(),ratio=Math.max(1,window.devicePixelRatio||1),w=Math.max(520,Math.round(rect.width||700)),h=Math.max(245,Math.round(rect.height||270));
+    c.width=w*ratio;c.height=h*ratio;const x=c.getContext('2d');x.setTransform(ratio,0,0,ratio,0,0);x.clearRect(0,0,w,h);x.fillStyle='#04101a';x.fillRect(0,0,w,h);
+    x.strokeStyle='rgba(48,83,105,.27)';x.lineWidth=1;for(let i=1;i<6;i++){let yy=i*h/6;x.beginPath();x.moveTo(0,yy);x.lineTo(w,yy);x.stroke()}for(let i=1;i<10;i++){let xx=i*w/10;x.beginPath();x.moveTo(xx,0);x.lineTo(xx,h);x.stroke()}
+    const rows=(d?.candles||[]).slice(-95).filter(z=>[z.open,z.high,z.low,z.close].every(Number.isFinite));if(rows.length<2){$('hx23ChartEmpty').style.display='grid';return}
+    $('hx23ChartEmpty').style.display='none';const lo=Math.min(...rows.map(z=>z.low)),hi=Math.max(...rows.map(z=>z.high)),span=Math.max(.01,hi-lo),pad={l:12,r:55,t:12,b:35},cw=(w-pad.l-pad.r)/rows.length,y=v=>pad.t+(hi-v)/span*(h-pad.t-pad.b);
+    const maxVol=Math.max(1,...rows.map(z=>z.volume||0));
+    rows.forEach((z,i)=>{const xx=pad.l+(i+.5)*cw,up=z.close>=z.open,col=up?'#15d65f':'#ff3d44';x.globalAlpha=.22;x.fillStyle=col;const vh=(z.volume||0)/maxVol*38;x.fillRect(xx-Math.max(1,cw*.35),h-pad.b-vh,Math.max(2,cw*.7),vh);x.globalAlpha=1;x.strokeStyle=col;x.fillStyle=col;x.beginPath();x.moveTo(xx,y(z.high));x.lineTo(xx,y(z.low));x.stroke();const top=y(Math.max(z.open,z.close)),bot=y(Math.min(z.open,z.close));x.fillRect(xx-Math.max(1,cw*.28),top,Math.max(2,cw*.56),Math.max(1,bot-top));});
+    x.fillStyle='#86a0b2';x.font='10px Arial';for(let i=0;i<5;i++){const v=hi-i*span/4,yy=pad.t+i*(h-pad.t-pad.b)/4;x.fillText(v.toFixed(2),w-pad.r+6,yy+3)}
+  }
+  function updateAnalysis(a,t){
+    if(!a||!t)return;const d=a.primary||{},q=a.liveQuoteContext||{},price=Number.isFinite(q.price)?q.price:d.price,chg=Number.isFinite(q.changePct)?q.changePct:d.dayChangePct,dir=a.direction||'WAIT',score=Math.round(a.score||0),confidence=Math.round(a.predictionStrength??a.confidence??0),m=a.macroContext||{};
+    set('hx23AiTicker',d.ticker||'—');set('hx23AiCompany',$('mkCompany')?.textContent||d.ticker||'—');set('hx23AiPrice',Number.isFinite(price)?'$'+price.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}):'—');set('hx23AiMove',Number.isFinite(chg)?`${chg>=0?'+':''}${chg.toFixed(2)}%`:'—',chg>0?'green':chg<0?'red':'yellow');
+    set('hx23AiScore',`${score>=0?'+':''}${score}`,dir==='LONG'?'green':dir==='SHORT'?'red':'yellow');set('hx23AiDirection',dir,dir==='LONG'?'green':dir==='SHORT'?'red':'yellow');set('hx23AiConfidence',confidence+'%',confidence>=70?'green':confidence>=50?'yellow':'red');set('hx23AiTrend',m.sectorTrend||m.spyTrend||'—',String(m.sectorTrend||m.spyTrend).includes('BULL')?'green':String(m.sectorTrend||m.spyTrend).includes('BEAR')?'red':'yellow');set('hx23AiRisk',m.riskLevel||'—',m.riskLevel==='HIGH'?'red':m.riskLevel==='ELEVATED'?'yellow':'green');
+    set('hx23Entry',Number.isFinite(t.entryLow)&&Number.isFinite(t.entryHigh)?`$${t.entryLow.toFixed(2)} – $${t.entryHigh.toFixed(2)}`:'—','green');set('hx23Target',Number.isFinite(t.t2)?'$'+t.t2.toFixed(2):Number.isFinite(t.t1)?'$'+t.t1.toFixed(2):'—','green');set('hx23Stop',Number.isFinite(t.stop)?'$'+t.stop.toFixed(2):'—','red');
+    set('hx23ChartTicker',d.ticker||'—');set('hx23ChartName',$('mkCompany')?.textContent||'');set('hx23ChartPrice',Number.isFinite(price)?price.toFixed(2):'—');set('hx23ChartMove',Number.isFinite(chg)?`${chg>=0?'+':''}${chg.toFixed(2)}%`:'—',chg>0?'green':chg<0?'red':'yellow');set('hx23QuoteTime',$('mkQuoteTime')?.textContent||'updated');
+    const reasons=(a.reasons||[]).filter(Boolean).slice(0,3).join(' ');$('hx23Summary').textContent=reasons||'No verified summary returned.';
+    const ring=$('hx23ScoreRing');if(ring){ring.style.setProperty('--ring',dir==='LONG'?'#16d75f':dir==='SHORT'?'#ff3b43':'#f6c344');}
+    drawChart(d); syncEnv(); syncNews(); syncEvents();
+  }
+  function syncNews(){
+    const out=$('hx23News');if(!out)return;const items=[...document.querySelectorAll('#newsOutput .news-item')].slice(0,4);
+    if(items.length){out.innerHTML=items.map(it=>{const pub=it.querySelector('.news-publisher')?.textContent||'',tm=it.querySelector('.news-time')?.textContent||'',tx=it.querySelector('.news-title')?.textContent||'';return `<div class="hx23-feed-item"><span class="hx23-feed-time">${esc(tm)}</span><span class="hx23-feed-symbol">${esc(pub.slice(0,8))}</span><span class="hx23-feed-text">${esc(tx)}</span></div>`}).join('');}
+    else if(typeof lastAnalysis!=='undefined'&&lastAnalysis?.reasons?.length){out.innerHTML=lastAnalysis.reasons.slice(0,4).map((r,i)=>`<div class="hx23-feed-item"><span class="hx23-feed-time">NOW</span><span class="hx23-feed-symbol">${esc(lastAnalysis.primary?.ticker||'HX')}</span><span class="hx23-feed-text">${esc(String(r).slice(0,100))}</span></div>`).join('');}
+  }
+  function syncEvents(){
+    const out=$('hx23Events'),events=[...document.querySelectorAll('#mkEvents .mock-event')];if(!out)return;
+    if(events.length)out.innerHTML=events.slice(0,4).map(ev=>{const p=[...ev.children].map(x=>x.textContent.trim());return `<div class="hx23-event"><span class="hx23-event-time">${esc([p[0],p[1]].filter(Boolean).join(' '))}</span><span class="hx23-event-name">${esc(p[2]||'Major event')} ${p[3]?`• ${esc(p[3])}`:''}</span></div>`}).join('');
+  }
+  window.hx23Analyze=async function(sym){
+    const val=String(sym||$('hx23TickerInput')?.value||'').trim().toUpperCase().replace(/[^A-Z0-9.\-^=]/g,'');if(!val){$('hx23TickerInput')?.focus();return;}
+    $('hx23TickerInput').value=val;const hidden=$('mockTickerInput'),legacy=$('ticker');if(hidden)hidden.value=val;if(legacy)legacy.value=val;set('hx23AiTicker',val);set('hx23AiDirection','ANALYZING','yellow');
+    try{if(typeof window.mockAnalyze==='function')await window.mockAnalyze();else if(typeof window.runEngine==='function')await window.runEngine();}catch(e){set('hx23AiDirection','DATA ERROR','red');$('hx23Summary').textContent=e?.message||'Analysis failed.';}
+    setTimeout(()=>{if(typeof lastAnalysis!=='undefined'&&typeof lastTrade!=='undefined'&&lastAnalysis&&lastTrade)updateAnalysis(lastAnalysis,lastTrade);},160);
+  };
+  const menuMap={technical:['Technical Evidence','mockTechnicalBody'],macro:['Macro & Market Data','mockMacro'],government:['Government Intelligence','mockGovernmentBody'],options:['Options & Derivatives','mockOptionsBody'],flow:['Smart Money Flow','mockSmartBody'],fund:['Fundamentals','mockFundBody'],bear:['Bear / Inverse ETF Radar','sectorInverseRadar'],list:['Active Stocks / Watchlist','hxActiveStocksPanel']};
+  window.hx23OpenMenu=function(key){
+    const cfg=menuMap[key]||['Halifax Menu',null],drawer=$('hx23Drawer'),body=$('hx23DrawerBody');$('hx23DrawerTitle').textContent=cfg[0];let content='';
+    if(key==='list'){content=`<div class="hx23-drawer-card"><div class="hx23-drawer-title">Active list</div><div class="hx23-drawer-copy">The left Active Stocks panel uses your saved Halifax watchlist and public quote feed. Click a row to analyze it.</div><button class="hx23-drawer-action" onclick="editActiveStocks();setTimeout(syncStocks,300)">EDIT WATCHLIST</button></div>`;}
+    else{const src=$(cfg[1]);if(src){const clone=src.cloneNode(true);clone.querySelectorAll?.('[id]').forEach(n=>n.removeAttribute('id'));clone.querySelectorAll?.('button,input,select,textarea').forEach(n=>n.setAttribute('disabled','disabled'));content=`<div class="hx23-drawer-card"><div class="hx23-drawer-title">${esc(cfg[0])}</div><div class="hx23-drawer-copy">${clone.innerHTML||esc(clone.textContent||'No data loaded.')}</div></div>`;}else content='<div class="hx23-drawer-card"><div class="hx23-drawer-copy">Run Analyze to load this research module.</div></div>';}
+    body.innerHTML=content;drawer.classList.add('open');drawer.setAttribute('aria-hidden','false');
+  };
+  window.hx23CloseMenu=function(){const d=$('hx23Drawer');d?.classList.remove('open');d?.setAttribute('aria-hidden','true');};
+  function clock(){const e=$('hx23Clock');if(e)e.textContent=new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit',second:'2-digit'})+' CT';}
+  function syncAll(){syncTape();syncEnv();syncStocks();syncNews();syncEvents();if(typeof lastAnalysis!=='undefined'&&typeof lastTrade!=='undefined'&&lastAnalysis&&lastTrade)updateAnalysis(lastAnalysis,lastTrade);}
+  async function initialSpy(){
+    try{if(typeof loadTickerData!=='function')return;const d=await loadTickerData('SPY','5m','5d');drawChart(d);set('hx23ChartPrice',Number.isFinite(d.price)?d.price.toFixed(2):'—');set('hx23ChartMove',Number.isFinite(d.dayChangePct)?`${d.dayChangePct>=0?'+':''}${d.dayChangePct.toFixed(2)}%`:'—',d.dayChangePct>0?'green':d.dayChangePct<0?'red':'yellow');$('hx23ChartEmpty').style.display='none';}catch(e){const z=$('hx23ChartEmpty');if(z)z.textContent='Public SPY chart unavailable here; Analyze will retry with the engine feed.';}
+  }
+  window.addEventListener('load',()=>{tapeSkeleton();clock();setInterval(clock,1000);setTimeout(syncAll,1400);setInterval(syncAll,2500);setTimeout(initialSpy,700);});
+  window.addEventListener('resize',()=>{if(typeof lastAnalysis!=='undefined'&&lastAnalysis?.primary)drawChart(lastAnalysis.primary);});
+  // Hook the final wrapped renderer so the v23 shell updates immediately after a completed engine render.
+  setTimeout(()=>{if(typeof window.renderTradeOutput==='function'&&!window.renderTradeOutput.__hx23){const prev=window.renderTradeOutput;const wrapped=function(a,t){const r=prev.apply(this,arguments);try{setTimeout(()=>updateAnalysis(a,t),0)}catch(e){}return r};wrapped.__hx23=true;window.renderTradeOutput=wrapped;}},0);
 })();
 </script>
 
