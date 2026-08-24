@@ -1480,7 +1480,7 @@ body{background:#020a12!important;padding:0!important;overflow-x:hidden}
   linear-gradient(180deg,#020910 0%,#020a12 100%);color:var(--hx23-text);
   font-family:Arial,Helvetica,sans-serif;font-variant-numeric:tabular-nums}
 #hx23Dashboard *{box-sizing:border-box}
-.hx23-topbar{height:58px;border-bottom:1px solid #1a2d3d;display:grid;grid-template-columns:300px 1fr 360px;align-items:center;padding:0 16px;background:#02080e;position:relative;z-index:20}
+.hx23-topbar{height:58px;border-bottom:1px solid #1a2d3d;display:grid;grid-template-columns:300px 1fr 170px;align-items:center;padding:0 16px;background:#02080e;position:relative;z-index:20}
 .hx23-brand{display:flex;align-items:center;gap:10px}
 .hx23-logo{width:31px;height:38px;position:relative;display:grid;place-items:center;font-weight:1000;font-style:italic;font-size:23px;color:#9dd5ff;filter:drop-shadow(0 0 8px rgba(54,168,255,.28))}
 .hx23-logo:before,.hx23-logo:after{content:"";position:absolute;width:8px;height:33px;background:linear-gradient(180deg,#8bd2ff,#198ae6);transform:skew(-24deg)}
@@ -1491,8 +1491,7 @@ body{background:#020a12!important;padding:0!important;overflow-x:hidden}
 .hx23-version{font-size:10px;color:#8398a9;margin-left:8px;font-weight:500}
 .hx23-top-center{text-align:center;font-size:18px;font-weight:900;letter-spacing:.02em}.hx23-live{font-size:10px;color:var(--hx23-green);margin-left:6px}
 .hx23-top-tools{display:flex;justify-content:flex-end;align-items:center;gap:13px;color:#b8c7d2}
-.hx23-clock{font-size:12px;white-space:nowrap}.hx23-icon{width:31px;height:31px;border-radius:50%;display:grid;place-items:center;border:1px solid transparent;color:#ccd7df;font-size:16px}
-.hx23-icon:hover{border-color:#29465d;background:#07141f}.hx23-avatar{width:38px;height:38px;border:1px solid #36536a;border-radius:50%;display:grid;place-items:center;font-size:12px;background:#07121b}
+.hx23-clock{font-size:12px;white-space:nowrap;font-weight:700;color:#d8e3eb}
 .hx23-tape-shell{margin:5px 14px 0;border:1px solid #173044;border-radius:11px;overflow:hidden;background:linear-gradient(180deg,#06131d,#04101a)}
 .hx23-tape{height:82px;display:flex;overflow-x:auto;scrollbar-width:none}.hx23-tape::-webkit-scrollbar{display:none}
 .hx23-tape-cell{flex:1 0 145px;min-width:145px;padding:10px 12px;border-right:1px solid #1a3142;position:relative}
@@ -1510,7 +1509,7 @@ body{background:#020a12!important;padding:0!important;overflow-x:hidden}
 .hx23-ring{width:48px;height:48px;border-radius:50%;border:5px solid #263846;margin:5px auto 0;display:grid;place-items:center;position:relative;font-size:12px;font-weight:950}
 .hx23-ring:before{content:"";position:absolute;inset:-5px;border-radius:50%;border:5px solid currentColor;border-left-color:transparent;transform:rotate(25deg)}
 .hx23-session{align-items:flex-start!important}.hx23-session .hx23-ek{text-align:left}.hx23-session .hx23-ev{text-align:left;font-size:11px}.hx23-session small{font-size:8px;color:#7e95a6;margin-top:5px;line-height:1.35}
-.hx23-main{display:grid;grid-template-columns:minmax(310px,26.5%) minmax(560px,1fr) minmax(300px,24%);gap:10px;margin:10px 14px 0;min-height:670px}
+.hx23-main{display:grid;grid-template-columns:minmax(620px,1fr) minmax(310px,25%);gap:10px;margin:10px 14px 0;min-height:670px}
 .hx23-panel{border:1px solid #183247;border-radius:9px;background:linear-gradient(180deg,#06131e,#04101a);overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.16)}
 .hx23-panel-head{height:42px;border-bottom:1px solid #183247;display:flex;align-items:center;justify-content:space-between;padding:0 12px}
 .hx23-panel-head b{font-size:11px;text-transform:uppercase;letter-spacing:.02em}.hx23-panel-head span{font-size:9px;color:#7891a4}
@@ -1519,23 +1518,28 @@ body{background:#020a12!important;padding:0!important;overflow-x:hidden}
 .hx23-stock-table td{font-size:10px!important;padding:8px 8px!important;border-bottom:1px solid #132a3c!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .hx23-stock-table tr{cursor:pointer}.hx23-stock-table tbody tr:hover td{background:#092033!important}.hx23-symbol{font-weight:950;font-size:11px}.hx23-arrow{font-size:13px;font-weight:950}
 .hx23-left-foot{margin-top:auto;border-top:1px solid #183247;padding:10px 12px;color:#35aef4;font-size:9px;display:flex;justify-content:space-between;align-items:center}
-.hx23-center{display:grid;grid-template-rows:360px 300px;gap:10px;min-width:0}
+.hx23-center{display:grid;grid-template-rows:520px auto;gap:10px;min-width:0}
 .hx23-chart-panel{position:relative}.hx23-chart-head{height:54px;border-bottom:1px solid #183247;display:flex;align-items:center;justify-content:space-between;padding:0 12px}
 .hx23-chart-title{font-size:12px;font-weight:950}.hx23-chart-title small{font-size:9px;color:#8097a8;margin-left:6px;font-weight:500}
 .hx23-chart-price{font-size:20px;font-weight:950}.hx23-chart-move{font-size:12px;font-weight:900;margin-left:8px}
 .hx23-tf-row{height:33px;display:flex;align-items:center;gap:8px;padding:0 12px;border-bottom:1px solid #102638}
 .hx23-tf{border:0!important;background:transparent!important;color:#8aa0b2!important;font-size:9px!important;padding:4px 8px!important;box-shadow:none!important;min-height:0!important}.hx23-tf.active{border:1px solid #1764a3!important;background:#09223a!important;color:#dfefff!important;border-radius:4px!important}
-#hx23ChartCanvas{display:block;width:100%;height:270px;background:linear-gradient(180deg,#05121d,#04101a)}
+#hx23ChartCanvas{display:block;width:100%;height:385px;background:linear-gradient(180deg,#05121d,#04101a)}
 .hx23-chart-empty{position:absolute;inset:88px 0 0;display:grid;place-items:center;color:#577184;font-size:10px;pointer-events:none}
-.hx23-lower{display:grid;grid-template-columns:1fr 1fr;gap:10px;position:relative;min-width:0}.hx23-lower-card{min-width:0}
+.hx23-lower{display:grid;grid-template-columns:1fr 1fr;gap:10px;position:relative;min-width:0;align-items:start}.hx23-lower-card{min-width:0}
 .hx23-feed{padding:8px 10px;font-size:9px;line-height:1.45}.hx23-feed-item{display:grid;grid-template-columns:45px 44px 1fr;gap:5px;padding:6px 0;border-bottom:1px solid #132a3c}.hx23-feed-time{color:#6d8799}.hx23-feed-symbol{font-weight:950}.hx23-feed-text{color:#aebdc8}
 .hx23-mover-tabs{display:flex;gap:18px;padding:8px 12px 4px;font-size:9px;border-bottom:1px solid #132a3c}.hx23-mover-tabs b{color:#f4f8fb;border-bottom:2px solid #1e9cf4;padding-bottom:6px}.hx23-mover-list{padding:6px 12px}
 .hx23-mover{display:grid;grid-template-columns:1fr 60px 55px;gap:5px;padding:6px 0;font-size:10px;border-bottom:1px solid #102638}.hx23-mover span:nth-child(2){font-weight:900;text-align:right}.hx23-mover span:last-child{text-align:right;color:#91a4b2}
-.hx23-wheel-float{position:absolute;width:326px;height:326px;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-47%);z-index:8;background:radial-gradient(circle,#0c2436 0 24%,#071521 25% 45%,#132c3d 46% 46.5%,#06121b 47% 100%);border:1px solid #345873;box-shadow:0 0 0 7px rgba(27,58,79,.42),0 16px 35px rgba(0,0,0,.55),inset 0 0 28px rgba(38,119,174,.14)}
-.hx23-wheel-float:before{content:"";position:absolute;inset:13px;border:1px solid rgba(76,132,168,.24);border-radius:50%}.hx23-wheel-btn{position:absolute;width:88px;height:58px;border:0!important;background:transparent!important;color:#dceaf4!important;box-shadow:none!important;padding:0!important;display:flex!important;flex-direction:column;justify-content:center;align-items:center;gap:4px;font-size:9px!important}
-.hx23-wheel-btn:hover{color:#56bdff!important;text-shadow:0 0 12px #1777b5}.hx23-wheel-btn em{font-style:normal;font-size:20px;line-height:1}.hx23-wheel-btn span{font-size:8px;font-weight:900;text-transform:uppercase}
-.hx23-w1{left:119px;top:9px}.hx23-w2{right:20px;top:49px}.hx23-w3{right:1px;top:137px}.hx23-w4{right:26px;bottom:45px}.hx23-w5{left:119px;bottom:7px}.hx23-w6{left:26px;bottom:45px}.hx23-w7{left:1px;top:137px}.hx23-w8{left:20px;top:49px}
-.hx23-wheel-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:92px;height:92px;border-radius:50%;border:1px solid #507694;background:radial-gradient(circle at 40% 30%,#123d5a,#07131d 72%);display:grid;place-items:center;color:#e8f4fc;font-size:38px;font-style:italic;font-weight:950;box-shadow:0 0 24px rgba(55,167,242,.18)}
+.hx23-wheel-deck{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,minmax(135px,1fr));gap:10px;padding:4px 0 0;align-items:start}
+.hx23-mini-wheel{width:156px;height:156px;border-radius:50%;position:relative;margin:0 auto;background:radial-gradient(circle,#0b2234 0 27%,#061522 28% 50%,#102a3d 51% 52%,#06111a 53% 100%);border:1px solid #31556e;box-shadow:0 0 0 4px rgba(24,54,75,.38),0 10px 22px rgba(0,0,0,.35),inset 0 0 20px rgba(39,126,184,.12)}
+.hx23-mini-wheel:before{content:"";position:absolute;inset:8px;border:1px solid rgba(78,139,178,.18);border-radius:50%;pointer-events:none}
+.hx23-mini-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:54px;height:54px!important;min-height:0!important;border-radius:50%!important;border:1px solid #47708c!important;background:radial-gradient(circle at 40% 30%,#17445f,#07131d 72%)!important;color:#eef8ff!important;padding:0!important;display:grid!important;place-items:center;font-size:10px!important;font-weight:950!important;text-transform:uppercase;box-shadow:0 0 17px rgba(54,161,226,.15)!important}
+.hx23-mini-item{position:absolute;width:58px;height:38px!important;min-height:0!important;border:0!important;background:transparent!important;color:#d9eaf5!important;box-shadow:none!important;padding:0!important;display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-size:7px!important;text-transform:uppercase}
+.hx23-mini-item em{font-style:normal;font-size:14px;line-height:1}.hx23-mini-item span{font-size:6.8px;font-weight:950;white-space:nowrap}.hx23-mini-item:hover{color:#55bcff!important;text-shadow:0 0 9px rgba(58,169,241,.7)}
+.hx23-mi-top{left:49px;top:2px}.hx23-mi-left{left:1px;top:61px}.hx23-mi-right{right:1px;top:61px}.hx23-mi-bottom{left:49px;bottom:2px}
+.hx23-wheel-caption{text-align:center;font-size:8px;color:#6f899d;margin-top:7px;text-transform:uppercase;letter-spacing:.05em;font-weight:850}
+.hx23-indicator-row{min-height:36px;display:flex;align-items:center;gap:6px;padding:5px 12px;border-bottom:1px solid #102638;overflow-x:auto;white-space:nowrap}.hx23-indicator-label{font-size:8px;color:#718ca0;text-transform:uppercase;font-weight:900;margin-right:2px}.hx23-ind{height:25px!important;min-height:0!important;padding:0 8px!important;border-radius:4px!important;border:1px solid #203c50!important;background:#071723!important;color:#7892a5!important;font-size:8px!important;box-shadow:none!important}.hx23-ind.active{border-color:#2b86bf!important;background:#0b2940!important;color:#e2f4ff!important}.hx23-ind[data-ind="ema9"].active{color:#ff8b3d!important}.hx23-ind[data-ind="ema21"].active{color:#3fa7ff!important}.hx23-ind[data-ind="sma50"].active{color:#ffd15c!important}.hx23-ind[data-ind="sma200"].active{color:#bf72ff!important}.hx23-ind[data-ind="vwap"].active{color:#44d6c0!important}.hx23-ind[data-ind="rsi"].active,.hx23-ind[data-ind="macd"].active{color:#d8b4fe!important}
+.hx23-chart-legend{position:absolute;left:13px;top:129px;z-index:3;display:flex;flex-direction:column;gap:3px;pointer-events:none}.hx23-chart-legend div{font-size:8px;font-weight:850;text-shadow:0 1px 2px #000}.hx23-chart-legend .ema9{color:#ff8b3d}.hx23-chart-legend .ema21{color:#3fa7ff}.hx23-chart-legend .sma50{color:#ffd15c}.hx23-chart-legend .sma200{color:#bf72ff}.hx23-chart-legend .vwap{color:#44d6c0}
 .hx23-right{display:grid;grid-template-rows:1fr 176px;gap:10px}.hx23-ai{min-height:0}.hx23-command{padding:9px 10px;border-bottom:1px solid #183247;display:grid;grid-template-columns:1fr 78px;gap:6px}
 .hx23-command input{min-height:34px!important;height:34px!important;padding:7px 9px!important;border-radius:4px!important;font-size:12px!important;background:#04111c!important;border:1px solid #29465d!important}
 .hx23-analyze{height:34px!important;min-height:0!important;border-radius:4px!important;padding:0 8px!important;background:#146fae!important;border:1px solid #3198d4!important;font-size:9px!important;box-shadow:none!important}
@@ -1552,28 +1556,46 @@ body{background:#020a12!important;padding:0!important;overflow-x:hidden}
 .hx23-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#14ce55;margin-left:5px;box-shadow:0 0 8px rgba(20,206,85,.45)}
 .green{color:var(--hx23-green)!important}.red{color:var(--hx23-red)!important}.yellow{color:var(--hx23-yellow)!important}.blue,.cyan{color:var(--hx23-blue)!important}
 
+
+/* v23.4 My Stock Watch — wheel-only editable watchlist */
+.hx23-watch-toolbar{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.hx23-watch-actions{display:flex;gap:7px;flex-wrap:wrap}
+.hx23-watch-btn{min-height:34px!important;padding:7px 10px!important;border-radius:5px!important;border:1px solid #2c5877!important;background:#0a2233!important;color:#bfe4fb!important;font-size:9px!important;box-shadow:none!important}
+.hx23-watch-btn.primary{background:#126fae!important;border-color:#3298d4!important;color:#fff!important}
+.hx23-watch-status{font-size:9px;color:#7f9aac}
+.hx23-watch-wrap{overflow:auto;border:1px solid #19384f;border-radius:7px;background:#04101a}
+.hx23-watch-table{width:100%;min-width:730px;border-collapse:collapse}
+.hx23-watch-table th{padding:8px!important;font-size:8px!important;color:#7f9aac!important;background:#071724!important;border-bottom:1px solid #1a3a50!important}
+.hx23-watch-table td{padding:9px 8px!important;font-size:9.5px!important;border-bottom:1px solid #132c3e!important}
+.hx23-watch-table tbody tr{cursor:pointer}.hx23-watch-table tbody tr:hover td{background:#092033!important}
+.hx23-watch-symbol{font-size:11px;font-weight:950}.hx23-watch-sub{font-size:7.5px;color:#6f8798;margin-top:2px}
+.hx23-watch-note{margin-top:9px;color:#71899a;font-size:8.5px;line-height:1.45}
+
 /* slide-out radial menu content */
 #hx23Drawer{position:fixed;right:-520px;top:64px;width:min(500px,92vw);height:calc(100vh - 78px);z-index:100;border:1px solid #29516d;border-radius:10px 0 0 10px;background:#06121d;box-shadow:-20px 0 50px rgba(0,0,0,.55);transition:right .22s ease;overflow:hidden}
-#hx23Drawer.open{right:0}.hx23-drawer-head{height:48px;border-bottom:1px solid #1b3549;display:flex;align-items:center;justify-content:space-between;padding:0 13px}.hx23-drawer-head b{font-size:11px;text-transform:uppercase}.hx23-drawer-close{width:30px;height:30px!important;min-height:0!important;padding:0!important;border:1px solid #2d4d63!important;background:#0b1e2d!important;border-radius:4px!important;box-shadow:none!important}
+#hx23Drawer.open{right:0}#hx23Drawer.wide{width:min(820px,96vw);right:-840px}#hx23Drawer.wide.open{right:0}.hx23-drawer-head{height:48px;border-bottom:1px solid #1b3549;display:flex;align-items:center;justify-content:space-between;padding:0 13px}.hx23-drawer-head b{font-size:11px;text-transform:uppercase}.hx23-drawer-close{width:30px;height:30px!important;min-height:0!important;padding:0!important;border:1px solid #2d4d63!important;background:#0b1e2d!important;border-radius:4px!important;box-shadow:none!important}
 .hx23-drawer-body{height:calc(100% - 48px);overflow:auto;padding:12px}.hx23-drawer-card{border:1px solid #183247;border-radius:7px;background:#071722;padding:10px;margin-bottom:9px}.hx23-drawer-title{font-size:9px;color:#6c8ca3;text-transform:uppercase;font-weight:900;margin-bottom:6px}.hx23-drawer-copy{font-size:10px;line-height:1.55;color:#cad5dd}.hx23-drawer-copy table{font-size:9px}.hx23-drawer-action{margin-top:9px!important;background:#0f5685!important;border:1px solid #2f84b6!important;padding:7px 9px!important;font-size:9px!important;border-radius:4px!important;box-shadow:none!important}
 
 /* keep legacy functional engine present but visually out of the desk */
 .container>.card:not(.header),.container>details.card{display:none!important}
 #mockDashboard{position:absolute!important;left:-10000px!important;top:0!important;width:1600px!important;display:block!important;visibility:hidden!important;pointer-events:none!important}
 #mockDashboard #hxActiveStocksPanel,#mockDashboard #marketTape24,#mockDashboard .hx-env-strip{display:block!important}
+/* v23.3: the legacy desktop trade-plan dock used position:fixed with a huge z-index.
+   Keep its data nodes available to the engine, but never render that duplicate over the v23 drawer. */
+#mockDashboard #mockTradePlanDock{display:none!important;position:static!important;z-index:auto!important;visibility:hidden!important;pointer-events:none!important}
+#hx23Drawer{z-index:10000!important}
 @media(max-width:1250px){
-  .hx23-topbar{grid-template-columns:260px 1fr 280px}.hx23-main{grid-template-columns:310px minmax(480px,1fr) 300px}
+  .hx23-topbar{grid-template-columns:260px 1fr 170px}.hx23-main{grid-template-columns:minmax(560px,1fr) 310px}
   .hx23-env{grid-template-columns:150px repeat(6,minmax(95px,1fr)) 160px 155px}
 }
 @media(max-width:1050px){
-  .hx23-topbar{grid-template-columns:1fr auto}.hx23-top-center{display:none}.hx23-main{grid-template-columns:300px 1fr}.hx23-right{grid-column:1/-1;grid-template-columns:1fr 1fr;grid-template-rows:auto}.hx23-ai-grid{grid-template-columns:118px 1fr}
+  .hx23-topbar{grid-template-columns:1fr auto}.hx23-top-center{display:none}.hx23-main{grid-template-columns:minmax(0,1fr) 330px}.hx23-right{grid-column:auto;grid-template-columns:1fr;grid-template-rows:1fr 176px}.hx23-ai-grid{grid-template-columns:118px 1fr}
   .hx23-env{overflow-x:auto;display:flex;height:98px}.hx23-env>div{min-width:130px}.hx23-env-title{min-width:160px!important}
 }
 @media(max-width:760px){
-  .hx23-topbar{height:auto;min-height:58px;padding:8px 10px}.hx23-top-tools .hx23-icon:nth-of-type(-n+2){display:none}.hx23-clock{display:none}.hx23-brand-title{font-size:17px}
-  .hx23-main{display:block;margin:8px}.hx23-left,.hx23-center,.hx23-right{margin-bottom:8px}.hx23-center{display:block}.hx23-chart-panel{height:360px;margin-bottom:8px}.hx23-lower{height:300px}
-  .hx23-right{display:block}.hx23-ai{margin-bottom:8px}.hx23-wheel-float{width:285px;height:285px}.hx23-w1{left:99px}.hx23-w5{left:99px}.hx23-w2{right:12px}.hx23-w8{left:12px}.hx23-w3{top:118px}.hx23-w7{top:118px}
-  .hx23-w4{right:18px;bottom:36px}.hx23-w6{left:18px;bottom:36px}.hx23-tape-shell,.hx23-env{margin-left:8px;margin-right:8px}.hx23-footer{padding:0 10px}
+  .hx23-topbar{height:auto;min-height:58px;padding:8px 10px}.hx23-clock{display:none}.hx23-brand-title{font-size:17px}
+  .hx23-main{display:block;margin:8px}.hx23-left,.hx23-center,.hx23-right{margin-bottom:8px}.hx23-center{display:block}.hx23-chart-panel{height:520px;margin-bottom:8px}.hx23-lower{height:auto;grid-template-columns:1fr}
+  .hx23-right{display:block}.hx23-ai{margin-bottom:8px}.hx23-wheel-deck{grid-template-columns:1fr 1fr}.hx23-mini-wheel{width:146px;height:146px}.hx23-mi-top,.hx23-mi-bottom{left:44px}.hx23-tape-shell,.hx23-env{margin-left:8px;margin-right:8px}.hx23-footer{padding:0 10px}
 }
 
 </style>
@@ -1585,13 +1607,11 @@ body{background:#020a12!important;padding:0!important;overflow-x:hidden}
   <header class="hx23-topbar">
     <div class="hx23-brand">
       <div class="hx23-logo"><span>H</span></div>
-      <div><div class="hx23-brand-title">HALIFAX <span class="hx23-version">v23.0</span></div><div class="hx23-brand-sub">TRADE ENGINE</div></div>
+      <div><div class="hx23-brand-title">HALIFAX <span class="hx23-version">v23.5</span></div><div class="hx23-brand-sub">TRADE ENGINE</div></div>
     </div>
     <div class="hx23-top-center">24 HOUR MARKET TAPE <span class="hx23-live">LIVE</span></div>
     <div class="hx23-top-tools">
       <div class="hx23-clock" id="hx23Clock">—</div>
-      <div class="hx23-icon" title="Connection">⌁</div><div class="hx23-icon" title="Alerts">♧</div><div class="hx23-icon" title="Settings">⚙</div>
-      <div class="hx23-avatar">BJ</div>
     </div>
   </header>
 
@@ -1610,24 +1630,15 @@ body{background:#020a12!important;padding:0!important;overflow-x:hidden}
   </section>
 
   <main class="hx23-main">
-    <section class="hx23-panel hx23-left">
-      <div class="hx23-panel-head"><b>Active Stocks</b><div class="hx23-stock-tools"><span id="hx23StockStatus">Loading…</span><button class="hx23-small-btn" onclick="editActiveStocks()">EDIT</button><button class="hx23-small-btn" onclick="refreshActiveStocks(true)">↻</button></div></div>
-      <div style="overflow:auto">
-        <table class="hx23-stock-table">
-          <thead><tr><th style="width:20%">Symbol</th><th style="width:19%">Price</th><th style="width:18%">Chg %</th><th style="width:17%">Strength</th><th style="width:14%">Trend</th><th style="width:12%">RVol</th></tr></thead>
-          <tbody id="hx23StockRows"><tr><td colspan="6" class="tiny">Waiting for public watchlist quotes…</td></tr></tbody>
-        </table>
-      </div>
-      <div class="hx23-left-foot"><span onclick="editActiveStocks()" style="cursor:pointer">＋ ADD / EDIT SYMBOLS</span><span>click a row to analyze</span></div>
-    </section>
-
     <section class="hx23-center">
       <div class="hx23-panel hx23-chart-panel">
         <div class="hx23-chart-head">
           <div class="hx23-chart-title"><span id="hx23ChartTicker">SPY</span> <small id="hx23ChartName">SPDR S&amp;P 500 ETF TRUST</small></div>
           <div><span class="hx23-chart-price" id="hx23ChartPrice">—</span><span class="hx23-chart-move yellow" id="hx23ChartMove">—</span></div>
         </div>
-        <div class="hx23-tf-row"><button class="hx23-tf active">1D</button><button class="hx23-tf">5D</button><button class="hx23-tf">1M</button><button class="hx23-tf">3M</button><button class="hx23-tf">YTD</button><button class="hx23-tf">1Y</button><button class="hx23-tf">5Y</button><button class="hx23-tf">MAX</button></div>
+        <div class="hx23-tf-row"><button class="hx23-tf active" data-tf="1D" onclick="hx23SetTimeframe('1D',this)">1D</button><button class="hx23-tf" data-tf="5D" onclick="hx23SetTimeframe('5D',this)">5D</button><button class="hx23-tf" data-tf="1M" onclick="hx23SetTimeframe('1M',this)">1M</button><button class="hx23-tf" data-tf="3M" onclick="hx23SetTimeframe('3M',this)">3M</button><button class="hx23-tf" data-tf="YTD" onclick="hx23SetTimeframe('YTD',this)">YTD</button><button class="hx23-tf" data-tf="1Y" onclick="hx23SetTimeframe('1Y',this)">1Y</button><button class="hx23-tf" data-tf="5Y" onclick="hx23SetTimeframe('5Y',this)">5Y</button><button class="hx23-tf" data-tf="MAX" onclick="hx23SetTimeframe('MAX',this)">MAX</button></div>
+        <div class="hx23-indicator-row"><span class="hx23-indicator-label">Indicators</span><button class="hx23-ind active" data-ind="ema9" onclick="hx23ToggleIndicator('ema9',this)">EMA 9</button><button class="hx23-ind active" data-ind="ema21" onclick="hx23ToggleIndicator('ema21',this)">EMA 21</button><button class="hx23-ind" data-ind="sma50" onclick="hx23ToggleIndicator('sma50',this)">SMA 50</button><button class="hx23-ind" data-ind="sma200" onclick="hx23ToggleIndicator('sma200',this)">SMA 200</button><button class="hx23-ind active" data-ind="vwap" onclick="hx23ToggleIndicator('vwap',this)">VWAP</button><button class="hx23-ind active" data-ind="rsi" onclick="hx23ToggleIndicator('rsi',this)">RSI</button><button class="hx23-ind active" data-ind="macd" onclick="hx23ToggleIndicator('macd',this)">MACD</button></div>
+        <div class="hx23-chart-legend" id="hx23ChartLegend"></div>
         <canvas id="hx23ChartCanvas"></canvas><div class="hx23-chart-empty" id="hx23ChartEmpty">Loading public SPY chart…</div>
       </div>
 
@@ -1637,22 +1648,17 @@ body{background:#020a12!important;padding:0!important;overflow-x:hidden}
           <div class="hx23-feed" id="hx23News"><div class="hx23-feed-item"><span class="hx23-feed-time">—</span><span class="hx23-feed-symbol">—</span><span class="hx23-feed-text">Run Analyze to load ticker news and filing context.</span></div></div>
         </div>
         <div class="hx23-panel hx23-lower-card">
-          <div class="hx23-panel-head"><b>Market Movers</b><span>from Active Stocks</span></div>
+          <div class="hx23-panel-head"><b>Market Movers</b><span>from My Stock Watch</span></div>
           <div class="hx23-mover-tabs"><b>Top Gainers</b><span>Top Losers</span></div>
           <div class="hx23-mover-list" id="hx23Movers"><div class="tiny">Waiting for Active Stocks.</div></div>
         </div>
 
-        <nav class="hx23-wheel-float" aria-label="Halifax menu wheel">
-          <button class="hx23-wheel-btn hx23-w1" onclick="hx23OpenMenu('technical')"><em>⌾</em><span>Technical</span></button>
-          <button class="hx23-wheel-btn hx23-w2" onclick="hx23OpenMenu('macro')"><em>⌕</em><span>Macro</span></button>
-          <button class="hx23-wheel-btn hx23-w3" onclick="hx23OpenMenu('government')"><em>▦</em><span>Government</span></button>
-          <button class="hx23-wheel-btn hx23-w4" onclick="hx23OpenMenu('options')"><em>⚙</em><span>Options</span></button>
-          <button class="hx23-wheel-btn hx23-w5" onclick="hx23OpenMenu('flow')"><em>☆</em><span>Smart Money</span></button>
-          <button class="hx23-wheel-btn hx23-w6" onclick="hx23OpenMenu('fund')"><em>▤</em><span>Fundamental</span></button>
-          <button class="hx23-wheel-btn hx23-w7" onclick="hx23OpenMenu('bear')"><em>☷</em><span>Bear Radar</span></button>
-          <button class="hx23-wheel-btn hx23-w8" onclick="hx23OpenMenu('list')"><em>◎</em><span>Watchlist</span></button>
-          <button class="hx23-wheel-center" onclick="hx23CloseMenu()" title="Close menu">H</button>
-        </nav>
+        <div class="hx23-wheel-deck" aria-label="Halifax subject wheels">
+          <div><nav class="hx23-mini-wheel" aria-label="Analysis wheel"><button class="hx23-mini-item hx23-mi-top" onclick="hx23OpenMenu('technical')"><em>⌾</em><span>Technical</span></button><button class="hx23-mini-item hx23-mi-left" onclick="hx23OpenMenu('fund')"><em>▤</em><span>Fundamental</span></button><button class="hx23-mini-item hx23-mi-right" onclick="hx23OpenMenu('ai')"><em>H</em><span>AI Review</span></button><button class="hx23-mini-center" onclick="hx23OpenMenu('technical')">Analysis</button></nav><div class="hx23-wheel-caption">Analysis</div></div>
+          <div><nav class="hx23-mini-wheel" aria-label="Market wheel"><button class="hx23-mini-item hx23-mi-top" onclick="hx23OpenMenu('macro')"><em>⌕</em><span>Macro</span></button><button class="hx23-mini-item hx23-mi-left" onclick="hx23OpenMenu('government')"><em>▦</em><span>Gov</span></button><button class="hx23-mini-item hx23-mi-right" onclick="hx23OpenMenu('bear')"><em>☷</em><span>Bear Radar</span></button><button class="hx23-mini-center" onclick="hx23OpenMenu('macro')">Market</button></nav><div class="hx23-wheel-caption">Market</div></div>
+          <div><nav class="hx23-mini-wheel" aria-label="Flow wheel"><button class="hx23-mini-item hx23-mi-top" onclick="hx23OpenMenu('options')"><em>⚙</em><span>Options</span></button><button class="hx23-mini-item hx23-mi-left" onclick="hx23OpenMenu('flow')"><em>☆</em><span>Smart Money</span></button><button class="hx23-mini-item hx23-mi-right" onclick="hx23OpenMenu('events')"><em>◷</em><span>Events</span></button><button class="hx23-mini-center" onclick="hx23OpenMenu('flow')">Flow</button></nav><div class="hx23-wheel-caption">Flow &amp; Events</div></div>
+          <div><nav class="hx23-mini-wheel" aria-label="Desk wheel"><button class="hx23-mini-item hx23-mi-top" onclick="hx23OpenMenu('list')"><em>◎</em><span>My Stocks</span></button><button class="hx23-mini-item hx23-mi-left" onclick="hx23OpenMenu('news')"><em>▧</em><span>News</span></button><button class="hx23-mini-item hx23-mi-right" onclick="hx23OpenMenu('ai')"><em>H</em><span>Trade Plan</span></button><button class="hx23-mini-center" onclick="hx23OpenMenu('list')">My Desk</button></nav><div class="hx23-wheel-caption">My Desk</div></div>
+        </div>
       </div>
     </section>
 
@@ -1740,7 +1746,7 @@ body{background:#020a12!important;padding:0!important;overflow-x:hidden}
 
       <section class="mock-panel hx-active-panel" id="hxActiveStocksPanel">
         <div class="hx-active-head">
-          <div><div class="mock-panel-title">Active Stocks</div><div class="hx-active-sub">Your watchlist with active quote, trend, volume and session information. Public data may be delayed and is not broker-certified.</div></div>
+          <div><div class="mock-panel-title">My Stock Watch</div><div class="hx-active-sub">Your watchlist with active quote, trend, volume and session information. Public data may be delayed and is not broker-certified.</div></div>
           <div class="hx-active-actions"><span id="hxActiveStatus" class="hx-active-status">Loading…</span><button type="button" class="hx-mini-btn" onclick="window.editActiveStocks?.()">Edit List</button><button type="button" class="hx-mini-btn" onclick="window.refreshActiveStocks?.(true)">↻ Refresh</button></div>
         </div>
         <div class="hx-active-table-wrap">
@@ -5216,11 +5222,21 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now(
   function sanitizeList(raw){return [...new Set(String(raw||'').toUpperCase().split(/[\s,;]+/).map(x=>x.replace(/[^A-Z0-9.\-^=]/g,'')).filter(Boolean))].slice(0,12);}
   function getList(){try{const saved=JSON.parse(localStorage.getItem(ACTIVE_KEY)||'[]');if(Array.isArray(saved)&&saved.length)return sanitizeList(saved.join(','));}catch(e){}try{const legacy=typeof parsePortfolioTickers==='function'?parsePortfolioTickers():[];if(legacy.length)return legacy;}catch(e){}return DEFAULTS.slice();}
   function saveList(list){try{localStorage.setItem(ACTIVE_KEY,JSON.stringify(list));}catch(e){}const legacy=$('portfolioTickers');if(legacy){legacy.value=list.join(', ');try{savePortfolioSettings()}catch(e){}}}
-  window.editActiveStocks=function(){const current=getList().join(', '),next=prompt('Active stock/watchlist tickers (comma separated, up to 12)',current);if(next===null)return;const list=sanitizeList(next);if(!list.length)return;saveList(list);window.refreshActiveStocks?.(true);};
+  let busy=false,lastAt=0,pendingRefresh=false;
+  window.getActiveStocksList=function(){return getList().slice();};
+  window.editActiveStocks=function(){
+    const current=getList().join(', '),next=prompt('My Stock Watch tickers (comma separated, up to 12)',current);
+    if(next===null)return;
+    const list=sanitizeList(next);
+    if(!list.length)return;
+    saveList(list);
+    window.hxActiveStockData=list.map(symbol=>({symbol,loading:true}));
+    window.renderMyStockWatch?.(window.hxActiveStockData);
+    if(busy) pendingRefresh=true; else window.refreshActiveStocks?.(true);
+  };
   function sessionChip(state){const s=typeof normalizeMarketState==='function'?normalizeMarketState(state):String(state||'').toUpperCase();if(s==='REGULAR')return ['OPEN','green'];if(s==='PRE')return ['PRE','blue'];if(s==='POST')return ['AFTER','yellow'];if(s==='OVERNIGHT')return ['OVERNIGHT','yellow'];if(s==='CLOSED')return ['CLOSED','red'];return [s||'—','yellow'];}
   async function one(symbol){let d=null,q=null;const res=await Promise.allSettled([loadTickerData(symbol,'1d','6mo'),typeof fetchLiveQuote==='function'?fetchLiveQuote(symbol):Promise.resolve(null)]);if(res[0].status==='fulfilled')d=res[0].value;if(res[1].status==='fulfilled')q=res[1].value;if(!d&&!q)throw new Error('No public data');const price=Number.isFinite(q?.price)?q.price:d?.price,chg=Number.isFinite(q?.changePct)?q.changePct:d?.dayChangePct,trend=d&&typeof classifyTimeframe==='function'?classifyTimeframe(d):null,rv=Number.isFinite(d?.volumeRatio)?d.volumeRatio:null,[session,sessionCls]=sessionChip(q?.marketState),bid=Number.isFinite(q?.bid)?q.bid:null,ask=Number.isFinite(q?.ask)?q.ask:null,stamp=Number.isFinite(q?.timestamp)?q.timestamp:d?.quoteTime||d?.dataTime;return {symbol,price,chg,trend,rv,session,sessionCls,bid,ask,stamp,volume:d?.volume,avgVolume:d?.avgVolume};}
-  let busy=false,lastAt=0;
-  window.refreshActiveStocks=async function(force=false){if(busy)return;if(!force&&Date.now()-lastAt<45000)return;busy=true;const status=$('hxActiveStatus'),body=$('hxActiveStockRows'),list=getList();if(status)status.textContent=`Refreshing ${list.length} symbols…`;if(body&&!body.children.length)body.innerHTML='<tr><td colspan="8" class="tiny">Loading active quotes…</td></tr>';try{const rows=await Promise.allSettled(list.map(one));const good=[];rows.forEach((r,i)=>{if(r.status==='fulfilled')good.push(r.value);else good.push({symbol:list[i],error:true});});if(body)body.innerHTML=good.map(x=>{if(x.error)return `<tr class="hx-active-row" data-symbol="${html(x.symbol)}"><td><div class="hx-active-symbol">${html(x.symbol)}</div></td><td colspan="7" class="hx-data-unavailable">Public quote unavailable; no value guessed.</td></tr>`;const tc=x.trend?.direction||'NEUTRAL',tcls=tc==='BULLISH'?'green':tc==='BEARISH'?'red':'yellow',rvcls=Number.isFinite(x.rv)&&x.rv>=1.2?'hx-relvol-hot':Number.isFinite(x.rv)&&x.rv<.7?'hx-relvol-low':'',ba=Number.isFinite(x.bid)&&Number.isFinite(x.ask)?`${x.bid.toFixed(2)} / ${x.ask.toFixed(2)}`:'—';return `<tr class="hx-active-row" data-symbol="${html(x.symbol)}" title="Analyze ${html(x.symbol)}"><td><div class="hx-active-symbol">${html(x.symbol)}</div><div class="hx-active-subrow">click to analyze</div></td><td>${fmtPrice(x.price)}</td><td class="${clsMove(x.chg)}"><b>${fmtPct(x.chg)}</b></td><td class="${tcls}"><b>${html(tc)}</b><div class="hx-active-subrow">${x.trend?Math.round(x.trend.confidence||0)+'% strength':'—'}</div></td><td class="${rvcls}">${Number.isFinite(x.rv)?x.rv.toFixed(2)+'×':'—'}</td><td class="hx-bidask">${ba}</td><td><span class="hx-session-chip ${x.sessionCls}">${html(x.session)}</span></td><td>${fmtTime(x.stamp)}</td></tr>`;}).join('');lastAt=Date.now();if(status){const ok=rows.filter(r=>r.status==='fulfilled').length;status.textContent=`${ok}/${list.length} loaded • ${new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})}`;}body?.querySelectorAll('.hx-active-row').forEach(tr=>tr.addEventListener('click',()=>{const sym=tr.dataset.symbol;if(!sym)return;const m=$('mockTickerInput'),legacy=$('ticker');if(m)m.value=sym;if(legacy)legacy.value=sym;if(typeof mockAnalyze==='function')mockAnalyze();}));}catch(e){if(status)status.textContent='Active quote refresh unavailable';if(body)body.innerHTML='<tr><td colspan="8" class="hx-data-unavailable">Public watchlist data could not be loaded. No values were guessed.</td></tr>';}finally{busy=false;}};
+  window.refreshActiveStocks=async function(force=false){if(busy){if(force)pendingRefresh=true;return;}if(!force&&Date.now()-lastAt<45000)return;busy=true;const status=$('hxActiveStatus'),body=$('hxActiveStockRows'),list=getList();if(status)status.textContent=`Refreshing ${list.length} symbols…`;if(force){window.hxActiveStockData=list.map(symbol=>({symbol,loading:true}));window.renderMyStockWatch?.(window.hxActiveStockData);}if(body&&(force||!body.children.length))body.innerHTML=list.map(symbol=>`<tr class="hx-active-row" data-symbol="${html(symbol)}"><td><div class="hx-active-symbol">${html(symbol)}</div></td><td colspan="7" class="tiny">Refreshing…</td></tr>`).join('');try{const rows=await Promise.allSettled(list.map(one));const good=[];rows.forEach((r,i)=>{if(r.status==='fulfilled')good.push(r.value);else good.push({symbol:list[i],error:true});});window.hxActiveStockData=good;window.renderMyStockWatch?.(good);if(body)body.innerHTML=good.map(x=>{if(x.error)return `<tr class="hx-active-row" data-symbol="${html(x.symbol)}"><td><div class="hx-active-symbol">${html(x.symbol)}</div></td><td colspan="7" class="hx-data-unavailable">Public quote unavailable; no value guessed.</td></tr>`;const tc=x.trend?.direction||'NEUTRAL',tcls=tc==='BULLISH'?'green':tc==='BEARISH'?'red':'yellow',rvcls=Number.isFinite(x.rv)&&x.rv>=1.2?'hx-relvol-hot':Number.isFinite(x.rv)&&x.rv<.7?'hx-relvol-low':'',ba=Number.isFinite(x.bid)&&Number.isFinite(x.ask)?`${x.bid.toFixed(2)} / ${x.ask.toFixed(2)}`:'—';return `<tr class="hx-active-row" data-symbol="${html(x.symbol)}" title="Analyze ${html(x.symbol)}"><td><div class="hx-active-symbol">${html(x.symbol)}</div><div class="hx-active-subrow">click to analyze</div></td><td>${fmtPrice(x.price)}</td><td class="${clsMove(x.chg)}"><b>${fmtPct(x.chg)}</b></td><td class="${tcls}"><b>${html(tc)}</b><div class="hx-active-subrow">${x.trend?Math.round(x.trend.confidence||0)+'% strength':'—'}</div></td><td class="${rvcls}">${Number.isFinite(x.rv)?x.rv.toFixed(2)+'×':'—'}</td><td class="hx-bidask">${ba}</td><td><span class="hx-session-chip ${x.sessionCls}">${html(x.session)}</span></td><td>${fmtTime(x.stamp)}</td></tr>`;}).join('');lastAt=Date.now();if(status){const ok=rows.filter(r=>r.status==='fulfilled').length;status.textContent=`${ok}/${list.length} loaded • ${new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})}`;}window.renderMyStockWatch?.(good);body?.querySelectorAll('.hx-active-row').forEach(tr=>tr.addEventListener('click',()=>{const sym=tr.dataset.symbol;if(!sym)return;const m=$('mockTickerInput'),legacy=$('ticker');if(m)m.value=sym;if(legacy)legacy.value=sym;if(typeof mockAnalyze==='function')mockAnalyze();}));}catch(e){if(status)status.textContent='Active quote refresh unavailable';if(body)body.innerHTML='<tr><td colspan="8" class="hx-data-unavailable">Public watchlist data could not be loaded. No values were guessed.</td></tr>';}finally{busy=false;if(pendingRefresh){pendingRefresh=false;setTimeout(()=>window.refreshActiveStocks?.(true),0);}}};
   window.openWheelMenu=function(id,btn){const drawer=$('hxWheelDrawer'),title=$('hxWheelTitle');document.querySelectorAll('.hx-wheel-pane').forEach(p=>p.open=false);document.querySelectorAll('.hx-wheel-btn').forEach(b=>b.classList.remove('active'));const pane=$(id);if(pane)pane.open=true;if(btn)btn.classList.add('active');if(title)title.textContent=PANEL_TITLES[id]||'Halifax Menu';if(drawer)drawer.classList.add('active');};
   window.closeWheelMenus=function(){document.querySelectorAll('.hx-wheel-pane').forEach(p=>p.open=false);document.querySelectorAll('.hx-wheel-btn').forEach(b=>b.classList.remove('active'));const title=$('hxWheelTitle');if(title)title.textContent='Select a menu';};
   // Preserve calls from existing dashboard buttons while routing them into the wheel drawer.
@@ -5296,15 +5312,54 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now(
     const movers=[...data].map(x=>({...x,n:Number(String(x.chg).replace(/[^\d.-]/g,''))})).filter(x=>Number.isFinite(x.n)).sort((a,b)=>b.n-a.n).slice(0,6);
     const mv=$('hx23Movers');if(mv)mv.innerHTML=movers.map(x=>`<div class="hx23-mover"><span>${esc(x.symbol)}</span><span class="${x.n>=0?'green':'red'}">${esc(x.chg)}</span><span>${esc(x.price)}</span></div>`).join('')||'<div class="tiny">No active changes loaded.</div>';
   }
+  function watchFmtPrice(v){return Number.isFinite(v)?'$'+Number(v).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}):'—';}
+  function watchFmtPct(v){return Number.isFinite(v)?`${v>=0?'+':''}${Number(v).toFixed(2)}%`:'—';}
+  function watchFmtTime(ts){try{return Number.isFinite(ts)?new Date(ts*1000).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'}):'—'}catch(e){return '—'}}
+  window.renderMyStockWatch=function(data){
+    const out=$('hx23WatchRows'),status=$('hx23WatchStatus'); if(!out)return;
+    const list=Array.isArray(data)?data:(Array.isArray(window.hxActiveStockData)?window.hxActiveStockData:[]);
+    if(status){const hidden=$('hxActiveStatus')?.textContent;status.textContent=hidden||`${list.length} symbols`;}
+    if(!list.length){const names=window.getActiveStocksList?.()||[];out.innerHTML=(names.length?names:[{symbol:'—'}]).map(x=>`<tr><td><span class="hx23-watch-symbol">${esc(x.symbol||x)}</span></td><td colspan="7" class="tiny">Waiting for public quote…</td></tr>`).join('');return;}
+    out.innerHTML=list.map(x=>{
+      if(x.loading)return `<tr><td><span class="hx23-watch-symbol">${esc(x.symbol)}</span></td><td colspan="7" class="tiny">Refreshing…</td></tr>`;
+      if(x.error)return `<tr data-watch-symbol="${esc(x.symbol)}"><td><span class="hx23-watch-symbol">${esc(x.symbol)}</span></td><td colspan="7" class="red">Public quote unavailable; no value guessed.</td></tr>`;
+      const tc=x.trend?.direction||'NEUTRAL',tcls=tc==='BULLISH'?'green':tc==='BEARISH'?'red':'yellow',chgcls=Number(x.chg)>0?'green':Number(x.chg)<0?'red':'yellow';
+      const ba=Number.isFinite(x.bid)&&Number.isFinite(x.ask)?`${x.bid.toFixed(2)} / ${x.ask.toFixed(2)}`:'—';
+      const strength=x.trend?`${Math.round(x.trend.confidence||0)}%`:'—';
+      return `<tr data-watch-symbol="${esc(x.symbol)}" title="Analyze ${esc(x.symbol)}"><td><span class="hx23-watch-symbol">${esc(x.symbol)}</span><div class="hx23-watch-sub">click to analyze</div></td><td>${watchFmtPrice(x.price)}</td><td class="${chgcls}"><b>${watchFmtPct(x.chg)}</b></td><td class="${tcls}"><b>${esc(tc)}</b><div class="hx23-watch-sub">${esc(strength)} strength</div></td><td>${Number.isFinite(x.rv)?x.rv.toFixed(2)+'×':'—'}</td><td>${esc(ba)}</td><td><span class="${x.sessionCls||'yellow'}">${esc(x.session||'—')}</span></td><td>${watchFmtTime(x.stamp)}</td></tr>`;
+    }).join('');
+    out.querySelectorAll('tr[data-watch-symbol]').forEach(tr=>tr.onclick=()=>{const sym=tr.dataset.watchSymbol;if(!sym)return;const inp=$('hx23TickerInput');if(inp)inp.value=sym;window.hx23CloseMenu?.();window.hx23Analyze?.(sym);});
+  };
+  const hx23Indicators={ema9:true,ema21:true,sma50:false,sma200:false,vwap:true,rsi:true,macd:true};
+  let hx23LastChartData=null,hx23CurrentTf='1D',hx23ChartToken=0;
+  function seriesSMA(vals,n){const out=new Array(vals.length).fill(null);let sum=0;for(let i=0;i<vals.length;i++){sum+=vals[i];if(i>=n)sum-=vals[i-n];if(i>=n-1)out[i]=sum/n;}return out;}
+  function seriesEMA(vals,n){const out=new Array(vals.length).fill(null),k=2/(n+1);let e=null;for(let i=0;i<vals.length;i++){const v=vals[i];e=e==null?v:(v*k+e*(1-k));out[i]=e;}return out;}
+  function seriesRSI(vals,n=14){const out=new Array(vals.length).fill(null);if(vals.length<=n)return out;let gain=0,loss=0;for(let i=1;i<=n;i++){const d=vals[i]-vals[i-1];gain+=Math.max(0,d);loss+=Math.max(0,-d);}gain/=n;loss/=n;out[n]=loss===0?100:100-(100/(1+gain/loss));for(let i=n+1;i<vals.length;i++){const d=vals[i]-vals[i-1];gain=(gain*(n-1)+Math.max(0,d))/n;loss=(loss*(n-1)+Math.max(0,-d))/n;out[i]=loss===0?100:100-(100/(1+gain/loss));}return out;}
+  function seriesVWAP(rows){let pv=0,v=0;return rows.map(z=>{const vol=Number(z.volume)||0,typ=(z.high+z.low+z.close)/3;pv+=typ*vol;v+=vol;return v?pv/v:null;});}
+  function drawLine(ctx,vals,xPos,yPos,color,width=1.2){ctx.beginPath();let started=false;vals.forEach((v,i)=>{if(!Number.isFinite(v))return;const xx=xPos(i),yy=yPos(v);if(!started){ctx.moveTo(xx,yy);started=true}else ctx.lineTo(xx,yy)});if(started){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.stroke();}}
+  function chartLegend(rows,sets){const last=a=>{for(let i=a.length-1;i>=0;i--)if(Number.isFinite(a[i]))return a[i];return null}, parts=[];[['ema9','EMA 9','#ff8b3d'],['ema21','EMA 21','#3fa7ff'],['sma50','SMA 50','#ffd15c'],['sma200','SMA 200','#bf72ff'],['vwap','VWAP','#44d6c0']].forEach(([k,label])=>{if(hx23Indicators[k]){const v=last(sets[k]||[]);if(Number.isFinite(v))parts.push(`<div class="${k}">${label} ${v.toFixed(2)}</div>`);}});const el=$('hx23ChartLegend');if(el)el.innerHTML=parts.join('');}
+  window.hx23ToggleIndicator=function(name,btn){if(!(name in hx23Indicators))return;hx23Indicators[name]=!hx23Indicators[name];btn?.classList.toggle('active',hx23Indicators[name]);if(hx23LastChartData)drawChart(hx23LastChartData);};
+  const hx23TfMap={"1D":["5m","1d"],"5D":["15m","5d"],"1M":["1h","1mo"],"3M":["1d","3mo"],"YTD":["1d","ytd"],"1Y":["1d","1y"],"5Y":["1wk","5y"],"MAX":["1mo","max"]};
+  window.hx23LoadChart=async function(ticker,tf=hx23CurrentTf){if(typeof loadTickerData!=='function')return;const pair=hx23TfMap[tf]||hx23TfMap['1D'],token=++hx23ChartToken;const empty=$('hx23ChartEmpty');if(empty){empty.textContent=`Loading ${ticker} ${tf} chart…`;empty.style.display='grid';}try{const d=await loadTickerData(ticker,pair[0],pair[1]);if(token!==hx23ChartToken)return;hx23LastChartData=d;drawChart(d);set('hx23ChartTicker',ticker);set('hx23ChartPrice',Number.isFinite(d.price)?d.price.toFixed(2):'—');set('hx23ChartMove',Number.isFinite(d.dayChangePct)?`${d.dayChangePct>=0?'+':''}${d.dayChangePct.toFixed(2)}%`:'—',d.dayChangePct>0?'green':d.dayChangePct<0?'red':'yellow');}catch(e){if(token!==hx23ChartToken)return;if(empty){empty.textContent='Public chart data unavailable for this timeframe; no values were guessed.';empty.style.display='grid';}}};
+  window.hx23SetTimeframe=function(tf,btn){hx23CurrentTf=tf;document.querySelectorAll('.hx23-tf').forEach(b=>b.classList.toggle('active',b===btn));const ticker=String($('hx23ChartTicker')?.textContent||$('hx23TickerInput')?.value||'SPY').trim().toUpperCase()||'SPY';window.hx23LoadChart(ticker,tf);};
   function drawChart(d){
-    const c=$('hx23ChartCanvas');if(!c)return;const rect=c.getBoundingClientRect(),ratio=Math.max(1,window.devicePixelRatio||1),w=Math.max(520,Math.round(rect.width||700)),h=Math.max(245,Math.round(rect.height||270));
+    hx23LastChartData=d;
+    const c=$('hx23ChartCanvas');if(!c)return;const rect=c.getBoundingClientRect(),ratio=Math.max(1,window.devicePixelRatio||1),w=Math.max(520,Math.round(rect.width||700)),h=Math.max(340,Math.round(rect.height||385));
     c.width=w*ratio;c.height=h*ratio;const x=c.getContext('2d');x.setTransform(ratio,0,0,ratio,0,0);x.clearRect(0,0,w,h);x.fillStyle='#04101a';x.fillRect(0,0,w,h);
-    x.strokeStyle='rgba(48,83,105,.27)';x.lineWidth=1;for(let i=1;i<6;i++){let yy=i*h/6;x.beginPath();x.moveTo(0,yy);x.lineTo(w,yy);x.stroke()}for(let i=1;i<10;i++){let xx=i*w/10;x.beginPath();x.moveTo(xx,0);x.lineTo(xx,h);x.stroke()}
-    const rows=(d?.candles||[]).slice(-95).filter(z=>[z.open,z.high,z.low,z.close].every(Number.isFinite));if(rows.length<2){$('hx23ChartEmpty').style.display='grid';return}
-    $('hx23ChartEmpty').style.display='none';const lo=Math.min(...rows.map(z=>z.low)),hi=Math.max(...rows.map(z=>z.high)),span=Math.max(.01,hi-lo),pad={l:12,r:55,t:12,b:35},cw=(w-pad.l-pad.r)/rows.length,y=v=>pad.t+(hi-v)/span*(h-pad.t-pad.b);
-    const maxVol=Math.max(1,...rows.map(z=>z.volume||0));
-    rows.forEach((z,i)=>{const xx=pad.l+(i+.5)*cw,up=z.close>=z.open,col=up?'#15d65f':'#ff3d44';x.globalAlpha=.22;x.fillStyle=col;const vh=(z.volume||0)/maxVol*38;x.fillRect(xx-Math.max(1,cw*.35),h-pad.b-vh,Math.max(2,cw*.7),vh);x.globalAlpha=1;x.strokeStyle=col;x.fillStyle=col;x.beginPath();x.moveTo(xx,y(z.high));x.lineTo(xx,y(z.low));x.stroke();const top=y(Math.max(z.open,z.close)),bot=y(Math.min(z.open,z.close));x.fillRect(xx-Math.max(1,cw*.28),top,Math.max(2,cw*.56),Math.max(1,bot-top));});
-    x.fillStyle='#86a0b2';x.font='10px Arial';for(let i=0;i<5;i++){const v=hi-i*span/4,yy=pad.t+i*(h-pad.t-pad.b)/4;x.fillText(v.toFixed(2),w-pad.r+6,yy+3)}
+    const all=(d?.candles||[]).filter(z=>[z.open,z.high,z.low,z.close].every(Number.isFinite));if(all.length<2){$('hx23ChartEmpty').style.display='grid';return}
+    $('hx23ChartEmpty').style.display='none';
+    const closes=all.map(z=>z.close),ema9All=seriesEMA(closes,9),ema21All=seriesEMA(closes,21),sma50All=seriesSMA(closes,50),sma200All=seriesSMA(closes,200),vwapAll=seriesVWAP(all),rsiAll=seriesRSI(closes,14),ema12=seriesEMA(closes,12),ema26=seriesEMA(closes,26),macdAll=ema12.map((v,i)=>Number.isFinite(v)&&Number.isFinite(ema26[i])?v-ema26[i]:null),signalAll=seriesEMA(macdAll.map(v=>Number.isFinite(v)?v:0),9),histAll=macdAll.map((v,i)=>Number.isFinite(v)&&Number.isFinite(signalAll[i])?v-signalAll[i]:null);
+    const count=Math.min(110,all.length),offset=all.length-count,rows=all.slice(offset),sets={ema9:ema9All.slice(offset),ema21:ema21All.slice(offset),sma50:sma50All.slice(offset),sma200:sma200All.slice(offset),vwap:vwapAll.slice(offset),rsi:rsiAll.slice(offset),macd:macdAll.slice(offset),signal:signalAll.slice(offset),hist:histAll.slice(offset)};
+    const showR=hx23Indicators.rsi,showM=hx23Indicators.macd,bottomPanels=(showR?1:0)+(showM?1:0),panelGap=5,lowerH=bottomPanels?Math.min(145,Math.max(95,h*.34)):0,priceBottom=h-lowerH-(bottomPanels?panelGap:0),pad={l:12,r:58,t:12,b:24};
+    const validPrice=[...rows.flatMap(z=>[z.low,z.high])];['ema9','ema21','sma50','sma200','vwap'].forEach(k=>{if(hx23Indicators[k])validPrice.push(...sets[k].filter(Number.isFinite));});const lo=Math.min(...validPrice),hi=Math.max(...validPrice),span=Math.max(.01,hi-lo),cw=(w-pad.l-pad.r)/rows.length,xp=i=>pad.l+(i+.5)*cw,yp=v=>pad.t+(hi-v)/span*(priceBottom-pad.t-pad.b);
+    x.strokeStyle='rgba(48,83,105,.27)';x.lineWidth=1;for(let i=1;i<5;i++){let yy=pad.t+i*(priceBottom-pad.t-pad.b)/5;x.beginPath();x.moveTo(0,yy);x.lineTo(w,yy);x.stroke()}for(let i=1;i<10;i++){let xx=i*w/10;x.beginPath();x.moveTo(xx,0);x.lineTo(xx,priceBottom);x.stroke()}
+    const maxVol=Math.max(1,...rows.map(z=>z.volume||0));rows.forEach((z,i)=>{const xx=xp(i),up=z.close>=z.open,col=up?'#15d65f':'#ff3d44';x.globalAlpha=.20;x.fillStyle=col;const vh=(z.volume||0)/maxVol*34;x.fillRect(xx-Math.max(1,cw*.35),priceBottom-pad.b-vh,Math.max(2,cw*.7),vh);x.globalAlpha=1;x.strokeStyle=col;x.fillStyle=col;x.beginPath();x.moveTo(xx,yp(z.high));x.lineTo(xx,yp(z.low));x.stroke();const top=yp(Math.max(z.open,z.close)),bot=yp(Math.min(z.open,z.close));x.fillRect(xx-Math.max(1,cw*.28),top,Math.max(2,cw*.56),Math.max(1,bot-top));});
+    if(hx23Indicators.ema9)drawLine(x,sets.ema9,xp,yp,'#ff8b3d',1.25);if(hx23Indicators.ema21)drawLine(x,sets.ema21,xp,yp,'#3fa7ff',1.3);if(hx23Indicators.sma50)drawLine(x,sets.sma50,xp,yp,'#ffd15c',1.15);if(hx23Indicators.sma200)drawLine(x,sets.sma200,xp,yp,'#bf72ff',1.2);if(hx23Indicators.vwap)drawLine(x,sets.vwap,xp,yp,'#44d6c0',1.15);
+    x.fillStyle='#86a0b2';x.font='9px Arial';for(let i=0;i<5;i++){const v=hi-i*span/4,yy=pad.t+i*(priceBottom-pad.t-pad.b)/4;x.fillText(v.toFixed(2),w-pad.r+7,yy+3)}
+    let panelTop=priceBottom+panelGap;
+    if(showR){const ph=showM?lowerH/2:lowerH;x.fillStyle='#06111b';x.fillRect(0,panelTop,w,ph);x.strokeStyle='#1c3446';x.strokeRect(0,panelTop,w,ph);const ry=v=>panelTop+8+(100-v)/100*(ph-16);[30,50,70].forEach(v=>{x.strokeStyle=v===50?'rgba(83,111,130,.32)':'rgba(112,91,158,.28)';x.setLineDash(v===50?[2,3]:[5,4]);x.beginPath();x.moveTo(0,ry(v));x.lineTo(w,ry(v));x.stroke();x.setLineDash([]);});drawLine(x,sets.rsi,xp,ry,'#b36cff',1.2);const rv=[...sets.rsi].reverse().find(Number.isFinite);x.fillStyle='#c5a3ff';x.font='9px Arial';x.fillText(`RSI 14 ${Number.isFinite(rv)?rv.toFixed(1):'—'}`,8,panelTop+12);panelTop+=ph;}
+    if(showM){const ph=showR?lowerH/2:lowerH;x.fillStyle='#06111b';x.fillRect(0,panelTop,w,ph);x.strokeStyle='#1c3446';x.strokeRect(0,panelTop,w,ph);const vals=[...sets.macd,...sets.signal,...sets.hist].filter(Number.isFinite),mn=Math.min(0,...vals),mx=Math.max(0,...vals),ms=Math.max(.001,mx-mn),my=v=>panelTop+8+(mx-v)/ms*(ph-16),zero=my(0);x.strokeStyle='rgba(81,108,126,.4)';x.beginPath();x.moveTo(0,zero);x.lineTo(w,zero);x.stroke();sets.hist.forEach((v,i)=>{if(!Number.isFinite(v))return;x.fillStyle=v>=0?'rgba(21,214,95,.55)':'rgba(255,61,68,.55)';const yy=my(v);x.fillRect(xp(i)-Math.max(1,cw*.28),Math.min(yy,zero),Math.max(2,cw*.56),Math.max(1,Math.abs(zero-yy)));});drawLine(x,sets.macd,xp,my,'#36b5ff',1.15);drawLine(x,sets.signal,xp,my,'#ff8b3d',1.05);const mv=[...sets.macd].reverse().find(Number.isFinite),sv=[...sets.signal].reverse().find(Number.isFinite);x.fillStyle='#8dcfff';x.font='9px Arial';x.fillText(`MACD ${Number.isFinite(mv)?mv.toFixed(2):'—'}  Signal ${Number.isFinite(sv)?sv.toFixed(2):'—'}`,8,panelTop+12);}
+    chartLegend(rows,sets);
   }
   function updateAnalysis(a,t){
     if(!a||!t)return;const d=a.primary||{},q=a.liveQuoteContext||{},price=Number.isFinite(q.price)?q.price:d.price,chg=Number.isFinite(q.changePct)?q.changePct:d.dayChangePct,dir=a.direction||'WAIT',score=Math.round(a.score||0),confidence=Math.round(a.predictionStrength??a.confidence??0),m=a.macroContext||{};
@@ -5314,7 +5369,7 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now(
     set('hx23ChartTicker',d.ticker||'—');set('hx23ChartName',$('mkCompany')?.textContent||'');set('hx23ChartPrice',Number.isFinite(price)?price.toFixed(2):'—');set('hx23ChartMove',Number.isFinite(chg)?`${chg>=0?'+':''}${chg.toFixed(2)}%`:'—',chg>0?'green':chg<0?'red':'yellow');set('hx23QuoteTime',$('mkQuoteTime')?.textContent||'updated');
     const reasons=(a.reasons||[]).filter(Boolean).slice(0,3).join(' ');$('hx23Summary').textContent=reasons||'No verified summary returned.';
     const ring=$('hx23ScoreRing');if(ring){ring.style.setProperty('--ring',dir==='LONG'?'#16d75f':dir==='SHORT'?'#ff3b43':'#f6c344');}
-    drawChart(d); syncEnv(); syncNews(); syncEvents();
+    if(d?.candles?.length){hx23LastChartData=d;drawChart(d);} window.hx23LoadChart?.(d.ticker||'SPY',hx23CurrentTf); syncEnv(); syncNews(); syncEvents();
   }
   function syncNews(){
     const out=$('hx23News');if(!out)return;const items=[...document.querySelectorAll('#newsOutput .news-item')].slice(0,4);
@@ -5331,21 +5386,19 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now(
     try{if(typeof window.mockAnalyze==='function')await window.mockAnalyze();else if(typeof window.runEngine==='function')await window.runEngine();}catch(e){set('hx23AiDirection','DATA ERROR','red');$('hx23Summary').textContent=e?.message||'Analysis failed.';}
     setTimeout(()=>{if(typeof lastAnalysis!=='undefined'&&typeof lastTrade!=='undefined'&&lastAnalysis&&lastTrade)updateAnalysis(lastAnalysis,lastTrade);},160);
   };
-  const menuMap={technical:['Technical Evidence','mockTechnicalBody'],macro:['Macro & Market Data','mockMacro'],government:['Government Intelligence','mockGovernmentBody'],options:['Options & Derivatives','mockOptionsBody'],flow:['Smart Money Flow','mockSmartBody'],fund:['Fundamentals','mockFundBody'],bear:['Bear / Inverse ETF Radar','sectorInverseRadar'],list:['Active Stocks / Watchlist','hxActiveStocksPanel']};
+  const menuMap={technical:['Technical Evidence','mockTechnicalBody'],macro:['Macro & Market Data','mockMacro'],government:['Government Intelligence','mockGovernmentBody'],options:['Options & Derivatives','mockOptionsBody'],flow:['Smart Money Flow','mockSmartBody'],fund:['Fundamentals','mockFundBody'],bear:['Bear / Inverse ETF Radar','sectorInverseRadar'],list:['My Stock Watch',null],news:['News & Insiders','hx23News'],events:['Upcoming Events','hx23Events'],ai:['AI Stock Analysis','hx23AiPanel']};
   window.hx23OpenMenu=function(key){
-    const cfg=menuMap[key]||['Halifax Menu',null],drawer=$('hx23Drawer'),body=$('hx23DrawerBody');$('hx23DrawerTitle').textContent=cfg[0];let content='';
-    if(key==='list'){content=`<div class="hx23-drawer-card"><div class="hx23-drawer-title">Active list</div><div class="hx23-drawer-copy">The left Active Stocks panel uses your saved Halifax watchlist and public quote feed. Click a row to analyze it.</div><button class="hx23-drawer-action" onclick="editActiveStocks();setTimeout(syncStocks,300)">EDIT WATCHLIST</button></div>`;}
+    const cfg=menuMap[key]||['Halifax Menu',null],drawer=$('hx23Drawer'),body=$('hx23DrawerBody');$('hx23DrawerTitle').textContent=cfg[0];drawer?.classList.toggle('wide',['list','technical','macro','government','options','flow','fund','bear','news','events','ai'].includes(key));let content='';
+    if(key==='list'){content=`<div class="hx23-drawer-card"><div class="hx23-drawer-title">My Stock Watch</div><div class="hx23-drawer-copy">Your editable Halifax watchlist. Quotes, change, trend, relative volume, bid/ask, session and update time refresh from the engine's public data feeds. Missing values stay blank rather than being guessed.</div><div class="hx23-watch-toolbar"><span class="hx23-watch-status" id="hx23WatchStatus">Loading watchlist…</span><div class="hx23-watch-actions"><button class="hx23-watch-btn primary" onclick="editActiveStocks()">EDIT MY STOCKS</button><button class="hx23-watch-btn" onclick="refreshActiveStocks(true)">↻ REFRESH</button></div></div><div class="hx23-watch-wrap"><table class="hx23-watch-table"><thead><tr><th>Symbol</th><th>Price</th><th>Chg %</th><th>Trend</th><th>RVol</th><th>Bid / Ask</th><th>Session</th><th>Updated</th></tr></thead><tbody id="hx23WatchRows"><tr><td colspan="8" class="tiny">Loading My Stock Watch…</td></tr></tbody></table></div><div class="hx23-watch-note">Click any row to close the wheel panel and analyze that symbol.</div></div>`;}
     else{const src=$(cfg[1]);if(src){const clone=src.cloneNode(true);clone.querySelectorAll?.('[id]').forEach(n=>n.removeAttribute('id'));clone.querySelectorAll?.('button,input,select,textarea').forEach(n=>n.setAttribute('disabled','disabled'));content=`<div class="hx23-drawer-card"><div class="hx23-drawer-title">${esc(cfg[0])}</div><div class="hx23-drawer-copy">${clone.innerHTML||esc(clone.textContent||'No data loaded.')}</div></div>`;}else content='<div class="hx23-drawer-card"><div class="hx23-drawer-copy">Run Analyze to load this research module.</div></div>';}
-    body.innerHTML=content;drawer.classList.add('open');drawer.setAttribute('aria-hidden','false');
+    body.innerHTML=content;drawer.classList.add('open');drawer.setAttribute('aria-hidden','false');if(key==='list')setTimeout(()=>window.renderMyStockWatch?.(),0);
   };
-  window.hx23CloseMenu=function(){const d=$('hx23Drawer');d?.classList.remove('open');d?.setAttribute('aria-hidden','true');};
+  window.hx23CloseMenu=function(){const d=$('hx23Drawer');d?.classList.remove('open','wide');d?.setAttribute('aria-hidden','true');};
   function clock(){const e=$('hx23Clock');if(e)e.textContent=new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit',second:'2-digit'})+' CT';}
   function syncAll(){syncTape();syncEnv();syncStocks();syncNews();syncEvents();if(typeof lastAnalysis!=='undefined'&&typeof lastTrade!=='undefined'&&lastAnalysis&&lastTrade)updateAnalysis(lastAnalysis,lastTrade);}
-  async function initialSpy(){
-    try{if(typeof loadTickerData!=='function')return;const d=await loadTickerData('SPY','5m','5d');drawChart(d);set('hx23ChartPrice',Number.isFinite(d.price)?d.price.toFixed(2):'—');set('hx23ChartMove',Number.isFinite(d.dayChangePct)?`${d.dayChangePct>=0?'+':''}${d.dayChangePct.toFixed(2)}%`:'—',d.dayChangePct>0?'green':d.dayChangePct<0?'red':'yellow');$('hx23ChartEmpty').style.display='none';}catch(e){const z=$('hx23ChartEmpty');if(z)z.textContent='Public SPY chart unavailable here; Analyze will retry with the engine feed.';}
-  }
+  async function initialSpy(){await window.hx23LoadChart?.('SPY','1D');}
   window.addEventListener('load',()=>{tapeSkeleton();clock();setInterval(clock,1000);setTimeout(syncAll,1400);setInterval(syncAll,2500);setTimeout(initialSpy,700);});
-  window.addEventListener('resize',()=>{if(typeof lastAnalysis!=='undefined'&&lastAnalysis?.primary)drawChart(lastAnalysis.primary);});
+  window.addEventListener('resize',()=>{if(hx23LastChartData)drawChart(hx23LastChartData);});
   // Hook the final wrapped renderer so the v23 shell updates immediately after a completed engine render.
   setTimeout(()=>{if(typeof window.renderTradeOutput==='function'&&!window.renderTradeOutput.__hx23){const prev=window.renderTradeOutput;const wrapped=function(a,t){const r=prev.apply(this,arguments);try{setTimeout(()=>updateAnalysis(a,t),0)}catch(e){}return r};wrapped.__hx23=true;window.renderTradeOutput=wrapped;}},0);
 })();
