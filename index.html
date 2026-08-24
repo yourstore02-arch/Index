@@ -18,7 +18,7 @@
 <meta name="application-name" content="Halifax">
 <meta name="format-detection" content="telephone=no">
 
-<title>Halifax Trade Engine v21.13 24-Hour Market</title>
+<title>Halifax Trade Engine v21.12 Compact Laptop Layout - Exact Dashboard</title>
 
 <style>
 :root{
@@ -1235,16 +1235,6 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
 #mockHeaderTools{display:flex;gap:8px;align-items:center}.mock-tool{height:38px;border:1px solid #1c3854;border-radius:5px;background:#061524;color:#d8e1eb;padding:0 12px;display:flex;align-items:center;gap:7px;font-size:11px;white-space:nowrap}.mock-tool b{color:#48e273}.mock-tool.clickable{cursor:pointer}.mock-tool.clickable:hover{border-color:#3d6c98}
 #mockDashboard{display:grid;gap:12px}.mock-panel{border:1px solid #1c3854;border-radius:8px;background:linear-gradient(180deg,rgba(6,19,34,.98),rgba(4,14,26,.98));overflow:hidden}.mock-panel-title{font-size:11px;font-weight:900;letter-spacing:.45px;color:#e8edf4;text-transform:uppercase;padding:9px 10px 0}
 .mock-market{padding:0 10px 8px}.mock-market-grid{display:grid;grid-template-columns:repeat(8,minmax(100px,1fr)) minmax(170px,1.3fr);margin-top:7px}.mock-market-tile{min-height:74px;padding:8px 12px;border-right:1px solid #19344f;display:flex;flex-direction:column;justify-content:center}.mock-market-tile:last-child{border-right:none}.mock-m-label{font-size:10.5px;color:#eef3f8;font-weight:700}.mock-m-main{display:flex;align-items:baseline;gap:8px;margin-top:7px}.mock-m-value{font-size:17px;font-weight:900;color:#f4f7fb}.mock-m-change{font-size:11px;font-weight:800}.mock-spark{height:18px;margin-top:4px;display:flex;align-items:center}.mock-spark svg{width:100%;height:18px;overflow:visible}.mock-env{display:grid;grid-template-columns:1fr 74px;align-items:center;gap:4px}.mock-env-score{font-size:27px;font-weight:950;line-height:1}.mock-env-label{font-size:14px;font-weight:900;margin-top:3px}.mock-gauge{width:72px;height:38px;border-radius:72px 72px 0 0;border:6px solid #2a3b50;border-bottom:0;position:relative;overflow:hidden}.mock-gauge:before{content:"";position:absolute;inset:-6px -6px auto -6px;height:38px;border-radius:72px 72px 0 0;border:6px solid var(--gauge,#48d45d);border-bottom:0;clip-path:polygon(0 0,75% 0,75% 100%,0 100%)}
-/* v21.13 near-24-hour futures + crypto strip */
-.hx24-panel{border-color:#27516f!important;background:linear-gradient(180deg,#071a2c,#051421)!important}
-.hx24-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 10px 0;flex-wrap:wrap}
-.hx24-title{font-size:11px;font-weight:950;letter-spacing:.55px;color:#f5f8fb;text-transform:uppercase;display:flex;align-items:center;gap:8px}
-.hx24-live-dot{width:7px;height:7px;border-radius:50%;background:#43d66d;box-shadow:0 0 8px rgba(67,214,109,.55)}
-.hx24-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.hx24-meta{font-size:9.5px;color:#9fb1c1}.hx24-refresh{height:30px;min-height:30px;padding:0 10px;border-radius:4px;background:#0a2135;border:1px solid #285473;color:#dce8f1;font-size:9.5px;box-shadow:none}.hx24-refresh:hover{background:#0d2a43;border-color:#3b7398}.hx24-refresh:disabled{opacity:.55}
-.hx24-grid{display:grid;grid-template-columns:repeat(7,minmax(115px,1fr)) minmax(160px,1.15fr);padding:7px 10px 9px}.hx24-tile{min-height:78px;padding:8px 11px;border-right:1px solid #19384f;display:flex;flex-direction:column;justify-content:center}.hx24-tile:last-child{border-right:0}.hx24-label{font-size:9.8px;color:#dce6ee;font-weight:850}.hx24-symbol{font-size:8.5px;color:#7895aa;margin-left:5px}.hx24-main{display:flex;align-items:baseline;gap:8px;margin-top:7px}.hx24-price{font-size:18px;font-weight:950;color:#f5f8fb}.hx24-change{font-size:10.5px;font-weight:900}.hx24-state{font-size:8.8px;color:#839caf;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hx24-bias{display:flex;flex-direction:column;align-items:flex-start}.hx24-bias-label{font-size:9px;color:#9fb0bd;text-transform:uppercase;font-weight:900}.hx24-bias-value{font-size:19px;font-weight:950;margin-top:7px}.hx24-bias-sub{font-size:9px;color:#8ba2b3;margin-top:5px;line-height:1.35}.hx24-disclaimer{padding:0 10px 8px;color:#708a9e;font-size:8.8px;line-height:1.35}
-@media(max-width:1420px){.hx24-grid{grid-template-columns:repeat(4,1fr)}.hx24-tile{border-bottom:1px solid #19384f}}
-@media(max-width:760px){.hx24-grid{grid-template-columns:repeat(2,1fr)}.hx24-head{align-items:flex-start}.hx24-tools{width:100%;justify-content:space-between}}
-
 .mock-command{padding:0 10px 10px}.mock-command-grid{display:grid;grid-template-columns:minmax(170px,1.05fr) minmax(280px,1.6fr) minmax(145px,.75fr) minmax(145px,.75fr) minmax(180px,.95fr) minmax(190px,1fr) minmax(150px,.8fr);gap:12px;align-items:end;margin-top:8px}.mock-command .field{margin:0}.mock-command .field label{font-size:9px;margin-bottom:6px;color:#c9d3de}.mock-command input,.mock-command select{height:38px;background:#07182a;border-color:#1d405f;border-radius:5px;font-size:13px}.mock-command .style-buttons{height:38px;gap:0}.mock-command .style-btn{height:38px;border-radius:0;background:#07182a;border-color:#1d405f}.mock-command .style-btn:first-child{border-radius:5px 0 0 5px}.mock-command .style-btn:last-child{border-radius:0 5px 5px 0}.mock-command .mode-scalp,.mock-command .mode-custom{display:none}.mock-command .style-btn.active{background:#f58a18;color:white;border-color:#f58a18;box-shadow:none}.mock-command .btn-analyze{height:48px;min-height:48px;border-radius:5px;background:#f58a18!important;border-color:#ffa13b!important;color:#fff;font-size:14px;box-shadow:none}.mock-command .analyze-kicker{display:none}.mock-command .analyze-text{font-size:14px}.mock-util{height:38px;border:1px solid #1d405f;border-radius:5px;background:#07182a;color:#dce5ee;font-size:10.5px;font-weight:700;cursor:pointer;padding:0 10px}.mock-util:hover{border-color:#3e739e;background:#0a2036}
 .mock-decision{padding:0}.mock-decision-grid{display:grid;grid-template-columns:1.12fr .82fr 1.42fr 1.88fr 1.42fr;min-height:174px}.mock-dcell{padding:14px 16px;border-right:1px solid #19344f;display:flex;flex-direction:column;justify-content:center}.mock-dcell:last-child{border-right:0}.mock-ticker{font-size:31px;font-weight:950;line-height:1}.mock-company{font-size:12px;font-weight:750;margin-top:8px}.mock-meta{font-size:10.5px;color:#c3ccd6;margin-top:7px;line-height:1.6}.mock-current-label,.mock-small-label{font-size:9.5px;text-transform:uppercase;color:#b6c3d1;font-weight:850;letter-spacing:.25px}.mock-current-price{font-size:36px;font-weight:950;line-height:1.05;margin-top:8px}.mock-current-move{font-size:14px;font-weight:900;margin-top:10px}.mock-current-time{font-size:10px;color:#aab7c5;margin-top:12px}.mock-call{text-align:center}.mock-call-title{font-size:11px;text-transform:uppercase;color:#c2ccd7;font-weight:850;letter-spacing:.45px}.mock-direction{font-size:46px;line-height:1;font-weight:950;margin-top:10px}.mock-scorepair{display:grid;grid-template-columns:1fr 1fr;margin-top:13px}.mock-scorepair>div:first-child{border-right:1px solid #1f3a54}.mock-scorepair .label{font-size:9.5px;color:#b6c3d1;text-transform:uppercase}.mock-scorepair .value{font-size:24px;font-weight:950;margin-top:5px}.mock-levels{display:grid;grid-template-columns:repeat(4,1fr);gap:0}.mock-level{padding:6px 9px;text-align:center;border-right:1px solid #1f3a54}.mock-level:last-child{border-right:0}.mock-level .l{font-size:9px;text-transform:uppercase;color:#b8c3cf;font-weight:800}.mock-level .v{font-size:15px;font-weight:900;margin-top:8px;white-space:nowrap}.mock-level-bottom{display:grid;grid-template-columns:1fr 1fr;margin-top:12px;padding-top:12px;border-top:1px solid #1f3a54;text-align:center}.mock-level-bottom>div:first-child{border-right:1px solid #1f3a54}.mock-level-bottom .v{font-size:18px;font-weight:850;margin-top:7px}.mock-factor-title{font-size:10px;text-transform:uppercase;color:#dce5ee;font-weight:900}.mock-factor-list{list-style:none;margin:10px 0 0;padding:0;font-size:10.5px;color:#ced7e0;line-height:1.65}.mock-factor-list li{position:relative;padding-left:13px}.mock-factor-list li:before{content:"•";position:absolute;left:0;color:#46d55a}.mock-full-btn{margin-top:8px;align-self:flex-start;background:#07182a;border:1px solid #1d405f;color:#dfe7ef;border-radius:4px;padding:7px 11px;font-size:10px;cursor:pointer}
 .mock-guidance{display:grid;grid-template-columns:1.2fr 1.1fr 1.55fr .85fr 1.35fr;min-height:140px}.mock-gcell{padding:12px 14px;border-right:1px solid #19344f}.mock-gcell:last-child{border-right:0}.mock-gtitle{font-size:10px;text-transform:uppercase;color:#dce4ec;font-weight:900;margin-bottom:8px}.mock-guidance-core{display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:center}.mock-big-gauge{text-align:center}.mock-arc{width:110px;height:56px;border-radius:110px 110px 0 0;border:8px solid #273b4f;border-bottom:0;margin:auto;position:relative;overflow:hidden}.mock-arc:after{content:"";position:absolute;left:-8px;top:-8px;width:110px;height:56px;border-radius:110px 110px 0 0;border:8px solid var(--arc,#48d45d);border-bottom:0;clip-path:polygon(0 0,70% 0,70% 100%,0 100%)}.mock-guide-score{font-size:23px;font-weight:950;margin-top:-15px}.mock-guide-bias{font-size:12px;font-weight:900;margin-top:3px}.mock-guide-list{display:grid;gap:6px;font-size:10.5px}.mock-guide-row{display:flex;justify-content:space-between;gap:10px}.mock-guide-row span:last-child{font-weight:800}.mock-events{display:grid;gap:5px}.mock-event{display:grid;grid-template-columns:48px 60px 1fr 60px;gap:6px;align-items:center;font-size:9.5px;color:#d2d9e1}.mock-risk-badge{font-size:9px;text-align:center;border:1px solid currentColor;border-radius:3px;padding:2px 4px;font-weight:850}.mock-event-risk{text-align:center;padding-top:10px}.mock-event-risk .big{font-size:23px;font-weight:950}.mock-event-risk .small{font-size:10px;color:#bdc8d3;line-height:1.5;margin-top:12px}.mock-shield{font-size:34px;margin-top:7px}.mock-macro-summary{font-size:10.5px;line-height:1.55;color:#d0d9e2}.mock-calendar-btn{margin-top:10px;background:#07182a;border:1px solid #1d405f;color:#dfe7ef;border-radius:4px;padding:7px 10px;font-size:10px;cursor:pointer}
@@ -1259,7 +1249,7 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
 @media(max-width:560px){#mockHeaderTools{flex-wrap:wrap}.mock-command-grid,.mock-decision-grid,.mock-research-grid{grid-template-columns:1fr}.mock-dcell:nth-child(n){grid-column:1}.mock-factor-list{grid-template-columns:1fr}.mock-levels{grid-template-columns:1fr 1fr}.mock-guidance-core{grid-template-columns:1fr}.mock-event{grid-template-columns:45px 1fr 55px}.mock-event .mock-event-time{display:none}}
 
 
-/* v21.11 SAFE SHELL: preserve original Halifax DOM/functionality offscreen. Data proxy syntax refreshed Aug 2026. */
+/* v21.12 SAFE SHELL: preserve original Halifax DOM/functionality offscreen. Data proxy syntax refreshed Aug 2026. */
 .container > .command-card,
 .container > #decisionCard,
 .container > #fundamentalsCard,
@@ -1294,7 +1284,7 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
 @media(max-width:760px){.mock-command-grid{grid-template-columns:1fr 1fr!important}.mock-analyze{grid-column:1/-1}.mock-style-wrap{grid-column:auto}.mock-market-grid{grid-template-columns:repeat(2,1fr)!important}.mock-decision-grid{grid-template-columns:1fr!important}.mock-guidance{grid-template-columns:1fr!important}.mock-lower{grid-template-columns:1fr!important}.mock-research-grid{grid-template-columns:1fr!important}}
 
 
-/* v21.11 compact laptop layout fix: prevent guidance/lower panels from wrapping into tall empty rows */
+/* v21.12 compact laptop layout fix: prevent guidance/lower panels from wrapping into tall empty rows */
 @media (min-width:901px){
   .mock-guidance{
     grid-template-columns:minmax(245px,1.2fr) minmax(170px,1fr) minmax(260px,1.4fr) minmax(135px,.78fr) minmax(210px,1.2fr)!important;
@@ -1333,74 +1323,9 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
 }
 
 
-/* v21.12 — real economic calendar modal */
-body.hx-calendar-open{overflow:hidden}
-.hx-calendar-backdrop{
-  display:none;position:fixed;inset:0;z-index:9999;
-  background:rgba(1,7,15,.76);backdrop-filter:blur(3px);
-  padding:24px;align-items:center;justify-content:center;
-}
-.hx-calendar-backdrop.open{display:flex}
-.hx-calendar-modal{
-  width:min(980px,96vw);max-height:min(780px,92vh);overflow:hidden;
-  background:#061524;border:1px solid #315f89;border-radius:8px;
-  box-shadow:0 24px 70px rgba(0,0,0,.55);display:flex;flex-direction:column;
-}
-.hx-calendar-head{
-  display:flex;justify-content:space-between;align-items:flex-start;gap:14px;
-  padding:16px 18px;border-bottom:1px solid #1c3854;background:#0b2238;
-}
-.hx-calendar-title{font-size:18px;font-weight:950;color:#fff}
-.hx-calendar-sub{font-size:10.5px;color:#aab8c7;margin-top:5px;line-height:1.45}
-.hx-calendar-close{
-  width:36px;height:36px;padding:0;border:1px solid #31536f;border-radius:5px;
-  background:#07182a;color:#e6edf5;font-size:22px;line-height:1;cursor:pointer;
-}
-.hx-calendar-toolbar{
-  display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
-  padding:10px 14px;border-bottom:1px solid #19344f;background:#061322;
-}
-.hx-calendar-refresh{
-  min-height:34px;padding:7px 11px;border:1px solid #1d5a8a;border-radius:5px;
-  background:#0b2d49;color:#dff1ff;font-size:10.5px;font-weight:850;cursor:pointer;
-}
-.hx-calendar-source{font-size:9.5px;color:#9fb0bf}
-.hx-calendar-body{overflow:auto;padding:12px 14px 16px}
-.hx-calendar-status{
-  padding:11px 12px;margin-bottom:10px;border:1px solid #1c3854;border-radius:6px;
-  background:#07182a;font-size:10.5px;color:#cbd5df;line-height:1.5;
-}
-.hx-calendar-table{width:100%;border-collapse:collapse;min-width:700px}
-.hx-calendar-table th{
-  position:sticky;top:0;z-index:1;background:#0b2238;color:#a9c7df;
-  font-size:9px;text-transform:uppercase;letter-spacing:.55px;padding:9px 10px;
-  border-bottom:1px solid #2b506f;text-align:left;
-}
-.hx-calendar-table td{
-  padding:10px;border-bottom:1px solid #17344e;font-size:10.5px;color:#dce5ed;
-  vertical-align:middle;white-space:normal;
-}
-.hx-calendar-table tr:hover td{background:#082038}
-.hx-cal-date{font-weight:900;color:#fff;white-space:nowrap}
-.hx-cal-name{font-weight:800;color:#edf4fa}
-.hx-cal-source{color:#9ab0c2;white-space:nowrap}
-.hx-cal-impact{
-  display:inline-flex;align-items:center;justify-content:center;min-width:58px;
-  padding:3px 6px;border-radius:4px;border:1px solid currentColor;
-  font-size:8.5px;font-weight:950;letter-spacing:.35px;
-}
-.hx-cal-impact.high{color:#ff7171;background:rgba(239,83,80,.08)}
-.hx-cal-impact.medium{color:#f6c344;background:rgba(246,195,68,.08)}
-.hx-cal-impact.watch{color:#7fb9e9;background:rgba(75,151,207,.08)}
-.hx-cal-empty{padding:28px 12px;text-align:center;color:#a5b5c4;font-size:11px;line-height:1.55}
-@media(max-width:620px){
-  .hx-calendar-backdrop{padding:7px;align-items:flex-end}
-  .hx-calendar-modal{width:100%;max-height:92vh;border-radius:8px 8px 0 0}
-  .hx-calendar-head{padding:13px}
-  .hx-calendar-body{padding:8px}
-  .hx-calendar-table{min-width:610px}
-}
-
+/* Halifax v21.12 — Sector Bear ETF Radar */
+.inverse-radar-panel{margin-top:10px;overflow:hidden}.inverse-radar-panel>summary{list-style:none;cursor:pointer;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid transparent}.inverse-radar-panel[open]>summary{border-bottom-color:#173650}.inverse-radar-panel>summary::-webkit-details-marker{display:none}.inverse-radar-title{display:flex;align-items:center;gap:9px;font-size:10.5px;font-weight:950;text-transform:uppercase;color:#edf4fb}.inverse-radar-title:before{content:"↘";display:grid;place-items:center;width:22px;height:22px;border:1px solid #294966;border-radius:5px;color:#ff8c8c;background:#07182a;font-size:13px}.inverse-radar-summary{display:flex;align-items:center;gap:10px;font-size:10px;color:#aebdca}.inverse-radar-count{font-weight:950;padding:3px 7px;border-radius:4px;border:1px solid #31465b}.inverse-radar-body{padding:11px 12px 12px}.inverse-radar-toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}.inverse-radar-note{font-size:9.5px;line-height:1.45;color:#9fb0c0;max-width:900px}.inverse-radar-actions{display:flex;gap:7px;align-items:center}.inverse-radar-btn{border:1px solid #2b4b67;background:#07192a;color:#e7eef5;border-radius:4px;padding:6px 9px;font-size:9.5px;font-weight:850;cursor:pointer}.inverse-radar-btn:hover{border-color:#4f789a}.inverse-radar-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.inverse-sector-card{border:1px solid #173650;border-radius:6px;background:#061321;padding:9px 10px;min-width:0}.inverse-sector-card.active{border-color:#6a3338;box-shadow:inset 0 0 0 1px rgba(239,83,80,.08)}.inverse-sector-card.proxy{border-color:#625222}.inverse-sector-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.inverse-sector-name{font-size:10px;font-weight:900;color:#edf3f8}.inverse-sector-etf{font-size:9px;color:#8195a8;margin-top:2px}.inverse-sector-state{font-size:8.5px;font-weight:950;border:1px solid currentColor;border-radius:3px;padding:2px 5px;white-space:nowrap}.inverse-sector-metrics{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin:8px 0}.inverse-sector-metric{background:#081a2b;border:1px solid #14314a;border-radius:4px;padding:5px 6px}.inverse-sector-metric .k{font-size:7.8px;color:#8195a8;text-transform:uppercase}.inverse-sector-metric .v{font-size:9.5px;font-weight:900;margin-top:2px}.inverse-picks{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}.inverse-pick{border:1px solid #294a66;background:#07192a;color:#dfe9f2;border-radius:4px;padding:4px 6px;font-size:8.8px;font-weight:850;cursor:pointer}.inverse-pick.preferred{border-color:#bf4a50;color:#ffb0b3}.inverse-pick.proxy{border-color:#7b681e;color:#e7d570}.inverse-pick:hover{background:#0b2237}.inverse-pick-note{font-size:8.4px;color:#8fa2b4;line-height:1.35;margin-top:6px}.inverse-current-hint{font-size:9px;color:#c5d0da}.inverse-current-hint b{font-weight:950}.inverse-source-row{font-size:8.5px;color:#71869a;margin-top:9px;line-height:1.4}.inverse-source-row a{color:#82b7e8;text-decoration:none}.inverse-source-row a:hover{text-decoration:underline}
+@media(max-width:1250px){.inverse-radar-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:900px){.inverse-radar-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:600px){.inverse-radar-grid{grid-template-columns:1fr}.inverse-radar-summary{align-items:flex-end;flex-direction:column;gap:3px}.inverse-radar-toolbar{align-items:flex-start}.inverse-sector-metrics{grid-template-columns:repeat(3,1fr)}}
 </style>
 </head>
 <body>
@@ -1408,32 +1333,14 @@ body.hx-calendar-open{overflow:hidden}
     <div class="card header">
         <div class="brand-stack">
             <div class="terminal-kicker"><span class="kicker-dot"></span> HALIFAX QUANT RESEARCH TERMINAL</div>
-            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v21.13 24H Market</span></span></div>
-            <div class="subtitle">Predictive swing research • 24-hour futures dashboard • Unified market guidance • Federal contract radar • Options • Bonds • Event guardrails</div>
+            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v21.12 Compact Laptop Layout</span></span></div>
+            <div class="subtitle">Predictive swing research • Unified market guidance • Federal contract radar • Options • Bonds • Event guardrails</div>
         </div>
         <div class="header-actions"><div class="badge system-badge"><span class="status-dot"></span><span id="engineStatus">Engine ready</span></div></div>
     </div>
 
 
     <div id="mockDashboard">
-      <section class="mock-panel hx24-panel">
-        <div class="hx24-head">
-          <div class="hx24-title"><span class="hx24-live-dot"></span>24-Hour Market • Futures + Crypto</div>
-          <div class="hx24-tools"><span id="hx24Updated" class="hx24-meta">Loading public market feed…</span><button id="hx24RefreshBtn" class="hx24-refresh" type="button" onclick="refresh24HourMarket(true)">Refresh</button></div>
-        </div>
-        <div class="hx24-grid">
-          <div class="hx24-tile"><div class="hx24-label">S&amp;P Futures <span class="hx24-symbol">ES</span></div><div class="hx24-main"><span id="hx24ESPrice" class="hx24-price">—</span><span id="hx24ESChange" class="hx24-change">—</span></div><div id="hx24ESState" class="hx24-state">Loading…</div></div>
-          <div class="hx24-tile"><div class="hx24-label">Nasdaq Futures <span class="hx24-symbol">NQ</span></div><div class="hx24-main"><span id="hx24NQPrice" class="hx24-price">—</span><span id="hx24NQChange" class="hx24-change">—</span></div><div id="hx24NQState" class="hx24-state">Loading…</div></div>
-          <div class="hx24-tile"><div class="hx24-label">Dow Futures <span class="hx24-symbol">YM</span></div><div class="hx24-main"><span id="hx24YMPrice" class="hx24-price">—</span><span id="hx24YMChange" class="hx24-change">—</span></div><div id="hx24YMState" class="hx24-state">Loading…</div></div>
-          <div class="hx24-tile"><div class="hx24-label">Russell Futures <span class="hx24-symbol">RTY</span></div><div class="hx24-main"><span id="hx24RTYPrice" class="hx24-price">—</span><span id="hx24RTYChange" class="hx24-change">—</span></div><div id="hx24RTYState" class="hx24-state">Loading…</div></div>
-          <div class="hx24-tile"><div class="hx24-label">WTI Oil <span class="hx24-symbol">CL</span></div><div class="hx24-main"><span id="hx24CLPrice" class="hx24-price">—</span><span id="hx24CLChange" class="hx24-change">—</span></div><div id="hx24CLState" class="hx24-state">Loading…</div></div>
-          <div class="hx24-tile"><div class="hx24-label">Gold <span class="hx24-symbol">GC</span></div><div class="hx24-main"><span id="hx24GCPrice" class="hx24-price">—</span><span id="hx24GCChange" class="hx24-change">—</span></div><div id="hx24GCState" class="hx24-state">Loading…</div></div>
-          <div class="hx24-tile"><div class="hx24-label">Bitcoin <span class="hx24-symbol">BTC</span></div><div class="hx24-main"><span id="hx24BTCPrice" class="hx24-price">—</span><span id="hx24BTCChange" class="hx24-change">—</span></div><div id="hx24BTCState" class="hx24-state">24/7 market</div></div>
-          <div class="hx24-tile hx24-bias"><div class="hx24-bias-label">Equity Futures Bias</div><div id="hx24Bias" class="hx24-bias-value yellow">LOADING</div><div id="hx24BiasSub" class="hx24-bias-sub">Uses direction of ES, NQ, YM and RTY.</div></div>
-        </div>
-        <div class="hx24-disclaimer">Public-feed prices may be delayed. Equity, energy and metals futures trade nearly around the clock on trading days but have exchange maintenance breaks; Bitcoin trades 24/7. Halifax does not fill missing quotes with estimates.</div>
-      </section>
-
       <section class="mock-panel mock-market">
         <div class="mock-panel-title">Market Overview</div>
         <div class="mock-market-grid">
@@ -1468,9 +1375,25 @@ body.hx-calendar-open{overflow:hidden}
         <div class="mock-gcell"><div class="mock-gtitle">Market Guidance</div><div class="mock-guidance-core"><div class="mock-big-gauge"><div id="mkArc" class="mock-arc"></div><div id="mkGuideScore" class="mock-guide-score yellow">—</div><div id="mkGuideBias" class="mock-guide-bias yellow">AWAITING</div></div><div class="mock-guide-list"><div class="mock-guide-row"><span>Trend</span><span id="mkTrend">—</span></div><div class="mock-guide-row"><span>Momentum</span><span id="mkMomentum">—</span></div><div class="mock-guide-row"><span>Volatility</span><span id="mkVolatility">—</span></div><div class="mock-guide-row"><span>Breadth</span><span id="mkBreadth">—</span></div><div class="mock-guide-row"><span>Risk Appetite</span><span id="mkRiskAppetite">—</span></div></div></div>
         <div class="mock-gcell"><div class="mock-gtitle">Upcoming High-Impact Events</div><div id="mkEvents" class="mock-events"><div class="tiny">Official BLS/BEA/Fed calendar loads with analysis.</div></div></div>
         <div class="mock-gcell"><div class="mock-gtitle">Event Risk</div><div class="mock-event-risk"><div id="mkEventRisk" class="big yellow">—</div><div id="mkEventNote" class="small">No verified event data loaded yet.</div><div id="mkShield" class="mock-shield">◇</div></div></div>
-        <div class="mock-gcell"><div class="mock-gtitle">Macro Summary</div><div id="mkMacroSummary" class="mock-macro-summary">Run Analyze to load the sector-aware macro backdrop.</div><button class="mock-calendar-btn" onclick="openMockCalendar()">View Calendar →</button></div>
+        <div class="mock-gcell"><div class="mock-gtitle">Macro Summary</div><div id="mkMacroSummary" class="mock-macro-summary">Run Analyze to load the sector-aware macro backdrop.</div><button class="mock-calendar-btn" onclick="openMockResearch('mockMacro')">View Calendar →</button></div>
         <div class="mock-gcell"><div class="mock-gtitle">Risk Desk</div><div class="mock-macro-summary"><b id="mkRiskLevel">—</b><br><span id="mkRiskSummary">Macro, earnings and portfolio guardrails will appear here.</span></div></div>
       </div></section>
+
+
+      <details id="sectorInversePanel" class="mock-panel inverse-radar-panel" open>
+        <summary>
+          <div class="inverse-radar-title">Sector Bear ETF Radar</div>
+          <div class="inverse-radar-summary"><span id="sectorInverseCurrentHint" class="inverse-current-hint">Checks all 11 GICS sectors</span><span id="sectorInverseCount" class="inverse-radar-count yellow">AWAITING</span></div>
+        </summary>
+        <div class="inverse-radar-body">
+          <div class="inverse-radar-toolbar">
+            <div id="sectorInverseNote" class="inverse-radar-note">Halifax scans each liquid sector ETF on the daily chart. A bearish sector can surface an inverse ETF as a tactical alternative. Inverse and leveraged inverse ETFs reset daily and are not treated as ordinary long-term holdings.</div>
+            <div class="inverse-radar-actions"><button class="inverse-radar-btn" type="button" onclick="refreshSectorBearRadar()">↻ REFRESH 11 SECTORS</button></div>
+          </div>
+          <div id="sectorInverseRadar" class="inverse-radar-grid"><div class="tiny">Loading sector trend radar…</div></div>
+          <div class="inverse-source-row">Universe checked 2026-08-24 against the ProShares leveraged/inverse ETF list. Communication Services has no exact inverse fund in that list; WEBS is displayed only as an internet-heavy proxy and is never labeled an exact XLC hedge.</div>
+        </div>
+      </details>
 
       <section class="mock-lower">
         <div class="mock-lower-card"><div class="mock-lower-title">Price Chart</div><div id="mockChartMount" class="mock-chart-wrap"></div></div>
@@ -1488,26 +1411,6 @@ body.hx-calendar-open{overflow:hidden}
         <details id="mockFund" class="mock-research"><summary><div class="mock-rtitle">Fundamentals</div><div id="mkFundStatus" class="mock-rstatus yellow">Awaiting</div></summary><div id="mockFundBody" class="mock-research-body"></div></details>
       </section>
       <div class="mock-footer"><span>This tool is for informational research only and does not constitute financial advice.</span><span><span class="mock-live-dot"></span><span id="mkFooterTime">Data updates with analysis</span> &nbsp; Halifax Trade Engine v21.12</span></div>
-    </div>
-
-
-    <div id="hxCalendarModal" class="hx-calendar-backdrop" role="dialog" aria-modal="true" aria-labelledby="hxCalendarTitle" onclick="if(event.target===this)closeMockCalendar()">
-      <div class="hx-calendar-modal">
-        <div class="hx-calendar-head">
-          <div>
-            <div id="hxCalendarTitle" class="hx-calendar-title">Economic Calendar</div>
-            <div class="hx-calendar-sub">Verified scheduled macro events from official BLS, BEA and Federal Reserve calendars. Halifax does not invent missing dates.</div>
-          </div>
-          <button type="button" class="hx-calendar-close" aria-label="Close calendar" onclick="closeMockCalendar()">×</button>
-        </div>
-        <div class="hx-calendar-toolbar">
-          <button type="button" class="hx-calendar-refresh" onclick="refreshMockCalendar()">↻ Refresh Official Calendar</button>
-          <div id="hxCalendarSource" class="hx-calendar-source">Waiting for official calendar data…</div>
-        </div>
-        <div id="hxCalendarBody" class="hx-calendar-body">
-          <div class="hx-cal-empty">Open the calendar to load upcoming high-impact events.</div>
-        </div>
-      </div>
     </div>
 
     <div class="card command-card">
@@ -4057,7 +3960,7 @@ async function runEngine(){
         renderChart(analysis.primary,trade);renderRegime(analysis,benchmarkResult);renderMTF(analysis);renderTradeOutput(analysis,trade);renderMarketGuidance(analysis.macroContext);renderBondContext(analysis.macroContext?.bondContext);renderPositionGuardrails(ticker,analysis.primary,analysis);renderNews(displayNews,ticker);
         document.getElementById("smartMoneyOutput").innerHTML='<div class="loading">Core prediction is complete. Loading insider, institutional and public-filing context in the background…</div>';
         document.getElementById("decisionCard")?.scrollIntoView({behavior:"smooth",block:"start"});
-        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v21.11 Compact Laptop Layout`;
+        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v21.12 Compact Laptop Layout`;
         startLiveQuoteStream(ticker,runId);
         const portfolioPromise=loadPortfolioRiskContext(ticker,analysis).catch(()=>null);
         portfolioPromise.then(pr=>{
@@ -4502,106 +4405,10 @@ function headerTools(){
   const tick=()=>{const e=$('mkClock');if(e)e.textContent=new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit',second:'2-digit'})};tick();setInterval(tick,1000);
 }
 window.toggleMockRefresh=function(){const s=$('liveRefresh');if(!s)return;const on=String(s.value)!=='0';s.value=on?'0':'5';set('mkAutoRefresh',on?'OFF':'ON',on?'red':'green');if(lastAnalysis?.primary?.ticker){stopLiveQuoteStream();if(!on)startLiveQuoteStream(lastAnalysis.primary.ticker,halifaxRunId)}};
-function hxCalendarDate(ev){
-  const y=Number(ev?.year),m=Number(ev?.month),d=Number(ev?.day);
-  if(Number.isFinite(y)&&Number.isFinite(m)&&Number.isFinite(d))return new Date(y,m-1,d,12,0,0);
-  if(ev?.date){
-    const x=new Date(String(ev.date).length<=10?String(ev.date)+'T12:00:00':ev.date);
-    if(!Number.isNaN(x.getTime()))return x;
-  }
-  return null;
-}
-function hxCalendarImpact(ev){
-  const raw=String(ev?.importance||'').toUpperCase();
-  if(raw==='HIGH')return ['HIGH','high'];
-  if(raw==='MEDIUM')return ['MEDIUM','medium'];
-  const d=Number(ev?.daysAway);
-  if(Number.isFinite(d)&&d<=1)return ['HIGH','high'];
-  if(Number.isFinite(d)&&d<=3)return ['MEDIUM','medium'];
-  return ['WATCH','watch'];
-}
-function hxCalendarWhen(ev){
-  const d=Number(ev?.daysAway);
-  if(!Number.isFinite(d))return '';
-  if(d===0)return 'Today';
-  if(d===1)return 'Tomorrow';
-  return `In ${d} days`;
-}
-function renderMockCalendar(calendar){
-  const body=$('hxCalendarBody'),source=$('hxCalendarSource');if(!body)return;
-  const events=[...(calendar?.events||[])].sort((a,b)=>{
-    const ad=hxCalendarDate(a)?.getTime()??Infinity,bd=hxCalendarDate(b)?.getTime()??Infinity;
-    return ad-bd||String(a?.name||'').localeCompare(String(b?.name||''));
-  });
-  const sources=(calendar?.sources||[]).filter(Boolean);
-  if(source)source.textContent=sources.length?`Sources loaded: ${sources.join(' • ')} • ${events.length} event${events.length===1?'':'s'}`:'No official source returned usable events.';
-  if(!events.length){
-    body.innerHTML='<div class="hx-cal-empty">No verified BLS, BEA or Federal Reserve event was returned for the next 45 days. Halifax is leaving the calendar blank rather than guessing.</div>';
-    return;
-  }
-  const rows=events.map(ev=>{
-    const dt=hxCalendarDate(ev),date=dt?dt.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric',year:'numeric'}):'Date unavailable';
-    const [impact,icls]=hxCalendarImpact(ev),when=hxCalendarWhen(ev);
-    return `<tr>
-      <td class="hx-cal-date">${escapeHTML(date)}${when?`<div class="tiny">${escapeHTML(when)}</div>`:''}</td>
-      <td>${escapeHTML(ev?.time||'Time not published')}</td>
-      <td><div class="hx-cal-name">${escapeHTML(ev?.name||'Major macro event')}</div></td>
-      <td class="hx-cal-source">${escapeHTML(ev?.source||'Official source')}</td>
-      <td><span class="hx-cal-impact ${icls}">${impact}</span></td>
-    </tr>`;
-  }).join('');
-  body.innerHTML=`<div class="hx-calendar-status">Upcoming verified macro releases for the next 45 days. Times are shown as published by the official source; BLS/BEA release times are commonly listed in Eastern Time.</div>
-    <div style="overflow:auto"><table class="hx-calendar-table"><thead><tr><th>Date</th><th>Time</th><th>Event</th><th>Source</th><th>Impact</th></tr></thead><tbody>${rows}</tbody></table></div>`;
-}
-window.openMockCalendar=async function(force=false){
-  const modal=$('hxCalendarModal'),body=$('hxCalendarBody'),source=$('hxCalendarSource');if(!modal)return;
-  modal.classList.add('open');document.body.classList.add('hx-calendar-open');
-  if(source)source.textContent='Loading official BLS • BEA • Federal Reserve calendars…';
-  let calendar=!force?lastAnalysis?.macroContext?.marketEnvironment?.calendar:null;
-  if(calendar?.events?.length){renderMockCalendar(calendar);return;}
-  if(body)body.innerHTML='<div class="hx-cal-empty">Loading verified upcoming events…</div>';
-  try{
-    if(typeof loadOfficialMajorEvents!=='function')throw new Error('Official calendar loader is unavailable in this build.');
-    calendar=await loadOfficialMajorEvents(!!force);
-    renderMockCalendar(calendar);
-  }catch(e){
-    console.warn('Halifax calendar load failed',e);
-    if(source)source.textContent='Official calendar sources could not be reached.';
-    if(body)body.innerHTML=`<div class="hx-cal-empty">The calendar could not load verified data right now.<br>${escapeHTML(e?.message||'Source unavailable')}</div>`;
-  }
-};
-window.refreshMockCalendar=function(){return window.openMockCalendar(true)};
-window.closeMockCalendar=function(){const modal=$('hxCalendarModal');if(modal)modal.classList.remove('open');document.body.classList.remove('hx-calendar-open')};
-document.addEventListener('keydown',e=>{if(e.key==='Escape')window.closeMockCalendar?.()});
 window.openMockResearch=function(id,focusId){const d=$(id);if(!d)return;d.open=true;setTimeout(()=>{const target=focusId?$(focusId):d;target?.scrollIntoView({behavior:'smooth',block:'center'});focusId&&target?.focus?.()},30)};
 window.clearMockTradeDisplay=function(){['mkPrice','mkMove','mkScore','mkConfidence','mkEntry','mkStop','mkT1','mkT2','mkRR','mkRange'].forEach(id=>set(id,'—','yellow'));set('mkDirection','WAIT','yellow');$('mkFactors').innerHTML='<li>Display cleared. Run Analyze to restore current guidance.</li>';};
-
-const HX24_SYMBOLS=[
-  {symbol:'ES=F',prefix:'hx24ES',kind:'futures'},
-  {symbol:'NQ=F',prefix:'hx24NQ',kind:'futures'},
-  {symbol:'YM=F',prefix:'hx24YM',kind:'futures'},
-  {symbol:'RTY=F',prefix:'hx24RTY',kind:'futures'},
-  {symbol:'CL=F',prefix:'hx24CL',kind:'futures'},
-  {symbol:'GC=F',prefix:'hx24GC',kind:'futures'},
-  {symbol:'BTC-USD',prefix:'hx24BTC',kind:'crypto'}
-];
-let hx24Timer=null,hx24Busy=false;
-function hx24Class(change){return change>0?'green':change<0?'red':'yellow'}
-function hx24Price(v,symbol){if(!Number.isFinite(v))return '—';if(symbol==='BTC-USD')return '$'+v.toLocaleString(undefined,{maximumFractionDigits:0});if(symbol==='CL=F'||symbol==='GC=F')return '$'+v.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});return v.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
-function hx24State(q,kind){if(kind==='crypto')return '24/7 market • '+(q?.source||'public feed');const state=normalizeMarketState(q?.marketState);return `${state==='REGULAR'?'FUTURES OPEN':state==='CLOSED'?'FUTURES PAUSED / CLOSED':state||'PUBLIC FEED'} • ${q?.source||'public feed'}`;}
-function hx24RenderBias(rows){const equity=rows.slice(0,4).filter(x=>Number.isFinite(x?.quote?.changePct));const up=equity.filter(x=>x.quote.changePct>0).length,down=equity.filter(x=>x.quote.changePct<0).length;let label='MIXED',cls='yellow';if(equity.length>=3&&up>=3){label='RISK-ON';cls='green'}else if(equity.length>=3&&down>=3){label='RISK-OFF';cls='red'}set('hx24Bias',label,cls);const sub=$('hx24BiasSub');if(sub)sub.textContent=equity.length?`${up} of ${equity.length} equity futures higher • ${down} lower`:'Verified equity-futures quotes unavailable.';}
-window.refresh24HourMarket=async function(manual=false){
-  if(hx24Busy)return;hx24Busy=true;const btn=$('hx24RefreshBtn');if(btn){btn.disabled=true;btn.textContent='Refreshing…'}
-  const results=await Promise.allSettled(HX24_SYMBOLS.map(async item=>({item,quote:await fetchLiveQuote(item.symbol)})));
-  const rows=[];let success=0;
-  results.forEach((r,i)=>{const item=HX24_SYMBOLS[i],p=item.prefix;if(r.status==='fulfilled'&&r.value?.quote){const q=r.value.quote,chg=Number(q.changePct);success++;rows.push(r.value);set(p+'Price',hx24Price(Number(q.price),item.symbol));set(p+'Change',Number.isFinite(chg)?`${chg>=0?'▲':'▼'} ${Math.abs(chg).toFixed(2)}%`:'—',hx24Class(chg));const st=$(p+'State');if(st)st.textContent=hx24State(q,item.kind);}else{rows.push({item,quote:null});set(p+'Price','—');set(p+'Change','N/A','yellow');const st=$(p+'State');if(st)st.textContent='Verified quote unavailable';}});
-  hx24RenderBias(rows);const u=$('hx24Updated');if(u)u.textContent=success?`Updated ${new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit',second:'2-digit'})} • ${success}/${HX24_SYMBOLS.length} feeds`:'Public market feeds unavailable';
-  if(btn){btn.disabled=false;btn.textContent='Refresh'}hx24Busy=false;
-};
-function start24HourMarket(){if(hx24Timer)return;setTimeout(()=>window.refresh24HourMarket?.(),120);hx24Timer=setInterval(()=>{if(!document.hidden)window.refresh24HourMarket?.()},60000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)window.refresh24HourMarket?.()},{passive:true});}
-
 function initShell(){
-  moveCoreControls();headerTools();start24HourMarket();
+  moveCoreControls();headerTools();
   if(document.body.dataset.halifaxSafeInit==='1')return;document.body.dataset.halifaxSafeInit='1';
   const inp=$('mockTickerInput');if(inp)inp.addEventListener('input',()=>set('mkTicker',inp.value.toUpperCase()||'—'));
   if(location.protocol==='file:'){
@@ -4631,7 +4438,7 @@ function updateCore(a,t){
   drawMockChart(d);updateEvents(env);updateTechnical(a);updateBreakdown(a);updateSector(a);updateMacroSummary(a);updateResearchStatus(a);refreshMarketStrip(a).catch(()=>{});
   $('mkFooterTime').textContent=`Updated ${new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})}`;
 }
-function updateEvents(env){const er=env?.eventRisk||{},events=env?.calendar?.events||[];const risk=er.risk||'UNAVAILABLE',rcls=risk==='HIGH'?'red':risk==='ELEVATED'||risk==='WATCH'?'yellow':risk==='NORMAL'?'green':'yellow';set('mkEventRisk',risk,rcls);set('mkShield',risk==='HIGH'?'⚠':risk==='UNAVAILABLE'?'◇':'♢',rcls);set('mkEventNote',er.blockNewTrade?'New multi-day trades blocked until the event passes.':er.next?`${er.next.name} ${er.next.daysAway===0?'today':er.next.daysAway===1?'tomorrow':`in ${er.next.daysAway} days`}.`:'Official calendar unavailable.');const out=$('mkEvents');if(!out)return;if(!events.length){out.innerHTML='<div class="tiny">No verified upcoming events loaded.</div>';return}out.innerHTML=events.slice(0,4).map(ev=>{const r=ev.daysAway<=1?'HIGH':ev.daysAway<=3?'MEDIUM':'WATCH';const c=r==='HIGH'?'red':'yellow';return `<div class="mock-event"><span>${escapeHTML((Number.isFinite(+ev.year)&&Number.isFinite(+ev.month)&&Number.isFinite(+ev.day)?new Date(+ev.year,+ev.month-1,+ev.day,12).toLocaleDateString(undefined,{month:'short',day:'numeric'}):(ev.date?new Date(ev.date+'T12:00:00').toLocaleDateString(undefined,{month:'short',day:'numeric'}):'—')))}</span><span class="mock-event-time">${escapeHTML(ev.time||'—')}</span><span>${escapeHTML(ev.name||'Major event')}</span><span class="mock-risk-badge ${c}">${r}</span></div>`}).join('');}
+function updateEvents(env){const er=env?.eventRisk||{},events=env?.calendar?.events||[];const risk=er.risk||'UNAVAILABLE',rcls=risk==='HIGH'?'red':risk==='ELEVATED'||risk==='WATCH'?'yellow':risk==='NORMAL'?'green':'yellow';set('mkEventRisk',risk,rcls);set('mkShield',risk==='HIGH'?'⚠':risk==='UNAVAILABLE'?'◇':'♢',rcls);set('mkEventNote',er.blockNewTrade?'New multi-day trades blocked until the event passes.':er.next?`${er.next.name} ${er.next.daysAway===0?'today':er.next.daysAway===1?'tomorrow':`in ${er.next.daysAway} days`}.`:'Official calendar unavailable.');const out=$('mkEvents');if(!out)return;if(!events.length){out.innerHTML='<div class="tiny">No verified upcoming events loaded.</div>';return}out.innerHTML=events.slice(0,4).map(ev=>{const r=ev.daysAway<=1?'HIGH':ev.daysAway<=3?'MEDIUM':'WATCH';const c=r==='HIGH'?'red':'yellow';return `<div class="mock-event"><span>${escapeHTML(ev.date?new Date(ev.date+'T12:00:00').toLocaleDateString(undefined,{month:'short',day:'numeric'}):'—')}</span><span class="mock-event-time">${escapeHTML(ev.time||'—')}</span><span>${escapeHTML(ev.name||'Major event')}</span><span class="mock-risk-badge ${c}">${r}</span></div>`}).join('');}
 function updateTechnical(a){const d=a.primary||{},dir=a.direction,sign=dir==='SHORT'?-1:1,rows=[['Trend (EMA)',d.price>d.ema21?'Bullish':'Bearish',d.price>d.ema21?'green':'red'],['Momentum (RSI 14)',Number.isFinite(d.rsi)?num(d.rsi,1):'—',Number.isFinite(d.rsi)?(d.rsi>=50?'green':'yellow'):'yellow'],['MACD',d.macd?.hist>0?'Bullish':d.macd?.hist<0?'Bearish':'Flat',d.macd?.hist>0?'green':d.macd?.hist<0?'red':'yellow'],['Above VWAP',a.vwapContext?.available?(a.vwapContext.state==='ABOVE'?'Yes':'No'):'—',a.vwapContext?.state==='ABOVE'?'green':a.vwapContext?.state==='BELOW'?'red':'yellow'],['50 EMA / 200 EMA',d.sma50&&d.sma200?(d.sma50>d.sma200?'Bullish':'Bearish'):'—',d.sma50&&d.sma200?(d.sma50>d.sma200?'green':'red'):'yellow'],['Support',moneyMock(d.support),''],['Resistance',moneyMock(d.resistance),'']];$('mkTech').innerHTML=rows.map(r=>`<div class="mock-tech-row"><span>${r[0]}</span><span></span><b class="${r[2]}">${r[1]}</b></div>`).join('');set('mkTechStatus',dir==='WAIT'?'Mixed':dir==='LONG'?'Strong':'Bearish',dir==='WAIT'?'yellow':dir==='LONG'?'green':'red');}
 function barPct(v){return Math.max(4,Math.min(100,Math.abs(Number(v)||0)));}
 function updateBreakdown(a){const parts=[['Technical',a.technicalScore??0],['Macro / Market',a.macroContribution??0],['Fundamentals',a.fundamentalContribution??0],['Options / Sentiment',a.optionsContext?.direction===a.direction?8:a.optionsContext?.direction&&a.optionsContext.direction!=='MIXED'?-8:0],['Smart Money',a.smartMoneyContribution??0]];$('mkBreakdown').innerHTML=parts.map(([n,v])=>`<div class="mock-break-row"><span>${escapeHTML(n)}</span><div class="mock-bar"><span style="width:${barPct(v*3)}%"></span></div><b class="${v>0?'green':v<0?'red':'yellow'}">${v>=0?'+':''}${Math.round(v)}</b></div>`).join('')+`<div class="mock-break-total"><span>TOTAL SCORE</span><span class="${clsDir(a.direction)}">${a.score>=0?'+':''}${Math.round(a.score)} / 100</span></div>`;}
@@ -4656,6 +4463,122 @@ const oldSmart=renderSmartMoney;renderSmartMoney=function(t,s){oldSmart(t,s);try
 const oldFed=renderFederalContractContext;renderFederalContractContext=function(c){oldFed(c);try{set('mkGovStatus',c?.available?'Awards loaded':'No new alerts',c?.available?'green':'yellow')}catch(e){}};
 window.addEventListener('DOMContentLoaded',initShell);window.addEventListener('load',()=>{initShell();setTimeout(()=>{const chart=document.querySelector('#mockChartMount .chart-card');if(chart&&chart!==document.querySelector('.chart-card')){}},100)});
 })();
+</script>
+
+
+<script>
+// ================= Halifax v21.12 Sector Bear ETF Radar =================
+(() => {
+'use strict';
+const SECTOR_INVERSE_UNIVERSE = {
+  technology:{label:'Technology',long:'XLK',exact:true,picks:[{ticker:'REW',multiple:-2,label:'ProShares UltraShort Technology'},{ticker:'TECS',multiple:-3,label:'Direxion Daily Technology Bear 3X'}]},
+  financials:{label:'Financials',long:'XLF',exact:true,picks:[{ticker:'SEF',multiple:-1,label:'ProShares Short Financials'},{ticker:'SKF',multiple:-2,label:'ProShares UltraShort Financials'},{ticker:'FAZ',multiple:-3,label:'Direxion Daily Financial Bear 3X'}]},
+  realestate:{label:'Real Estate',long:'XLRE',exact:true,picks:[{ticker:'REK',multiple:-1,label:'ProShares Short Real Estate'},{ticker:'SRS',multiple:-2,label:'ProShares UltraShort Real Estate'},{ticker:'DRV',multiple:-3,label:'Direxion Daily Real Estate Bear 3X'}]},
+  healthcare:{label:'Health Care',long:'XLV',exact:true,picks:[{ticker:'RXD',multiple:-2,label:'ProShares UltraShort Health Care'}]},
+  industrials:{label:'Industrials',long:'XLI',exact:true,picks:[{ticker:'SIJ',multiple:-2,label:'ProShares UltraShort Industrials'}]},
+  materials:{label:'Materials',long:'XLB',exact:true,picks:[{ticker:'SMN',multiple:-2,label:'ProShares UltraShort Materials'}]},
+  discretionary:{label:'Consumer Discretionary',long:'XLY',exact:true,picks:[{ticker:'SCC',multiple:-2,label:'ProShares UltraShort Consumer Discretionary'}]},
+  staples:{label:'Consumer Staples',long:'XLP',exact:true,picks:[{ticker:'SZK',multiple:-2,label:'ProShares UltraShort Consumer Staples'}]},
+  energy:{label:'Energy',long:'XLE',exact:true,picks:[{ticker:'DUG',multiple:-2,label:'ProShares UltraShort Energy'},{ticker:'ERY',multiple:-2,label:'Direxion Daily Energy Bear 2X'}]},
+  utilities:{label:'Utilities',long:'XLU',exact:true,picks:[{ticker:'SDP',multiple:-2,label:'ProShares UltraShort Utilities'}]},
+  communication:{label:'Communication Services',long:'XLC',exact:false,picks:[{ticker:'WEBS',multiple:-3,label:'Direxion Daily Dow Jones Internet Bear 3X',proxy:true}]}
+};
+
+// Expand the existing inverse-ETF guardrail universe. The XL* entries are liquid
+// execution proxies for the funds' sector indexes; they are not claimed to be the exact benchmark.
+if (typeof SPECIAL_INSTRUMENTS !== 'undefined') Object.assign(SPECIAL_INSTRUMENTS, {
+  REW:{label:'ProShares UltraShort Technology',underlying:'XLK',dailyMultiple:-2,dailyReset:true,allowedStyles:['scalp','day']},
+  SEF:{label:'ProShares Short Financials',underlying:'XLF',dailyMultiple:-1,dailyReset:true,allowedStyles:['scalp','day']},
+  SKF:{label:'ProShares UltraShort Financials',underlying:'XLF',dailyMultiple:-2,dailyReset:true,allowedStyles:['scalp','day']},
+  REK:{label:'ProShares Short Real Estate',underlying:'XLRE',dailyMultiple:-1,dailyReset:true,allowedStyles:['scalp','day']},
+  SRS:{label:'ProShares UltraShort Real Estate',underlying:'XLRE',dailyMultiple:-2,dailyReset:true,allowedStyles:['scalp','day']},
+  RXD:{label:'ProShares UltraShort Health Care',underlying:'XLV',dailyMultiple:-2,dailyReset:true,allowedStyles:['scalp','day']},
+  SIJ:{label:'ProShares UltraShort Industrials',underlying:'XLI',dailyMultiple:-2,dailyReset:true,allowedStyles:['scalp','day']},
+  SMN:{label:'ProShares UltraShort Materials',underlying:'XLB',dailyMultiple:-2,dailyReset:true,allowedStyles:['scalp','day']},
+  SCC:{label:'ProShares UltraShort Consumer Discretionary',underlying:'XLY',dailyMultiple:-2,dailyReset:true,allowedStyles:['scalp','day']},
+  SZK:{label:'ProShares UltraShort Consumer Staples',underlying:'XLP',dailyMultiple:-2,dailyReset:true,allowedStyles:['scalp','day']},
+  DUG:{label:'ProShares UltraShort Energy',underlying:'XLE',dailyMultiple:-2,dailyReset:true,allowedStyles:['scalp','day']},
+  SDP:{label:'ProShares UltraShort Utilities',underlying:'XLU',dailyMultiple:-2,dailyReset:true,allowedStyles:['scalp','day']},
+  WEBS:{label:'Direxion Daily Dow Jones Internet Bear 3X ETF — Communication Services proxy only',underlying:null,dailyMultiple:-3,dailyReset:true,allowedStyles:['scalp','day'],metadataDetected:true}
+});
+
+let sectorInverseRows=[];
+let sectorInverseRunning=false;
+let sectorInverseLastRefresh=0;
+
+function hesc(v){try{return typeof escapeHTML==='function'?escapeHTML(String(v??'')):String(v??'').replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]));}catch(_){return String(v??'')}}
+function nfmt(v,d=1){return Number.isFinite(v)?Number(v).toFixed(d):'—'}
+function preferredPick(cfg){return [...(cfg.picks||[])].sort((a,b)=>Math.abs(a.multiple)-Math.abs(b.multiple))[0]||null}
+function stateClass(dir,exact=true){if(!exact)return 'yellow';return dir==='BEARISH'?'red':dir==='BULLISH'?'green':'yellow'}
+function stateLabel(row){if(row.error)return 'DATA N/A';if(!row.cfg.exact)return row.direction==='BEARISH'?'PROXY WATCH':'NO EXACT INVERSE';if(row.direction==='BEARISH')return 'BEAR ETF ACTIVE';if(row.direction==='BULLISH')return 'NO INVERSE';return 'WAIT'}
+
+function renderSectorBearRadar(){
+  const mount=document.getElementById('sectorInverseRadar'),count=document.getElementById('sectorInverseCount');
+  if(!mount)return;
+  if(!sectorInverseRows.length){mount.innerHTML='<div class="tiny">No sector data loaded yet.</div>';if(count){count.textContent='AWAITING';count.className='inverse-radar-count yellow';}return;}
+  const sorted=[...sectorInverseRows].sort((a,b)=>Number(b.direction==='BEARISH'&&b.cfg.exact)-Number(a.direction==='BEARISH'&&a.cfg.exact)||a.cfg.label.localeCompare(b.cfg.label));
+  const active=sorted.filter(r=>r.direction==='BEARISH'&&r.cfg.exact&&!r.error).length;
+  if(count){count.textContent=`${active} ACTIVE`;count.className=`inverse-radar-count ${active?'red':'green'}`;}
+  mount.innerHTML=sorted.map(row=>{
+    const cfg=row.cfg,preferred=preferredPick(cfg),activeExact=row.direction==='BEARISH'&&cfg.exact&&!row.error,proxy=!cfg.exact;
+    const cardCls=`inverse-sector-card${activeExact?' active':''}${proxy?' proxy':''}`;
+    const st=stateLabel(row),stc=stateClass(row.direction,cfg.exact);
+    const picks=(cfg.picks||[]).map(p=>`<button type="button" class="inverse-pick ${preferred?.ticker===p.ticker?'preferred':''} ${p.proxy?'proxy':''}" onclick="analyzeInverseTicker('${hesc(p.ticker)}')" title="${hesc(p.label)}">${hesc(p.ticker)} ${p.multiple}×${p.proxy?' PROXY':''}</button>`).join('');
+    const note=row.error?row.error:(proxy?'No exact XLC inverse is confirmed. WEBS tracks an internet index and may diverge materially from Communication Services.':activeExact?`Sector trend is bearish. Lower absolute leverage is highlighted when multiple choices exist.`:`Inverse choices are parked until ${cfg.long} turns bearish.`);
+    return `<div class="${cardCls}"><div class="inverse-sector-top"><div><div class="inverse-sector-name">${hesc(cfg.label)}</div><div class="inverse-sector-etf">Sector ETF: ${hesc(cfg.long)}</div></div><span class="inverse-sector-state ${stc}">${hesc(st)}</span></div><div class="inverse-sector-metrics"><div class="inverse-sector-metric"><div class="k">Trend</div><div class="v ${stateClass(row.direction,true)}">${hesc(row.direction||'—')}</div></div><div class="inverse-sector-metric"><div class="k">20-bar</div><div class="v ${row.roc20>0?'green':row.roc20<0?'red':'yellow'}">${Number.isFinite(row.roc20)?`${row.roc20>=0?'+':''}${nfmt(row.roc20,1)}%`:'—'}</div></div><div class="inverse-sector-metric"><div class="k">Strength</div><div class="v">${Number.isFinite(row.confidence)?`${Math.round(row.confidence)}%`:'—'}</div></div></div><div class="inverse-picks">${picks||'<span class="tiny">No inverse candidate mapped.</span>'}</div><div class="inverse-pick-note">${hesc(note)}</div></div>`;
+  }).join('');
+}
+
+window.refreshSectorBearRadar=async function({silent=false}={}){
+  if(sectorInverseRunning)return;
+  sectorInverseRunning=true;
+  const note=document.getElementById('sectorInverseNote');
+  if(note&&!silent)note.textContent='Refreshing 11 sector ETFs on the daily chart…';
+  const items=Object.entries(SECTOR_INVERSE_UNIVERSE);
+  try{
+    const results=await Promise.all(items.map(async([key,cfg])=>{
+      try{
+        const d=await loadTickerData(cfg.long,'1d','3mo');
+        const c=classifyTimeframe(d);
+        return {key,cfg,direction:c.direction,confidence:c.confidence,score:c.score,roc20:Number(d.roc20),price:Number(d.price),error:null};
+      }catch(e){return {key,cfg,direction:'UNAVAILABLE',confidence:null,score:null,roc20:null,price:null,error:String(e?.message||'Sector data unavailable.')};}
+    }));
+    sectorInverseRows=results;sectorInverseLastRefresh=Date.now();renderSectorBearRadar();
+    if(note){const failures=results.filter(r=>r.error).length;note.textContent=`11-sector scan complete${failures?` • ${failures} feed failure${failures===1?'':'s'}`:''}. Bear ETF status requires a bearish daily sector trend. Daily-reset inverse ETFs remain restricted by Halifax day/scalp guardrails.`;}
+  }finally{sectorInverseRunning=false;}
+};
+
+window.analyzeInverseTicker=function(symbol){
+  const ticker=String(symbol||'').toUpperCase();if(!ticker)return;
+  const main=document.getElementById('ticker'),mock=document.getElementById('mockTickerInput');if(main)main.value=ticker;if(mock)mock.value=ticker;
+  const panel=document.getElementById('sectorInversePanel');if(panel)panel.open=true;
+  const style=document.getElementById('style');
+  if(style&&!['day','scalp'].includes(style.value)){
+    const note=document.getElementById('sectorInverseNote');if(note)note.textContent=`${ticker} selected. Your current ${String(style.value).toUpperCase()} style is intentionally preserved; Halifax may return WAIT because inverse ETFs reset daily and are restricted to day/scalp guardrails.`;
+  }
+  try{runEngine();}catch(e){console.error('Inverse ETF analysis',e)}
+};
+
+function updateCurrentSectorInverseHint(a){
+  const hint=document.getElementById('sectorInverseCurrentHint');if(!hint||!a)return;
+  const m=a.macroContext||{},key=m.profileKey,cfg=SECTOR_INVERSE_UNIVERSE[key];
+  if(!cfg){hint.textContent='Current ticker: no mapped GICS sector inverse';return;}
+  const bearish=String(m.sectorTrend||'').toUpperCase()==='BEARISH';
+  if(!cfg.exact){hint.innerHTML=`Current: <b>${hesc(cfg.label)}</b> • no exact inverse`;return;}
+  const picks=cfg.picks.map(p=>p.ticker).join(' / ');
+  hint.innerHTML=bearish?`Current: <b>${hesc(cfg.label)} BEARISH → ${hesc(picks)}</b>`:`Current: ${hesc(cfg.label)} ${hesc(m.sectorTrend||'—')} • inverse parked`;
+}
+
+// Chain after the existing dashboard wrapper without changing core signal calculations.
+if(typeof renderTradeOutput==='function'){
+  const prev=renderTradeOutput;
+  renderTradeOutput=function(a,t){prev(a,t);try{updateCurrentSectorInverseHint(a)}catch(e){console.warn('sector inverse hint',e)}};
+}
+
+window.addEventListener('load',()=>{setTimeout(()=>refreshSectorBearRadar().catch?.(()=>{}),4200);setInterval(()=>{if(!document.hidden&&Date.now()-sectorInverseLastRefresh>15*60*1000)refreshSectorBearRadar({silent:true});},15*60*1000)});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-sectorInverseLastRefresh>15*60*1000)refreshSectorBearRadar({silent:true})});
+})();
+// ================= End Halifax v21.12 Sector Bear ETF Radar =============
 </script>
 
 </body>
