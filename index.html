@@ -1492,9 +1492,12 @@ body{background:#020a12!important;padding:0!important;overflow-x:hidden}
 .hx23-top-center{text-align:center;font-size:18px;font-weight:900;letter-spacing:.02em}.hx23-live{font-size:10px;color:var(--hx23-green);margin-left:6px}
 .hx23-top-tools{display:flex;justify-content:flex-end;align-items:center;gap:13px;color:#b8c7d2}
 .hx23-clock{font-size:12px;white-space:nowrap;font-weight:700;color:#d8e3eb}
-.hx23-tape-shell{margin:5px 14px 0;border:1px solid #173044;border-radius:11px;overflow:hidden;background:linear-gradient(180deg,#06131d,#04101a)}
-.hx23-tape{height:82px;display:flex;overflow-x:auto;scrollbar-width:none}.hx23-tape::-webkit-scrollbar{display:none}
-.hx23-tape-cell{flex:1 0 145px;min-width:145px;padding:10px 12px;border-right:1px solid #1a3142;position:relative}
+.hx23-tape-shell{margin:5px 14px 0;border:1px solid #173044;border-radius:11px;overflow:hidden;background:linear-gradient(180deg,#06131d,#04101a);position:relative}
+.hx23-tape{height:82px;display:flex;width:max-content;overflow:visible;will-change:transform;animation:hx23TapeMarquee 42s linear infinite}
+.hx23-tape-shell:hover .hx23-tape{animation-play-state:paused}
+.hx23-tape-cell{flex:0 0 145px;width:145px;min-width:145px;padding:10px 12px;border-right:1px solid #1a3142;position:relative}
+@keyframes hx23TapeMarquee{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+@media(prefers-reduced-motion:reduce){.hx23-tape{animation-duration:90s}}
 .hx23-tape-cell:last-child{border-right:0}.hx23-tape-label{display:flex;align-items:center;gap:6px;font-size:10px;color:#dfe8ee;font-weight:800;white-space:nowrap}
 .hx23-coin{width:17px;height:17px;border-radius:50%;display:grid;place-items:center;background:#0c2435;color:#f2c552;font-size:9px}
 .hx23-tape-price{font-size:15px;font-weight:900;margin-top:4px;color:#f4f8fb}.hx23-tape-change{font-size:10px;font-weight:900;margin-top:5px}
@@ -1613,7 +1616,7 @@ body{background:#020a12!important;padding:0!important;overflow-x:hidden}
   <header class="hx23-topbar">
     <div class="hx23-brand">
       <div class="hx23-logo"><span>H</span></div>
-      <div><div class="hx23-brand-title">HALIFAX <span class="hx23-version">v23.7</span></div><div class="hx23-brand-sub">TRADE ENGINE</div></div>
+      <div><div class="hx23-brand-title">HALIFAX <span class="hx23-version">v23.8</span></div><div class="hx23-brand-sub">TRADE ENGINE</div></div>
     </div>
     <div class="hx23-top-center">24 HOUR MARKET TAPE <span class="hx23-live">AUTO</span></div>
     <div class="hx23-top-tools">
@@ -5267,7 +5270,9 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now(
   const tapeLabels={BTC:'BTC/USD',ETH:'ETH/USD',SOL:'SOL/USD',DIA:'DOW',SPY:'S&P 500 (SPY)',QQQ:'NASDAQ (QQQ)',CL:'OIL (WTI)',GC:'GOLD',VIX:'VIX',ES:'S&P FUT',NQ:'NASDAQ FUT',YM:'DOW FUT'};
   function tapeSkeleton(){
     const out=$('hx23Tape');if(!out||out.dataset.ready)return;out.dataset.ready='1';
-    out.innerHTML=tapeIds.map((id,i)=>`<div class="hx23-tape-cell" data-hx23-tape="${id}">
+    // Render the full tape twice so translateX(-50%) loops with no visible jump.
+    const loopIds=[...tapeIds,...tapeIds];
+    out.innerHTML=loopIds.map((id,i)=>`<div class="hx23-tape-cell" data-hx23-tape="${id}" data-hx23-copy="${i>=tapeIds.length?'2':'1'}" ${i>=tapeIds.length?'aria-hidden="true"':''}>
       <div class="hx23-tape-label"><span class="hx23-coin">${['BTC','ETH','SOL'].includes(id)?'◆':'•'}</span>${tapeLabels[id]}</div>
       <div class="hx23-tape-price">—</div><div class="hx23-tape-change yellow">—</div>
       <div class="hx23-mini-trend yellow">${[7,11,6,14,10,15,9,13].map((h,j)=>`<i style="height:${h}px"></i>`).join('')}</div>
@@ -5277,12 +5282,14 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now(
     tapeSkeleton();
     tapeIds.forEach(id=>{
       const src=document.querySelector(`#marketTape24Track [data-tape-id="${id}"]`);
-      const dst=document.querySelector(`[data-hx23-tape="${id}"]`);if(!src||!dst)return;
+      const dsts=document.querySelectorAll(`[data-hx23-tape="${id}"]`);if(!src||!dsts.length)return;
       const p=src.querySelector('[data-role="price"]')?.textContent||'—',c=src.querySelector('[data-role="change"]'),tm=src.querySelector('[data-role="time"]')?.textContent||'';
-      dst.querySelector('.hx23-tape-price').textContent=p;
-      const ce=dst.querySelector('.hx23-tape-change');ce.textContent=c?.textContent||'—';ce.className='hx23-tape-change '+clsFrom(c);
-      const tr=dst.querySelector('.hx23-mini-trend');tr.className='hx23-mini-trend '+clsFrom(c);
-      dst.querySelector('.hx23-tape-time').textContent=tm.replace(/.*•\s*/,'');
+      dsts.forEach(dst=>{
+        dst.querySelector('.hx23-tape-price').textContent=p;
+        const ce=dst.querySelector('.hx23-tape-change');ce.textContent=c?.textContent||'—';ce.className='hx23-tape-change '+clsFrom(c);
+        const tr=dst.querySelector('.hx23-mini-trend');tr.className='hx23-mini-trend '+clsFrom(c);
+        dst.querySelector('.hx23-tape-time').textContent=tm.replace(/.*•\s*/,'');
+      });
     });
   }
   function scoreNum(text){const m=String(text||'').match(/-?\d+(?:\.\d+)?/);return m?Number(m[0]):null;}
