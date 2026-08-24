@@ -21,7 +21,7 @@
 <meta name="application-name" content="Halifax">
 <meta name="format-detection" content="telephone=no">
 
-<title>Halifax Trade Engine v21.18 Risk Mode - Exact Dashboard</title>
+<title>Halifax Trade Engine v21.19 Session Desk - Exact Dashboard</title>
 
 <style>
 :root{
@@ -1385,6 +1385,11 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
 @media(max-width:620px){.mock-decision-row{margin-top:8px}.trade-plan-grid{grid-template-columns:1fr 1fr}.trade-plan-v{font-size:14px}.trade-plan-dock>summary{padding:11px 12px}}
 
 
+
+/* ================= v21.19 MARKET SESSION + LIQUIDITY DESK ================= */
+.session-desk>summary{align-items:center}.session-desk>summary .session-summary-right{display:flex;align-items:center;gap:6px;margin-left:auto;margin-right:5px}.session-chip{display:inline-flex;align-items:center;gap:5px;border:1px solid #36546e;border-radius:4px;padding:3px 6px;font-size:8px;font-weight:950;letter-spacing:.35px}.session-chip:before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor}.session-hero{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:9px 10px;border-bottom:1px solid #173650;background:#05111d}.session-name{font-size:8px;color:#8098ad;text-transform:uppercase;font-weight:900;letter-spacing:.4px}.session-state{font-size:17px;font-weight:950;margin-top:3px}.session-trade-time{font-size:8.5px;color:#8fa6ba;text-align:right;line-height:1.4}.session-grid{display:grid;grid-template-columns:1fr 1fr}.session-metric{padding:8px 9px;min-height:54px;border-right:1px solid #173650;border-bottom:1px solid #173650}.session-metric:nth-child(2n){border-right:0}.session-k{font-size:7.6px;color:#7891a7;text-transform:uppercase;font-weight:900;letter-spacing:.3px}.session-v{font-size:12.5px;font-weight:950;margin-top:4px;line-height:1.2}.session-sub{font-size:7.8px;color:#71879a;margin-top:3px;line-height:1.25}.session-alert{margin:8px 9px 0;padding:7px 8px;border:1px solid #304b61;border-left:3px solid #e7bd4a;border-radius:4px;background:#071827;font-size:8.6px;font-weight:850;line-height:1.4}.session-alert.green-border{border-left-color:#42ce6a}.session-alert.red-border{border-left-color:#ef646c}.session-toolbar{display:flex;justify-content:space-between;align-items:center;gap:7px;padding:8px 9px;border-top:1px solid #173650}.session-refresh{border:1px solid #315775;background:#0a2136;color:#dcebf6;border-radius:4px;padding:5px 7px;font-size:8px;font-weight:900;cursor:pointer}.session-source{font-size:7.5px;color:#6f8799;line-height:1.35;text-align:right}.session-desk .green{color:#49dc68}.session-desk .red{color:#ff6f75}.session-desk .yellow{color:#f5c84f}.session-desk .blue{color:#63b3ff}
+@media(max-width:620px){.session-state{font-size:15px}.session-v{font-size:12px}.session-grid{grid-template-columns:1fr 1fr}}
+
 /* ================= v21.15 DESKTOP EXECUTION RAIL FIX =================
    Keeps Entry / Stop / Exit visible in the unused right side on desktop.
    On tablets/phones it returns to normal document flow under Trade Decision. */
@@ -1453,7 +1458,7 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
     <div class="card header">
         <div class="brand-stack">
             <div class="terminal-kicker"><span class="kicker-dot"></span> HALIFAX QUANT RESEARCH TERMINAL</div>
-            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v21.18 Risk Mode</span></span></div>
+            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v21.19 Session Desk</span></span></div>
             <div class="subtitle">Predictive swing research • Unified market guidance • Federal contract radar • Options • Bonds • Event guardrails</div>
         </div>
         <div class="header-actions"><div class="badge system-badge"><span class="status-dot"></span><span id="engineStatus">Engine ready</span></div></div>
@@ -1532,6 +1537,24 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
         <summary><div class="trade-plan-title">Trade Entry • Exit • Stop<small>Right-side execution plan • every section collapses</small></div></summary>
         <div class="trade-plan-body">
           <div class="trade-plan-status"><div><div id="dockTicker" class="trade-plan-symbol">—</div><div id="dockPlanState" class="tiny">Run Analyze to build a trade plan.</div></div><div id="dockDirection" class="trade-plan-decision yellow">WAIT</div></div>
+
+          <details id="marketSessionDesk" class="trade-plan-sub session-desk" open>
+            <summary><span>Market Session &amp; Liquidity</span><span class="session-summary-right"><span id="sessionStateChip" class="session-chip yellow">AWAITING</span></span></summary>
+            <div class="session-hero">
+              <div><div class="session-name">Trading Session</div><div id="sessionState" class="session-state yellow">AWAITING</div></div>
+              <div id="sessionLastTrade" class="session-trade-time">Run Analyze or refresh<br>to load the latest public quote.</div>
+            </div>
+            <div class="session-grid">
+              <div class="session-metric"><div class="session-k">Bid</div><div id="sessionBid" class="session-v">—</div><div id="sessionBidSize" class="session-sub">Size —</div></div>
+              <div class="session-metric"><div class="session-k">Ask</div><div id="sessionAsk" class="session-v">—</div><div id="sessionAskSize" class="session-sub">Size —</div></div>
+              <div class="session-metric"><div class="session-k">Spread</div><div id="sessionSpread" class="session-v yellow">—</div><div id="sessionSpreadNote" class="session-sub">Bid/ask not loaded</div></div>
+              <div class="session-metric"><div class="session-k">Liquidity</div><div id="sessionLiquidity" class="session-v yellow">—</div><div id="sessionDollarVol" class="session-sub">Avg $ volume —</div></div>
+              <div class="session-metric"><div class="session-k">Regular Volume</div><div id="sessionVolume" class="session-v">—</div><div id="sessionAvgVolume" class="session-sub">Avg daily —</div></div>
+              <div class="session-metric"><div class="session-k">Next Session Event</div><div id="sessionNextEvent" class="session-v blue">—</div><div id="sessionScheduleNote" class="session-sub">US equity weekday schedule</div></div>
+            </div>
+            <div id="sessionExecutionAlert" class="session-alert">Session execution guidance will appear here.</div>
+            <div class="session-toolbar"><button type="button" class="session-refresh" onclick="refreshMarketSessionDesk(true)">↻ REFRESH SESSION</button><div id="sessionSource" class="session-source">Public quote feed • broker eligibility not assumed</div></div>
+          </details>
 
           <details class="trade-plan-sub" open>
             <summary>Entry</summary>
@@ -1618,7 +1641,7 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
         <details id="mockSmart" class="mock-research"><summary><div class="mock-rtitle">Smart Money Flow</div><div id="mkSmartStatus" class="mock-rstatus yellow">Awaiting</div></summary><div id="mockSmartBody" class="mock-research-body"></div></details>
         <details id="mockFund" class="mock-research"><summary><div class="mock-rtitle">Fundamentals</div><div id="mkFundStatus" class="mock-rstatus yellow">Awaiting</div></summary><div id="mockFundBody" class="mock-research-body"></div></details>
       </section>
-      <div class="mock-footer"><span>This tool is for informational research only and does not constitute financial advice.</span><span><span class="mock-live-dot"></span><span id="mkFooterTime">Data updates with analysis</span> &nbsp; Halifax Trade Engine v21.18</span></div>
+      <div class="mock-footer"><span>This tool is for informational research only and does not constitute financial advice.</span><span><span class="mock-live-dot"></span><span id="mkFooterTime">Data updates with analysis</span> &nbsp; Halifax Trade Engine v21.19</span></div>
     </div>
 
     <div class="card command-card">
@@ -4366,6 +4389,7 @@ const SIGNAL_HISTORY_KEY="halifaxSignalHistoryV21";
 const PORTFOLIO_KEY="halifaxPortfolioTickersV21";
 function normalizeMarketState(v){
     const s=String(v||"").toUpperCase();
+    if(s.includes("OVERNIGHT"))return "OVERNIGHT";
     if(["REGULAR","OPEN","RTH"].includes(s))return "REGULAR";
     if(s.includes("PRE"))return "PRE";
     if(s.includes("POST")||s.includes("AFTER"))return "POST";
@@ -4381,17 +4405,23 @@ function inferChartMarketState(meta={}){
     return "CLOSED";
 }
 function liveQuoteContextFromQuote(q,source="Yahoo Finance public quote feed"){
-    const price=Number(q?.regularMarketPrice),prev=Number(q?.regularMarketPreviousClose??q?.regularMarketOpen),ts=Number(q?.regularMarketTime),bid=Number(q?.bid),ask=Number(q?.ask);
-    if(!(price>0))return null;
-    const change=Number.isFinite(Number(q?.regularMarketChange))?Number(q.regularMarketChange):(Number.isFinite(prev)?price-prev:null),changePct=Number.isFinite(Number(q?.regularMarketChangePercent))?Number(q.regularMarketChangePercent):(prev?100*(price-prev)/prev:null);
-    return {price,previousClose:Number.isFinite(prev)?prev:null,change,changePct,timestamp:Number.isFinite(ts)?ts:Math.floor(Date.now()/1000),bid:Number.isFinite(bid)&&bid>0?bid:null,ask:Number.isFinite(ask)&&ask>0?ask:null,marketState:normalizeMarketState(q?.marketState),exchange:q?.fullExchangeName||q?.exchange||"",source,feedType:"PUBLIC",certifiedRealtime:false};
+    const state=normalizeMarketState(q?.marketState),prev=Number(q?.regularMarketPreviousClose??q?.regularMarketOpen);
+    const select=(priceKey,timeKey,changeKey,pctKey)=>({price:Number(q?.[priceKey]),timestamp:Number(q?.[timeKey]),change:Number(q?.[changeKey]),changePct:Number(q?.[pctKey]),basis:priceKey});
+    let active=state==="OVERNIGHT"?select("overnightMarketPrice","overnightMarketTime","overnightMarketChange","overnightMarketChangePercent"):
+               state==="POST"?select("postMarketPrice","postMarketTime","postMarketChange","postMarketChangePercent"):
+               state==="PRE"?select("preMarketPrice","preMarketTime","preMarketChange","preMarketChangePercent"):
+               select("regularMarketPrice","regularMarketTime","regularMarketChange","regularMarketChangePercent");
+    if(!(active.price>0))active=select("regularMarketPrice","regularMarketTime","regularMarketChange","regularMarketChangePercent");
+    const price=active.price,ts=active.timestamp,bid=Number(q?.bid),ask=Number(q?.ask);if(!(price>0))return null;
+    const change=Number.isFinite(active.change)?active.change:(Number.isFinite(prev)?price-prev:null),changePct=Number.isFinite(active.changePct)?active.changePct:(prev?100*(price-prev)/prev:null);
+    return {price,previousClose:Number.isFinite(prev)?prev:null,change,changePct,timestamp:Number.isFinite(ts)?ts:Math.floor(Date.now()/1000),bid:Number.isFinite(bid)&&bid>0?bid:null,ask:Number.isFinite(ask)&&ask>0?ask:null,bidSize:Number.isFinite(Number(q?.bidSize))?Number(q.bidSize):null,askSize:Number.isFinite(Number(q?.askSize))?Number(q.askSize):null,regularVolume:Number.isFinite(Number(q?.regularMarketVolume))?Number(q.regularMarketVolume):null,averageVolume:Number.isFinite(Number(q?.averageDailyVolume3Month))?Number(q.averageDailyVolume3Month):(Number.isFinite(Number(q?.averageDailyVolume10Day))?Number(q.averageDailyVolume10Day):null),marketState:state,exchange:q?.fullExchangeName||q?.exchange||"",quoteType:q?.quoteType||"",hasPrePostMarketData:q?.hasPrePostMarketData===true,sessionPriceBasis:active.basis,regularMarketPrice:Number(q?.regularMarketPrice)||null,preMarketPrice:Number(q?.preMarketPrice)||null,postMarketPrice:Number(q?.postMarketPrice)||null,overnightMarketPrice:Number(q?.overnightMarketPrice)||null,source,feedType:"PUBLIC",certifiedRealtime:false};
 }
 function liveQuoteContextFromChart(result,source="Yahoo Finance public chart feed"){
-    const meta=result?.meta||{},bars=result?.indicators?.quote?.[0]||{},times=result?.timestamp||[];
-    const price=Number(meta.regularMarketPrice),idx=times.length-1,barClose=idx>=0?Number(bars.close?.[idx]):NaN,finalPrice=price>0?price:barClose,prev=Number(meta.chartPreviousClose??meta.previousClose),ts=Number(meta.regularMarketTime??times[idx]);
+    const meta=result?.meta||{},bars=result?.indicators?.quote?.[0]||{},times=result?.timestamp||[],state=inferChartMarketState(meta);
+    const regularPrice=Number(meta.regularMarketPrice),idx=times.length-1,barClose=idx>=0?Number(bars.close?.[idx]):NaN,extended=["PRE","POST","OVERNIGHT"].includes(state),finalPrice=extended&&barClose>0?barClose:(regularPrice>0?regularPrice:barClose),prev=Number(meta.chartPreviousClose??meta.previousClose),ts=extended&&idx>=0?Number(times[idx]):Number(meta.regularMarketTime??times[idx]);
     if(!(finalPrice>0))return null;
-    const change=Number.isFinite(prev)?finalPrice-prev:null,changePct=prev?100*(finalPrice-prev)/prev:null;
-    return {price:finalPrice,previousClose:Number.isFinite(prev)?prev:null,change,changePct,timestamp:Number.isFinite(ts)?ts:Math.floor(Date.now()/1000),bid:null,ask:null,marketState:inferChartMarketState(meta),exchange:meta.exchangeName||meta.exchange||"",source,feedType:"PUBLIC",certifiedRealtime:false};
+    const change=Number.isFinite(prev)?finalPrice-prev:null,changePct=prev?100*(finalPrice-prev)/prev:null,p=meta.currentTradingPeriod||{};
+    return {price:finalPrice,previousClose:Number.isFinite(prev)?prev:null,change,changePct,timestamp:Number.isFinite(ts)?ts:Math.floor(Date.now()/1000),bid:null,ask:null,bidSize:null,askSize:null,regularVolume:Number.isFinite(Number(meta.regularMarketVolume))?Number(meta.regularMarketVolume):null,averageVolume:null,marketState:state,exchange:meta.exchangeName||meta.exchange||"",quoteType:meta.instrumentType||"",hasPrePostMarketData:true,sessionPriceBasis:extended?"latest extended-hours chart bar":"regularMarketPrice",regularStart:Number(p.regular?.start)||null,regularEnd:Number(p.regular?.end)||null,preStart:Number(p.pre?.start)||null,preEnd:Number(p.pre?.end)||null,postStart:Number(p.post?.start)||null,postEnd:Number(p.post?.end)||null,source,feedType:"PUBLIC",certifiedRealtime:false};
 }
 async function fetchLiveQuote(ticker){
     try{
@@ -4406,7 +4436,7 @@ function quoteStatus(q){
     if(!q)return {label:"MODEL BAR",cls:"stale",detail:"No fresh quote loaded"};
     const state=normalizeMarketState(q.marketState),age=quoteAgeSeconds(q);
     if(state==="CLOSED")return {label:"MARKET CLOSED",cls:"",detail:age==null?"last trade time unavailable":`last trade ${age<3600?Math.round(age/60)+'m':(age/3600).toFixed(1)+'h'} ago`};
-    if(state==="PRE"||state==="POST")return {label:`${state} • AUTO-REFRESH`,cls:age!=null&&age<=60?"fresh":"",detail:age==null?"public feed":`last trade ${age}s ago`};
+    if(["PRE","POST","OVERNIGHT"].includes(state))return {label:`${state} • AUTO-REFRESH`,cls:age!=null&&age<=60?"fresh":age!=null&&age>300?"stale":"",detail:age==null?"public feed":`last trade ${age}s ago`};
     return {label:age!=null&&age<=30?"PUBLIC FRESH":"PUBLIC AUTO-REFRESH",cls:age!=null&&age<=30?"fresh":age!=null&&age>180?"stale":"",detail:age==null?"timestamp unavailable":`last trade ${age}s ago`};
 }
 function liveFeedHTML(analysis){
@@ -4424,7 +4454,7 @@ async function refreshLiveQuote(ticker,runId){
         if(lastAnalysis?.primary?.ticker===ticker){
             lastAnalysis={...lastAnalysis,liveQuoteContext:q};lastTrade=calculateTrade(lastAnalysis.primary,lastAnalysis);renderTradeOutput(lastAnalysis,lastTrade);
             const basis=lastAnalysis.analysisBasisPrice||lastAnalysis.primary?.price,movePct=basis?Math.abs(q.price/basis-1)*100:0,threshold=materialReanalysisThreshold(),state=normalizeMarketState(q.marketState),button=document.getElementById("analyzeBtn");
-            if(["REGULAR","PRE","POST"].includes(state)&&movePct>=threshold&&Date.now()-lastMaterialReanalysisAt>=90000&&!button?.disabled){lastMaterialReanalysisAt=Date.now();setStatus(`${ticker} moved ${movePct.toFixed(2)}% from model basis — refreshing signal…`,`var(--yellow)`);setTimeout(()=>{if(runId===halifaxRunId)runEngine();},400);}
+            if(["REGULAR","PRE","POST","OVERNIGHT"].includes(state)&&movePct>=threshold&&Date.now()-lastMaterialReanalysisAt>=90000&&!button?.disabled){lastMaterialReanalysisAt=Date.now();setStatus(`${ticker} moved ${movePct.toFixed(2)}% from model basis — refreshing signal…`,`var(--yellow)`);setTimeout(()=>{if(runId===halifaxRunId)runEngine();},400);}
         }
     }catch(e){console.warn("Halifax live quote refresh unavailable",e);}
 }
@@ -4666,6 +4696,7 @@ function updateCore(a,t){
   set('mkTicker',d.ticker||'—');set('mkPrice',moneyMock(price));set('mkMove',Number.isFinite(move)?`${move>=0?'▲':'▼'} ${signed(move,2)} (${pct(movePct,2)})`:'—',move>0?'green':move<0?'red':'yellow');set('mkQuoteTime',q.timestamp?`Quote ${formatDateTime(q.timestamp)}`:(d.dataTime?`Data ${formatDateTime(d.dataTime)}`:'Latest loaded quote'));
   set('mkDirection',dir,dc);set('mkScore',`${a.score>=0?'+':''}${Math.round(a.score)} / 100`,dc);set('mkConfidence',`${Math.round(a.predictionStrength??a.confidence??0)}%`,dc);set('mkEntry',`${moneyMock(t.entryLow)} - ${moneyMock(t.entryHigh)}`,'blue');set('mkStop',moneyMock(t.stop),'red');set('mkT1',moneyMock(t.t1),'green');set('mkT2',moneyMock(t.t2),'green');set('mkRR',`1 : ${num(t.rr2,2)}`);set('mkRange',`${moneyMock(d.support)} - ${moneyMock(t.t3)}`);
   updateTradePlanDock(a,t);
+  updateMarketSessionDesk(a);
   const reasons=(a.reasons||[]).filter(x=>x&&!String(x).includes('v21.')).slice(0,5);$('mkFactors').innerHTML=(reasons.length?reasons:['No verified key factors returned.']).map(x=>`<li>${escapeHTML(shortReason(x))}</li>`).join('');
   const gs=Number.isFinite(m.guidanceScore)?m.guidanceScore:0,bias=marketLabel(m),gcls=gs>2?'green':gs<-2?'red':'yellow',envAction=bias==='RISK-ON'?'FAVORS LONGS':bias==='RISK-OFF'?'FAVORS SHORTS':'NEUTRAL / SELECTIVE';set('mkGuideScore',`${gs>=0?'+':''}${gs}`,gcls);set('mkGuideBias',bias,gcls);set('mkEnvScore',`${gs>=0?'+':''}${gs}`,gcls);set('mkEnvLabel',bias,gcls);set('mkEnvAction',envAction,bias==='RISK-ON'?'green':bias==='RISK-OFF'?'red':'yellow');$('mkEnvGauge')?.style.setProperty('--gauge',gs>2?'#48d45d':gs<-2?'#ef5350':'#f6c344');$('mkArc')?.style.setProperty('--arc',gs>2?'#48d45d':gs<-2?'#ef5350':'#f6c344');
   const trends=env.trends||{},bulls=Object.values(trends).filter(x=>x==='BULLISH').length,bears=Object.values(trends).filter(x=>x==='BEARISH').length;
@@ -4888,5 +4919,41 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now(
   window.addEventListener('load',()=>{ensureShell();setTimeout(()=>window.refresh24HourTape?.(false),400);});
 })();
 </script>
+
+<script>
+// ================= Halifax v21.19 Market Session + Liquidity Desk =================
+(() => {
+  'use strict';
+  const byId=id=>document.getElementById(id),finite=v=>typeof v==='number'&&Number.isFinite(v);
+  const fmtMoney=v=>finite(v)?'$'+v.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}):'—';
+  const fmtCompact=v=>finite(v)?new Intl.NumberFormat(undefined,{notation:'compact',maximumFractionDigits:1}).format(v):'—';
+  const fmtDollarCompact=v=>finite(v)?'$'+new Intl.NumberFormat(undefined,{notation:'compact',maximumFractionDigits:1}).format(v):'—';
+  const setText=(id,value,cls)=>{const el=byId(id);if(!el)return;el.textContent=value??'—';if(cls){el.classList.remove('green','red','yellow','blue');el.classList.add(cls);}};
+  function sessionLabel(state,ticker,quoteType){
+    if(String(quoteType||'').toUpperCase().includes('CRYPTO')||/-USD$/i.test(String(ticker||'')))return ['CRYPTO 24/7','green'];
+    const s=normalizeMarketState(state);if(s==='REGULAR')return ['REGULAR OPEN','green'];if(s==='PRE')return ['PREMARKET','blue'];if(s==='POST')return ['AFTER HOURS','yellow'];if(s==='OVERNIGHT')return ['OVERNIGHT','yellow'];if(s==='CLOSED')return ['CLOSED','red'];return [s||'UNKNOWN','yellow'];
+  }
+  function spreadInfo(q){const b=q?.bid,a=q?.ask;if(!(finite(b)&&finite(a)&&b>0&&a>=b))return {pct:null,label:'Unavailable',cls:'yellow'};const pct=100*(a-b)/((a+b)/2);return {pct,label:pct>=1?'VERY WIDE':pct>=.5?'WIDE':pct>=.2?'MODERATE':'TIGHT',cls:pct>=.5?'red':pct>=.2?'yellow':'green'};}
+  function liquidityInfo(a,spread){const d=a?.primary||{},adv=finite(d.avgDollarVolume)?d.avgDollarVolume:null,sp=spread.pct;let label='UNAVAILABLE',cls='yellow';if(finite(adv)){if(adv<5e6||finite(sp)&&sp>=1){label='VERY THIN';cls='red';}else if(adv<20e6||finite(sp)&&sp>=.5){label='THIN';cls='red';}else if(adv<50e6||finite(sp)&&sp>=.2){label='MODERATE';cls='yellow';}else{label='LIQUID';cls='green';}}else if(finite(sp)){label=sp>=.5?'THIN':sp>=.2?'MODERATE':'GOOD';cls=sp>=.5?'red':sp>=.2?'yellow':'green';}return {label,cls,adv};}
+  function zonedParts(date,tz){const out={};new Intl.DateTimeFormat('en-US',{timeZone:tz,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).formatToParts(date).forEach(p=>{if(p.type!=='literal')out[p.type]=p.value});return {year:+out.year,month:+out.month,day:+out.day,hour:+out.hour,minute:+out.minute,second:+out.second};}
+  function zonedEpochMs(y,m,d,h,min,tz){let guess=Date.UTC(y,m-1,d,h,min,0);for(let i=0;i<2;i++){const p=zonedParts(new Date(guess),tz),asUTC=Date.UTC(p.year,p.month-1,p.day,p.hour,p.minute,p.second);guess-=asUTC-guess;}return guess;}
+  function nextWeekdayOpenMs(){const tz='America/New_York',p=zonedParts(new Date(),tz),todayUTC=Date.UTC(p.year,p.month-1,p.day),todayDow=new Date(todayUTC).getUTCDay(),minutes=p.hour*60+p.minute;let add=(todayDow>=1&&todayDow<=5&&minutes<570)?0:1;while(true){const d=new Date(todayUTC+add*86400000),dow=d.getUTCDay();if(dow>=1&&dow<=5)return zonedEpochMs(d.getUTCFullYear(),d.getUTCMonth()+1,d.getUTCDate(),9,30,tz);add++;}}
+  function todayRegularCloseMs(){const p=zonedParts(new Date(),'America/New_York');return zonedEpochMs(p.year,p.month,p.day,16,0,'America/New_York');}
+  function scheduleText(q,state,crypto){if(crypto)return {main:'24/7',sub:'Crypto trades continuously; venue outages can occur.'};const now=Date.now();if(state==='REGULAR'){const end=finite(q?.regularEnd)?q.regularEnd*1000:null,ms=end&&end>now?end:todayRegularCloseMs();return {main:new Date(ms).toLocaleTimeString([],{timeZone:'America/Chicago',hour:'numeric',minute:'2-digit'})+' CT close',sub:'Regular US equity session'};}const fromFeed=finite(q?.regularStart)?q.regularStart*1000:null;if(fromFeed&&fromFeed>now)return {main:new Date(fromFeed).toLocaleString([],{timeZone:'America/Chicago',weekday:'short',hour:'numeric',minute:'2-digit'})+' CT',sub:'Regular open from public chart metadata'};const ms=nextWeekdayOpenMs();return {main:new Date(ms).toLocaleString([],{timeZone:'America/Chicago',weekday:'short',hour:'numeric',minute:'2-digit'})+' CT',sub:'Next weekday open; exchange holidays can differ'};}
+  function execAlert(state,spread,age,crypto){if(finite(age)&&age>300)return ['STALE QUOTE — verify price before using the trade plan.','red-border'];if(finite(spread.pct)&&spread.pct>=1)return [`VERY WIDE ${spread.pct.toFixed(2)}% spread — market-order execution risk is high.`,'red-border'];if(finite(spread.pct)&&spread.pct>=.5)return [`WIDE ${spread.pct.toFixed(2)}% spread — limit-price control is strongly preferred.`,'red-border'];if(crypto)return ['24/7 crypto session — liquidity and spreads can change sharply outside peak hours.','green-border'];if(['PRE','POST','OVERNIGHT'].includes(state))return [`${state==='PRE'?'Premarket':state==='POST'?'After-hours':'Overnight'} session — thinner liquidity is common; use limit-price discipline and verify broker eligibility.`,''];if(state==='CLOSED')return ['Regular market is closed. Any queued or extended-hours order depends on your broker and venue eligibility.',''];return ['Regular session. Check spread, volume and quote age before using the Entry / Stop / Exit plan.','green-border'];}
+  window.updateMarketSessionDesk=function(a){
+    const q=a?.liveQuoteContext||{},d=a?.primary||{},ticker=d.ticker||byId('mockTickerInput')?.value||'—',state=normalizeMarketState(q.marketState),crypto=String(q.quoteType||'').toUpperCase().includes('CRYPTO')||/-USD$/i.test(ticker),[label,stateCls]=sessionLabel(state,ticker,q.quoteType),spread=spreadInfo(q),liq=liquidityInfo(a,spread),age=quoteAgeSeconds(q),sched=scheduleText(q,state,crypto),alert=execAlert(state,spread,age,crypto);
+    setText('sessionStateChip',label,stateCls);setText('sessionState',label,stateCls);
+    const last=byId('sessionLastTrade');if(last){const stamp=finite(q.timestamp)?formatDateTime(q.timestamp):'time unavailable';last.innerHTML=`Last trade <b>${fmtMoney(q.price)}</b><br>${escapeHTML(stamp)}${finite(age)?` • ${age<60?age+'s':Math.round(age/60)+'m'} old`:''}`;}
+    setText('sessionBid',fmtMoney(q.bid),finite(q.bid)?'green':undefined);setText('sessionAsk',fmtMoney(q.ask),finite(q.ask)?'red':undefined);setText('sessionBidSize',finite(q.bidSize)?`Size ${fmtCompact(q.bidSize)} feed units`:'Size unavailable');setText('sessionAskSize',finite(q.askSize)?`Size ${fmtCompact(q.askSize)} feed units`:'Size unavailable');
+    setText('sessionSpread',finite(spread.pct)?spread.pct.toFixed(2)+'%':'—',spread.cls);setText('sessionSpreadNote',finite(spread.pct)?spread.label:'Bid/ask not returned by public feed');setText('sessionLiquidity',liq.label,liq.cls);setText('sessionDollarVol',finite(liq.adv)?`Avg $ volume ${fmtDollarCompact(liq.adv)}`:'Avg $ volume unavailable');
+    setText('sessionVolume',finite(q.regularVolume)?fmtCompact(q.regularVolume):'—');setText('sessionAvgVolume',finite(q.averageVolume)?`Avg daily ${fmtCompact(q.averageVolume)}`:(finite(d.avgVolume)?`20-bar avg ${fmtCompact(d.avgVolume)}`:'Average unavailable'));setText('sessionNextEvent',sched.main,'blue');setText('sessionScheduleNote',sched.sub);
+    const ae=byId('sessionExecutionAlert');if(ae){ae.className='session-alert '+alert[1];ae.textContent=alert[0];}const src=byId('sessionSource');if(src)src.textContent=`${q.source||'Public quote feed'} • ${q.sessionPriceBasis?String(q.sessionPriceBasis).replace(/([A-Z])/g,' $1').trim():state.toLowerCase()} • broker overnight eligibility not assumed`;
+  };
+  window.refreshMarketSessionDesk=async function(){const ticker=(byId('mockTickerInput')?.value||lastAnalysis?.primary?.ticker||'').trim().toUpperCase();if(!ticker){const ae=byId('sessionExecutionAlert');if(ae)ae.textContent='Enter a ticker first.';return;}setText('sessionStateChip','REFRESHING','yellow');try{const q=await fetchLiveQuote(ticker);if(lastAnalysis?.primary?.ticker===ticker){lastAnalysis={...lastAnalysis,liveQuoteContext:q};lastTrade=calculateTrade(lastAnalysis.primary,lastAnalysis);renderTradeOutput(lastAnalysis,lastTrade);}else updateMarketSessionDesk({primary:{ticker},liveQuoteContext:q});}catch(e){setText('sessionStateChip','NO DATA','red');const ae=byId('sessionExecutionAlert');if(ae){ae.className='session-alert red-border';ae.textContent='Public session quote could not be refreshed. No price, bid/ask or session state was guessed.';}}};
+  window.addEventListener('DOMContentLoaded',()=>{const inp=byId('mockTickerInput');if(inp)inp.addEventListener('change',()=>{if(inp.value.trim())refreshMarketSessionDesk();});});
+})();
+</script>
+
 </body>
 </html>
