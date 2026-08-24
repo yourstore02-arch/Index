@@ -18,7 +18,7 @@
 <meta name="application-name" content="Halifax">
 <meta name="format-detection" content="telephone=no">
 
-<title>Halifax Trade Engine v21.11 Compact Laptop Layout - Exact Dashboard</title>
+<title>Halifax Trade Engine v21.12 Compact Laptop Layout - Calendar Fix</title>
 
 <style>
 :root{
@@ -1322,6 +1322,75 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
   .mock-lower{grid-template-columns:1.55fr .85fr 1fr 1.15fr!important;gap:7px!important;}
 }
 
+
+/* v21.12 — real economic calendar modal */
+body.hx-calendar-open{overflow:hidden}
+.hx-calendar-backdrop{
+  display:none;position:fixed;inset:0;z-index:9999;
+  background:rgba(1,7,15,.76);backdrop-filter:blur(3px);
+  padding:24px;align-items:center;justify-content:center;
+}
+.hx-calendar-backdrop.open{display:flex}
+.hx-calendar-modal{
+  width:min(980px,96vw);max-height:min(780px,92vh);overflow:hidden;
+  background:#061524;border:1px solid #315f89;border-radius:8px;
+  box-shadow:0 24px 70px rgba(0,0,0,.55);display:flex;flex-direction:column;
+}
+.hx-calendar-head{
+  display:flex;justify-content:space-between;align-items:flex-start;gap:14px;
+  padding:16px 18px;border-bottom:1px solid #1c3854;background:#0b2238;
+}
+.hx-calendar-title{font-size:18px;font-weight:950;color:#fff}
+.hx-calendar-sub{font-size:10.5px;color:#aab8c7;margin-top:5px;line-height:1.45}
+.hx-calendar-close{
+  width:36px;height:36px;padding:0;border:1px solid #31536f;border-radius:5px;
+  background:#07182a;color:#e6edf5;font-size:22px;line-height:1;cursor:pointer;
+}
+.hx-calendar-toolbar{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:10px 14px;border-bottom:1px solid #19344f;background:#061322;
+}
+.hx-calendar-refresh{
+  min-height:34px;padding:7px 11px;border:1px solid #1d5a8a;border-radius:5px;
+  background:#0b2d49;color:#dff1ff;font-size:10.5px;font-weight:850;cursor:pointer;
+}
+.hx-calendar-source{font-size:9.5px;color:#9fb0bf}
+.hx-calendar-body{overflow:auto;padding:12px 14px 16px}
+.hx-calendar-status{
+  padding:11px 12px;margin-bottom:10px;border:1px solid #1c3854;border-radius:6px;
+  background:#07182a;font-size:10.5px;color:#cbd5df;line-height:1.5;
+}
+.hx-calendar-table{width:100%;border-collapse:collapse;min-width:700px}
+.hx-calendar-table th{
+  position:sticky;top:0;z-index:1;background:#0b2238;color:#a9c7df;
+  font-size:9px;text-transform:uppercase;letter-spacing:.55px;padding:9px 10px;
+  border-bottom:1px solid #2b506f;text-align:left;
+}
+.hx-calendar-table td{
+  padding:10px;border-bottom:1px solid #17344e;font-size:10.5px;color:#dce5ed;
+  vertical-align:middle;white-space:normal;
+}
+.hx-calendar-table tr:hover td{background:#082038}
+.hx-cal-date{font-weight:900;color:#fff;white-space:nowrap}
+.hx-cal-name{font-weight:800;color:#edf4fa}
+.hx-cal-source{color:#9ab0c2;white-space:nowrap}
+.hx-cal-impact{
+  display:inline-flex;align-items:center;justify-content:center;min-width:58px;
+  padding:3px 6px;border-radius:4px;border:1px solid currentColor;
+  font-size:8.5px;font-weight:950;letter-spacing:.35px;
+}
+.hx-cal-impact.high{color:#ff7171;background:rgba(239,83,80,.08)}
+.hx-cal-impact.medium{color:#f6c344;background:rgba(246,195,68,.08)}
+.hx-cal-impact.watch{color:#7fb9e9;background:rgba(75,151,207,.08)}
+.hx-cal-empty{padding:28px 12px;text-align:center;color:#a5b5c4;font-size:11px;line-height:1.55}
+@media(max-width:620px){
+  .hx-calendar-backdrop{padding:7px;align-items:flex-end}
+  .hx-calendar-modal{width:100%;max-height:92vh;border-radius:8px 8px 0 0}
+  .hx-calendar-head{padding:13px}
+  .hx-calendar-body{padding:8px}
+  .hx-calendar-table{min-width:610px}
+}
+
 </style>
 </head>
 <body>
@@ -1329,7 +1398,7 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
     <div class="card header">
         <div class="brand-stack">
             <div class="terminal-kicker"><span class="kicker-dot"></span> HALIFAX QUANT RESEARCH TERMINAL</div>
-            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v21.11 Compact Laptop Layout</span></span></div>
+            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v21.12 Calendar Fix</span></span></div>
             <div class="subtitle">Predictive swing research • Unified market guidance • Federal contract radar • Options • Bonds • Event guardrails</div>
         </div>
         <div class="header-actions"><div class="badge system-badge"><span class="status-dot"></span><span id="engineStatus">Engine ready</span></div></div>
@@ -1371,7 +1440,7 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
         <div class="mock-gcell"><div class="mock-gtitle">Market Guidance</div><div class="mock-guidance-core"><div class="mock-big-gauge"><div id="mkArc" class="mock-arc"></div><div id="mkGuideScore" class="mock-guide-score yellow">—</div><div id="mkGuideBias" class="mock-guide-bias yellow">AWAITING</div></div><div class="mock-guide-list"><div class="mock-guide-row"><span>Trend</span><span id="mkTrend">—</span></div><div class="mock-guide-row"><span>Momentum</span><span id="mkMomentum">—</span></div><div class="mock-guide-row"><span>Volatility</span><span id="mkVolatility">—</span></div><div class="mock-guide-row"><span>Breadth</span><span id="mkBreadth">—</span></div><div class="mock-guide-row"><span>Risk Appetite</span><span id="mkRiskAppetite">—</span></div></div></div>
         <div class="mock-gcell"><div class="mock-gtitle">Upcoming High-Impact Events</div><div id="mkEvents" class="mock-events"><div class="tiny">Official BLS/BEA/Fed calendar loads with analysis.</div></div></div>
         <div class="mock-gcell"><div class="mock-gtitle">Event Risk</div><div class="mock-event-risk"><div id="mkEventRisk" class="big yellow">—</div><div id="mkEventNote" class="small">No verified event data loaded yet.</div><div id="mkShield" class="mock-shield">◇</div></div></div>
-        <div class="mock-gcell"><div class="mock-gtitle">Macro Summary</div><div id="mkMacroSummary" class="mock-macro-summary">Run Analyze to load the sector-aware macro backdrop.</div><button class="mock-calendar-btn" onclick="openMockResearch('mockMacro')">View Calendar →</button></div>
+        <div class="mock-gcell"><div class="mock-gtitle">Macro Summary</div><div id="mkMacroSummary" class="mock-macro-summary">Run Analyze to load the sector-aware macro backdrop.</div><button class="mock-calendar-btn" onclick="openMockCalendar()">View Calendar →</button></div>
         <div class="mock-gcell"><div class="mock-gtitle">Risk Desk</div><div class="mock-macro-summary"><b id="mkRiskLevel">—</b><br><span id="mkRiskSummary">Macro, earnings and portfolio guardrails will appear here.</span></div></div>
       </div></section>
 
@@ -1390,7 +1459,27 @@ body{padding:10px;background:radial-gradient(circle at 72% -20%,rgba(11,66,112,.
         <details id="mockSmart" class="mock-research"><summary><div class="mock-rtitle">Smart Money Flow</div><div id="mkSmartStatus" class="mock-rstatus yellow">Awaiting</div></summary><div id="mockSmartBody" class="mock-research-body"></div></details>
         <details id="mockFund" class="mock-research"><summary><div class="mock-rtitle">Fundamentals</div><div id="mkFundStatus" class="mock-rstatus yellow">Awaiting</div></summary><div id="mockFundBody" class="mock-research-body"></div></details>
       </section>
-      <div class="mock-footer"><span>This tool is for informational research only and does not constitute financial advice.</span><span><span class="mock-live-dot"></span><span id="mkFooterTime">Data updates with analysis</span> &nbsp; Halifax Trade Engine v21.11</span></div>
+      <div class="mock-footer"><span>This tool is for informational research only and does not constitute financial advice.</span><span><span class="mock-live-dot"></span><span id="mkFooterTime">Data updates with analysis</span> &nbsp; Halifax Trade Engine v21.12</span></div>
+    </div>
+
+
+    <div id="hxCalendarModal" class="hx-calendar-backdrop" role="dialog" aria-modal="true" aria-labelledby="hxCalendarTitle" onclick="if(event.target===this)closeMockCalendar()">
+      <div class="hx-calendar-modal">
+        <div class="hx-calendar-head">
+          <div>
+            <div id="hxCalendarTitle" class="hx-calendar-title">Economic Calendar</div>
+            <div class="hx-calendar-sub">Verified scheduled macro events from official BLS, BEA and Federal Reserve calendars. Halifax does not invent missing dates.</div>
+          </div>
+          <button type="button" class="hx-calendar-close" aria-label="Close calendar" onclick="closeMockCalendar()">×</button>
+        </div>
+        <div class="hx-calendar-toolbar">
+          <button type="button" class="hx-calendar-refresh" onclick="refreshMockCalendar()">↻ Refresh Official Calendar</button>
+          <div id="hxCalendarSource" class="hx-calendar-source">Waiting for official calendar data…</div>
+        </div>
+        <div id="hxCalendarBody" class="hx-calendar-body">
+          <div class="hx-cal-empty">Open the calendar to load upcoming high-impact events.</div>
+        </div>
+      </div>
     </div>
 
     <div class="card command-card">
@@ -4385,6 +4474,77 @@ function headerTools(){
   const tick=()=>{const e=$('mkClock');if(e)e.textContent=new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit',second:'2-digit'})};tick();setInterval(tick,1000);
 }
 window.toggleMockRefresh=function(){const s=$('liveRefresh');if(!s)return;const on=String(s.value)!=='0';s.value=on?'0':'5';set('mkAutoRefresh',on?'OFF':'ON',on?'red':'green');if(lastAnalysis?.primary?.ticker){stopLiveQuoteStream();if(!on)startLiveQuoteStream(lastAnalysis.primary.ticker,halifaxRunId)}};
+function hxCalendarDate(ev){
+  const y=Number(ev?.year),m=Number(ev?.month),d=Number(ev?.day);
+  if(Number.isFinite(y)&&Number.isFinite(m)&&Number.isFinite(d))return new Date(y,m-1,d,12,0,0);
+  if(ev?.date){
+    const x=new Date(String(ev.date).length<=10?String(ev.date)+'T12:00:00':ev.date);
+    if(!Number.isNaN(x.getTime()))return x;
+  }
+  return null;
+}
+function hxCalendarImpact(ev){
+  const raw=String(ev?.importance||'').toUpperCase();
+  if(raw==='HIGH')return ['HIGH','high'];
+  if(raw==='MEDIUM')return ['MEDIUM','medium'];
+  const d=Number(ev?.daysAway);
+  if(Number.isFinite(d)&&d<=1)return ['HIGH','high'];
+  if(Number.isFinite(d)&&d<=3)return ['MEDIUM','medium'];
+  return ['WATCH','watch'];
+}
+function hxCalendarWhen(ev){
+  const d=Number(ev?.daysAway);
+  if(!Number.isFinite(d))return '';
+  if(d===0)return 'Today';
+  if(d===1)return 'Tomorrow';
+  return `In ${d} days`;
+}
+function renderMockCalendar(calendar){
+  const body=$('hxCalendarBody'),source=$('hxCalendarSource');if(!body)return;
+  const events=[...(calendar?.events||[])].sort((a,b)=>{
+    const ad=hxCalendarDate(a)?.getTime()??Infinity,bd=hxCalendarDate(b)?.getTime()??Infinity;
+    return ad-bd||String(a?.name||'').localeCompare(String(b?.name||''));
+  });
+  const sources=(calendar?.sources||[]).filter(Boolean);
+  if(source)source.textContent=sources.length?`Sources loaded: ${sources.join(' • ')} • ${events.length} event${events.length===1?'':'s'}`:'No official source returned usable events.';
+  if(!events.length){
+    body.innerHTML='<div class="hx-cal-empty">No verified BLS, BEA or Federal Reserve event was returned for the next 45 days. Halifax is leaving the calendar blank rather than guessing.</div>';
+    return;
+  }
+  const rows=events.map(ev=>{
+    const dt=hxCalendarDate(ev),date=dt?dt.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric',year:'numeric'}):'Date unavailable';
+    const [impact,icls]=hxCalendarImpact(ev),when=hxCalendarWhen(ev);
+    return `<tr>
+      <td class="hx-cal-date">${escapeHTML(date)}${when?`<div class="tiny">${escapeHTML(when)}</div>`:''}</td>
+      <td>${escapeHTML(ev?.time||'Time not published')}</td>
+      <td><div class="hx-cal-name">${escapeHTML(ev?.name||'Major macro event')}</div></td>
+      <td class="hx-cal-source">${escapeHTML(ev?.source||'Official source')}</td>
+      <td><span class="hx-cal-impact ${icls}">${impact}</span></td>
+    </tr>`;
+  }).join('');
+  body.innerHTML=`<div class="hx-calendar-status">Upcoming verified macro releases for the next 45 days. Times are shown as published by the official source; BLS/BEA release times are commonly listed in Eastern Time.</div>
+    <div style="overflow:auto"><table class="hx-calendar-table"><thead><tr><th>Date</th><th>Time</th><th>Event</th><th>Source</th><th>Impact</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+window.openMockCalendar=async function(force=false){
+  const modal=$('hxCalendarModal'),body=$('hxCalendarBody'),source=$('hxCalendarSource');if(!modal)return;
+  modal.classList.add('open');document.body.classList.add('hx-calendar-open');
+  if(source)source.textContent='Loading official BLS • BEA • Federal Reserve calendars…';
+  let calendar=!force?lastAnalysis?.macroContext?.marketEnvironment?.calendar:null;
+  if(calendar?.events?.length){renderMockCalendar(calendar);return;}
+  if(body)body.innerHTML='<div class="hx-cal-empty">Loading verified upcoming events…</div>';
+  try{
+    if(typeof loadOfficialMajorEvents!=='function')throw new Error('Official calendar loader is unavailable in this build.');
+    calendar=await loadOfficialMajorEvents(!!force);
+    renderMockCalendar(calendar);
+  }catch(e){
+    console.warn('Halifax calendar load failed',e);
+    if(source)source.textContent='Official calendar sources could not be reached.';
+    if(body)body.innerHTML=`<div class="hx-cal-empty">The calendar could not load verified data right now.<br>${escapeHTML(e?.message||'Source unavailable')}</div>`;
+  }
+};
+window.refreshMockCalendar=function(){return window.openMockCalendar(true)};
+window.closeMockCalendar=function(){const modal=$('hxCalendarModal');if(modal)modal.classList.remove('open');document.body.classList.remove('hx-calendar-open')};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')window.closeMockCalendar?.()});
 window.openMockResearch=function(id,focusId){const d=$(id);if(!d)return;d.open=true;setTimeout(()=>{const target=focusId?$(focusId):d;target?.scrollIntoView({behavior:'smooth',block:'center'});focusId&&target?.focus?.()},30)};
 window.clearMockTradeDisplay=function(){['mkPrice','mkMove','mkScore','mkConfidence','mkEntry','mkStop','mkT1','mkT2','mkRR','mkRange'].forEach(id=>set(id,'—','yellow'));set('mkDirection','WAIT','yellow');$('mkFactors').innerHTML='<li>Display cleared. Run Analyze to restore current guidance.</li>';};
 function initShell(){
@@ -4418,7 +4578,7 @@ function updateCore(a,t){
   drawMockChart(d);updateEvents(env);updateTechnical(a);updateBreakdown(a);updateSector(a);updateMacroSummary(a);updateResearchStatus(a);refreshMarketStrip(a).catch(()=>{});
   $('mkFooterTime').textContent=`Updated ${new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})}`;
 }
-function updateEvents(env){const er=env?.eventRisk||{},events=env?.calendar?.events||[];const risk=er.risk||'UNAVAILABLE',rcls=risk==='HIGH'?'red':risk==='ELEVATED'||risk==='WATCH'?'yellow':risk==='NORMAL'?'green':'yellow';set('mkEventRisk',risk,rcls);set('mkShield',risk==='HIGH'?'⚠':risk==='UNAVAILABLE'?'◇':'♢',rcls);set('mkEventNote',er.blockNewTrade?'New multi-day trades blocked until the event passes.':er.next?`${er.next.name} ${er.next.daysAway===0?'today':er.next.daysAway===1?'tomorrow':`in ${er.next.daysAway} days`}.`:'Official calendar unavailable.');const out=$('mkEvents');if(!out)return;if(!events.length){out.innerHTML='<div class="tiny">No verified upcoming events loaded.</div>';return}out.innerHTML=events.slice(0,4).map(ev=>{const r=ev.daysAway<=1?'HIGH':ev.daysAway<=3?'MEDIUM':'WATCH';const c=r==='HIGH'?'red':'yellow';return `<div class="mock-event"><span>${escapeHTML(ev.date?new Date(ev.date+'T12:00:00').toLocaleDateString(undefined,{month:'short',day:'numeric'}):'—')}</span><span class="mock-event-time">${escapeHTML(ev.time||'—')}</span><span>${escapeHTML(ev.name||'Major event')}</span><span class="mock-risk-badge ${c}">${r}</span></div>`}).join('');}
+function updateEvents(env){const er=env?.eventRisk||{},events=env?.calendar?.events||[];const risk=er.risk||'UNAVAILABLE',rcls=risk==='HIGH'?'red':risk==='ELEVATED'||risk==='WATCH'?'yellow':risk==='NORMAL'?'green':'yellow';set('mkEventRisk',risk,rcls);set('mkShield',risk==='HIGH'?'⚠':risk==='UNAVAILABLE'?'◇':'♢',rcls);set('mkEventNote',er.blockNewTrade?'New multi-day trades blocked until the event passes.':er.next?`${er.next.name} ${er.next.daysAway===0?'today':er.next.daysAway===1?'tomorrow':`in ${er.next.daysAway} days`}.`:'Official calendar unavailable.');const out=$('mkEvents');if(!out)return;if(!events.length){out.innerHTML='<div class="tiny">No verified upcoming events loaded.</div>';return}out.innerHTML=events.slice(0,4).map(ev=>{const r=ev.daysAway<=1?'HIGH':ev.daysAway<=3?'MEDIUM':'WATCH';const c=r==='HIGH'?'red':'yellow';return `<div class="mock-event"><span>${escapeHTML((Number.isFinite(+ev.year)&&Number.isFinite(+ev.month)&&Number.isFinite(+ev.day)?new Date(+ev.year,+ev.month-1,+ev.day,12).toLocaleDateString(undefined,{month:'short',day:'numeric'}):(ev.date?new Date(ev.date+'T12:00:00').toLocaleDateString(undefined,{month:'short',day:'numeric'}):'—')))}</span><span class="mock-event-time">${escapeHTML(ev.time||'—')}</span><span>${escapeHTML(ev.name||'Major event')}</span><span class="mock-risk-badge ${c}">${r}</span></div>`}).join('');}
 function updateTechnical(a){const d=a.primary||{},dir=a.direction,sign=dir==='SHORT'?-1:1,rows=[['Trend (EMA)',d.price>d.ema21?'Bullish':'Bearish',d.price>d.ema21?'green':'red'],['Momentum (RSI 14)',Number.isFinite(d.rsi)?num(d.rsi,1):'—',Number.isFinite(d.rsi)?(d.rsi>=50?'green':'yellow'):'yellow'],['MACD',d.macd?.hist>0?'Bullish':d.macd?.hist<0?'Bearish':'Flat',d.macd?.hist>0?'green':d.macd?.hist<0?'red':'yellow'],['Above VWAP',a.vwapContext?.available?(a.vwapContext.state==='ABOVE'?'Yes':'No'):'—',a.vwapContext?.state==='ABOVE'?'green':a.vwapContext?.state==='BELOW'?'red':'yellow'],['50 EMA / 200 EMA',d.sma50&&d.sma200?(d.sma50>d.sma200?'Bullish':'Bearish'):'—',d.sma50&&d.sma200?(d.sma50>d.sma200?'green':'red'):'yellow'],['Support',moneyMock(d.support),''],['Resistance',moneyMock(d.resistance),'']];$('mkTech').innerHTML=rows.map(r=>`<div class="mock-tech-row"><span>${r[0]}</span><span></span><b class="${r[2]}">${r[1]}</b></div>`).join('');set('mkTechStatus',dir==='WAIT'?'Mixed':dir==='LONG'?'Strong':'Bearish',dir==='WAIT'?'yellow':dir==='LONG'?'green':'red');}
 function barPct(v){return Math.max(4,Math.min(100,Math.abs(Number(v)||0)));}
 function updateBreakdown(a){const parts=[['Technical',a.technicalScore??0],['Macro / Market',a.macroContribution??0],['Fundamentals',a.fundamentalContribution??0],['Options / Sentiment',a.optionsContext?.direction===a.direction?8:a.optionsContext?.direction&&a.optionsContext.direction!=='MIXED'?-8:0],['Smart Money',a.smartMoneyContribution??0]];$('mkBreakdown').innerHTML=parts.map(([n,v])=>`<div class="mock-break-row"><span>${escapeHTML(n)}</span><div class="mock-bar"><span style="width:${barPct(v*3)}%"></span></div><b class="${v>0?'green':v<0?'red':'yellow'}">${v>=0?'+':''}${Math.round(v)}</b></div>`).join('')+`<div class="mock-break-total"><span>TOTAL SCORE</span><span class="${clsDir(a.direction)}">${a.score>=0?'+':''}${Math.round(a.score)} / 100</span></div>`;}
