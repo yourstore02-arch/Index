@@ -1492,12 +1492,9 @@ body{background:#020a12!important;padding:0!important;overflow-x:hidden}
 .hx23-top-center{text-align:center;font-size:18px;font-weight:900;letter-spacing:.02em}.hx23-live{font-size:10px;color:var(--hx23-green);margin-left:6px}
 .hx23-top-tools{display:flex;justify-content:flex-end;align-items:center;gap:13px;color:#b8c7d2}
 .hx23-clock{font-size:12px;white-space:nowrap;font-weight:700;color:#d8e3eb}
-.hx23-tape-shell{margin:5px 14px 0;border:1px solid #173044;border-radius:11px;overflow:hidden;background:linear-gradient(180deg,#06131d,#04101a);position:relative}
-.hx23-tape{height:82px;display:flex;width:max-content;overflow:visible;will-change:transform;animation:hx23TapeMarquee 42s linear infinite}
-.hx23-tape-shell:hover .hx23-tape{animation-play-state:paused}
-.hx23-tape-cell{flex:0 0 145px;width:145px;min-width:145px;padding:10px 12px;border-right:1px solid #1a3142;position:relative}
-@keyframes hx23TapeMarquee{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
-@media(prefers-reduced-motion:reduce){.hx23-tape{animation-duration:90s}}
+.hx23-tape-shell{margin:5px 14px 0;border:1px solid #173044;border-radius:11px;overflow:hidden;background:linear-gradient(180deg,#06131d,#04101a)}
+.hx23-tape{height:82px;display:flex;overflow-x:auto;scrollbar-width:none}.hx23-tape::-webkit-scrollbar{display:none}
+.hx23-tape-cell{flex:1 0 145px;min-width:145px;padding:10px 12px;border-right:1px solid #1a3142;position:relative}
 .hx23-tape-cell:last-child{border-right:0}.hx23-tape-label{display:flex;align-items:center;gap:6px;font-size:10px;color:#dfe8ee;font-weight:800;white-space:nowrap}
 .hx23-coin{width:17px;height:17px;border-radius:50%;display:grid;place-items:center;background:#0c2435;color:#f2c552;font-size:9px}
 .hx23-tape-price{font-size:15px;font-weight:900;margin-top:4px;color:#f4f8fb}.hx23-tape-change{font-size:10px;font-weight:900;margin-top:5px}
@@ -1561,6 +1558,19 @@ body{background:#020a12!important;padding:0!important;overflow-x:hidden}
 .hx23-summary{border-top:1px solid #183247;margin-top:11px;padding-top:10px}.hx23-summary h4{font-size:10px;text-transform:uppercase;margin:0 0 7px}.hx23-summary p{font-size:9.5px;color:#b1c0cb;line-height:1.5;margin:0}
 .hx23-plan-btn{width:100%;height:35px!important;min-height:0!important;border:1px solid #29465d!important;background:#0a1a26!important;border-radius:4px!important;color:#b6c8d5!important;font-size:9px!important;margin-top:11px;box-shadow:none!important}
 .hx23-events-panel{height:auto!important;min-height:176px;overflow:visible!important}.hx23-events{padding:7px 12px;overflow:visible}.hx23-event{display:grid;grid-template-columns:72px minmax(0,1fr);gap:9px;padding:9px 0;border-bottom:1px solid #102638;font-size:9px;align-items:start;min-height:38px}.hx23-event:last-child{border-bottom:0}.hx23-event-time{color:#829bad;line-height:1.35;white-space:normal}.hx23-event-name{color:#dbe5ec;line-height:1.4;white-space:normal;overflow-wrap:anywhere;word-break:normal}
+
+/* v23.8 Market Move Clock — Central Time timing layer */
+.hx23-movebar{margin:10px 14px 0;border:1px solid #1c3c54;border-radius:9px;background:#06131e;display:grid;grid-template-columns:175px minmax(170px,1.15fr) minmax(190px,1.4fr) 120px minmax(190px,1.45fr) 108px;min-height:74px;overflow:hidden}
+.hx23-movebar>div,.hx23-movebar>button{border-right:1px solid #173247;padding:9px 11px;min-width:0}.hx23-movebar>button:last-child{border-right:0}
+.hx23-move-title{display:flex;flex-direction:column;justify-content:center}.hx23-move-title b{font-size:10px;letter-spacing:.06em}.hx23-move-title small{font-size:8px;color:#6d879a;margin-top:5px;line-height:1.35}
+.hx23-move-cell{display:flex;flex-direction:column;justify-content:center}.hx23-move-k{font-size:7.5px;color:#718ca0;text-transform:uppercase;font-weight:900;letter-spacing:.04em}.hx23-move-v{font-size:11px;font-weight:950;margin-top:4px;line-height:1.25}.hx23-move-sub{font-size:8px;color:#8fa6b7;margin-top:4px;line-height:1.3}
+.hx23-move-count{font-size:17px!important;letter-spacing:.02em}.hx23-move-alert .hx23-move-v{font-size:10px}.hx23-move-alert.active{background:rgba(246,195,68,.06)}.hx23-move-alert.critical{background:rgba(255,59,67,.08)}
+.hx23-move-btn{min-height:0!important;height:auto!important;border:0!important;background:#0a2030!important;color:#b9d8ea!important;font-size:8px!important;font-weight:900!important;border-radius:0!important;box-shadow:none!important;padding:9px 8px!important}.hx23-move-btn:hover{background:#0d2b41!important;color:#fff!important}
+.hx23-move-grid{display:grid;gap:7px}.hx23-move-row{display:grid;grid-template-columns:66px 1fr 72px;gap:8px;align-items:center;padding:8px 9px;border:1px solid #17364c;border-radius:6px;background:#06131f;font-size:9px}.hx23-move-row.now{border-color:#3f8ebe;background:#092337}.hx23-move-row .time{font-weight:950;color:#d7e8f2}.hx23-move-row .desc{color:#b9c9d4;line-height:1.35}.hx23-move-row .tag{text-align:center;font-size:7.5px;font-weight:950;border:1px solid currentColor;border-radius:4px;padding:3px 4px}.hx23-move-note{margin-top:9px;font-size:8.5px;color:#7892a5;line-height:1.45}.hx23-notify-btn{margin-top:10px!important;background:#0d5a8c!important;border:1px solid #3487b8!important;padding:7px 9px!important;font-size:8.5px!important;border-radius:4px!important;box-shadow:none!important}
+@media(max-width:1250px){.hx23-movebar{grid-template-columns:155px minmax(150px,1fr) minmax(170px,1.2fr) 105px minmax(170px,1.2fr) 92px}}
+@media(max-width:1050px){.hx23-movebar{overflow-x:auto;display:flex}.hx23-movebar>div,.hx23-movebar>button{min-width:155px}.hx23-move-title{min-width:150px!important}}
+@media(max-width:760px){.hx23-movebar{margin-left:8px;margin-right:8px}.hx23-movebar>div,.hx23-movebar>button{min-width:150px}}
+
 .hx23-footer{height:48px;border-top:1px solid #152c3e;margin-top:10px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;color:#879dad;font-size:9px;background:#020910}
 .hx23-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#14ce55;margin-left:5px;box-shadow:0 0 8px rgba(20,206,85,.45)}
 .green{color:var(--hx23-green)!important}.red{color:var(--hx23-red)!important}.yellow{color:var(--hx23-yellow)!important}.blue,.cyan{color:var(--hx23-blue)!important}
@@ -1638,6 +1648,15 @@ body{background:#020a12!important;padding:0!important;overflow-x:hidden}
     <div class="hx23-session"><div class="hx23-ek">Next Event</div><div class="hx23-ev" id="hx23NextEvent">—</div><small id="hx23NextEventNote">Run Analyze for verified event data.</small></div>
   </section>
 
+  <section class="hx23-movebar" id="hx23MoveClock" aria-label="Market Move Clock in Central Time">
+    <div class="hx23-move-title"><b>MARKET MOVE CLOCK</b><small>Central Time • official events override generic windows when verified</small></div>
+    <div class="hx23-move-cell"><span class="hx23-move-k">Current phase</span><span class="hx23-move-v yellow" id="hx23MovePhase">LOADING</span><span class="hx23-move-sub" id="hx23MovePhaseNote">Building today’s timing map…</span></div>
+    <div class="hx23-move-cell"><span class="hx23-move-k">Next key window</span><span class="hx23-move-v" id="hx23MoveNext">—</span><span class="hx23-move-sub" id="hx23MoveNextNote">—</span></div>
+    <div class="hx23-move-cell"><span class="hx23-move-k">Countdown</span><span class="hx23-move-v hx23-move-count" id="hx23MoveCountdown">—</span><span class="hx23-move-sub" id="hx23MoveCountdownNote">to next window</span></div>
+    <div class="hx23-move-cell hx23-move-alert" id="hx23MoveAlertCell"><span class="hx23-move-k">Timing alert</span><span class="hx23-move-v" id="hx23MoveAlert">MONITOR</span><span class="hx23-move-sub" id="hx23MoveAlertNote">15-minute warnings are active in-app.</span></div>
+    <button class="hx23-move-btn" onclick="hx23OpenMenu('moveclock')">VIEW<br>WINDOWS →</button>
+  </section>
+
   <main class="hx23-main">
     <section class="hx23-center">
       <div class="hx23-panel hx23-chart-panel">
@@ -1665,7 +1684,7 @@ body{background:#020a12!important;padding:0!important;overflow-x:hidden}
         <div class="hx23-wheel-deck" aria-label="Halifax subject wheels">
           <div><nav class="hx23-mini-wheel" aria-label="Analysis wheel"><button class="hx23-mini-item hx23-mi-top" onclick="hx23OpenMenu('technical')"><em>⌾</em><span>Technical</span></button><button class="hx23-mini-item hx23-mi-left" onclick="hx23OpenMenu('fund')"><em>▤</em><span>Fundamental</span></button><button class="hx23-mini-item hx23-mi-right" onclick="hx23OpenMenu('ai')"><em>H</em><span>AI Review</span></button><button class="hx23-mini-center" onclick="hx23OpenMenu('technical')">Analysis</button></nav><div class="hx23-wheel-caption">Analysis</div></div>
           <div><nav class="hx23-mini-wheel" aria-label="Market wheel"><button class="hx23-mini-item hx23-mi-top" onclick="hx23OpenMenu('macro')"><em>⌕</em><span>Macro</span></button><button class="hx23-mini-item hx23-mi-left" onclick="hx23OpenMenu('government')"><em>▦</em><span>Gov</span></button><button class="hx23-mini-item hx23-mi-right" onclick="hx23OpenMenu('bear')"><em>☷</em><span>Bear Radar</span></button><button class="hx23-mini-center" onclick="hx23OpenMenu('macro')">Market</button></nav><div class="hx23-wheel-caption">Market</div></div>
-          <div><nav class="hx23-mini-wheel" aria-label="Flow wheel"><button class="hx23-mini-item hx23-mi-top" onclick="hx23OpenMenu('options')"><em>⚙</em><span>Options</span></button><button class="hx23-mini-item hx23-mi-left" onclick="hx23OpenMenu('flow')"><em>☆</em><span>Smart Money</span></button><button class="hx23-mini-item hx23-mi-right" onclick="hx23OpenMenu('events')"><em>◷</em><span>Events</span></button><button class="hx23-mini-center" onclick="hx23OpenMenu('flow')">Flow</button></nav><div class="hx23-wheel-caption">Flow &amp; Events</div></div>
+          <div><nav class="hx23-mini-wheel" aria-label="Flow wheel"><button class="hx23-mini-item hx23-mi-top" onclick="hx23OpenMenu('options')"><em>⚙</em><span>Options</span></button><button class="hx23-mini-item hx23-mi-left" onclick="hx23OpenMenu('flow')"><em>☆</em><span>Smart Money</span></button><button class="hx23-mini-item hx23-mi-right" onclick="hx23OpenMenu('moveclock')"><em>◷</em><span>Move Clock</span></button><button class="hx23-mini-center" onclick="hx23OpenMenu('flow')">Flow</button></nav><div class="hx23-wheel-caption">Flow &amp; Events</div></div>
           <div><nav class="hx23-mini-wheel" aria-label="Desk wheel"><button class="hx23-mini-item hx23-mi-top" onclick="hx23OpenMenu('list')"><em>◎</em><span>My Stocks</span></button><button class="hx23-mini-item hx23-mi-left" onclick="hx23OpenMenu('news')"><em>▧</em><span>News</span></button><button class="hx23-mini-item hx23-mi-right" onclick="hx23OpenMenu('ai')"><em>H</em><span>Trade Plan</span></button><button class="hx23-mini-center" onclick="hx23OpenMenu('list')">My Desk</button></nav><div class="hx23-wheel-caption">My Desk</div></div>
         </div>
       </div>
@@ -3354,7 +3373,7 @@ function marketRegime(data){
 
 function calculateTrade(data,analysis){
     const account=Math.max(0,Number(document.getElementById("account").value)||0),riskPct=clamp(Number(document.getElementById("risk").value)||1,.1,5);
-    const earningsRiskMultiplier=clamp(analysis.fundamentalEventContext?.riskMultiplier??1,.30,1),macroEventRiskMultiplier=clamp(analysis.macroContext?.marketEnvironment?.eventRisk?.riskMultiplier??1,.40,1),eventRiskMultiplier=clamp(earningsRiskMultiplier*macroEventRiskMultiplier,.25,1),portfolioRiskMultiplier=clamp(analysis.portfolioRiskContext?.riskMultiplier??1,.50,1),combinedRiskMultiplier=clamp(eventRiskMultiplier*portfolioRiskMultiplier,.20,1),effectiveRiskPct=riskPct*combinedRiskMultiplier,maxPositionPct=clamp(Number(document.getElementById("maxPosition").value)||20,1,100);
+    const earningsRiskMultiplier=clamp(analysis.fundamentalEventContext?.riskMultiplier??1,.30,1),macroEventRiskMultiplier=clamp(analysis.macroContext?.marketEnvironment?.eventRisk?.riskMultiplier??1,.40,1),eventRiskMultiplier=clamp(earningsRiskMultiplier*macroEventRiskMultiplier,.25,1),portfolioRiskMultiplier=clamp(analysis.portfolioRiskContext?.riskMultiplier??1,.50,1),timingContext=window.hx23GetTimingContext?.(analysis.style||document.getElementById("style")?.value||"swing")||{riskMultiplier:1,label:"Timing neutral",note:"Market Move Clock timing overlay unavailable."},timingRiskMultiplier=clamp(timingContext.riskMultiplier??1,.45,1),combinedRiskMultiplier=clamp(eventRiskMultiplier*portfolioRiskMultiplier*timingRiskMultiplier,.20,1),effectiveRiskPct=riskPct*combinedRiskMultiplier,maxPositionPct=clamp(Number(document.getElementById("maxPosition").value)||20,1,100);
     const atrMult=clamp(Number(document.getElementById("atrMultiple").value)||1.7,.5,5),maxStopPct=clamp(Number(document.getElementById("maxStopPct").value)||8,1,25),rewardMult=clamp(Number(document.getElementById("rewardMultiple").value)||2.5,1,10),slippagePct=clamp(Number(document.getElementById("slippage").value)||0,0,3)/100;
     const liveCtx=analysis.liveQuoteContext||(lastAnalysis?.primary?.ticker===data.ticker?lastAnalysis.liveQuoteContext:null);
     const executionPrice=Number.isFinite(liveCtx?.price)&&liveCtx.price>0?liveCtx.price:data.price;
@@ -3401,13 +3420,14 @@ function calculateTrade(data,analysis){
     if(Math.abs(data.gapPct)>=4)warnings.push(`Large opening gap detected (${signed(data.gapPct,2)}%); spreads and reversal risk may be elevated.`);
     if(analysis.macroContext?.applies&&(analysis.macroContext.riskLevel!=="NORMAL"||Math.abs(analysis.macroContext.adjustment)>=8))warnings.push(`${analysis.macroContext.profileLabel} sector guardrail: ${analysis.macroContext.riskLevel} risk with a ${analysis.macroContext.adjustment} point score adjustment.`);
     if(eventRiskMultiplier<.999)warnings.push(`Earnings/macro-event guardrails reduced planned risk to ${Math.round(eventRiskMultiplier*100)}% of normal.`);
-    if(portfolioRiskMultiplier<.999)warnings.push(`Portfolio-correlation guardrail reduced planned risk to ${Math.round(portfolioRiskMultiplier*100)}% of normal before combining with event risk.`);
-    if(combinedRiskMultiplier<.999)warnings.push(`Combined event/portfolio sizing is ${Math.round(combinedRiskMultiplier*100)}% of your normal ${riskPct.toFixed(2)}% risk setting (effective ${effectiveRiskPct.toFixed(2)}%).`);
+    if(portfolioRiskMultiplier<.999)warnings.push(`Portfolio-correlation guardrail reduced planned risk to ${Math.round(portfolioRiskMultiplier*100)}% of normal before combining with event and timing risk.`);
+    if(timingRiskMultiplier<.999)warnings.push(`Market Move Clock timing guardrail: ${timingContext.label}. Planned risk is ${Math.round(timingRiskMultiplier*100)}% of normal for this ${analysis.style||'trade'} setup. ${timingContext.note||''}`.trim());
+    if(combinedRiskMultiplier<.999)warnings.push(`Combined event/portfolio/timing sizing is ${Math.round(combinedRiskMultiplier*100)}% of your normal ${riskPct.toFixed(2)}% risk setting (effective ${effectiveRiskPct.toFixed(2)}%).`);
     if(analysis.fundamentalEventContext?.blockNewTrade)warnings.push("New trade blocked by the earnings-event guardrail because the reported earnings date is inside the selected holding window.");
     if(analysis.macroContext?.eventBlock)warnings.push("New trade blocked by the verified major-macro-event guardrail.");
     if(analysis.direction==="WAIT")warnings.push(analysis.macroContext?.eventBlock?"No new trade is authorized because a verified high-impact macro event is inside the selected holding window.":analysis.macroContext?.blockLong?`No LONG is authorized because ${analysis.macroContext.profileLabel} macro conditions conflict with the technical setup.`:analysis.macroContext?.blockShort?`No SHORT is authorized because ${analysis.macroContext.profileLabel} macro conditions strongly support the stock.`:"No trade is authorized because multi-timeframe confirmation is insufficient.");
     if(shares===0&&isTrade)warnings.push("Position size calculated as zero under the current risk and allocation limits.");
-    return {entry:anchor,entryLow:isShort?anchor:Math.max(0,anchor-data.atr*.15),entryHigh:isShort?anchor+data.atr*.15:anchor,stop,t1,t2,t3,stopDistance,stopPct,t1Pct,t2Pct,t3Pct,rr1,rr2,rr3,shares,positionValue:shares*anchor,estimatedRisk:shares*stopDistance,riskBudget:dollarRisk,baseRiskPct:riskPct,effectiveRiskPct,earningsRiskMultiplier,macroEventRiskMultiplier,eventRiskMultiplier,portfolioRiskMultiplier,combinedRiskMultiplier,executionPrice,rewardMult,runnerR,maxStopPct,rawStructuralStop,stopWasCapped,warnings,isShort,isTrade};
+    return {entry:anchor,entryLow:isShort?anchor:Math.max(0,anchor-data.atr*.15),entryHigh:isShort?anchor+data.atr*.15:anchor,stop,t1,t2,t3,stopDistance,stopPct,t1Pct,t2Pct,t3Pct,rr1,rr2,rr3,shares,positionValue:shares*anchor,estimatedRisk:shares*stopDistance,riskBudget:dollarRisk,baseRiskPct:riskPct,effectiveRiskPct,earningsRiskMultiplier,macroEventRiskMultiplier,eventRiskMultiplier,portfolioRiskMultiplier,timingRiskMultiplier,timingContext,combinedRiskMultiplier,executionPrice,rewardMult,runnerR,maxStopPct,rawStructuralStop,stopWasCapped,warnings,isShort,isTrade};
 }
 function renderChart(data,trade){
     try{
@@ -5270,9 +5290,7 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now(
   const tapeLabels={BTC:'BTC/USD',ETH:'ETH/USD',SOL:'SOL/USD',DIA:'DOW',SPY:'S&P 500 (SPY)',QQQ:'NASDAQ (QQQ)',CL:'OIL (WTI)',GC:'GOLD',VIX:'VIX',ES:'S&P FUT',NQ:'NASDAQ FUT',YM:'DOW FUT'};
   function tapeSkeleton(){
     const out=$('hx23Tape');if(!out||out.dataset.ready)return;out.dataset.ready='1';
-    // Render the full tape twice so translateX(-50%) loops with no visible jump.
-    const loopIds=[...tapeIds,...tapeIds];
-    out.innerHTML=loopIds.map((id,i)=>`<div class="hx23-tape-cell" data-hx23-tape="${id}" data-hx23-copy="${i>=tapeIds.length?'2':'1'}" ${i>=tapeIds.length?'aria-hidden="true"':''}>
+    out.innerHTML=tapeIds.map((id,i)=>`<div class="hx23-tape-cell" data-hx23-tape="${id}">
       <div class="hx23-tape-label"><span class="hx23-coin">${['BTC','ETH','SOL'].includes(id)?'◆':'•'}</span>${tapeLabels[id]}</div>
       <div class="hx23-tape-price">—</div><div class="hx23-tape-change yellow">—</div>
       <div class="hx23-mini-trend yellow">${[7,11,6,14,10,15,9,13].map((h,j)=>`<i style="height:${h}px"></i>`).join('')}</div>
@@ -5282,14 +5300,12 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now(
     tapeSkeleton();
     tapeIds.forEach(id=>{
       const src=document.querySelector(`#marketTape24Track [data-tape-id="${id}"]`);
-      const dsts=document.querySelectorAll(`[data-hx23-tape="${id}"]`);if(!src||!dsts.length)return;
+      const dst=document.querySelector(`[data-hx23-tape="${id}"]`);if(!src||!dst)return;
       const p=src.querySelector('[data-role="price"]')?.textContent||'—',c=src.querySelector('[data-role="change"]'),tm=src.querySelector('[data-role="time"]')?.textContent||'';
-      dsts.forEach(dst=>{
-        dst.querySelector('.hx23-tape-price').textContent=p;
-        const ce=dst.querySelector('.hx23-tape-change');ce.textContent=c?.textContent||'—';ce.className='hx23-tape-change '+clsFrom(c);
-        const tr=dst.querySelector('.hx23-mini-trend');tr.className='hx23-mini-trend '+clsFrom(c);
-        dst.querySelector('.hx23-tape-time').textContent=tm.replace(/.*•\s*/,'');
-      });
+      dst.querySelector('.hx23-tape-price').textContent=p;
+      const ce=dst.querySelector('.hx23-tape-change');ce.textContent=c?.textContent||'—';ce.className='hx23-tape-change '+clsFrom(c);
+      const tr=dst.querySelector('.hx23-mini-trend');tr.className='hx23-mini-trend '+clsFrom(c);
+      dst.querySelector('.hx23-tape-time').textContent=tm.replace(/.*•\s*/,'');
     });
   }
   function scoreNum(text){const m=String(text||'').match(/-?\d+(?:\.\d+)?/);return m?Number(m[0]):null;}
@@ -5413,7 +5429,128 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now(
   }
   function syncEvents(){
     const out=$('hx23Events'),events=[...document.querySelectorAll('#mkEvents .mock-event')];if(!out)return;
+    const cal=(typeof lastAnalysis!=='undefined')?lastAnalysis?.macroContext?.marketEnvironment?.calendar:null;if(cal?.events){hx23MoveCalendar=cal;hx23RenderOfficialEvents(cal);hx23RenderMoveClock();return;}
     if(events.length)out.innerHTML=events.slice(0,4).map(ev=>{const p=[...ev.children].map(x=>x.textContent.trim());return `<div class="hx23-event"><span class="hx23-event-time">${esc([p[0],p[1]].filter(Boolean).join(' '))}</span><span class="hx23-event-name">${esc(p[2]||'Major event')} ${p[3]?`• ${esc(p[3])}`:''}</span></div>`}).join('');
+  }
+  // v23.8 Market Move Clock -----------------------------------------------------
+  const HX23_CT_TZ='America/Chicago';
+  let hx23MoveCalendar=null;
+  const hx23MoveNotified=new Set();
+  function hx23CTParts(date=new Date()){
+    const parts=new Intl.DateTimeFormat('en-US',{timeZone:HX23_CT_TZ,year:'numeric',month:'2-digit',day:'2-digit',weekday:'short',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).formatToParts(date);
+    const o={};for(const p of parts)if(p.type!=='literal')o[p.type]=p.value;
+    return {year:+o.year,month:+o.month,day:+o.day,weekday:o.weekday,hour:+o.hour,minute:+o.minute,second:+o.second};
+  }
+  function hx23DayKey(p){return `${p.year}-${String(p.month).padStart(2,'0')}-${String(p.day).padStart(2,'0')}`;}
+  function hx23DateAtCT(parts,hour,minute=0,dayOffset=0){
+    // Search around an approximate UTC instant so DST is handled by Intl instead of a fixed offset.
+    const approx=new Date(Date.UTC(parts.year,parts.month-1,parts.day+dayOffset,hour+6,minute,0));
+    for(let d=-4;d<=4;d++){
+      const candidate=new Date(approx.getTime()+d*3600000),cp=hx23CTParts(candidate);
+      const target=new Date(Date.UTC(parts.year,parts.month-1,parts.day+dayOffset,12,0,0));
+      const tp=hx23CTParts(target);
+      if(cp.year===tp.year&&cp.month===tp.month&&cp.day===tp.day&&cp.hour===hour&&cp.minute===minute)return candidate;
+    }
+    return approx;
+  }
+  function hx23FmtCT(date){return new Intl.DateTimeFormat('en-US',{timeZone:HX23_CT_TZ,hour:'numeric',minute:'2-digit',hour12:true}).format(date)+' CT';}
+  function hx23FmtCountdown(ms){
+    if(!Number.isFinite(ms)||ms<0)return 'NOW';const sec=Math.floor(ms/1000),h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60),s=sec%60;
+    return h>0?`${h}h ${String(m).padStart(2,'0')}m`:m>0?`${m}m ${String(s).padStart(2,'0')}s`:`${s}s`;
+  }
+  function hx23EventClock(ev){
+    if(!ev||!ev.year||!ev.month||!ev.day)return null;
+    const raw=String(ev.time||''),m=raw.match(/(\d{1,2}):(\d{2})\s*([AP]M)\s*ET/i);
+    let hour=null,minute=0;
+    if(m){hour=(+m[1])%12+(m[3].toUpperCase()==='PM'?12:0)-1;minute=+m[2];}
+    else if(/FOMC/i.test(String(ev.name||''))){hour=13;minute=0;}
+    if(hour==null)return null;
+    // Event dates are US official calendar dates. Create the matching CT instant directly.
+    const base={year:+ev.year,month:+ev.month,day:+ev.day};return hx23DateAtCT(base,hour,minute,0);
+  }
+  function hx23VerifiedEvents(){
+    const cal=hx23MoveCalendar||((typeof lastAnalysis!=='undefined')?lastAnalysis?.macroContext?.marketEnvironment?.calendar:null);return Array.isArray(cal?.events)?cal.events:[];
+  }
+  function hx23EventsForDay(parts){return hx23VerifiedEvents().filter(ev=>+ev.year===parts.year&&+ev.month===parts.month&&+ev.day===parts.day);}
+  function hx23BuildSchedule(now=new Date()){
+    const p=hx23CTParts(now),dow=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(p.weekday),weekday=dow>=1&&dow<=5,rows=[];
+    const add=(hour,minute,label,tag='WATCH',note='',kind='window',verified=false)=>rows.push({at:hx23DateAtCT(p,hour,minute),label,tag,note,kind,verified});
+    if(weekday){
+      add(7,30,'Macro release window','EVENT','CPI/PPI/jobs/GDP/PCE only when scheduled.','macro');
+      add(8,30,'Cash market open','HIGH','Opening price discovery / gap reaction.','open');
+      add(9,0,'Opening confirmation','HIGH','Secondary releases can also hit at 9:00 CT.','confirm');
+      add(10,30,'Midday transition','LOWER','Volume/conviction often cools versus the open.','midday');
+      const todays=hx23EventsForDay(p),fomc=todays.find(ev=>/FOMC/i.test(String(ev.name||'')));
+      if(fomc){add(13,0,'FOMC decision window','EXTREME','Shown only because an official FOMC event is verified for today.','fomc',true);add(13,30,'Fed press-conference window','EXTREME','Watch for a second move or reversal after the decision.','fomc',true);}
+      add(14,0,'Power hour begins','HIGH','Final-hour institutional flow becomes more important.','power');
+      add(14,50,'Closing imbalance window','VERY HIGH','Closing-auction flow can accelerate moves.','closeflow');
+      add(15,0,'Cash market close','HIGH','NYSE/Nasdaq regular session ends.','close');
+      if(dow>=1&&dow<=4)add(17,0,'Index futures reopen','WATCH','Overnight price discovery resumes after the daily break.','futures');
+      // Replace generic macro line with verified official releases when a clock time is available.
+      for(const ev of todays){const at=hx23EventClock(ev);if(!at)continue;rows.push({at,label:ev.name||'Official macro event',tag:String(ev.importance||'HIGH').toUpperCase(),note:`Verified ${ev.source||'official'} event.`,kind:'official',verified:true});}
+    }else if(dow===0){add(17,0,'Index futures reopen','HIGH','Sunday evening futures reopen for the new trading week.','futures');}
+    rows.sort((a,b)=>a.at-b.at||Number(b.verified)-Number(a.verified));
+    // Deduplicate generic macro window if a verified official event has the same minute.
+    const dedup=[];for(const r of rows){const same=dedup.find(x=>Math.abs(x.at-r.at)<60000);if(same&&r.verified){Object.assign(same,r);}else if(!same)dedup.push(r);}return dedup;
+  }
+  function hx23CurrentPhase(now=new Date()){
+    const p=hx23CTParts(now),dow=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(p.weekday),mins=p.hour*60+p.minute,events=hx23EventsForDay(p),officialSoon=events.map(ev=>({ev,at:hx23EventClock(ev)})).filter(x=>x.at&&x.at-now>=0&&x.at-now<=15*60000).sort((a,b)=>a.at-b.at)[0];
+    if(officialSoon)return {label:'EVENT RISK — DO NOT CHASE',note:`${officialSoon.ev.name} in ${hx23FmtCountdown(officialSoon.at-now)}.`,cls:'red'};
+    if(dow>=1&&dow<=5){
+      if(mins>=510&&mins<525)return {label:'OPENING VOLATILITY',note:'First 15 minutes: let the opening auction and gap reaction settle.',cls:'red'};
+      if(mins>=525&&mins<630)return {label:'DIRECTION CONFIRMATION',note:'Watch VWAP, opening range, breadth and relative volume.',cls:'green'};
+      if(mins>=630&&mins<750)return {label:'MIDDAY — LOWER CONVICTION',note:'Treat breakouts more selectively than during the open/close.',cls:'yellow'};
+      const fomc=events.some(ev=>/FOMC/i.test(String(ev.name||'')));if(fomc&&mins>=780&&mins<825)return {label:'FOMC EXTREME RISK',note:'Decision / press-conference window: expect fast repricing and reversals.',cls:'red'};
+      if(mins>=840&&mins<890)return {label:'POWER HOUR',note:'Final-hour participation and position adjustments increase.',cls:'green'};
+      if(mins>=890&&mins<900)return {label:'CLOSING FLOW / IMBALANCE',note:'Closing-auction imbalances can dominate the final minutes.',cls:'red'};
+      if(mins>=900&&mins<1020)return {label:'AFTER HOURS',note:'Cash session closed; earnings/news can create thinner-liquidity moves.',cls:'yellow'};
+      if(mins>=1020||mins<420)return {label:'OVERNIGHT / FUTURES',note:'Use futures and crypto for overnight risk context; cash stocks are closed.',cls:'blue'};
+      if(mins>=420&&mins<450)return {label:'PRE-DATA SETUP',note:'Check the official calendar before the 7:30 CT macro window.',cls:'yellow'};
+      if(mins>=450&&mins<510)return {label:'PREMARKET PRICE DISCOVERY',note:'Watch futures, yields, dollar and premarket gaps before the cash open.',cls:'blue'};
+    }
+    return {label:dow===0?'SUNDAY — FUTURES AHEAD':'MARKET CLOSED',note:dow===0?'Index futures normally reopen at 5:00 PM CT.':'Next regular cash-session timing windows resume on the next trading day.',cls:'yellow'};
+  }
+  window.hx23GetTimingContext=function(style='swing',now=new Date()){
+    const phase=hx23CurrentPhase(now),s=String(style||'swing').toLowerCase();
+    if(!['scalp','day'].includes(s))return {riskMultiplier:1,label:phase.label,note:'Intraday clock does not reduce swing/position sizing; verified macro-event guardrails remain separate.'};
+    const label=phase.label;
+    if(label.includes('EVENT RISK'))return {riskMultiplier:.50,label,note:'A verified scheduled release is within 15 minutes; avoid initiating full-size risk before the number.'};
+    if(label.includes('OPENING VOLATILITY'))return {riskMultiplier:.70,label,note:'Opening-auction/gap volatility is active; wait for confirmation before using full size.'};
+    if(label.includes('MIDDAY'))return {riskMultiplier:.80,label,note:'Midday conviction is usually lower than the open/close, so Halifax trims day/scalp risk.'};
+    if(label.includes('FOMC'))return {riskMultiplier:.45,label,note:'FOMC repricing/reversal risk is extreme; verified macro guardrails may also block the setup.'};
+    if(label.includes('CLOSING FLOW'))return {riskMultiplier:.65,label,note:'Closing-auction flow can overwhelm normal intraday structure.'};
+    if(label.includes('AFTER HOURS'))return {riskMultiplier:.55,label,note:'After-hours liquidity is thinner; Halifax cuts day/scalp sizing.'};
+    if(label.includes('OVERNIGHT')||label.includes('MARKET CLOSED')||label.includes('SUNDAY'))return {riskMultiplier:.50,label,note:'Regular cash-session execution is closed; any day/scalp sizing is sharply reduced.'};
+    return {riskMultiplier:1,label,note:'No timing-based size reduction is active.'};
+  };
+  function hx23NextScheduleItem(now=new Date()){
+    const p=hx23CTParts(now),today=hx23BuildSchedule(now),future=today.find(x=>x.at>now+1000);if(future)return future;
+    // Search the next 7 calendar days for the next available market window.
+    for(let n=1;n<=7;n++){const probe=new Date(now.getTime()+n*86400000),sched=hx23BuildSchedule(probe);if(sched.length){const first=sched[0];if(first.at>now)return first;}}
+    return null;
+  }
+  function hx23RenderMoveClock(){
+    const now=new Date(),phase=hx23CurrentPhase(now),next=hx23NextScheduleItem(now),alertCell=$('hx23MoveAlertCell');
+    set('hx23MovePhase',phase.label,phase.cls);set('hx23MovePhaseNote',phase.note);
+    if(next){set('hx23MoveNext',next.label,next.tag.includes('EXTREME')||next.tag.includes('VERY HIGH')?'red':next.tag==='HIGH'?'yellow':next.tag==='LOWER'?'blue':'yellow');set('hx23MoveNextNote',`${hx23FmtCT(next.at)} • ${next.note}`);set('hx23MoveCountdown',hx23FmtCountdown(next.at-now),next.at-now<=15*60000?'red':'blue');set('hx23MoveCountdownNote',`to ${next.label}`);}
+    else{set('hx23MoveNext','—');set('hx23MoveNextNote','No upcoming window resolved.');set('hx23MoveCountdown','—');}
+    const ms=next?next.at-now:Infinity,warning=ms>0&&ms<=15*60000,critical=ms>0&&ms<=5*60000;
+    if(alertCell){alertCell.classList.toggle('active',warning&&!critical);alertCell.classList.toggle('critical',critical);}
+    set('hx23MoveAlert',critical?'IMMINENT':warning?'15-MIN WARNING':'MONITOR',critical?'red':warning?'yellow':'green');set('hx23MoveAlertNote',warning&&next?`${next.label} at ${hx23FmtCT(next.at)}.`:'In-app warning activates 15 minutes before the next key window.');
+    if(warning&&next){const key=`${hx23DayKey(hx23CTParts(next.at))}|${next.label}|${next.at.getTime()}`;if(!hx23MoveNotified.has(key)){hx23MoveNotified.add(key);if('Notification'in window&&Notification.permission==='granted'){try{new Notification('Halifax Market Move Alert',{body:`${next.label} in ${hx23FmtCountdown(ms)} • ${hx23FmtCT(next.at)}`});}catch(e){}}}}
+  }
+  function hx23MoveRowsHTML(){
+    const now=new Date(),rows=hx23BuildSchedule(now),phase=hx23CurrentPhase(now);if(!rows.length)return '<div class="tiny">No regular cash-session windows today. Sunday futures timing is shown when applicable.</div>';
+    return `<div class="hx23-move-grid">${rows.map(r=>{const diff=r.at-now,isNow=Math.abs(diff)<=10*60000;const cls=r.tag.includes('EXTREME')||r.tag.includes('VERY HIGH')?'red':r.tag==='HIGH'?'yellow':r.tag==='LOWER'?'blue':r.verified?'red':'yellow';return `<div class="hx23-move-row ${isNow?'now':''}"><span class="time">${esc(hx23FmtCT(r.at).replace(' CT',''))}</span><span class="desc"><b>${esc(r.label)}</b><br>${esc(r.note)}</span><span class="tag ${cls}">${esc(r.verified?'VERIFIED':r.tag)}</span></div>`}).join('')}</div><div class="hx23-move-note">Current phase: <b>${esc(phase.label)}</b>. Generic time windows describe recurring market structure; official macro/Fed items are shown as verified only when the engine successfully loads the source calendar. Missing events are not invented.</div><button class="hx23-notify-btn" onclick="hx23EnableMoveAlerts()">ENABLE BROWSER ALERTS</button>`;
+  }
+  window.hx23EnableMoveAlerts=async function(){if(!('Notification'in window)){alert('Browser notifications are not supported here. In-app 15-minute alerts remain active.');return;}try{const p=await Notification.requestPermission();alert(p==='granted'?'Halifax browser alerts enabled.':'Browser alerts were not enabled. In-app warnings remain active.');}catch(e){alert('Browser alert permission could not be requested. In-app warnings remain active.');}};
+  async function hx23WarmMoveClockEvents(){
+    try{if(typeof loadOfficialMajorEvents==='function'){const cal=await loadOfficialMajorEvents(false);if(cal?.events){hx23MoveCalendar=cal;hx23RenderOfficialEvents(cal);hx23RenderMoveClock();}}}catch(e){/* leave generic clock active; do not invent official events */}
+  }
+  function hx23RenderOfficialEvents(cal){
+    const events=Array.isArray(cal?.events)?cal.events:[],out=$('hx23Events');if(!out||!events.length)return;
+    out.innerHTML=events.slice(0,4).map(ev=>{const at=hx23EventClock(ev),time=at?hx23FmtCT(at):String(ev.time||'Time not verified');const risk=ev.importance|| (ev.daysAway<=1?'HIGH':'WATCH');return `<div class="hx23-event"><span class="hx23-event-time">${esc(`${ev.month}/${ev.day} • ${time}`)}</span><span class="hx23-event-name">${esc(ev.name||'Major event')} • ${esc(risk)}</span></div>`}).join('');
+    const first=events.map(ev=>({ev,at:hx23EventClock(ev)})).filter(x=>x.at&&x.at>Date.now()).sort((a,b)=>a.at-b.at)[0];if(first){set('hx23NextEvent',first.ev.name||'Major event',String(first.ev.importance).toUpperCase()==='HIGH'?'red':'yellow');set('hx23NextEventNote',`${first.ev.month}/${first.ev.day} • ${hx23FmtCT(first.at)} • ${first.ev.source||'official'}`);}
   }
   window.hx23Analyze=async function(sym){
     const val=String(sym||$('hx23TickerInput')?.value||'').trim().toUpperCase().replace(/[^A-Z0-9.\-^=]/g,'');if(!val){$('hx23TickerInput')?.focus();return;}
@@ -5421,10 +5558,11 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now(
     try{if(typeof window.mockAnalyze==='function')await window.mockAnalyze();else if(typeof window.runEngine==='function')await window.runEngine();}catch(e){window.hx23PendingTicker='';set('hx23AiDirection','DATA ERROR','red');$('hx23Summary').textContent=e?.message||'Analysis failed.';}
     setTimeout(()=>{if(typeof lastAnalysis!=='undefined'&&typeof lastTrade!=='undefined'&&lastAnalysis&&lastTrade&&String(lastAnalysis.primary?.ticker||'').toUpperCase()===val)updateAnalysis(lastAnalysis,lastTrade);},100);
   };
-  const menuMap={technical:['Technical Evidence','mockTechnicalBody'],macro:['Macro & Market Data','mockMacro'],government:['Government Intelligence','mockGovernmentBody'],options:['Options & Derivatives','mockOptionsBody'],flow:['Smart Money Flow','mockSmartBody'],fund:['Fundamentals','mockFundBody'],bear:['Bear / Inverse ETF Radar','sectorInverseRadar'],list:['My Stock Watch',null],news:['News & Insiders','hx23News'],events:['Upcoming Events','hx23Events'],ai:['AI Stock Analysis','hx23AiPanel']};
+  const menuMap={technical:['Technical Evidence','mockTechnicalBody'],macro:['Macro & Market Data','mockMacro'],government:['Government Intelligence','mockGovernmentBody'],options:['Options & Derivatives','mockOptionsBody'],flow:['Smart Money Flow','mockSmartBody'],fund:['Fundamentals','mockFundBody'],bear:['Bear / Inverse ETF Radar','sectorInverseRadar'],list:['My Stock Watch',null],news:['News & Insiders','hx23News'],events:['Upcoming Events','hx23Events'],moveclock:['Market Move Clock',null],ai:['AI Stock Analysis','hx23AiPanel']};
   window.hx23OpenMenu=function(key){
-    const cfg=menuMap[key]||['Halifax Menu',null],drawer=$('hx23Drawer'),body=$('hx23DrawerBody');$('hx23DrawerTitle').textContent=cfg[0];drawer?.classList.toggle('wide',['list','technical','macro','government','options','flow','fund','bear','news','events','ai'].includes(key));let content='';
+    const cfg=menuMap[key]||['Halifax Menu',null],drawer=$('hx23Drawer'),body=$('hx23DrawerBody');$('hx23DrawerTitle').textContent=cfg[0];drawer?.classList.toggle('wide',['list','technical','macro','government','options','flow','fund','bear','news','events','moveclock','ai'].includes(key));let content='';
     if(key==='list'){content=`<div class="hx23-drawer-card"><div class="hx23-drawer-title">My Stock Watch</div><div class="hx23-drawer-copy">Your editable Halifax watchlist. Quotes, change, trend, relative volume, bid/ask, session and update time refresh from the engine's public data feeds. Missing values stay blank rather than being guessed.</div><div class="hx23-watch-toolbar"><span class="hx23-watch-status" id="hx23WatchStatus">Loading watchlist…</span><div class="hx23-watch-actions"><button class="hx23-watch-btn primary" onclick="editActiveStocks()">EDIT MY STOCKS</button><button class="hx23-watch-btn" onclick="refreshActiveStocks(true)">↻ REFRESH</button></div></div><div class="hx23-watch-wrap"><table class="hx23-watch-table"><thead><tr><th>Symbol</th><th>Price</th><th>Chg %</th><th>Trend</th><th>RVol</th><th>Bid / Ask</th><th>Session</th><th>Updated</th></tr></thead><tbody id="hx23WatchRows"><tr><td colspan="8" class="tiny">Loading My Stock Watch…</td></tr></tbody></table></div><div class="hx23-watch-note">Click any row to close the wheel panel and analyze that symbol.</div></div>`;}
+    else if(key==='moveclock'){content=`<div class="hx23-drawer-card"><div class="hx23-drawer-title">Market Move Clock • Central Time</div><div class="hx23-drawer-copy">${hx23MoveRowsHTML()}</div></div>`;}
     else{const src=$(cfg[1]);if(src){const clone=src.cloneNode(true);clone.querySelectorAll?.('[id]').forEach(n=>n.removeAttribute('id'));clone.querySelectorAll?.('button,input,select,textarea').forEach(n=>n.setAttribute('disabled','disabled'));content=`<div class="hx23-drawer-card"><div class="hx23-drawer-title">${esc(cfg[0])}</div><div class="hx23-drawer-copy">${clone.innerHTML||esc(clone.textContent||'No data loaded.')}</div></div>`;}else content='<div class="hx23-drawer-card"><div class="hx23-drawer-copy">Run Analyze to load this research module.</div></div>';}
     body.innerHTML=content;drawer.classList.add('open');drawer.setAttribute('aria-hidden','false');if(key==='list')setTimeout(()=>window.renderMyStockWatch?.(),0);
   };
@@ -5432,7 +5570,7 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now(
   function clock(){const e=$('hx23Clock');if(e)e.textContent=new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit',second:'2-digit'})+' CT';}
   function syncAll(){syncTape();syncEnv();syncStocks();syncNews();syncEvents();const p=String(window.hx23PendingTicker||'').toUpperCase();if(typeof lastAnalysis!=='undefined'&&typeof lastTrade!=='undefined'&&lastAnalysis&&lastTrade&&(!p||String(lastAnalysis.primary?.ticker||'').toUpperCase()===p))updateAnalysis(lastAnalysis,lastTrade);}
   async function initialSpy(){await window.hx23LoadChart?.('SPY','1D');}
-  window.addEventListener('load',()=>{tapeSkeleton();clock();syncVisibleStyle();initChartHover();const ti=$('hx23TickerInput');if(ti&&ti.dataset.hxEnter!=='1'){ti.dataset.hxEnter='1';ti.addEventListener('input',()=>{ti.value=ti.value.toUpperCase();});ti.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();window.hx23Analyze?.();}});}setInterval(clock,1000);setTimeout(syncAll,1400);setInterval(syncAll,2500);setTimeout(initialSpy,700);setInterval(()=>{if(!document.hidden&&typeof window.refresh24HourTape==='function')window.refresh24HourTape(false).finally?.(()=>syncTape());},60000);});
+  window.addEventListener('load',()=>{tapeSkeleton();clock();hx23RenderMoveClock();hx23WarmMoveClockEvents();syncVisibleStyle();initChartHover();const ti=$('hx23TickerInput');if(ti&&ti.dataset.hxEnter!=='1'){ti.dataset.hxEnter='1';ti.addEventListener('input',()=>{ti.value=ti.value.toUpperCase();});ti.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();window.hx23Analyze?.();}});}setInterval(clock,1000);setInterval(hx23RenderMoveClock,1000);setTimeout(syncAll,1400);setInterval(syncAll,2500);setTimeout(initialSpy,700);setInterval(()=>{if(!document.hidden&&typeof window.refresh24HourTape==='function')window.refresh24HourTape(false).finally?.(()=>syncTape());},60000);});
   window.addEventListener('resize',()=>{if(hx23LastChartData)drawChart(hx23LastChartData);});
   // Hook the final wrapped renderer so the v23 shell updates immediately after a completed engine render.
   setTimeout(()=>{if(typeof window.renderTradeOutput==='function'&&!window.renderTradeOutput.__hx23){const prev=window.renderTradeOutput;const wrapped=function(a,t){const r=prev.apply(this,arguments);try{setTimeout(()=>updateAnalysis(a,t),0)}catch(e){}return r};wrapped.__hx23=true;window.renderTradeOutput=wrapped;}},0);
