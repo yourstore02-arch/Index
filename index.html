@@ -21,7 +21,7 @@
 <meta name="application-name" content="Halifax">
 <meta name="format-detection" content="telephone=no">
 
-<title>Halifax Trade Engine v24.2 Options + Lead/Lag Reliability Desk</title>
+<title>Halifax Trade Engine v24.4 Entry Confirmation + Options + Lead/Lag</title>
 
 <style>
 :root{
@@ -122,6 +122,12 @@ td{padding:8px;font-size:11.5px;border-bottom:1px solid var(--line);white-space:
 .action-banner .a-value{font-size:14px;font-weight:950;margin-top:2px}
 .action-banner .a-note{font-size:10.5px;color:#94a3b8;text-align:right;max-width:58%}
 @media(max-width:700px){.explain-hero{grid-template-columns:1fr}.quality-chip{width:100%}.explain-grid{grid-template-columns:1fr}.action-banner{align-items:flex-start;flex-direction:column}.action-banner .a-note{text-align:left;max-width:none}}
+.entry-confirm-grid{display:grid;grid-template-columns:repeat(4,minmax(120px,1fr));gap:8px;margin-top:8px}
+.entry-confirm-tile{padding:9px 10px;border:1px solid var(--line2);border-radius:9px;background:rgba(2,6,23,.72)}
+.entry-confirm-tile .ec-label{font-size:8.5px;color:#94a3b8;font-weight:900;text-transform:uppercase;letter-spacing:.4px}
+.entry-confirm-tile .ec-value{font-size:12px;font-weight:900;margin-top:3px}
+.entry-confirm-reason{margin-top:8px;font-size:10px;color:#cbd5e1;line-height:1.45}
+@media(max-width:700px){.entry-confirm-grid{grid-template-columns:1fr 1fr}}
 .grade-strip{display:grid;grid-template-columns:repeat(4,minmax(120px,1fr));gap:8px;margin:10px 0 12px}
 .grade-tile{background:#020617;border:1px solid #334155;border-radius:10px;padding:9px 10px}
 .grade-tile .g-label{font-size:9px;color:#94a3b8;text-transform:uppercase;font-weight:900;letter-spacing:.45px}
@@ -1641,7 +1647,7 @@ body{background:#020a12!important;padding:0!important;overflow-x:hidden}
   <header class="hx23-topbar">
     <div class="hx23-brand">
       <div class="hx23-logo"><span>H</span></div>
-      <div><div class="hx23-brand-title">HALIFAX <span class="hx23-version">v24.2</span></div><div class="hx23-brand-sub">TRADE ENGINE</div></div>
+      <div><div class="hx23-brand-title">HALIFAX <span class="hx23-version">v24.4</span></div><div class="hx23-brand-sub">TRADE ENGINE</div></div>
     </div>
     <div class="hx23-top-center">24 HOUR MARKET TAPE <span class="hx23-live">AUTO</span></div>
     <div class="hx23-top-tools">
@@ -1748,7 +1754,7 @@ body{background:#020a12!important;padding:0!important;overflow-x:hidden}
     <div class="card header">
         <div class="brand-stack">
             <div class="terminal-kicker"><span class="kicker-dot"></span> HALIFAX QUANT RESEARCH TERMINAL</div>
-            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v24.1 Calibrated Probability</span></span></div>
+            <div class="title"><span class="brand-mark">HX</span><span>Halifax Trade Engine <span class="version-tag">v24.4 Entry Confirmation</span></span></div>
             <div class="subtitle">Predictive swing research • Unified market guidance • Federal contract radar • Options • Bonds • Event guardrails</div>
         </div>
         <div class="header-actions"><div class="badge system-badge"><span class="status-dot"></span><span id="engineStatus">Engine ready</span></div></div>
@@ -1937,7 +1943,7 @@ body{background:#020a12!important;padding:0!important;overflow-x:hidden}
           </div>
         </div>
       </section>
-      <div class="mock-footer"><span>This tool is for informational research only and does not constitute financial advice.</span><span><span class="mock-live-dot"></span><span id="mkFooterTime">Data updates with analysis</span> &nbsp; Halifax Trade Engine v24.1</span></div>
+      <div class="mock-footer"><span>This tool is for informational research only and does not constitute financial advice.</span><span><span class="mock-live-dot"></span><span id="mkFooterTime">Data updates with analysis</span> &nbsp; Halifax Trade Engine v24.4</span></div>
     </div>
 
     <div class="card command-card">
@@ -2541,20 +2547,63 @@ function optionExpiryCandidates(expiries,style){
 }
 function chooseOptionExpiry(expiries,style){return optionExpiryCandidates(expiries,style)[0]??null;}
 let halifaxOptionsState={ticker:"",style:"",lastLoaded:0,lastError:"",outlook:null};
+const HX_MARKETDATA_TOKEN_KEY="halifaxMarketDataTokenSession";
+function hxGetMarketDataToken(){try{return String(sessionStorage.getItem(HX_MARKETDATA_TOKEN_KEY)||"").trim();}catch(e){return "";}}
+function hxSetMarketDataToken(token){try{token?sessionStorage.setItem(HX_MARKETDATA_TOKEN_KEY,token):sessionStorage.removeItem(HX_MARKETDATA_TOKEN_KEY);return true;}catch(e){return false;}}
+window.hxSaveMarketDataToken=function(){
+    const el=document.getElementById("hxMarketDataTokenInput"),token=String(el?.value||"").trim();
+    if(!token){if(typeof setStatus==="function")setStatus("Enter a MarketData.app token first","var(--yellow)");return;}
+    hxSetMarketDataToken(token);if(el)el.value="";if(typeof setStatus==="function")setStatus("Options fallback connected for this browser tab");
+    window.hx23RenderOptionsDrawer?.();window.refreshHalifaxOptions?.(true);
+};
+window.hxClearMarketDataToken=function(){hxSetMarketDataToken("");if(typeof setStatus==="function")setStatus("Options fallback token cleared");window.hx23RenderOptionsDrawer?.();};
+async function hxMarketDataJson(url){
+    const token=hxGetMarketDataToken();if(!token)throw new Error("MarketData.app fallback is not configured");
+    const r=await fetchWithTimeout(url,{cache:"no-store",headers:{Authorization:`Bearer ${token}`,Accept:"application/json"}},9000);
+    const text=await r.text();let data=null;try{data=JSON.parse(text);}catch(e){}
+    if(!r.ok)throw new Error(`MarketData.app HTTP ${r.status}${data?.errmsg?`: ${data.errmsg}`:""}`);
+    if(!data||data?.s==="error")throw new Error(data?.errmsg||"MarketData.app returned no data");return data;
+}
+function hxMarketDataExpiryUnix(dateText){const ms=Date.parse(`${dateText}T12:00:00Z`);return Number.isFinite(ms)?Math.floor(ms/1000):null;}
+async function hxMarketDataOptionBase(ticker){
+    const d=await hxMarketDataJson(`https://api.marketdata.app/v1/options/expirations/${encodeURIComponent(ticker)}/`);
+    const expirationDates=(d?.expirations||[]).map(hxMarketDataExpiryUnix).filter(Number.isFinite).sort((a,b)=>a-b);
+    if(!expirationDates.length)throw new Error("MarketData.app returned no listed expirations");
+    return {expirationDates,options:[],quote:{},_hxSource:"MarketData.app options API"};
+}
+async function hxMarketDataOptionExpiry(ticker,expiry){
+    const iso=new Date(Number(expiry)*1000).toISOString().slice(0,10);
+    const url=`https://api.marketdata.app/v1/options/chain/${encodeURIComponent(ticker)}/?expiration=${encodeURIComponent(iso)}&strikeLimit=20&nonstandard=false`;
+    const d=await hxMarketDataJson(url),len=Math.max(d?.strike?.length||0,d?.optionSymbol?.length||0,d?.side?.length||0);
+    if(!len)throw new Error(`MarketData.app returned no contracts for ${iso}`);
+    const calls=[],puts=[];let spot=null,actualExpiry=null;
+    for(let i=0;i<len;i++){
+        const side=String(d?.side?.[i]||"").toLowerCase(),strike=optionsFinite(d?.strike?.[i]);if(!(strike>0)||(side!=="call"&&side!=="put"))continue;
+        const ex=optionsFinite(d?.expiration?.[i]);if(ex>0)actualExpiry=ex;
+        const u=optionsFinite(d?.underlyingPrice?.[i]);if(u>0)spot=u;
+        const c={contractSymbol:d?.optionSymbol?.[i]||"",strike,bid:optionsFinite(d?.bid?.[i]),ask:optionsFinite(d?.ask?.[i]),lastPrice:optionsFinite(d?.last?.[i]),volume:optionsFinite(d?.volume?.[i])||0,openInterest:optionsFinite(d?.openInterest?.[i])||0,impliedVolatility:optionsFinite(d?.iv?.[i]),lastTradeDate:optionsFinite(d?.updated?.[i])};
+        (side==="call"?calls:puts).push(c);
+    }
+    if(calls.length<2||puts.length<2)throw new Error(`MarketData.app chain for ${iso} is too thin`);
+    const exp=actualExpiry||Number(expiry);return {expirationDates:[exp],quote:{regularMarketPrice:spot},options:[{expirationDate:exp,calls,puts}],_hxSource:"MarketData.app options API"};
+}
 async function fetchOptionChain(ticker,date=null,{fresh=false}={}){
     const suffix=Number.isFinite(date)?`?date=${Math.trunc(date)}`:"";
     const url=`https://query1.finance.yahoo.com/v7/finance/options/${encodeURIComponent(ticker)}${suffix}`;
     let lastError=null;
-    // First use the normal resilient Yahoo/proxy path; a manual refresh also performs a cache-busted retry.
-    for(const mode of (fresh?["fresh","normal"]:["normal","fresh"])){
+    const modes=fresh?["fresh","normal"]:["normal"];
+    for(const mode of modes){
         try{
-            const raw=mode==="fresh"?await fetchJsonFresh(url):await fetchJson(url);
-            const result=raw?.optionChain?.result?.[0];
-            if(result&&(result.expirationDates?.length||result.options?.length))return result;
+            const raw=mode==="fresh"?await fetchJsonFresh(url):await fetchJson(url),result=raw?.optionChain?.result?.[0];
+            if(result&&(result.expirationDates?.length||result.options?.length)){result._hxSource="Yahoo Finance listed-options chain";return result;}
             lastError=new Error("Yahoo returned an empty options result");
         }catch(e){lastError=e;}
     }
-    throw new Error(`Options chain unavailable${lastError?.message?`: ${lastError.message}`:""}`);
+    if(hxGetMarketDataToken()){
+        try{return Number.isFinite(date)?await hxMarketDataOptionExpiry(ticker,date):await hxMarketDataOptionBase(ticker);}catch(e){lastError=e;}
+    }
+    const hint=hxGetMarketDataToken()?"":" Open Options and add a MarketData.app API token to enable the CORS-safe fallback.";
+    throw new Error(`Options chain unavailable${lastError?.message?`: ${lastError.message}`:""}.${hint}`.replace('..','.'));
 }
 function optionNearMoneySet(set,spot){
     const rawCalls=(set?.calls||[]).filter(x=>optionsFinite(x?.strike)>0),rawPuts=(set?.puts||[]).filter(x=>optionsFinite(x?.strike)>0);
@@ -2644,28 +2693,38 @@ async function loadOptionsOutlook(ticker,style="swing",spotHint=null,{fresh=fals
     const putGreeks=atm&&atmPutIV&&Number.isFinite(rate)?optionApproxGreeks({spot,strike:atm.strike,days,iv:atmPutIV,rate:rate/100,type:'put'}):null;
     const lastTradeUnix=Math.max(optionLatestTradeUnix(calls),optionLatestTradeUnix(puts)),chainAgeMinutes=lastTradeUnix?Math.max(0,Math.round((now-lastTradeUnix)/60)):null;
     const sentence=direction==="LONG"?`Options activity is leaning bullish through ${expiryText}. Near-money calls are stronger than puts on the available volume/open-interest measures.`:direction==="SHORT"?`Options activity is leaning bearish through ${expiryText}. Near-money puts are stronger than calls on the available volume/open-interest measures.`:`Options activity is mixed or not liquid enough through ${expiryText}; Halifax is withholding a directional confirmation.`;
-    const outlook={available:true,ticker,spot,expiry,expiryText,days,timeframe,direction,cls,arrow,confidence,score:rawScore,coverage,callVol,putVol,callOI,putOI,volPCR:volSig.ratio??null,oiPCR:oiSig.ratio??null,volText:volSig.text,oiText:oiSig.text,pricedMove,pricedMovePct,atmStrike:atm?.strike??null,callIV,putIV,ivSkew,medianSpreadPct,liquidityLabel,unusual,callWall,putWall,callGreeks,putGreeks,ivRank:null,gexAvailable:false,sentence,source:"Yahoo Finance listed-options chain",nearMoneyBandPct:Number.isFinite(band)?band*100:null,callCount:calls.length,putCount:puts.length,chainAgeMinutes,lastTradeUnix,loadedAt:Date.now()};
+    const outlook={available:true,ticker,spot,expiry,expiryText,days,timeframe,direction,cls,arrow,confidence,score:rawScore,coverage,callVol,putVol,callOI,putOI,volPCR:volSig.ratio??null,oiPCR:oiSig.ratio??null,volText:volSig.text,oiText:oiSig.text,pricedMove,pricedMovePct,atmStrike:atm?.strike??null,callIV,putIV,ivSkew,medianSpreadPct,liquidityLabel,unusual,callWall,putWall,callGreeks,putGreeks,ivRank:null,gexAvailable:false,sentence,source:chain?._hxSource||"Yahoo Finance listed-options chain",nearMoneyBandPct:Number.isFinite(band)?band*100:null,callCount:calls.length,putCount:puts.length,chainAgeMinutes,lastTradeUnix,loadedAt:Date.now()};
     halifaxOptionsState={ticker,style,lastLoaded:Date.now(),lastError:"",outlook};
     return outlook;
 }
 
 function renderOptionsOutlook(outlook){
     const card=document.getElementById("optionsCard"),box=document.getElementById("optionsOutput");if(!card||!box)return;card.style.display="block";
-    if(!outlook?.available){const msg=escapeHTML(outlook?.error||"Options chain data are unavailable for this ticker right now.");box.innerHTML=`<div class="loading">${msg} Halifax will not guess an options direction.</div><div class="contract-watch-actions"><button class="btn-ticker-link" onclick="refreshHalifaxOptions(true)">↻ RETRY OPTIONS</button></div>`;return;}
+    if(!outlook?.available){const msg=escapeHTML(outlook?.error||"Options chain data are unavailable for this ticker right now.");box.innerHTML=`<div class="loading">${msg} Halifax will not guess an options direction.</div><div class="contract-watch-actions"><button class="btn-ticker-link" onclick="refreshHalifaxOptions(true)">↻ RETRY OPTIONS</button></div>`;setTimeout(()=>window.hx23RenderOptionsDrawer?.(),0);return;}
     const move=Number.isFinite(outlook.pricedMove)?`${money(outlook.pricedMove)} (${outlook.pricedMovePct.toFixed(1)}%)`:"Unavailable";
     const vol=Number.isFinite(outlook.volPCR)?outlook.volPCR.toFixed(2):"—",oi=Number.isFinite(outlook.oiPCR)?outlook.oiPCR.toFixed(2):"—";
     const unusual=outlook.unusual?.length?outlook.unusual.map(x=>`${x.side} ${money(x.strike)} • vol/OI ${x.volumeOiRatio.toFixed(1)}×`).join("<br>"):"No near-money contract passed the unusual-volume threshold.";
     const greeks=outlook.callGreeks&&outlook.putGreeks?`C Δ ${outlook.callGreeks.delta.toFixed(2)} / P Δ ${outlook.putGreeks.delta.toFixed(2)} • Γ ${outlook.callGreeks.gamma.toFixed(4)} • Θ ${money(outlook.callGreeks.theta)}/day`:"Unavailable";
     const age=Number.isFinite(outlook.chainAgeMinutes)?(outlook.chainAgeMinutes<60?`${outlook.chainAgeMinutes}m`:`${(outlook.chainAgeMinutes/60).toFixed(1)}h`):"unknown";
     const band=Number.isFinite(outlook.nearMoneyBandPct)?`±${outlook.nearMoneyBandPct.toFixed(0)}% strike window`:"full listed chain";
-    box.innerHTML=`<div class="options-hero"><div class="options-callout"><div class="options-eyebrow">What options are saying</div><div class="options-direction ${outlook.cls}">${outlook.arrow} ${escapeHTML(outlook.direction)}</div><div class="options-time">Time frame: ${escapeHTML(outlook.timeframe)} • through ${escapeHTML(outlook.expiryText)}</div><div class="options-sentence">${escapeHTML(outlook.sentence)}</div><div class="options-confidence">Evidence quality: ${escapeHTML(outlook.confidence)} • ${outlook.callCount} calls / ${outlook.putCount} puts • ${escapeHTML(band)}</div></div><div class="options-stats"><div class="options-stat"><div class="o-label">Options-priced move</div><div class="o-value">± ${move}</div><div class="o-sub">Approximate ATM straddle cost through this expiration.</div></div><div class="options-stat"><div class="o-label">Put / Call Volume</div><div class="o-value ${Number.isFinite(outlook.volPCR)?(outlook.volPCR<.9?'green':outlook.volPCR>1.1?'red':'yellow'):'yellow'}">${vol}</div><div class="o-sub">Below 1 = more call volume; above 1 = more put volume.</div></div><div class="options-stat"><div class="o-label">Put / Call Open Interest</div><div class="o-value ${Number.isFinite(outlook.oiPCR)?(outlook.oiPCR<.9?'green':outlook.oiPCR>1.1?'red':'yellow'):'yellow'}">${oi}</div><div class="o-sub">Existing listed positioning near the current stock price.</div></div><div class="options-stat"><div class="o-label">ATM IV / Put Skew</div><div class="o-value">${outlook.callIV!=null&&outlook.putIV!=null?`${((outlook.callIV+outlook.putIV)/2*100).toFixed(0)}% IV`:"—"}</div><div class="o-sub">${Number.isFinite(outlook.ivSkew)?`Put IV minus call IV: ${outlook.ivSkew>=0?'+':''}${outlook.ivSkew.toFixed(1)} pts.`:"Skew unavailable."}</div></div><div class="options-stat"><div class="o-label">Option Spread Quality</div><div class="o-value ${outlook.liquidityLabel==='TIGHT'?'green':outlook.liquidityLabel.includes('WIDE')?'red':'yellow'}">${escapeHTML(outlook.liquidityLabel)}</div><div class="o-sub">${Number.isFinite(outlook.medianSpreadPct)?`Median near-money bid/ask spread ${outlook.medianSpreadPct.toFixed(1)}% of mark.`:"Bid/ask coverage unavailable."}</div></div><div class="options-stat"><div class="o-label">ATM Approx. Greeks</div><div class="o-value" style="font-size:12px">${escapeHTML(greeks)}</div><div class="o-sub">European-model approximation; dividends and early exercise are not modeled.</div></div><div class="options-stat"><div class="o-label">Open-Interest Walls</div><div class="o-value" style="font-size:12px">Call ${outlook.callWall?money(outlook.callWall.strike):"—"} / Put ${outlook.putWall?money(outlook.putWall.strike):"—"}</div><div class="o-sub">Largest near-money listed OI strikes. This is an OI-wall proxy, not dealer gamma exposure.</div></div><div class="options-stat"><div class="o-label">IV Rank / Dealer GEX</div><div class="o-value yellow">NOT CLAIMED</div><div class="o-sub">A single public chain does not provide a verified historical IV-rank series or dealer-position sign needed for true GEX.</div></div></div></div><div class="options-stat" style="margin-top:8px"><div class="o-label">Unusual volume vs open interest</div><div class="o-value" style="font-size:12px">${unusual}</div><div class="o-sub">Flag requires at least 50 contracts and volume/open-interest ≥ 1.5×. It can still represent hedges or spreads.</div></div><div class="options-source">Source: ${escapeHTML(outlook.source)} when the feed responds • latest contract trade age ${escapeHTML(age)}. Halifax now checks up to five nearby expirations and widens the strike window only when the preferred chain is thin. Very-wide spreads suppress directional confirmation. Options remain confirmation-only.</div><div class="contract-watch-actions"><button class="btn-ticker-link" onclick="refreshHalifaxOptions(true)">↻ REFRESH OPTIONS</button></div>`;
+    box.innerHTML=`<div class="options-hero"><div class="options-callout"><div class="options-eyebrow">What options are saying</div><div class="options-direction ${outlook.cls}">${outlook.arrow} ${escapeHTML(outlook.direction)}</div><div class="options-time">Time frame: ${escapeHTML(outlook.timeframe)} • through ${escapeHTML(outlook.expiryText)}</div><div class="options-sentence">${escapeHTML(outlook.sentence)}</div><div class="options-confidence">Evidence quality: ${escapeHTML(outlook.confidence)} • ${outlook.callCount} calls / ${outlook.putCount} puts • ${escapeHTML(band)}</div></div><div class="options-stats"><div class="options-stat"><div class="o-label">Options-priced move</div><div class="o-value">± ${move}</div><div class="o-sub">Approximate ATM straddle cost through this expiration.</div></div><div class="options-stat"><div class="o-label">Put / Call Volume</div><div class="o-value ${Number.isFinite(outlook.volPCR)?(outlook.volPCR<.9?'green':outlook.volPCR>1.1?'red':'yellow'):'yellow'}">${vol}</div><div class="o-sub">Below 1 = more call volume; above 1 = more put volume.</div></div><div class="options-stat"><div class="o-label">Put / Call Open Interest</div><div class="o-value ${Number.isFinite(outlook.oiPCR)?(outlook.oiPCR<.9?'green':outlook.oiPCR>1.1?'red':'yellow'):'yellow'}">${oi}</div><div class="o-sub">Existing listed positioning near the current stock price.</div></div><div class="options-stat"><div class="o-label">ATM IV / Put Skew</div><div class="o-value">${outlook.callIV!=null&&outlook.putIV!=null?`${((outlook.callIV+outlook.putIV)/2*100).toFixed(0)}% IV`:"—"}</div><div class="o-sub">${Number.isFinite(outlook.ivSkew)?`Put IV minus call IV: ${outlook.ivSkew>=0?'+':''}${outlook.ivSkew.toFixed(1)} pts.`:"Skew unavailable."}</div></div><div class="options-stat"><div class="o-label">Option Spread Quality</div><div class="o-value ${outlook.liquidityLabel==='TIGHT'?'green':outlook.liquidityLabel.includes('WIDE')?'red':'yellow'}">${escapeHTML(outlook.liquidityLabel)}</div><div class="o-sub">${Number.isFinite(outlook.medianSpreadPct)?`Median near-money bid/ask spread ${outlook.medianSpreadPct.toFixed(1)}% of mark.`:"Bid/ask coverage unavailable."}</div></div><div class="options-stat"><div class="o-label">ATM Approx. Greeks</div><div class="o-value" style="font-size:12px">${escapeHTML(greeks)}</div><div class="o-sub">European-model approximation; dividends and early exercise are not modeled.</div></div><div class="options-stat"><div class="o-label">Open-Interest Walls</div><div class="o-value" style="font-size:12px">Call ${outlook.callWall?money(outlook.callWall.strike):"—"} / Put ${outlook.putWall?money(outlook.putWall.strike):"—"}</div><div class="o-sub">Largest near-money listed OI strikes. This is an OI-wall proxy, not dealer gamma exposure.</div></div><div class="options-stat"><div class="o-label">IV Rank / Dealer GEX</div><div class="o-value yellow">NOT CLAIMED</div><div class="o-sub">A single public chain does not provide a verified historical IV-rank series or dealer-position sign needed for true GEX.</div></div></div></div><div class="options-stat" style="margin-top:8px"><div class="o-label">Unusual volume vs open interest</div><div class="o-value" style="font-size:12px">${unusual}</div><div class="o-sub">Flag requires at least 50 contracts and volume/open-interest ≥ 1.5×. It can still represent hedges or spreads.</div></div><div class="options-source">Source: ${escapeHTML(outlook.source)} when the feed responds • latest contract trade age ${escapeHTML(age)}. Halifax now checks up to five nearby expirations and widens the strike window only when the preferred chain is thin. Very-wide spreads suppress directional confirmation. Options remain confirmation-only.</div><div class="contract-watch-actions"><button class="btn-ticker-link" onclick="refreshHalifaxOptions(true)">↻ REFRESH OPTIONS</button></div>`;setTimeout(()=>window.hx23RenderOptionsDrawer?.(),0);
 }
+function hx23OptionsDrawerHTML(){
+    const src=document.getElementById("optionsOutput"),configured=!!hxGetMarketDataToken(),ticker=String((typeof lastAnalysis!=="undefined"&&lastAnalysis?.primary?.ticker)||document.getElementById("hx23TickerInput")?.value||"").trim().toUpperCase();
+    const provider=`<div class="options-stat" style="margin-bottom:10px"><div class="o-label">OPTIONS DATA CONNECTION</div><div class="o-value" style="font-size:12px">Yahoo primary • MarketData.app fallback: <span class="${configured?'green':'yellow'}">${configured?'CONNECTED FOR THIS TAB':'OPTIONAL'}</span></div><div class="o-sub">Yahoo is tried first. If Yahoo blocks the browser request, enter a MarketData.app token below. The token is kept in sessionStorage for this browser tab and is not written into this HTML file.</div><div class="contract-watch-actions" style="margin-top:8px"><input id="hxMarketDataTokenInput" type="password" autocomplete="off" placeholder="MarketData.app token" style="min-width:220px;max-width:420px;flex:1;background:#0b1118;color:#fff;border:1px solid #334155;border-radius:8px;padding:8px"><button class="btn-ticker-link" onclick="hxSaveMarketDataToken()">CONNECT FALLBACK</button>${configured?'<button class="btn-ticker-link" onclick="hxClearMarketDataToken()">CLEAR</button>':''}<button class="btn-ticker-link" onclick="refreshHalifaxOptions(true)">↻ REFRESH OPTIONS</button></div></div>`;
+    const body=src?.innerHTML||`<div class="loading">${ticker?`Loading listed options for ${escapeHTML(ticker)}…`:'Enter a ticker and run Analyze to load listed options.'}</div>`;
+    return `<div class="hx23-drawer-card"><div class="hx23-drawer-title">Options & Derivatives</div>${provider}<div class="hx23-drawer-copy">${body}</div></div>`;
+}
+window.hx23RenderOptionsDrawer=function(){
+    const drawer=document.getElementById("hx23Drawer"),title=document.getElementById("hx23DrawerTitle"),body=document.getElementById("hx23DrawerBody");
+    if(!drawer?.classList.contains("open")||title?.textContent!=="Options & Derivatives"||!body)return;body.innerHTML=hx23OptionsDrawerHTML();
+};
 window.refreshHalifaxOptions=async function(force=true){
     const ticker=String((typeof lastAnalysis!=="undefined"&&lastAnalysis?.primary?.ticker)||document.getElementById("ticker")?.value||document.getElementById("hx23TickerInput")?.value||"").trim().toUpperCase();
     const style=document.getElementById("style")?.value||"swing";
     if(!ticker)return;
     if(!force&&halifaxOptionsState.ticker===ticker&&halifaxOptionsState.style===style&&Date.now()-halifaxOptionsState.lastLoaded<90000)return;
-    const box=document.getElementById("optionsOutput"),card=document.getElementById("optionsCard");if(card)card.style.display="block";if(box)box.innerHTML=`<div class="loading">Refreshing listed options for ${escapeHTML(ticker)}…</div>`;
+    const box=document.getElementById("optionsOutput"),card=document.getElementById("optionsCard");if(card)card.style.display="block";if(box)box.innerHTML=`<div class="loading">Refreshing listed options for ${escapeHTML(ticker)}…</div>`;window.hx23RenderOptionsDrawer?.();
     try{
         const spot=(typeof lastAnalysis!=="undefined"&&lastAnalysis?.primary?.ticker===ticker)?lastAnalysis.primary.price:null;
         const op=await loadOptionsOutlook(ticker,style,spot,{fresh:!!force});renderOptionsOutlook(op);
@@ -3766,29 +3825,62 @@ function rsiPlain(rsi){
     return `RSI is ${rsi.toFixed(1)}, which is neutral momentum.`;
 }
 function entryTimingRead(analysis,trade){
-    const d=analysis.entryData||analysis.primary,dir=analysis.direction,atr=Math.max(Number(d.atr)||0,Math.max(.01,d.price*.005)),entryState=classifyTimeframe(d),grades=predictionGrades(analysis,trade);
-    const emaGap=d.ema9?Math.abs(d.price-d.ema9)/atr:0;
-    const longExtended=d.price>d.bbUpper||emaGap>1.55||d.rsi>=72;
-    const shortExtended=d.price<d.bbLower||emaGap>1.55||d.rsi<=28;
-    const nearResistance=Number.isFinite(d.resistance)&&d.resistance>=d.price&&d.resistance-d.price<=atr*.45;
-    const nearSupport=Number.isFinite(d.support)&&d.support<=d.price&&d.price-d.support<=atr*.45;
+    const d=analysis.entryData||analysis.primary,q=analysis.liveQuoteContext||{},dir=analysis.direction;
+    const price=Number.isFinite(Number(q.price))&&Number(q.price)>0?Number(q.price):Number(d.price);
+    const atr=Math.max(Number(d.atr)||0,Math.max(.01,price*.005)),entryState=classifyTimeframe(d),grades=predictionGrades(analysis,trade);
+    const emaGap=d.ema9?Math.abs(price-d.ema9)/atr:0;
+    const longExtended=price>d.bbUpper||emaGap>1.55||d.rsi>=72;
+    const shortExtended=price<d.bbLower||emaGap>1.55||d.rsi<=28;
+    const support=Number.isFinite(Number(d.support))?Number(d.support):null,resistance=Number.isFinite(Number(d.resistance))?Number(d.resistance):null;
+    const tolerance=Math.max(atr*.10,price*.0015),retestWindow=Math.max(atr*.40,price*.0035);
+    const inEntryZone=Number.isFinite(trade?.entryLow)&&Number.isFinite(trade?.entryHigh)&&price>=trade.entryLow-tolerance&&price<=trade.entryHigh+tolerance;
+    const volOk=(Number(d.volumeRatio)||0)>=.85,volStrong=(Number(d.volumeRatio)||0)>=1.05;
+    const vwap=analysis.vwapContext||{},vwapLongOk=!vwap.available||vwap.state!=="BELOW",vwapShortOk=!vwap.available||vwap.state!=="ABOVE";
+    const longBreak=Number.isFinite(resistance)&&price>resistance+tolerance;
+    const shortBreak=Number.isFinite(support)&&price<support-tolerance;
+    const longRetest=longBreak&&price-resistance<=retestWindow;
+    const shortRetest=shortBreak&&support-price<=retestWindow;
+
+    // EXIT is only emitted for an OPEN Halifax paper-plan whose stop has been breached
+    // or whose model direction has flipped. Halifax cannot see an unlogged brokerage position.
+    let openPaper=null;
+    try{if(typeof readPaperJournal==="function")openPaper=readPaperJournal().slice().reverse().find(r=>r?.status==="OPEN"&&String(r.ticker||"").toUpperCase()===String(d.ticker||"").toUpperCase());}catch(e){}
+    if(openPaper){
+        const paperDir=String(openPaper.direction||"").toUpperCase(),paperStop=Number(openPaper.stop),stopHit=Number.isFinite(paperStop)&&(paperDir==="LONG"?price<=paperStop:paperDir==="SHORT"?price>=paperStop:false),signalFlip=(dir==="LONG"&&paperDir==="SHORT")||(dir==="SHORT"&&paperDir==="LONG");
+        if(stopHit||signalFlip)return {action:"EXIT / INVALIDATED",cls:"red",status:"EXIT",price,trigger:Number.isFinite(paperStop)?money(paperStop):"Signal flip",invalidation:Number.isFinite(paperStop)?money(paperStop):"—",note:stopHit?`The live price ${money(price)} has crossed the logged Halifax stop at ${money(paperStop)}. The paper plan is invalidated.`:`The active paper plan is ${paperDir}, but Halifax has flipped to ${dir}. Reassess/exit rather than adding to the old direction.`,reason:stopHit?"Logged stop breached":"Model direction flipped"};
+    }
+
     if(dir==="LONG"){
-        if(entryState.direction==="BEARISH")return {action:"WAIT FOR 1H TURN",cls:"yellow",note:`The Daily/Weekly swing trend is stronger than the entry chart, but the ${TF_LABELS[d.timeframe]} chart is still bearish. Wait for it to turn before buying.`};
-        if(longExtended)return {action:"WAIT FOR PULLBACK",cls:"yellow",note:`The swing trend is bullish, but the entry chart is stretched. A controlled pullback toward ${money(trade.entryLow)}–${money(trade.entryHigh)} is safer than chasing.`};
-        if(nearResistance)return {action:"WAIT FOR BREAKOUT HOLD",cls:"yellow",note:`The entry chart is close to resistance near ${money(d.resistance)}. Prefer a clean break and hold with healthy volume.`};
-        if(grades.entry.score<55)return {action:"WAIT FOR CONFIRMATION",cls:"yellow",note:`Trend quality is better than entry quality. Let the ${TF_LABELS[d.timeframe]} chart improve before committing capital.`};
-        return {action:"LONG CANDIDATE",cls:"green",note:`The higher-timeframe trend and entry timing are aligned. Use the planned entry zone and do not move the stop farther away after entry.`};
+        const invalid=Number.isFinite(trade?.stop)&&price<=trade.stop;
+        if(invalid)return {action:"NO ENTRY — SETUP INVALID",cls:"red",status:"INVALID",price,trigger:money(trade.entry),invalidation:money(trade.stop),note:`Price is at/below the planned long invalidation ${money(trade.stop)}. Re-run the analysis before considering a new trade.`,reason:"Planned stop/invalidation breached before entry"};
+        if(entryState.direction==="BEARISH")return {action:"WAIT FOR TURN",cls:"yellow",status:"WAIT",price,trigger:Number.isFinite(resistance)?`Reclaim ${money(resistance)}`:money(trade.entryLow),invalidation:money(trade.stop),note:`The higher-timeframe bias is LONG, but the ${TF_LABELS[d.timeframe]} entry chart is still bearish. Wait for it to turn before buying.`,reason:"Entry timeframe conflicts with LONG bias"};
+        if(longExtended)return {action:"WAIT FOR RETEST",cls:"yellow",status:"WAIT",price,trigger:`${money(trade.entryLow)}–${money(trade.entryHigh)}`,invalidation:money(trade.stop),note:`Price is stretched above the long structure. Wait for a controlled retest/pullback instead of chasing.`,reason:"Long entry is extended"};
+        if(!volOk)return {action:"WAIT FOR VOLUME",cls:"yellow",status:"WAIT",price,trigger:`Vol ≥ 0.85×`,invalidation:money(trade.stop),note:`The LONG structure is present, but entry-timeframe volume is only ${(Number(d.volumeRatio)||0).toFixed(2)}× average. Wait for participation to improve.`,reason:"Volume confirmation is weak"};
+        if(!vwapLongOk)return {action:"WAIT FOR VWAP RECLAIM",cls:"yellow",status:"WAIT",price,trigger:Number.isFinite(vwap.vwap)?`Above ${money(vwap.vwap)}`:"VWAP reclaim",invalidation:money(trade.stop),note:`Price is still below session VWAP, so intraday flow is not confirming the LONG yet.`,reason:"Price below session VWAP"};
+        if(grades.entry.score<55)return {action:"WAIT FOR CONFIRMATION",cls:"yellow",status:"WAIT",price,trigger:`Entry grade ≥ 55`,invalidation:money(trade.stop),note:`Trend quality is better than entry quality. Current entry grade is ${grades.entry.score}/100.`,reason:"Entry grade below execution threshold"};
+        if(inEntryZone&&entryState.direction==="BULLISH")return {action:"ENTRY NOW — LONG",cls:"green",status:"ENTRY",price,trigger:`In zone ${money(trade.entryLow)}–${money(trade.entryHigh)}`,invalidation:money(trade.stop),note:`Price is in the planned entry zone, the ${TF_LABELS[d.timeframe]} chart is bullish, volume is acceptable${vwap.available?", and VWAP is not fighting the trade":""}. Use the planned stop; do not widen it.`,reason:"Planned-zone pullback confirmed"};
+        if(longRetest&&entryState.direction==="BULLISH"&&volStrong)return {action:"ENTRY NOW — BREAKOUT RETEST",cls:"green",status:"ENTRY",price,trigger:`Hold > ${money(resistance)}`,invalidation:money(trade.stop),note:`Price has cleared resistance near ${money(resistance)} and remains close enough to the level to qualify as a breakout/retest entry with healthy volume.`,reason:"Breakout held on the correct side of resistance"};
+        if(Number.isFinite(resistance)&&price<=resistance+tolerance)return {action:"WAIT FOR BREAK / RETEST",cls:"yellow",status:"WAIT",price,trigger:`Break > ${money(resistance)}, then hold`,invalidation:money(trade.stop),note:`The LONG bias is intact, but price has not produced a clean resistance break/retest or returned to the planned entry zone yet.`,reason:"No executable long trigger yet"};
+        return {action:"WAIT FOR RETEST",cls:"yellow",status:"WAIT",price,trigger:`${money(trade.entryLow)}–${money(trade.entryHigh)}`,invalidation:money(trade.stop),note:`The direction is bullish, but the current quote is outside the preferred execution zone. Wait for price to come back to structure rather than chase.`,reason:"Price outside preferred long entry zone"};
     }
+
     if(dir==="SHORT"){
-        if(entryState.direction==="BULLISH")return {action:"WAIT FOR 1H ROLLOVER",cls:"yellow",note:`The swing trend is bearish, but the ${TF_LABELS[d.timeframe]} entry chart is still bullish. Wait for the bounce to roll over before shorting.`};
-        if(shortExtended)return {action:"WAIT FOR BOUNCE",cls:"yellow",note:`The trend is bearish, but the entry chart is stretched lower. A failed bounce is safer than chasing weakness.`};
-        if(nearSupport)return {action:"WAIT FOR BREAKDOWN HOLD",cls:"yellow",note:`The entry chart is close to support near ${money(d.support)}. Prefer a clean break below support and failure to reclaim it.`};
-        if(grades.entry.score<55)return {action:"WAIT FOR CONFIRMATION",cls:"yellow",note:`Trend quality is better than entry quality. Let the ${TF_LABELS[d.timeframe]} chart weaken before entering a short.`};
-        return {action:"SHORT CANDIDATE",cls:"red",note:`The higher-timeframe trend and entry timing are aligned. Use the planned entry zone and keep the stop above invalidation.`};
+        const invalid=Number.isFinite(trade?.stop)&&price>=trade.stop;
+        if(invalid)return {action:"NO ENTRY — SETUP INVALID",cls:"red",status:"INVALID",price,trigger:money(trade.entry),invalidation:money(trade.stop),note:`Price is at/above the planned short invalidation ${money(trade.stop)}. Re-run the analysis before considering a new short.`,reason:"Planned stop/invalidation breached before entry"};
+        if(entryState.direction==="BULLISH")return {action:"WAIT FOR ROLLOVER",cls:"yellow",status:"WAIT",price,trigger:Number.isFinite(support)?`Lose ${money(support)}`:money(trade.entryHigh),invalidation:money(trade.stop),note:`The higher-timeframe bias is SHORT, but the ${TF_LABELS[d.timeframe]} entry chart is still bullish. Wait for the bounce to roll over.`,reason:"Entry timeframe conflicts with SHORT bias"};
+        if(shortExtended)return {action:"WAIT FOR RETEST",cls:"yellow",status:"WAIT",price,trigger:Number.isFinite(support)?`Failed reclaim of ${money(support)}`:`${money(trade.entryLow)}–${money(trade.entryHigh)}`,invalidation:money(trade.stop),note:`The bearish move is stretched lower. A failed bounce/retest is safer than chasing weakness.`,reason:"Short entry is extended/oversold"};
+        if(!volOk)return {action:"WAIT FOR VOLUME",cls:"yellow",status:"WAIT",price,trigger:`Vol ≥ 0.85×`,invalidation:money(trade.stop),note:`The SHORT structure is present, but entry-timeframe volume is only ${(Number(d.volumeRatio)||0).toFixed(2)}× average. Wait for participation to improve.`,reason:"Volume confirmation is weak"};
+        if(!vwapShortOk)return {action:"WAIT FOR VWAP LOSS",cls:"yellow",status:"WAIT",price,trigger:Number.isFinite(vwap.vwap)?`Below ${money(vwap.vwap)}`:"VWAP loss",invalidation:money(trade.stop),note:`Price is still above session VWAP, so intraday flow is not confirming the SHORT yet.`,reason:"Price above session VWAP"};
+        if(grades.entry.score<55)return {action:"WAIT FOR CONFIRMATION",cls:"yellow",status:"WAIT",price,trigger:`Entry grade ≥ 55`,invalidation:money(trade.stop),note:`Trend quality is better than entry quality. Current entry grade is ${grades.entry.score}/100.`,reason:"Entry grade below execution threshold"};
+        if(inEntryZone&&entryState.direction==="BEARISH")return {action:"ENTRY NOW — SHORT",cls:"red",status:"ENTRY",price,trigger:`In zone ${money(trade.entryLow)}–${money(trade.entryHigh)}`,invalidation:money(trade.stop),note:`Price is in the planned short entry zone, the ${TF_LABELS[d.timeframe]} chart is bearish, volume is acceptable${vwap.available?", and VWAP is not fighting the trade":""}. Keep the stop above invalidation.`,reason:"Planned-zone failed bounce confirmed"};
+        if(shortRetest&&entryState.direction==="BEARISH"&&volStrong)return {action:"ENTRY NOW — BREAKDOWN RETEST",cls:"red",status:"ENTRY",price,trigger:`Hold < ${money(support)}`,invalidation:money(trade.stop),note:`Price is below support near ${money(support)} but remains close enough to the broken level to qualify as a breakdown/retest entry with healthy volume.`,reason:"Breakdown held below support"};
+        if(Number.isFinite(support)&&price>=support-tolerance)return {action:"WAIT FOR BREAK / RETEST",cls:"yellow",status:"WAIT",price,trigger:`Break < ${money(support)}, then fail reclaim`,invalidation:money(trade.stop),note:`The SHORT bias is intact, but price has not produced a clean support break/retest or returned to the planned entry zone yet.`,reason:"No executable short trigger yet"};
+        return {action:"WAIT FOR RETEST",cls:"yellow",status:"WAIT",price,trigger:Number.isFinite(support)?`Retest ${money(support)} from below`:`${money(trade.entryLow)}–${money(trade.entryHigh)}`,invalidation:money(trade.stop),note:`The direction is bearish, but the current quote is outside the preferred execution zone. Wait for a failed bounce/retest instead of chasing.`,reason:"Price outside preferred short entry zone"};
     }
-    if(analysis.score>=8)return {action:"WAIT — BULLISH LEAN",cls:"yellow",note:`The weighted evidence leans bullish, but structure or guardrails are not strong enough for an entry yet.`};
-    if(analysis.score<=-8)return {action:"WAIT — BEARISH LEAN",cls:"yellow",note:`The weighted evidence leans bearish, but structure or guardrails are not strong enough for an entry yet.`};
-    return {action:"WAIT",cls:"yellow",note:"The higher-timeframe evidence does not show a clean directional edge yet."};
+
+    if(analysis.score>=8)return {action:"WAIT — BULLISH LEAN",cls:"yellow",status:"WAIT",price,trigger:"Need LONG structure",invalidation:"—",note:`The weighted evidence leans bullish, but structure or guardrails are not strong enough for an entry yet.`,reason:"No authorized LONG signal"};
+    if(analysis.score<=-8)return {action:"WAIT — BEARISH LEAN",cls:"yellow",status:"WAIT",price,trigger:"Need SHORT structure",invalidation:"—",note:`The weighted evidence leans bearish, but structure or guardrails are not strong enough for an entry yet.`,reason:"No authorized SHORT signal"};
+    return {action:"WAIT",cls:"yellow",status:"WAIT",price,trigger:"No trigger",invalidation:"—",note:"The higher-timeframe evidence does not show a clean directional edge yet.",reason:"No directional edge"};
 }
 function buildPlainEnglishExplanation(analysis,trade){
     const d=analysis.primary,e=analysis.entryData||d,m=analysis.macroContext||{},n=analysis.analyses.length;
@@ -3900,9 +3992,16 @@ function renderTradeOutput(analysis,trade){
                 </div>
             </div>
             <div class="action-banner">
-                <div><div class="a-label">What I would do with this signal</div><div class="a-value ${plain.timing.cls}">${escapeHTML(plain.timing.action)}</div></div>
+                <div><div class="a-label">Entry Confirmation</div><div class="a-value ${plain.timing.cls}">${escapeHTML(plain.timing.action)}</div></div>
                 <div class="a-note">${escapeHTML(plain.timing.note)}</div>
             </div>
+            <div class="entry-confirm-grid">
+                <div class="entry-confirm-tile"><div class="ec-label">Live Price</div><div class="ec-value blue">${money(plain.timing.price)}</div></div>
+                <div class="entry-confirm-tile"><div class="ec-label">Required Trigger</div><div class="ec-value ${plain.timing.status==="ENTRY"?plain.timing.cls:"yellow"}">${escapeHTML(String(plain.timing.trigger||"—"))}</div></div>
+                <div class="entry-confirm-tile"><div class="ec-label">Invalidation / Stop</div><div class="ec-value red">${escapeHTML(String(plain.timing.invalidation||"—"))}</div></div>
+                <div class="entry-confirm-tile"><div class="ec-label">Execution State</div><div class="ec-value ${plain.timing.cls}">${escapeHTML(String(plain.timing.status||"WAIT"))}</div></div>
+            </div>
+            <div class="entry-confirm-reason"><b>Why:</b> ${escapeHTML(String(plain.timing.reason||"Execution rules are waiting for confirmation."))} • This layer times execution only; it does not reverse Halifax's core LONG/SHORT model.</div>
             <div class="explain-grid">
                 <div class="explain-block"><div class="e-title">Why the engine says this</div><ul class="explain-bullets">${plain.bullets.map(x=>`<li>• ${escapeHTML(x)}</li>`).join("")}</ul></div>
                 <div class="explain-block"><div class="e-title">What would confirm it</div><p>${escapeHTML(plain.confirm)}</p></div>
@@ -4673,7 +4772,7 @@ async function runEngine(){
         renderChart(analysis.primary,trade);renderRegime(analysis,benchmarkResult);renderMTF(analysis);renderTradeOutput(analysis,trade);renderMarketGuidance(analysis.macroContext);renderBondContext(analysis.macroContext?.bondContext);renderPositionGuardrails(ticker,analysis.primary,analysis);renderNews(displayNews,ticker);
         document.getElementById("smartMoneyOutput").innerHTML='<div class="loading">Core prediction is complete. Loading insider, institutional and public-filing context in the background…</div>';
         document.getElementById("decisionCard")?.scrollIntoView({behavior:"smooth",block:"start"});
-        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v24.1 Calibrated Probability`;
+        setStatus(`${ticker} core prediction complete`);document.title=`${ticker} | Halifax Trade Engine v24.4 Entry Confirmation`;
         startLiveQuoteStream(ticker,runId);
         const portfolioPromise=loadPortfolioRiskContext(ticker,analysis).catch(()=>null);
         portfolioPromise.then(pr=>{
@@ -5772,7 +5871,7 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now(
     setTimeout(()=>{if(typeof lastAnalysis!=='undefined'&&typeof lastTrade!=='undefined'&&lastAnalysis&&lastTrade&&String(lastAnalysis.primary?.ticker||'').toUpperCase()===val)updateAnalysis(lastAnalysis,lastTrade);},100);
   };
 
-  // v23.9 Lead/Lag Scanner. Measures recent relationships; it does not assume a permanent leader.
+  // v24.3 Lead/Lag Scanner. On-demand Quick 15 prevents public-feed flooding; Full 50 remains available manually.
   const HX23_LEAD_LAG_PAIRS=[
     ['NVDA','AMD','Semiconductors'],['NVDA','AVGO','Semiconductors'],['NVDA','MRVL','Semiconductors'],['AMD','AVGO','Semiconductors'],['AMD','MRVL','Semiconductors'],
     ['JPM','BAC','Large banks'],['JPM','WFC','Large banks'],['JPM','C','Large banks'],['BAC','WFC','Large banks'],['BAC','C','Large banks'],
@@ -5785,81 +5884,74 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now(
     ['WMT','COST','Mass retail'],['WMT','TGT','Mass retail'],['WMT','DG','Mass retail'],['COST','TGT','Mass retail'],['COST','DG','Mass retail'],
     ['CHTR','CMCSA','Cable / media'],['CHTR','CABO','Cable / broadband'],['CHTR','DIS','Communication services'],['CMCSA','CABO','Cable / broadband'],['CMCSA','DIS','Media']
   ];
-  let hx23LeadLagState={running:false,lastRun:0,rows:[],error:'',loaded:0,total:HX23_LEAD_LAG_PAIRS.length,failedSymbols:0,failedList:[]};
+  const HX23_LEAD_LAG_QUICK_INDEXES=[0,1,5,10,15,20,25,30,31,33,35,40,45,46,47];
+  const hx23LeadLagCache=new Map();
+  let hx23LeadLagState={running:false,lastRun:0,rows:[],error:'',failed:[],loadedSymbols:0,totalSymbols:0,mode:'quick',pairsScanned:0,totalPairs:HX23_LEAD_LAG_QUICK_INDEXES.length,fallbackSymbols:0};
   const hx23LLClamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-  function hx23LLCorr(xs,ys){const n=Math.min(xs.length,ys.length);if(n<30)return null;let sx=0,sy=0;for(let i=0;i<n;i++){sx+=xs[i];sy+=ys[i];}const mx=sx/n,my=sy/n;let num=0,dx=0,dy=0;for(let i=0;i<n;i++){const a=xs[i]-mx,b=ys[i]-my;num+=a*b;dx+=a*a;dy+=b*b;}const den=Math.sqrt(dx*dy);return den?num/den:null;}
-  function hx23LLStd(xs){if(xs.length<12)return null;const m=xs.reduce((a,b)=>a+b,0)/xs.length;const v=xs.reduce((a,b)=>a+(b-m)*(b-m),0)/(xs.length-1);return Math.sqrt(Math.max(0,v));}
+  function hx23LLCorr(xs,ys){const n=Math.min(xs.length,ys.length);if(n<20)return null;let sx=0,sy=0;for(let i=0;i<n;i++){sx+=xs[i];sy+=ys[i];}const mx=sx/n,my=sy/n;let num=0,dx=0,dy=0;for(let i=0;i<n;i++){const a=xs[i]-mx,b=ys[i]-my;num+=a*b;dx+=a*a;dy+=b*b;}const den=Math.sqrt(dx*dy);return den?num/den:null;}
+  function hx23LLStd(xs){if(xs.length<8)return null;const m=xs.reduce((a,b)=>a+b,0)/xs.length,v=xs.reduce((a,b)=>a+(b-m)*(b-m),0)/(xs.length-1);return Math.sqrt(Math.max(0,v));}
   function hx23LLFmtPct(v,d=2){return Number.isFinite(v)?`${v>=0?'+':''}${(v*100).toFixed(d)}%`:'—';}
   function hx23LLFmtCorr(v){return Number.isFinite(v)?v.toFixed(2):'—';}
   const hx23LLBucket=t=>Math.floor(Number(t)/300)*300;
-  async function hx23LLLoadSymbol(symbol,fresh=false){
-    const url=`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=5m&range=5d&includePrePost=false&events=div%2Csplits`;
-    const raw=typeof fetchJsonFresh==='function'&&fresh?await fetchJsonFresh(url):typeof fetchJson==='function'?await fetchJson(url):await (await fetch(url,{cache:'no-store'})).json();
-    const r=raw?.chart?.result?.[0],q=r?.indicators?.quote?.[0];if(!r?.timestamp||!q?.close)throw new Error(`No 5-minute data for ${symbol}`);
-    const map=new Map(),vol=new Map();for(let i=0;i<r.timestamp.length;i++){const t=hx23LLBucket(r.timestamp[i]),c=Number(q.close[i]),v=Number(q.volume?.[i]||0);if(Number.isFinite(t)&&Number.isFinite(c)&&c>0){map.set(t,c);vol.set(t,Number.isFinite(v)?v:0);}}
-    if(map.size<120)throw new Error(`Thin 5-minute history for ${symbol}`);
-    return {symbol,map,vol};
+  function hx23LLUniverse(mode='quick'){return mode==='full'?HX23_LEAD_LAG_PAIRS:HX23_LEAD_LAG_QUICK_INDEXES.map(i=>HX23_LEAD_LAG_PAIRS[i]);}
+  async function hx23LLMarketData(symbol){
+    const token=hxGetMarketDataToken();if(!token)throw new Error('no fallback token');
+    const d=await hxMarketDataJson(`https://api.marketdata.app/v1/stocks/candles/5/${encodeURIComponent(symbol)}/?countback=420&extended=false`);
+    if(!Array.isArray(d?.t)||!Array.isArray(d?.c))throw new Error('MarketData.app returned no candles');
+    const map=new Map(),vol=new Map();for(let i=0;i<d.t.length;i++){const t=hx23LLBucket(d.t[i]),c=Number(d.c[i]),v=Number(d.v?.[i]||0);if(Number.isFinite(t)&&Number.isFinite(c)&&c>0){map.set(t,c);vol.set(t,Number.isFinite(v)?v:0);}}
+    if(map.size<60)throw new Error(`only ${map.size} usable MarketData bars`);return {symbol,map,vol,source:'MarketData.app'};
+  }
+  async function hx23LLLoadSymbol(symbol,force=false){
+    const prior=hx23LeadLagCache.get(symbol);if(!force&&prior&&Date.now()-prior.at<240000)return prior.data;
+    const url=`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=5m&range=5d&includePrePost=false&events=div%2Csplits`;let raw=null,lastError=null;
+    try{raw=typeof fetchJson==='function'?await fetchJson(url):await (await fetch(url,{cache:'no-store'})).json();}catch(e){lastError=e;}
+    if(!raw&&force&&typeof fetchJsonFresh==='function'){try{raw=await fetchJsonFresh(url);}catch(e){lastError=e;}}
+    if(raw){
+      const r=raw?.chart?.result?.[0],q=r?.indicators?.quote?.[0];if(r?.timestamp&&q?.close){const map=new Map(),vol=new Map();for(let i=0;i<r.timestamp.length;i++){const t=hx23LLBucket(r.timestamp[i]),c=Number(q.close[i]),v=Number(q.volume?.[i]||0);if(Number.isFinite(t)&&Number.isFinite(c)&&c>0){map.set(t,c);vol.set(t,Number.isFinite(v)?v:0);}}if(map.size>=60){const data={symbol,map,vol,source:'Yahoo Finance'};hx23LeadLagCache.set(symbol,{at:Date.now(),data});return data;}lastError=new Error(`only ${map.size} usable Yahoo bars`);}
+    }
+    if(hxGetMarketDataToken()){try{const data=await hx23LLMarketData(symbol);hx23LeadLagCache.set(symbol,{at:Date.now(),data});return data;}catch(e){lastError=e;}}
+    throw new Error(`${symbol}: ${lastError?.message||'5-minute feed unavailable'}${hxGetMarketDataToken()?'':' (Options panel can store a MarketData.app fallback token)'}`);
   }
   function hx23LLCommon(a,b){return [...a.map.keys()].filter(t=>b.map.has(t)).sort((x,y)=>x-y);}
   function hx23LLReturnMap(data){const times=[...data.map.keys()].sort((a,b)=>a-b),m=new Map();for(let i=1;i<times.length;i++){const t0=times[i-1],t1=times[i],dt=t1-t0;if(dt<240||dt>600)continue;const p0=data.map.get(t0),p1=data.map.get(t1);if(p0>0&&p1>0)m.set(t1,p1/p0-1);}return m;}
   function hx23LLLagCorr(retA,retB,lagBars){const xs=[],ys=[],shift=lagBars*300;for(const [t,a] of retA){const b=retB.get(t+shift);if(Number.isFinite(a)&&Number.isFinite(b)){xs.push(a);ys.push(b);}}return {corr:hx23LLCorr(xs,ys),n:xs.length};}
+  function hx23LLWindowTimes(common,i){if(i<3||i+3>=common.length)return null;const t=common[i],t0=common[i-3],t1=common[i+3];if(t-t0<600||t-t0>1200||t1-t<600||t1-t>1200)return null;return {t0,t,t1};}
+  function hx23LLLatestWindow(common){if(common.length<4)return null;const t=common.at(-1);for(let i=common.length-2;i>=0;i--){const d=t-common[i];if(d>=720&&d<=1200)return {t0:common[i],t};if(d>1200)break;}return null;}
   function hx23LLPairStats(pair,a,b){
-    const common=hx23LLCommon(a,b);if(common.length<180)return null;
+    const common=hx23LLCommon(a,b);if(common.length<90)return null;
     const ra=hx23LLReturnMap(a),rb=hx23LLReturnMap(b),sameX=[],sameY=[];for(const [t,x] of ra){const y=rb.get(t);if(Number.isFinite(y)){sameX.push(x);sameY.push(y);}}
-    const corr=hx23LLCorr(sameX,sameY),corrSamples=sameX.length;if(!Number.isFinite(corr)||corrSamples<120)return null;
+    const corr=hx23LLCorr(sameX,sameY),corrSamples=sameX.length;if(!Number.isFinite(corr)||corrSamples<70)return null;
     let best={leader:null,lag:0,corr:-2,n:0},revBest={corr:-2,n:0};
-    for(let lag=1;lag<=3;lag++){const ab=hx23LLLagCorr(ra,rb,lag),ba=hx23LLLagCorr(rb,ra,lag);if(Number.isFinite(ab.corr)&&ab.n>=80&&ab.corr>best.corr)best={leader:'A',lag,corr:ab.corr,n:ab.n};if(Number.isFinite(ba.corr)&&ba.n>=80&&ba.corr>best.corr)best={leader:'B',lag,corr:ba.corr,n:ba.n};}
-    if(!best.leader)return null;
-    for(let lag=1;lag<=3;lag++){const c=best.leader==='A'?hx23LLLagCorr(rb,ra,lag):hx23LLLagCorr(ra,rb,lag);if(Number.isFinite(c.corr)&&c.n>=80&&c.corr>revBest.corr)revBest={corr:c.corr,n:c.n,lag};}
-    const leadEdge=Number.isFinite(best.corr)&&Number.isFinite(revBest.corr)?best.corr-revBest.corr:null;
-    const leaderData=best.leader==='A'?a:b,laggerData=best.leader==='A'?b:a,leader=best.leader==='A'?pair[0]:pair[1],lagger=best.leader==='A'?pair[1]:pair[0];
+    for(let lag=1;lag<=3;lag++){const ab=hx23LLLagCorr(ra,rb,lag),ba=hx23LLLagCorr(rb,ra,lag);if(Number.isFinite(ab.corr)&&ab.n>=50&&ab.corr>best.corr)best={leader:'A',lag,corr:ab.corr,n:ab.n};if(Number.isFinite(ba.corr)&&ba.n>=50&&ba.corr>best.corr)best={leader:'B',lag,corr:ba.corr,n:ba.n};}
+    if(!best.leader)return null;for(let lag=1;lag<=3;lag++){const c=best.leader==='A'?hx23LLLagCorr(rb,ra,lag):hx23LLLagCorr(ra,rb,lag);if(Number.isFinite(c.corr)&&c.n>=50&&c.corr>revBest.corr)revBest={corr:c.corr,n:c.n,lag};}
+    const leadEdge=Number.isFinite(best.corr)&&Number.isFinite(revBest.corr)?best.corr-revBest.corr:null,leaderData=best.leader==='A'?a:b,laggerData=best.leader==='A'?b:a,leader=best.leader==='A'?pair[0]:pair[1],lagger=best.leader==='A'?pair[1]:pair[0];
     const orientedCommon=common.filter(t=>leaderData.map.has(t)&&laggerData.map.has(t)),gaps=[];let catches=0,events=0;
-    for(let i=3;i<orientedCommon.length-3;i++){
-      const t=orientedCommon[i],t0=t-900,t1=t+900;if(!leaderData.map.has(t0)||!laggerData.map.has(t0)||!leaderData.map.has(t1)||!laggerData.map.has(t1))continue;
-      const lr=leaderData.map.get(t)/leaderData.map.get(t0)-1,gr=laggerData.map.get(t)/laggerData.map.get(t0)-1;gaps.push(lr-gr);
-    }
+    for(let i=3;i<orientedCommon.length-3;i++){const w=hx23LLWindowTimes(orientedCommon,i);if(!w)continue;const lr=leaderData.map.get(w.t)/leaderData.map.get(w.t0)-1,gr=laggerData.map.get(w.t)/laggerData.map.get(w.t0)-1;if(Number.isFinite(lr)&&Number.isFinite(gr))gaps.push(lr-gr);}
     const gapStd=hx23LLStd(gaps),histThreshold=Math.max(.0015,(gapStd||0)*1.0);
-    // Non-overlapping 15-minute observations. A "catch" must be material, not merely one tick in the leader's direction.
-    for(let i=3;i<orientedCommon.length-3;i+=3){
-      const t=orientedCommon[i],t0=t-900,t1=t+900;if(!leaderData.map.has(t0)||!laggerData.map.has(t0)||!laggerData.map.has(t1))continue;
-      const lr=leaderData.map.get(t)/leaderData.map.get(t0)-1,gr=laggerData.map.get(t)/laggerData.map.get(t0)-1,g=lr-gr;
-      if(Math.abs(g)<histThreshold||Math.abs(lr)<.0015)continue;
-      const future=laggerData.map.get(t1)/laggerData.map.get(t)-1,required=Math.max(.0005,Math.min(.005,Math.abs(g)*.35));events++;
-      if(Math.sign(future)===Math.sign(lr)&&Math.abs(future)>=required)catches++;
-    }
-    const latest=orientedCommon.at(-1),prior=latest-900;if(!Number.isFinite(latest)||!leaderData.map.has(prior)||!laggerData.map.has(prior))return null;
-    const leaderRet=leaderData.map.get(latest)/leaderData.map.get(prior)-1,laggerRet=laggerData.map.get(latest)/laggerData.map.get(prior)-1,gap=leaderRet-laggerRet,z=gapStd?gap/gapStd:null;
-    const catchRate=events>=12?catches/events:null,catchAdjusted=events>=12?(catches+2)/(events+4):null;
-    const sampleQuality=events>=24&&corrSamples>=250?'HIGH':events>=12&&corrSamples>=160?'MODERATE':'LOW';
-    const leaderStable=Number.isFinite(leadEdge)&&leadEdge>=.035&&best.corr>=.20,broadCorrOK=corr>=.45,leaderMoved=Math.abs(leaderRet)>=.0015,behind=(leaderRet>0&&gap>0)||(leaderRet<0&&gap<0),gapOK=Number.isFinite(z)&&Math.abs(z)>=1.0,catchOK=Number.isFinite(catchAdjusted)&&catchAdjusted>=.55;
-    let signal='NO SETUP',signalClass='muted';
-    if(leaderStable&&broadCorrOK&&leaderMoved&&behind&&gapOK&&catchOK){signal=leaderRet>0?'WATCH LONG':'WATCH SHORT';signalClass=leaderRet>0?'long':'short';}
-    else if(leaderStable&&broadCorrOK&&Number.isFinite(z)&&Math.abs(z)>=.75){signal=events<12?'SAMPLE THIN':'WATCH DIVERGENCE';signalClass='watch';}
-    const corrScore=hx23LLClamp((corr-.35)/.50,0,1)*25,edgeScore=hx23LLClamp(((leadEdge||0)-.01)/.16,0,1)*25,catchScore=Number.isFinite(catchAdjusted)?hx23LLClamp((catchAdjusted-.45)/.30,0,1)*25:2,gapScore=Number.isFinite(z)?hx23LLClamp((Math.abs(z)-.65)/1.85,0,1)*25:0;
-    let score=Math.round(corrScore+edgeScore+catchScore+gapScore);if(sampleQuality==='LOW')score=Math.min(score,54);else if(sampleQuality==='MODERATE')score=Math.min(score,79);
-    return {pair:`${pair[0]} / ${pair[1]}`,sector:pair[2],leader,lagger,lagMin:best.lag*5,corr,corrSamples,leadCorr:best.corr,leadSamples:best.n,leadEdge,leaderRet,laggerRet,gap,z,catchRate,catchAdjusted,catchEvents:events,catchWins:catches,sampleQuality,score,signal,signalClass,latest};
+    for(let i=3;i<orientedCommon.length-3;i+=3){const w=hx23LLWindowTimes(orientedCommon,i);if(!w)continue;const lr=leaderData.map.get(w.t)/leaderData.map.get(w.t0)-1,gr=laggerData.map.get(w.t)/laggerData.map.get(w.t0)-1,g=lr-gr;if(Math.abs(g)<histThreshold||Math.abs(lr)<.0015)continue;const future=laggerData.map.get(w.t1)/laggerData.map.get(w.t)-1,required=Math.max(.0005,Math.min(.005,Math.abs(g)*.35));events++;if(Math.sign(future)===Math.sign(lr)&&Math.abs(future)>=required)catches++;}
+    const lw=hx23LLLatestWindow(orientedCommon);if(!lw)return null;const latest=lw.t,leaderRet=leaderData.map.get(latest)/leaderData.map.get(lw.t0)-1,laggerRet=laggerData.map.get(latest)/laggerData.map.get(lw.t0)-1,gap=leaderRet-laggerRet,z=gapStd?gap/gapStd:null;
+    const catchRate=events>=12?catches/events:null,catchAdjusted=events>=12?(catches+2)/(events+4):null,sampleQuality=events>=24&&corrSamples>=220?'HIGH':events>=12&&corrSamples>=120?'MODERATE':'LOW';
+    const leaderStable=Number.isFinite(leadEdge)&&leadEdge>=.025&&best.corr>=.18,broadCorrOK=corr>=.40,leaderMoved=Math.abs(leaderRet)>=.0014,behind=(leaderRet>0&&gap>0)||(leaderRet<0&&gap<0),gapOK=Number.isFinite(z)&&Math.abs(z)>=1.0,catchOK=Number.isFinite(catchAdjusted)&&catchAdjusted>=.55;
+    let signal='NO SETUP',signalClass='muted';if(sampleQuality!=='LOW'&&leaderStable&&broadCorrOK&&leaderMoved&&behind&&gapOK&&catchOK){signal=leaderRet>0?'WATCH LONG':'WATCH SHORT';signalClass=leaderRet>0?'long':'short';}else if(leaderStable&&broadCorrOK&&Number.isFinite(z)&&Math.abs(z)>=.75){signal=events<12?'SAMPLE THIN':'WATCH DIVERGENCE';signalClass='watch';}
+    const corrScore=hx23LLClamp((corr-.30)/.55,0,1)*25,edgeScore=hx23LLClamp(((leadEdge||0)-.005)/.15,0,1)*25,catchScore=Number.isFinite(catchAdjusted)?hx23LLClamp((catchAdjusted-.45)/.30,0,1)*25:2,gapScore=Number.isFinite(z)?hx23LLClamp((Math.abs(z)-.60)/1.90,0,1)*25:0;let score=Math.round(corrScore+edgeScore+catchScore+gapScore);if(sampleQuality==='LOW')score=Math.min(score,54);else if(sampleQuality==='MODERATE')score=Math.min(score,79);
+    return {pair:`${pair[0]} / ${pair[1]}`,sector:pair[2],leader,lagger,lagMin:best.lag*5,corr,corrSamples,leadCorr:best.corr,leadSamples:best.n,leadEdge,leaderRet,laggerRet,gap,z,catchRate,catchAdjusted,catchEvents:events,catchWins:catches,sampleQuality,score,signal,signalClass,latest,source:a.source===b.source?a.source:`${a.source}/${b.source}`};
   }
   function hx23LeadLagHTML(){
-    const st=hx23LeadLagState,stamp=st.lastRun?new Date(st.lastRun).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'}):'not run',failed=st.failedList?.length?` • failed: ${st.failedList.slice(0,6).join(', ')}${st.failedList.length>6?'…':''}`:'';
-    const rows=st.rows.slice(0,15);return `<div class="hx23-ll-shell"><div class="hx23-ll-head"><div><b>Lead / Lag Catch-Up Scanner</b><small>50 curated related pairs • 5-minute regular-session bars • recent 5-session relationship</small></div><div class="hx23-ll-controls"><button class="hx23-ll-btn" onclick="hx23RunLeadLagScanner(true)">↻ REFRESH SCAN</button></div></div><div class="hx23-ll-status">${esc(st.running?`Scanning… ${st.loaded}/${st.total} pair universe loaded • ${st.rows.length} scored${st.failedSymbols?` • ${st.failedSymbols} symbol feeds unavailable`:''}`:`Last scan ${stamp} • ${st.rows.length} usable pairs${st.failedSymbols?` • ${st.failedSymbols} symbol feeds unavailable`:''} • ranked by divergence + measured lead/lag reliability${failed}`)}</div><div class="hx23-ll-note">Catch-up is now shown only with ≥12 non-overlapping historical events and is Beta-shrunk for stability. A trade-direction WATCH also requires ≥0.45 same-bar correlation, a measurable lead edge, a ≥1σ current gap, and ≥55% shrunk catch-up evidence. Thin samples are labeled instead of promoted.</div>${st.error?`<div class="hx23-ll-error">${esc(st.error)}</div>`:''}${rows.length?`<div class="hx23-ll-table-wrap"><table class="hx23-ll-table"><thead><tr><th>Pair</th><th>Signal / lagger</th><th>Leader</th><th>Lag</th><th>Corr</th><th>Leader 15m</th><th>Lagger 15m</th><th>Gap</th><th>Gap z</th><th>Catch-up</th><th>Evidence</th><th>Score</th></tr></thead><tbody>${rows.map(r=>`<tr onclick="hx23Analyze('${esc(r.lagger)}');hx23CloseMenu()"><td><div class="hx23-ll-pair">${esc(r.pair)}</div><div class="hx23-ll-sector">${esc(r.sector)}</div></td><td><div class="hx23-ll-signal hx23-ll-${esc(r.signalClass)}">${esc(r.signal)}</div><div class="hx23-ll-sector">Trade candidate: ${esc(r.lagger)}</div></td><td>${esc(r.leader)}</td><td>${r.lagMin}m</td><td>${hx23LLFmtCorr(r.corr)}</td><td>${hx23LLFmtPct(r.leaderRet)}</td><td>${hx23LLFmtPct(r.laggerRet)}</td><td>${hx23LLFmtPct(r.gap)}</td><td>${Number.isFinite(r.z)?r.z.toFixed(1):'—'}</td><td>${Number.isFinite(r.catchAdjusted)?`${Math.round(r.catchAdjusted*100)}% (${r.catchWins}/${r.catchEvents})`:'N/A'}</td><td><b>${esc(r.sampleQuality)}</b><div class="hx23-ll-sector">corr n=${r.corrSamples} • lead n=${r.leadSamples}</div></td><td><span class="hx23-ll-score ${r.score>=70?'hot':r.score>=55?'warm':'cool'}">${r.score}</span></td></tr>`).join('')}</tbody></table></div>`:'<div class="hx23-ll-loading">No completed pair scan yet.</div>'}<div class="hx23-ll-updated">Auto-refresh: every 5 minutes while the page is open. Forced refresh bypasses the short market-data cache.</div></div>`;
+    const st=hx23LeadLagState,stamp=st.lastRun?new Date(st.lastRun).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'}):'not run',modeLabel=st.mode==='full'?'Full 50':'Quick 15',rows=st.rows.slice(0,15),failed=st.failed||[];
+    const health=st.fallbackSymbols?`<div class="hx23-ll-note">Fallback data used for ${st.fallbackSymbols} symbols. Automatic rescans are paused while API fallback is in use to preserve request credits.</div>`:'';
+    const table=rows.length?`<div class="hx23-ll-table-wrap"><table class="hx23-ll-table"><thead><tr><th>Pair</th><th>Signal / lagger</th><th>Leader</th><th>Lag</th><th>Corr</th><th>Leader 15m</th><th>Lagger 15m</th><th>Gap</th><th>Gap z</th><th>Catch-up</th><th>Evidence</th><th>Score</th></tr></thead><tbody>${rows.map(r=>`<tr onclick="hx23Analyze('${esc(r.lagger)}');hx23CloseMenu()"><td><div class="hx23-ll-pair">${esc(r.pair)}</div><div class="hx23-ll-sector">${esc(r.sector)}</div></td><td><div class="hx23-ll-signal hx23-ll-${esc(r.signalClass)}">${esc(r.signal)}</div><div class="hx23-ll-sector">Trade candidate: ${esc(r.lagger)}</div></td><td>${esc(r.leader)}</td><td>${r.lagMin}m</td><td>${hx23LLFmtCorr(r.corr)}</td><td>${hx23LLFmtPct(r.leaderRet)}</td><td>${hx23LLFmtPct(r.laggerRet)}</td><td>${hx23LLFmtPct(r.gap)}</td><td>${Number.isFinite(r.z)?r.z.toFixed(1):'—'}</td><td>${Number.isFinite(r.catchAdjusted)?`${Math.round(r.catchAdjusted*100)}% (${r.catchWins}/${r.catchEvents})`:'N/A'}</td><td><b>${esc(r.sampleQuality)}</b><div class="hx23-ll-sector">corr n=${r.corrSamples} • lead n=${r.leadSamples}</div></td><td><span class="hx23-ll-score ${r.score>=70?'hot':r.score>=55?'warm':'cool'}">${r.score}</span></td></tr>`).join('')}</tbody></table></div>`:'<div class="hx23-ll-loading">No completed pair results yet. Tap QUICK 15.</div>';
+    return `<div class="hx23-ll-shell"><div class="hx23-ll-head"><div><b>Lead / Lag Catch-Up Scanner</b><small>5-minute regular-session bars • measured recent relationship • ${modeLabel}</small></div><div class="hx23-ll-controls"><button class="hx23-ll-btn" onclick="hx23RunLeadLagScanner(true,'quick')">QUICK 15</button><button class="hx23-ll-btn secondary" onclick="hx23RunLeadLagScanner(true,'full')">FULL 50</button></div></div><div class="hx23-ll-status">${esc(st.running?`Scanning ${modeLabel}… loaded ${st.loadedSymbols}/${st.totalSymbols} symbols`:`Last ${modeLabel} scan ${stamp} • ${st.rows.length} usable pair results`)}</div>${health}<div class="hx23-ll-note">Quick 15 limits simultaneous requests to three and caches 5-minute data for four minutes. Catch-up requires ≥12 non-overlapping observations and is Beta-shrunk; WATCH LONG/SHORT also requires adequate correlation, measured lead edge, a ≥1σ gap, and ≥55% adjusted catch-up evidence. Missing bars are tolerated within a 10–20 minute window rather than silently filled.</div>${st.error?`<div class="hx23-ll-error">${esc(st.error)}</div>`:''}${failed.length?`<div class="hx23-ll-fail">Feed failures: ${esc(failed.slice(0,10).join(' • '))}${failed.length>10?' • …':''}</div>`:''}${table}<div class="hx23-ll-updated">Auto-refreshes every 5 minutes only while this panel is open and only when Yahoo data is being used.</div></div>`;
   }
   function hx23RenderLeadLagDrawer(){if(!$('hx23Drawer')?.classList.contains('open')||$('hx23DrawerTitle')?.textContent!=='Lead / Lag Scanner')return;const body=$('hx23DrawerBody');if(body)body.innerHTML=`<div class="hx23-drawer-card">${hx23LeadLagHTML()}</div>`;}
-  window.hx23RunLeadLagScanner=async function(force=false){
-    if(hx23LeadLagState.running)return;if(!force&&hx23LeadLagState.lastRun&&Date.now()-hx23LeadLagState.lastRun<270000)return;hx23LeadLagState={...hx23LeadLagState,running:true,error:'',loaded:0,failedSymbols:0,failedList:[]};hx23RenderLeadLagDrawer();
-    const qualityRank=q=>q==='HIGH'?2:q==='MODERATE'?1:0;
-    const rankRows=rows=>rows.sort((x,y)=>{const sx=x.signalClass==='long'||x.signalClass==='short'?2:x.signalClass==='watch'?1:0,sy=y.signalClass==='long'||y.signalClass==='short'?2:y.signalClass==='watch'?1:0;return sy-sx||qualityRank(y.sampleQuality)-qualityRank(x.sampleQuality)||y.score-x.score||Math.abs(y.z||0)-Math.abs(x.z||0);});
-    const scoreAvailable=data=>{const rows=[];for(const p of HX23_LEAD_LAG_PAIRS){const a=data.get(p[0]),b=data.get(p[1]);if(!a||!b)continue;try{const r=hx23LLPairStats(p,a,b);if(r)rows.push(r);}catch(e){}}return rankRows(rows);};
+  window.hx23RunLeadLagScanner=async function(force=false,mode=null){
+    if(hx23LeadLagState.running)return;const selected=mode||hx23LeadLagState.mode||'quick';if(!force&&hx23LeadLagState.lastRun&&hx23LeadLagState.mode===selected&&Date.now()-hx23LeadLagState.lastRun<270000)return;
+    const pairs=hx23LLUniverse(selected),symbols=[...new Set(pairs.flatMap(p=>[p[0],p[1]]))],data=new Map(),failed=[];hx23LeadLagState={...hx23LeadLagState,running:true,error:'',failed:[],rows:[],loadedSymbols:0,totalSymbols:symbols.length,mode:selected,pairsScanned:0,totalPairs:pairs.length,fallbackSymbols:0};hx23RenderLeadLagDrawer();
     try{
-      const symbols=[...new Set(HX23_LEAD_LAG_PAIRS.flatMap(p=>[p[0],p[1]]))],data=new Map(),failedNames=[];
-      for(let i=0;i<symbols.length;i+=8){
-        const batch=symbols.slice(i,i+8),got=await Promise.allSettled(batch.map(async sym=>[sym,await hx23LLLoadSymbol(sym,!!force)]));
-        for(let j=0;j<got.length;j++){const g=got[j],sym=batch[j];if(g.status==='fulfilled')data.set(g.value[0],g.value[1]);else failedNames.push(sym);}
-        const partial=scoreAvailable(data);
-        hx23LeadLagState={...hx23LeadLagState,rows:partial,loaded:Math.min(HX23_LEAD_LAG_PAIRS.length,Math.round((i+batch.length)/symbols.length*HX23_LEAD_LAG_PAIRS.length)),failedSymbols:failedNames.length,failedList:[...failedNames]};
-        hx23RenderLeadLagDrawer();if(i+8<symbols.length)await new Promise(r=>setTimeout(r,120));
-      }
-      const rows=scoreAvailable(data);hx23LeadLagState={...hx23LeadLagState,running:false,lastRun:Date.now(),rows,loaded:HX23_LEAD_LAG_PAIRS.length,failedSymbols:failedNames.length,failedList:[...failedNames],error:rows.length?'':`The public 5-minute feeds did not return enough aligned data to score the pair universe.`};
-    }catch(e){hx23LeadLagState={...hx23LeadLagState,running:false,lastRun:Date.now(),error:e?.message||'Lead/lag scan failed.'};}hx23RenderLeadLagDrawer();
+      for(let i=0;i<symbols.length;i+=3){const batch=symbols.slice(i,i+3),got=await Promise.allSettled(batch.map(async sym=>[sym,await hx23LLLoadSymbol(sym,force)]));for(let j=0;j<got.length;j++){const g=got[j],sym=batch[j];if(g.status==='fulfilled')data.set(g.value[0],g.value[1]);else failed.push(`${sym}: ${g.reason?.message||'feed failed'}`);}hx23LeadLagState.loadedSymbols=data.size;hx23LeadLagState.failed=[...failed];hx23LeadLagState.fallbackSymbols=[...data.values()].filter(x=>x.source==='MarketData.app').length;hx23RenderLeadLagDrawer();if(i+3<symbols.length)await new Promise(r=>setTimeout(r,320));}
+      const rows=[];for(const p of pairs){const a=data.get(p[0]),b=data.get(p[1]);if(!a||!b)continue;try{const r=hx23LLPairStats(p,a,b);if(r)rows.push(r);}catch(e){}}
+      const qualityRank=q=>q==='HIGH'?2:q==='MODERATE'?1:0;rows.sort((x,y)=>{const sx=x.signalClass==='long'||x.signalClass==='short'?2:x.signalClass==='watch'?1:0,sy=y.signalClass==='long'||y.signalClass==='short'?2:y.signalClass==='watch'?1:0;return sy-sx||qualityRank(y.sampleQuality)-qualityRank(x.sampleQuality)||y.score-x.score||Math.abs(y.z||0)-Math.abs(x.z||0);});
+      const error=rows.length?'':data.size<2?'No usable 5-minute feeds loaded. Yahoo may be rate-limiting/CORS-blocking this browser. You can add a MarketData.app token under Options as a fallback.':'Feeds loaded, but no pair had enough aligned 5-minute history to meet the reliability rules.';hx23LeadLagState={...hx23LeadLagState,running:false,lastRun:Date.now(),rows,failed:[...failed],loadedSymbols:data.size,pairsScanned:rows.length,error,fallbackSymbols:[...data.values()].filter(x=>x.source==='MarketData.app').length};
+    }catch(e){hx23LeadLagState={...hx23LeadLagState,running:false,lastRun:Date.now(),failed:[...failed],error:e?.message||'Lead/lag scan failed.'};}hx23RenderLeadLagDrawer();
   };
   const menuMap={technical:['Technical Evidence','mockTechnicalBody'],macro:['Macro & Market Data','mockMacro'],government:['Government Intelligence','mockGovernmentBody'],options:['Options & Derivatives','mockOptionsBody'],flow:['Smart Money Flow','mockSmartBody'],fund:['Fundamentals','mockFundBody'],bear:['Bear / Inverse ETF Radar','sectorInverseRadar'],list:['My Stock Watch',null],news:['News & Insiders','hx23News'],events:['Upcoming Events','hx23Events'],moveclock:['Market Move Clock',null],leadlag:['Lead / Lag Scanner',null],ai:['AI Stock Analysis','hx23AiPanel']};
   window.hx23OpenMenu=function(key){
@@ -5867,14 +5959,15 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now(
     if(key==='list'){content=`<div class="hx23-drawer-card"><div class="hx23-drawer-title">My Stock Watch</div><div class="hx23-drawer-copy">Your editable Halifax watchlist. Quotes, change, trend, relative volume, bid/ask, session and update time refresh from the engine's public data feeds. Missing values stay blank rather than being guessed.</div><div class="hx23-watch-toolbar"><span class="hx23-watch-status" id="hx23WatchStatus">Loading watchlist…</span><div class="hx23-watch-actions"><button class="hx23-watch-btn primary" onclick="editActiveStocks()">EDIT MY STOCKS</button><button class="hx23-watch-btn" onclick="refreshActiveStocks(true)">↻ REFRESH</button></div></div><div class="hx23-watch-wrap"><table class="hx23-watch-table"><thead><tr><th>Symbol</th><th>Price</th><th>Chg %</th><th>Trend</th><th>RVol</th><th>Bid / Ask</th><th>Session</th><th>Updated</th></tr></thead><tbody id="hx23WatchRows"><tr><td colspan="8" class="tiny">Loading My Stock Watch…</td></tr></tbody></table></div><div class="hx23-watch-note">Click any row to close the wheel panel and analyze that symbol.</div></div>`;}
     else if(key==='moveclock'){content=`<div class="hx23-drawer-card"><div class="hx23-drawer-title">Market Move Clock • Central Time</div><div class="hx23-drawer-copy">${hx23MoveRowsHTML()}</div></div>`;}
     else if(key==='leadlag'){content=`<div class="hx23-drawer-card">${hx23LeadLagHTML()}</div>`;}
+    else if(key==='options'){content=hx23OptionsDrawerHTML();}
     else{const src=$(cfg[1]);if(src){const clone=src.cloneNode(true);clone.querySelectorAll?.('[id]').forEach(n=>n.removeAttribute('id'));clone.querySelectorAll?.('button,input,select,textarea').forEach(n=>n.setAttribute('disabled','disabled'));content=`<div class="hx23-drawer-card"><div class="hx23-drawer-title">${esc(cfg[0])}</div><div class="hx23-drawer-copy">${clone.innerHTML||esc(clone.textContent||'No data loaded.')}</div></div>`;}else content='<div class="hx23-drawer-card"><div class="hx23-drawer-copy">Run Analyze to load this research module.</div></div>';}
-    body.innerHTML=content;drawer.classList.add('open');drawer.setAttribute('aria-hidden','false');if(key==='list')setTimeout(()=>window.renderMyStockWatch?.(),0);if(key==='leadlag')setTimeout(()=>window.hx23RunLeadLagScanner?.(false),0);
+    body.innerHTML=content;drawer.classList.add('open');drawer.setAttribute('aria-hidden','false');if(key==='list')setTimeout(()=>window.renderMyStockWatch?.(),0);if(key==='options')setTimeout(()=>window.refreshHalifaxOptions?.(false),80);if(key==='leadlag'&&!hx23LeadLagState.lastRun)setTimeout(()=>window.hx23RunLeadLagScanner?.(false,'quick'),120);
   };
   window.hx23CloseMenu=function(){const d=$('hx23Drawer');d?.classList.remove('open','wide');d?.setAttribute('aria-hidden','true');};
   function clock(){const e=$('hx23Clock');if(e)e.textContent=new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit',second:'2-digit'})+' CT';}
   function syncAll(){syncTape();syncEnv();syncStocks();syncNews();syncEvents();const p=String(window.hx23PendingTicker||'').toUpperCase();if(typeof lastAnalysis!=='undefined'&&typeof lastTrade!=='undefined'&&lastAnalysis&&lastTrade&&(!p||String(lastAnalysis.primary?.ticker||'').toUpperCase()===p))updateAnalysis(lastAnalysis,lastTrade);}
   async function initialSpy(){await window.hx23LoadChart?.('SPY','1D');}
-  window.addEventListener('load',()=>{tapeSkeleton();clock();hx23RenderMoveClock();hx23WarmMoveClockEvents();syncVisibleStyle();initChartHover();const ti=$('hx23TickerInput');if(ti&&ti.dataset.hxEnter!=='1'){ti.dataset.hxEnter='1';ti.addEventListener('input',()=>{ti.value=ti.value.toUpperCase();});ti.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();window.hx23Analyze?.();}});}setInterval(clock,1000);setInterval(hx23RenderMoveClock,1000);setTimeout(syncAll,1400);setInterval(syncAll,2500);setTimeout(initialSpy,700);setTimeout(()=>window.hx23RunLeadLagScanner?.(false),12000);setInterval(()=>{if(!document.hidden)window.hx23RunLeadLagScanner?.(false);},300000);setInterval(()=>{if(!document.hidden)window.refreshHalifaxOptions?.(false);},120000);setInterval(()=>{if(!document.hidden&&typeof window.refresh24HourTape==='function')window.refresh24HourTape(false).finally?.(()=>syncTape());},60000);});
+  window.addEventListener('load',()=>{tapeSkeleton();clock();hx23RenderMoveClock();hx23WarmMoveClockEvents();syncVisibleStyle();initChartHover();const ti=$('hx23TickerInput');if(ti&&ti.dataset.hxEnter!=='1'){ti.dataset.hxEnter='1';ti.addEventListener('input',()=>{ti.value=ti.value.toUpperCase();});ti.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();window.hx23Analyze?.();}});}setInterval(clock,1000);setInterval(hx23RenderMoveClock,1000);setTimeout(syncAll,1400);setInterval(syncAll,2500);setTimeout(initialSpy,700);setInterval(()=>{const d=$('hx23Drawer');if(!document.hidden&&d?.classList.contains('open')&&$('hx23DrawerTitle')?.textContent==='Lead / Lag Scanner'&&!hx23LeadLagState.fallbackSymbols)window.hx23RunLeadLagScanner?.(false,hx23LeadLagState.mode||'quick');},300000);setInterval(()=>{if(!document.hidden)window.refreshHalifaxOptions?.(false);},120000);setInterval(()=>{if(!document.hidden&&typeof window.refresh24HourTape==='function')window.refresh24HourTape(false).finally?.(()=>syncTape());},60000);});
   window.addEventListener('resize',()=>{if(hx23LastChartData)drawChart(hx23LastChartData);});
   // Hook the final wrapped renderer so the v23 shell updates immediately after a completed engine render.
   setTimeout(()=>{if(typeof window.renderTradeOutput==='function'&&!window.renderTradeOutput.__hx23){const prev=window.renderTradeOutput;const wrapped=function(a,t){const r=prev.apply(this,arguments);try{setTimeout(()=>updateAnalysis(a,t),0)}catch(e){}return r};wrapped.__hx23=true;window.renderTradeOutput=wrapped;}},0);
